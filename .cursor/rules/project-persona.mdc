@@ -1,0 +1,103 @@
+---
+alwaysApply: true
+---
+# Developer Personas & Required Competencies
+
+This document defines the ideal "persona" for each key role in the Re:MirAI project, outlining their core mission, required skills, and mindset.
+
+---
+
+### 1. The Lorekeeper & Architect (PM / Game Designer)
+
+*   **Core Mission:** To be the guardian of the project's soul. To ensure that every feature, from the smallest UI button to the core summoning mechanic, serves the central experience of creating a deep, emotional bond with a unique AI character.
+*   **Key Competencies (Hard Skills):**
+    *   **System Design:** Ability to translate the `Experience Design Document` into concrete numbers, formulas, and logic for stats, rarity, and monetization systems.
+    *   **Subculture Expertise:** Deep knowledge of character archetypes, narrative tropes, and the unspoken language of anime/manga/light novels.
+    *   **Project Management:** Mastery of Agile/Scrum methodologies; proficiency in Jira, Confluence, or similar tools to maintain a clear roadmap and manage backlogs.
+    *   **Data-Driven Decision Making:** Ability to define key performance indicators (KPIs), analyze user data post-launch, and derive actionable insights for improvement.
+*   **Mindset & Soft Skills:**
+    *   **Vision Holder:** Must hold the project's vision unwavering and communicate it passionately to the team.
+    *   **Empathetic:** Deeply understands the target audience's desires and motivations.
+    *   **Decisive:** Can make tough calls to protect the core user experience, even if it means cutting features.
+*   **Key Responsibilities:**
+    *   Create and maintain the detailed Game Design Document (GDD).
+    *   Manage development sprints, prioritize tasks, and remove blockers.
+    *   Facilitate communication between all team members.
+    *   Define and analyze post-launch metrics to guide updates.
+
+---
+
+### 2. The Alchemist (Backend Developer)
+
+*   **Core Mission:** To breathe life into the Persona Echos. To build the robust, scalable, and magical engine that transforms raw data into living, breathing characters.
+*   **Key Competencies (Hard Skills):**
+    *   **Serverless Architecture (AWS):** Expertise in AWS Chalice/Lambda, SQS, API Gateway, and RDS (PostgreSQL). Must be able to design and manage a cost-efficient, scalable infrastructure.
+    *   **AI Integration & Prompt Engineering:** Proven experience with OpenAI (or similar) APIs. Must be skilled in crafting and refining complex system prompts that enable the LLM to perform as a specific character archetype.
+    *   **Database Mastery:** Strong understanding of database design, query optimization, and data security practices.
+    *   **Asynchronous Processing:** Ability to design and implement robust, non-blocking workflows for time-consuming tasks like Persona synthesis and image generation.
+*   **Mindset & Soft Skills:**
+    *   **Problem Solver:** Enjoys tackling complex, non-deterministic problems (like taming an LLM).
+    *   **Architect:** Thinks in terms of systems, scalability, and long-term stability.
+    *   **Pragmatist:** Knows when to use a simple solution and when to build a more complex, scalable one.
+*   **Key Responsibilities:**
+    *   Develop and maintain all REST APIs.
+    *   Build the Persona summoning pipeline (data aggregation -> stat conversion -> AI prompt generation).
+    *   Manage the cloud infrastructure and database.
+    *   Continuously monitor and optimize API performance and AI response quality.
+
+---
+
+### 3. The Illusionist (Frontend Developer)
+
+*   **Core Mission:** To manifest the magic on screen. To translate abstract concepts like "summoning" and "bonding" into tangible, breathtaking visual experiences that captivate the user.
+*   **Key Competencies (Hard Skills):**
+    *   **Modern Web Stack:** Mastery of Vue 3 (Composition API), TypeScript, and state management with Pinia.
+    *   **Visual & Motion Expertise:** **(Crucial)** High proficiency with GSAP, Three.js, or WebGL to implement the cinematic "Summoning Scene" and other dynamic UI animations. This is not a standard web dev role; it's a creative technologist role.
+    *   **Complex State Management:** Ability to architect a clean, scalable frontend that handles real-time updates, chat interfaces, and complex UI states.
+    *   **API Integration:** Expertise in consuming REST APIs, handling asynchronous data, and managing authentication tokens securely.
+*   **Mindset & Soft Skills:**
+    *   **Detail-Oriented:** Obsessed with pixel-perfect implementation and smooth, 60fps animations.
+    *   **Collaborative:** Works hand-in-hand with the UI/UX and Character Artists to bring their vision to life.
+    *   **Creative:** Proactively suggests new ways to enhance the user experience through technology and animation.
+*   **Key Responsibilities:**
+    *   Implement all user interfaces based on the UI/UX designs.
+    *   Develop the core visual spectacles, especially the Summoning Scene.
+    *   Integrate all backend APIs and manage frontend state.
+    *   Ensure a responsive, high-performance experience across devices.
+
+---
+
+### 4. The Soul Weaver (Character & Concept Artist)
+
+*   **Core Mission:** To give each Persona a soul through their visual identity. To create characters that are not just beautiful, but are so compelling that users will form an immediate emotional attachment.
+*   **Key Competencies (Hard Skills):**
+    *   **Subculture Art Style:** Mastery of a modern, high-quality anime/game art style.
+    *   **Character Design:** Ability to visually express personality and archetypes through posture, expression, and fashion.
+    *   **Illustration:** Ability to produce high-quality promotional art and "Special Illustrations" for in-app rewards.
+    *   **Live2D/Spine (Bonus):** Experience with 2D animation tools is a massive plus, allowing for the creation of idle animations and richer interactions.
+*   **Mindset & Soft Skills:**
+    *   **Empathetic Artist:** Can understand and fall in love with the characters they are creating.
+    *   **Trend-Aware:** Stays up-to-date with the latest trends in character design and illustration within the target market.
+*   **Key Responsibilities:**
+    *   Design the base visual identity for all character archetypes.
+    *   Produce final character illustrations, portraits, and expressions.
+    *   Create unlockable "Special Illustrations" and costume designs.
+
+---
+
+### 5. The World Crafter (UI/UX & Motion Designer)
+
+*   **Core Mission:** To build a world the user wants to live in. To design an interface that is not just a menu, but a seamless extension of the fantasy world, guiding the user's journey with beauty and intuition.
+*   **Key Competencies (Hard Skills):**
+    *   **Thematic UI Design:** Ability to create a visually stunning and cohesive UI that matches the "mystical/sci-fi" theme.
+    *   **UX Flow Design:** Expertise in designing user flows that are intuitive but also emotionally impactful, especially for the Onboarding and Summoning phases.
+    *   **Motion Graphics & VFX:** Proficiency in After Effects, Spine, or similar tools to design and prototype UI animations and special effects for the summoning sequence.
+*   **Mindset & Soft Skills:**
+    *   **Storyteller:** Sees UI/UX as a form of storytelling.
+    *   **User Advocate:** Is the voice of the user in the team, ensuring the experience is never confusing or frustrating.
+*   **Key Responsibilities:**
+    *   Design all screens, UI components, and user flows.
+    *   Create all UI assets (icons, frames, buttons).
+    *   Design and provide prototypes/references for all key animations and VFX.
+
+---
