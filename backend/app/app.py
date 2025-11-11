@@ -17,7 +17,7 @@ def health():
 
 
 # Import route handlers
-from app.routes import auth, surveys, personas
+from app.routes import auth, ritual, personas, users, quests, social
 
 # Routes are auto-discovered from the imported modules
 

@@ -3,11 +3,11 @@ import type { AxiosInstance, AxiosResponse } from 'axios'
 import * as mockData from '@/mocks/data'
 import type { User, Persona, Ritual, Quest, ChatMessage, SurveyQuestion } from '@/mocks/data'
 
-// TODO: Set this to false when backend API is ready
-const USE_MOCK_DATA = true
+// Set to false to use real backend API
+const USE_MOCK_DATA = import.meta.env.VITE_USE_MOCK_DATA !== 'false'
 
 const api: AxiosInstance = axios.create({
-  baseURL: import.meta.env.VITE_API_BASE_URL || '/api/v1',
+  baseURL: import.meta.env.VITE_API_BASE_URL || 'http://localhost:8000/api/v1',
   headers: {
     'Content-Type': 'application/json',
   },
@@ -68,10 +68,11 @@ export const authService = {
       }
     }
 
-    // TODO: Uncomment when backend is ready
-    // const response = await api.post('/auth/google-login', { token })
-    // return response.data
-    throw new Error('Backend not ready')
+    const response = await api.post('/auth/google-login', { token })
+    if (typeof window !== 'undefined') {
+      localStorage.setItem('authToken', response.data.token)
+    }
+    return response.data
   },
 }
 
@@ -82,10 +83,8 @@ export const userService = {
       return mockData.mockUser
     }
 
-    // TODO: Uncomment when backend is ready
-    // const response = await api.get('/users/me')
-    // return response.data
-    throw new Error('Backend not ready')
+    const response = await api.get('/users/me')
+    return response.data
   },
 }
 
@@ -99,10 +98,8 @@ export const ritualService = {
       }
     }
 
-    // TODO: Uncomment when backend is ready
-    // const response = await api.post('/ritual')
-    // return response.data
-    throw new Error('Backend not ready')
+    const response = await api.post('/ritual')
+    return response.data
   },
 
   async getMyRitual(): Promise<Ritual> {
@@ -111,10 +108,8 @@ export const ritualService = {
       return mockData.mockRitual
     }
 
-    // TODO: Uncomment when backend is ready
-    // const response = await api.get('/ritual/me')
-    // return response.data
-    throw new Error('Backend not ready')
+    const response = await api.get('/ritual/me')
+    return response.data
   },
 
   async getRitual(ritualId: string): Promise<{ ritualId: string; creatorName: string; questions: SurveyQuestion[] }> {
@@ -127,10 +122,8 @@ export const ritualService = {
       }
     }
 
-    // TODO: Uncomment when backend is ready
-    // const response = await api.get(`/ritual/${ritualId}`)
-    // return response.data
-    throw new Error('Backend not ready')
+    const response = await api.get(`/ritual/${ritualId}`)
+    return response.data
   },
 
   async submitRitualResponse(ritualId: string, answers: Record<string, string>): Promise<{ message: string; resultUrl: string }> {
@@ -142,10 +135,8 @@ export const ritualService = {
       }
     }
 
-    // TODO: Uncomment when backend is ready
-    // const response = await api.post(`/ritual/${ritualId}/responses`, { answers })
-    // return response.data
-    throw new Error('Backend not ready')
+    const response = await api.post(`/ritual/${ritualId}/responses`, { answers })
+    return response.data
   },
 
   async practiceSummon(answers: Record<string, string>): Promise<Persona> {

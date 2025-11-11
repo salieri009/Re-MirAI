@@ -26,9 +26,38 @@ def get_current_user_id():
     return UUID(payload["user_id"])
 
 
+@app.route("/api/v1/personas/summon", methods=["POST"])
+def summon_persona():
+    """Begin the summoning process for the user's Persona."""
+    try:
+        user_id = get_current_user_id()
+    except:
+        return {"error": "Unauthorized"}, 401
+    
+    body = app.current_request.json_body
+    if not body or "mode" not in body:
+        return {"error": "Missing mode"}, 400
+    
+    mode = body["mode"]
+    archetype_filter = body.get("archetypeFilter")
+    
+    if mode == "Alchemic" and not archetype_filter:
+        return {"error": "archetypeFilter required for Alchemic mode"}, 400
+
+    db = SessionLocal()
+    try:
+        persona_service = PersonaService(db)
+        result = persona_service.summon_persona(user_id, mode, archetype_filter)
+        return result, 202
+    except Exception as e:
+        return {"error": str(e)}, 500
+    finally:
+        db.close()
+
+
 @app.route("/api/v1/personas/me", methods=["GET"])
-def get_persona():
-    """Retrieve user's persona. If not ready, check and possibly trigger synthesis. (Query/Command - CQRS)"""
+def get_my_persona():
+    """Retrieve user's persona. Used for polling status and fetching persona data."""
     try:
         user_id = get_current_user_id()
     except:
@@ -37,7 +66,7 @@ def get_persona():
     db = SessionLocal()
     try:
         persona_service = PersonaService(db)
-        result = persona_service.get_or_create_persona(user_id)
+        result = persona_service.get_persona(user_id)
         return result, 200
     except Exception as e:
         return {"error": str(e)}, 500
@@ -67,7 +96,35 @@ def chat_with_persona():
         if response is None:
             return {"error": "Persona not ready"}, 400
 
-        return {"response": response}, 200
+        return {"reply": response}, 200
+    except Exception as e:
+        return {"error": str(e)}, 500
+    finally:
+        db.close()
+
+
+@app.route("/api/v1/personas/me/chat", methods=["GET"])
+def get_chat_history():
+    """Retrieve chat history for the user's Persona."""
+    try:
+        user_id = get_current_user_id()
+    except:
+        return {"error": "Unauthorized"}, 401
+
+    # Get query parameters
+    query_params = app.current_request.query_params or {}
+    limit = int(query_params.get("limit", 20))
+    offset = int(query_params.get("offset", 0))
+
+    db = SessionLocal()
+    try:
+        persona_service = PersonaService(db)
+        result = persona_service.get_chat_history(user_id, limit, offset)
+        
+        if result is None:
+            return {"error": "Persona not ready"}, 400
+            
+        return result, 200
     except Exception as e:
         return {"error": str(e)}, 500
     finally:

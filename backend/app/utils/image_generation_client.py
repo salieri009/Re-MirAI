@@ -13,24 +13,19 @@ class ImageGenerationClient:
         if settings.image_api_provider == "openai":
             openai.api_key = settings.image_api_key
 
-    def generate_illustration(self, persona_name: str, persona_prompt: str) -> Optional[str]:
-        """Generate an AI illustration for a persona based on its description."""
-        image_prompt = f"""
-        Create a unique, appealing character portrait based on this persona:
-        Name: {persona_name}
-        Description: {persona_prompt[:200]}
-
-        The character should be visually distinctive and suitable for social media sharing.
-        Style: Modern, anime-inspired illustration.
-        """
+    def generate_persona_image(self, image_prompt: str) -> Optional[str]:
+        """Generate a persona image using AI image generation."""
+        # Use the provided detailed image prompt directly
 
         try:
             response = openai.Image.create(
                 prompt=image_prompt,
                 n=1,
-                size="512x512",
+                size="1024x1024",  # Higher quality for persona portraits
+                model="dall-e-3"   # Use latest DALL-E version
             )
             return response.data[0].url
         except Exception as e:
-            print(f"Error generating image: {e}")
-            return None
+            print(f"Error generating persona image: {e}")
+            # Fallback to a placeholder image URL
+            return f"https://placeholder.pics/svg/512x512/DEDEDE/555555/Persona"

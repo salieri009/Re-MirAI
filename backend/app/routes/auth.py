@@ -27,8 +27,8 @@ def verify_google_token(token: str) -> dict:
         return None
 
 
-@app.route("/api/v1/auth/google", methods=["POST"])
-def google_auth():
+@app.route("/api/v1/auth/google-login", methods=["POST"])
+def google_login():
     """Authenticate user with Google ID token."""
     body = app.current_request.json_body
 
@@ -54,10 +54,14 @@ def google_auth():
         access_token = create_access_token(str(user.id))
 
         return {
-            "user_id": str(user.id),
-            "email": user.email,
-            "display_name": user.display_name,
             "token": access_token,
+            "user": {
+                "id": str(user.id),
+                "displayName": user.display_name,
+                "email": user.email,
+                "profileImageUrl": user.profile_image_url,
+                "memoryCrystals": user.memory_crystals
+            }
         }
     finally:
         db.close()

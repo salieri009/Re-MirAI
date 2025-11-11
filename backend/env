@@ -1,0 +1,37 @@
+# Development Environment Configuration
+
+# Database Configuration (SQLite for development)
+DATABASE_URL=sqlite:///./re_mirai_dev.db
+
+# AWS Configuration (Mock for development)
+AWS_REGION=us-east-1
+AWS_ACCESS_KEY_ID=mock_access_key
+AWS_SECRET_ACCESS_KEY=mock_secret_key
+
+# SQS Queue Names (Mock for development)
+PERSONA_GENERATION_QUEUE_NAME=persona-generation-queue
+IMAGE_GENERATION_QUEUE_NAME=image-generation-queue
+
+# JWT Configuration
+JWT_SECRET=dev_super_secret_jwt_key_for_development_only_32_chars
+JWT_ALGORITHM=HS256
+
+# Google OAuth Configuration (Mock for development)
+GOOGLE_CLIENT_ID=mock_google_client_id
+GOOGLE_CLIENT_SECRET=mock_google_client_secret
+
+# LLM API Configuration (Mock for development)
+LLM_API_KEY=mock_openai_key
+LLM_API_PROVIDER=openai
+
+# Image Generation API Configuration (Mock for development)
+IMAGE_API_KEY=mock_image_api_key
+IMAGE_API_PROVIDER=openai
+
+# Environment Settings
+ENVIRONMENT=development
+DEBUG=true
+
+# Application URLs
+FRONTEND_URL=http://localhost:5173
+API_BASE_URL=http://localhost:8000
