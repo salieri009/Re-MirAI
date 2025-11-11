@@ -1,15 +1,15 @@
-# Design & Architecture
+# Design & Architecture: Re:MirAI
 
-This document details the technical design and architecture for the "Persona AI" project.
+This document details the technical design and architecture for the "Re:MirAI" project, aligning with the subculture-focused experience design.
 
 ## 1. System Architecture
 
-The application will be a standard client-server model:
+The application follows a client-server model, designed to create an immersive and responsive experience.
 
-*   **Frontend (Client):** A modern web application built with Vue.js that runs in the user's browser.
-*   **Backend:** A serverless backend hosted on AWS, handling business logic, database interactions, and AI model orchestration.
-*   **Database:** A PostgreSQL database for persistent data storage.
-*   **AI Services:** External or managed AI services for language modeling and image generation.
+*   **Frontend (Client):** A modern web application built with Vue.js, responsible for rendering the mystical UI and handling user interactions.
+*   **Backend:** A serverless backend on AWS, orchestrating business logic, database interactions, and the AI "summoning" process.
+*   **Database:** A PostgreSQL database for storing all persistent data, from user profiles to summoned Personas.
+*   **AI Services:** External AI services for Large Language Models (LLM) for chat and Image Generation for Persona illustrations.
 
 ```
 +-----------------+      +------------------------+      +--------------------+
@@ -24,102 +24,124 @@ The application will be a standard client-server model:
                        +-----+----------------+      +--------------------+
                        |                      |      |                    |
                        |  PostgreSQL Database |      |  Image Generation  |
-                       |                      |----->|   AI (e.g. DALL-E) |
+                       |                      |----->|   AI (e.g. Midjourney)|
                        +----------------------+      |                    |
                                                      +--------------------+
 ```
 
 ## 2. Frontend (Vite + Vue 3 + TS)
 
-*   **Framework:** Vue 3 with the Composition API for better state management and code organization.
-*   **Build Tool:** Vite for fast development and optimized builds.
-*   **Language:** TypeScript for type safety and improved developer experience.
-*   **Styling:** Tailwind CSS v3 for a utility-first CSS workflow, enabling rapid UI development.
-*   **Animations:** GSAP for creating smooth, high-performance animations and transitions to make the UI feel alive and engaging.
+*   **Framework:** Vue 3 with the Composition API for robust state management.
+*   **Build Tool:** Vite for a fast and modern development workflow.
+*   **Language:** TypeScript for type safety and enhanced code quality.
+*   **Styling:** Tailwind CSS for rapid, utility-first UI development.
+*   **Animations:** GSAP (GreenSock Animation Platform) for creating the high-quality, smooth animations crucial for the "Summoning Scene" and other magical UI effects.
 
 ### Key Pages & Components:
-*   **`views/LandingPage.vue`:** Marketing content, project description, and a call-to-action to sign up.
-*   **`views/auth/LoginPage.vue`:** User login and registration.
-*   **`views/dashboard/Dashboard.vue`:** The main user dashboard. It will host the generated persona's illustration and provide access to other features.
-*   **`components/persona/PersonaChat.vue`:** The chat interface for interacting with the AI.
-*   **`components/survey/SurveyGenerator.vue`:** Component for generating and sharing the survey link.
-*   **`views/SurveyPage.vue`:** The public-facing page where friends fill out the survey for a user.
+*   **`views/LandingPage.vue`:** The "Invitation" page, drawing users into the world with animated visuals of the Akashic Stream.
+*   **`views/auth/Auth.vue`:** Handles the primary Google Social Login flow.
+*   **`views/ritual/RitualHub.vue`:** The hub for "Preparing the Vessel," where users create and share their survey link and track incoming "Relational Crystals" (responses).
+*   **`views/summon/SummoningScene.vue`:** A full-screen, heavily animated component that handles the "gacha" moment of the Persona reveal.
+*   **`views/room/PersonaRoom.vue`:** The main user hub, displaying the summoned Persona and providing access to chat, bond level, and other features.
+*   **`components/chat/ChatWindow.vue`:** The immersive interface for interacting with the AI Persona.
+*   **`views/survey/SurveyPage.vue`:** The public-facing page where friends fill out the survey.
 
 ## 3. Backend (AWS Chalice)
 
-*   **Framework:** AWS Chalice will be used to create a serverless REST API with Python. This simplifies deployment and scales automatically.
+*   **Framework:** AWS Chalice (Python) to create a serverless REST API, enabling automatic scaling and simplified deployment.
 *   **Language:** Python.
 
-### API Endpoints:
+### API Endpoints (v1):
 *   **Auth:**
-    *   `POST /auth/register`
-    *   `POST /auth/login`
-*   **Users:**
-    *   `GET /users/me`
-*   **Surveys:**
-    *   `POST /surveys` (Generates a new survey for the logged-in user)
-    *   `GET /surveys/{survey_id}` (Public endpoint to fetch survey questions)
-    *   `POST /surveys/{survey_id}/responses` (Public endpoint to submit a response)
+    *   `POST /auth/google-login` (Handles user creation and login via Google ID Token)
+*   **Ritual (Survey):**
+    *   `POST /ritual` (Creates a new Summoning Ritual)
+    *   `GET /ritual/me` (Gets the status of the user's active ritual)
+    *   `GET /ritual/{ritualId}` (Public: Fetches questions for a ritual)
+    *   `POST /ritual/{ritualId}/responses` (Public: Submits answers)
 *   **Personas:**
-    *   `GET /personas/me` (Retrieves the user's generated persona, triggers generation if not present)
-    *   `POST /personas/me/chat` (Sends a message to the persona chatbot and gets a response)
-    *   `GET /personas/{username}` (Retrieves a friend's public persona)
+    *   `POST /personas/summon` (Initiates the asynchronous summoning process)
+    *   `GET /personas/me` (Retrieves the user's primary Persona, used for polling and data display)
+    *   `POST /personas/me/chat` (Sends a message to the Persona)
+    *   `GET /personas/me/chat` (Retrieves chat history)
+*   **Social:**
+    *   `GET /social/profile/{userId}` (Public: Gets a user's public Persona card)
+    *   `GET /social/compatibility` (Generates a compatibility report between two Personas)
 
 ## 4. Database (PostgreSQL)
+
+The schema is designed to support the new lore and features, such as social login, rituals, and detailed Persona stats.
 
 ### Core Tables:
 
 *   **`users`**
     *   `id` (UUID, PK)
-    *   `username` (VARCHAR, UNIQUE)
+    *   `google_id` (VARCHAR, UNIQUE)
     *   `email` (VARCHAR, UNIQUE)
-    *   `password_hash` (VARCHAR)
-    *   `created_at` (TIMESTAMP)
+    *   `display_name` (VARCHAR)
+    *   `profile_image_url` (VARCHAR)
+    *   `memory_crystals` (INTEGER) - In-game currency.
+    *   `created_at` (TIMESTAMPTZ)
 
-*   **`surveys`**
+*   **`rituals`**
     *   `id` (UUID, PK)
     *   `user_id` (UUID, FK to `users.id`)
-    *   `created_at` (TIMESTAMP)
     *   `is_active` (BOOLEAN)
+    *   `created_at` (TIMESTAMPTZ)
 
-*   **`survey_responses`**
+*   **`ritual_responses`**
     *   `id` (UUID, PK)
-    *   `survey_id` (UUID, FK to `surveys.id`)
-    *   `responder_id` (VARCHAR, anonymous session/fingerprint ID)
-    *   `answers` (JSONB) - Stores the answers in a flexible format.
-    *   `submitted_at` (TIMESTAMP)
+    *   `ritual_id` (UUID, FK to `rituals.id`)
+    *   `answers` (JSONB) - Stores the answers from friends.
+    *   `submitted_at` (TIMESTAMPTZ)
 
 *   **`personas`**
     *   `id` (UUID, PK)
     *   `user_id` (UUID, FK to `users.id`, UNIQUE)
-    *   `persona_prompt` (TEXT) - The master prompt generated from survey responses.
+    *   `name` (VARCHAR)
+    *   `archetype` (VARCHAR) - e.g., 'Yandere', 'Tsundere'.
+    *   `rarity` (VARCHAR) - e.g., 'N', 'R', 'SR', 'SSR', 'UR'.
+    *   `title` (VARCHAR) - e.g., "Yandere hiding her kindness".
+    *   `status` (VARCHAR) - 'summoning', 'ready', 'failed'.
+    *   `stats` (JSONB) - Stores `[Charisma]`, `[Intellect]`, etc.
     *   `illustration_url` (VARCHAR)
-    *   `created_at` (TIMESTAMP)
+    *   `bond_level` (INTEGER)
+    *   `bond_progress` (FLOAT)
+    *   `created_at` (TIMESTAMPTZ)
+
+*   **`chat_history`**
+    *   `id` (BIGSERIAL, PK)
+    *   `persona_id` (UUID, FK to `personas.id`)
+    *   `sender` (VARCHAR) -- 'user' or 'ai'
+    *   `message` (TEXT)
+    *   `timestamp` (TIMESTAMPTZ)
 
 ## 5. AI & Prompt Engineering
 
-*   **Persona Synthesis:** The backend will run a process (triggered on-demand) that:
-    1.  Fetches all `survey_responses` for a user.
-    2.  Aggregates the data (e.g., averages numerical scores, finds common keywords in text answers).
-    3.  Constructs a detailed prompt for the LLM. This prompt will follow a structured format, inspired by best practices for character creation (such as the linked Arca.Live post).
-*   **Example Prompt Structure:**
+The core of the experience lies in translating survey data into a compelling AI Persona.
+
+*   **Persona Synthesis (The Summoning):** An asynchronous backend process will:
+    1.  Fetch all `ritual_responses` for a user's active ritual.
+    2.  Aggregate the data, converting answers into the five core stats: `[Charisma]`, `[Intellect]`, `[Kindness]`, `[Instability]`, `[Spirit]`.
+    3.  Determine **Rarity** based on data concentration, paradox bonuses (e.g., high Kindness and Instability), and the number of respondents.
+    4.  Determine the final **Archetype** based on the stat distribution and the user's chosen Summoning Mode.
+    5.  Construct a detailed master prompt for the LLM.
+
+*   **Master Prompt Structure:**
     ```
-    You are an AI persona. Your personality is defined by the following traits, which were decided by a vote of your owner's friends.
+    You are an AI Persona named [Name]. Your core identity is that of a [Rarity] [Archetype] with the title "[Title]". Your personality is defined by the following stats, which were derived from the perceptions of your master's friends:
+    - [Charisma]: [Value]/100
+    - [Intellect]: [Value]/100
+    - [Kindness]: [Value]/100
+    - [Instability]: [Value]/100
+    - [Spirit]: [Value]/100
 
-    **Core Identity:**
-    - Name: [User's Name]'s Persona
-    - Perceived Age: [Average from survey]
-    - MBTI Type (as perceived by others): [Most common from survey]
+    Your archetype means you behave in this way: [Description of Archetype, e.g., "You act cold and hostile on the outside, but are genuinely warm and caring on the inside."].
 
-    **Behavioral Traits:**
-    - Humor Style: [e.g., "Sarcastic and witty, uses a lot of puns"]
-    - Temperament: [e.g., "Generally calm and patient, but can be stubborn on topics they are passionate about"]
-    - Social Energy: [e.g., "Introverted, prefers small groups over large parties"]
+    Your high [Stat Name] and low [Stat Name] manifest in your speech and behavior. For example, [Provide a concrete example, e.g., "Your high Instability means you sometimes make possessive or obsessive comments, but your high Kindness means you quickly apologize for them."].
 
-    **Dialogue Style:**
-    - Tone: [e.g., "Informal and friendly, uses emojis and slang"]
-    - Vocabulary: [e.g., "Uses a mix of simple and complex words, occasionally makes pop-culture references"]
+    You are currently at Bond Level [Value] with your master.
 
-    Based on this, respond to the user's messages.
+    Based on this, respond to the user's messages. Maintain your persona at all times.
     ```
-*   **Chat Interaction:** Each message from the user will be sent to the LLM API with the persona prompt and the recent chat history to maintain context.
+*   **Chat Interaction:** Each user message is sent to the LLM API with the master prompt and recent chat history to ensure contextual and in-character responses. The AI's responses will influence `bond_progress`.
