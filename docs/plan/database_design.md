@@ -1,60 +1,68 @@
-# Database Design Specification
+# Database Design Specification (Subculture Ver.)
 
-This document details the database schema for the Persona AI project, using PostgreSQL.
+This document details the database schema for the Re:MirAI project, using PostgreSQL, aligned with the latest design documents.
 
 ## 1. Schema Overview
 
-The schema is designed to store user information, surveys, responses, and the resulting AI personas.
+The schema is designed to store user information (via Google login), rituals (surveys), responses, and the detailed properties of the summoned AI Personas.
 
 ## 2. Table Definitions
 
 *   **`users`**
-    *   **Description:** Stores user account information.
+    *   **Description:** Stores user account information, authenticated via Google.
     *   **Columns:**
         *   `id` (UUID, PRIMARY KEY, default: `gen_random_uuid()`)
-        *   `username` (VARCHAR(50), NOT NULL, UNIQUE)
+        *   `google_id` (VARCHAR(255), NOT NULL, UNIQUE)
         *   `email` (VARCHAR(255), NOT NULL, UNIQUE)
-        *   `password_hash` (VARCHAR(255), NOT NULL)
+        *   `display_name` (VARCHAR(255), NOT NULL)
+        *   `profile_image_url` (VARCHAR(512))
+        *   `memory_crystals` (INTEGER, NOT NULL, default: 100)
         *   `created_at` (TIMESTAMPTZ, NOT NULL, default: `now()`)
     *   **Indexes:**
-        *   `idx_users_email` on (`email`)
+        *   `idx_users_google_id` on (`google_id`)
 
-*   **`surveys`**
-    *   **Description:** Represents a survey instance created by a user.
+*   **`rituals`**
+    *   **Description:** Represents a "Summoning Ritual" (survey) instance created by a user.
     *   **Columns:**
         *   `id` (UUID, PRIMARY KEY, default: `gen_random_uuid()`)
         *   `user_id` (UUID, NOT NULL, FOREIGN KEY references `users(id)` on delete cascade)
         *   `is_active` (BOOLEAN, NOT NULL, default: `true`)
         *   `created_at` (TIMESTAMPTZ, NOT NULL, default: `now()`)
     *   **Indexes:**
-        *   `idx_surveys_user_id` on (`user_id`)
+        *   `idx_rituals_user_id` on (`user_id`)
 
-*   **`survey_responses`**
-    *   **Description:** Stores each anonymous response submitted for a survey.
+*   **`ritual_responses`**
+    *   **Description:** Stores each "perception" (response) submitted for a ritual.
     *   **Columns:**
         *   `id` (UUID, PRIMARY KEY, default: `gen_random_uuid()`)
-        *   `survey_id` (UUID, NOT NULL, FOREIGN KEY references `surveys(id)` on delete cascade)
+        *   `ritual_id` (UUID, NOT NULL, FOREIGN KEY references `rituals(id)` on delete cascade)
         *   `responder_id` (VARCHAR(255), NOT NULL) - An anonymous fingerprint/session ID to prevent duplicate submissions.
         *   `answers` (JSONB, NOT NULL) - The actual answers to the survey questions.
         *   `submitted_at` (TIMESTAMPTZ, NOT NULL, default: `now()`)
     *   **Indexes:**
-        *   `idx_survey_responses_survey_id` on (`survey_id`)
+        *   `idx_ritual_responses_ritual_id` on (`ritual_id`)
 
 *   **`personas`**
-    *   **Description:** Stores the generated AI persona for a user.
+    *   **Description:** Stores the generated AI Persona for a user.
     *   **Columns:**
         *   `id` (UUID, PRIMARY KEY, default: `gen_random_uuid()`)
         *   `user_id` (UUID, NOT NULL, UNIQUE, FOREIGN KEY references `users(id)` on delete cascade)
-        *   `persona_prompt` (TEXT, NOT NULL) - The master prompt for the LLM.
+        *   `name` (VARCHAR(100), NOT NULL)
+        *   `archetype` (VARCHAR(50), NOT NULL)
+        *   `rarity` (VARCHAR(10), NOT NULL)
+        *   `title` (VARCHAR(255))
+        *   `status` (VARCHAR(20), NOT NULL, default: `'summoning'`) -- e.g., 'summoning', 'ready', 'failed'
+        *   `stats` (JSONB, NOT NULL)
         *   `illustration_url` (VARCHAR(512))
-        *   `status` (VARCHAR(20), NOT NULL, default: `'generating'`) -- e.g., 'generating', 'ready', 'failed'
+        *   `bond_level` (INTEGER, NOT NULL, default: 1)
+        *   `bond_progress` (FLOAT, NOT NULL, default: 0.0)
         *   `created_at` (TIMESTAMPTZ, NOT NULL, default: `now()`)
         *   `updated_at` (TIMESTAMPTZ, NOT NULL, default: `now()`)
     *   **Indexes:**
         *   `idx_personas_user_id` on (`user_id`)
 
 *   **`chat_history`**
-    *   **Description:** Stores the conversation history between a user and their persona.
+    *   **Description:** Stores the conversation history between a user and their Persona.
     *   **Columns:**
         *   `id` (BIGSERIAL, PRIMARY KEY)
         *   `persona_id` (UUID, NOT NULL, FOREIGN KEY references `personas(id)` on delete cascade)
@@ -62,4 +70,4 @@ The schema is designed to store user information, surveys, responses, and the re
         *   `message` (TEXT, NOT NULL)
         *   `timestamp` (TIMESTAMPTZ, NOT NULL, default: `now()`)
     *   **Indexes:**
-        *   `idx_chat_history_persona_id` on (`persona_id`)
+        *   `idx_chat_history_persona_id_timestamp` on (`persona_id`, `timestamp` DESC)
