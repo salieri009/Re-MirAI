@@ -1,4 +1,3 @@
-/// <reference types="D:/UTS/ToyProjecT_2/frontend/node_modules/.vue-global-types/vue_3.5_0.d.ts" />
 import WelcomeItem from './WelcomeItem.vue';
 import DocumentationIcon from './icons/IconDocumentation.vue';
 import ToolingIcon from './icons/IconTooling.vue';
