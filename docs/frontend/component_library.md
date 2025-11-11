@@ -19,50 +19,145 @@ Pages (Views)
 
 ### Button Component (`Button.vue`)
 
-#### Design Specifications
+> **Nielsen Heuristics Compliant:** Implements System Status Visibility, User Control, and Error Prevention.
+
+#### Enhanced Design Specifications
 ```vue
 <Button 
   variant="primary|secondary|ghost" 
   size="sm|md|lg"
   :loading="boolean"
   :disabled="boolean"
+  :aria-disabled="boolean"
+  :aria-busy="boolean"
+  :aria-describedby="string"
   @click="handler"
 >
   Button Text
 </Button>
 ```
 
-#### Variant Styles
-- **Primary**: Indigo background, white text, confidence-inspiring
-- **Secondary**: Purple background, slightly less prominent
-- **Ghost**: Transparent with colored border, non-intrusive
+#### 4-Point Grid Sizing System
+All button dimensions follow the 4-point grid system for perfect pixel alignment:
 
-#### Size Specifications
 ```css
-/* Small */
-sm: padding: 0.5rem 1rem; font-size: 0.875rem;
+/* Small - 4-Point Grid Applied */
+sm: 'px-4 py-2 text-sm min-h-8'   /* 16px, 8px, 32px height */
 
 /* Medium (Default) */  
-md: padding: 0.75rem 1.5rem; font-size: 1rem;
+md: 'px-6 py-3 min-h-12'          /* 24px, 12px, 48px height */
 
 /* Large */
-lg: padding: 1rem 2rem; font-size: 1.125rem;
+lg: 'px-8 py-4 text-lg min-h-14'  /* 32px, 16px, 56px height */
 ```
 
-#### Interaction States
-- **Hover**: 4px translateY lift + shadow increase
-- **Active**: 2px translateY press + scale(0.98)
-- **Focus**: Indigo glow ring (--color-accent)
-- **Loading**: Spinner overlay with disabled interaction
-- **Disabled**: 50% opacity + cursor not-allowed
+#### Enhanced Interaction States (Nielsen: System Status Visibility)
+- **Hover**: Smooth color transition + subtle lift
+- **Active**: Scale down (0.95) for tactile feedback  
+- **Focus**: 4px ring with `focus:ring-4 focus:ring-primary/30`
+- **Loading**: Spinner with `role="status" aria-label="Loading"`
+- **Disabled**: Clear visual distinction with `opacity-60`
+
+#### Advanced Accessibility Features (WCAG 2.1 AA)
+- **ARIA States**: `aria-busy`, `aria-disabled`, `aria-describedby`
+- **Role Semantics**: `role="status"` for loading states
+- **Screen Reader**: Descriptive labels and state announcements
+- **Keyboard Navigation**: Full keyboard accessibility
+- **Focus Management**: Clear focus indicators
+
+#### Loading State Implementation
+```vue
+<!-- Loading State (Nielsen: System Status Visibility) -->
+<span 
+  v-if="loading" 
+  class="inline-flex items-center mr-2"
+  role="status" 
+  aria-label="Loading"
+>
+  <svg class="animate-spin h-4 w-4" aria-hidden="true">
+    <!-- Spinner SVG -->
+  </svg>
+</span>
+```
+---
+
+### LoadingSkeleton Component (`LoadingSkeleton.vue`)
+
+> **Nielsen's System Status Visibility:** Skeleton UI provides better UX than traditional spinners by showing content structure.
+
+#### Design Philosophy
+LoadingSkeleton follows modern UX best practices by showing the **structure** of content being loaded rather than a generic spinner. This reduces perceived loading time and provides better context.
+
+#### Component Specifications
+```vue
+<LoadingSkeleton 
+  type="header|card|persona|progress|default"
+  size="sm|md|lg|full"
+/>
+```
+
+#### Skeleton Types
+
+##### Header Skeleton
+```vue
+<LoadingSkeleton type="header" />
+<!-- Shows: Title placeholder + subtitle + action button -->
+```
+
+##### Card Skeleton  
+```vue
+<LoadingSkeleton type="card" />
+<!-- Shows: Header + content area + button placeholder -->
+```
+
+##### Persona Skeleton
+```vue
+<LoadingSkeleton type="persona" />
+<!-- Shows: Avatar + details + stats + action button -->
+```
+
+##### Progress Skeleton
+```vue
+<LoadingSkeleton type="progress" />
+<!-- Shows: Title + progress bar + action area -->
+```
+
+#### 4-Point Grid Implementation
+All skeleton dimensions use design tokens:
+```css
+.skeleton-container {
+  gap: var(--subsection-spacing); /* 32px */
+}
+
+.skeleton-element {
+  padding: var(--card-padding);    /* 24px */
+  margin-bottom: var(--element-spacing); /* 16px */
+}
+```
 
 #### Accessibility Features
-- **ARIA Labels**: Automatic or custom aria-label support
-- **Keyboard Navigation**: Full tab and enter/space support
-- **Screen Reader**: Loading and disabled state announcements
-- **High Contrast**: Alternative styling for accessibility modes
+- **ARIA Labels**: `role="status" aria-live="polite"`
+- **Screen Reader**: Hidden text explaining loading state
+- **Animation**: Subtle pulse that doesn't cause seizures
+- **Reduced Motion**: Respects `prefers-reduced-motion`
 
-### LoadingSpinner Component (`LoadingSpinner.vue`)
+#### Animation Specifications
+```css
+@keyframes skeletonPulse {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.6; }
+}
+
+.animate-pulse {
+  animation: skeletonPulse 2s ease-in-out infinite;
+}
+```
+
+---
+
+### LoadingSpinner Component (`LoadingSpinner.vue`) [DEPRECATED]
+
+> **Status**: Deprecated in favor of LoadingSkeleton. Use only for specific loading actions.
 
 #### Design Specifications
 ```vue

@@ -9,15 +9,148 @@
 - **Vue Router 4** for single-page application navigation
 
 ### Styling & Design
-- **Tailwind CSS 3.3+** for utility-first styling
-- **PostCSS** for CSS processing and optimization
-- **CSS Custom Properties** for dynamic theming
-- **GSAP** (planned) for advanced animations
+- **Tailwind CSS v4** with advanced PostCSS plugin system
+- **4-Point Grid System** for consistent spacing (Designership.com standard)
+- **Design Token Architecture** with CSS Custom Properties
+- **Nielsen's 10 Usability Heuristics** implementation
+- **WCAG 2.1 AA Compliance** for accessibility
+- **CSS-in-JS Hybrid** with scoped component styles
 
 ### State Management & API
 - **Pinia** for centralized state management
 - **Axios** for HTTP client with interceptors
 - **Mock Data System** for development and testing
+
+---
+
+## Design System Architecture 
+
+> **The Illusionist's Implementation:** Technical foundation for pixel-perfect, accessible, and maintainable UI.
+
+### 4-Point Grid System Implementation
+
+All spacing follows a mathematical progression based on 4px units:
+
+```css
+/* main.css - Design Token Foundation */
+:root {
+  /* === 4-POINT GRID SPACING SYSTEM === */
+  --space-1: 0.25rem; /* 4px */
+  --space-2: 0.5rem;  /* 8px */
+  --space-3: 0.75rem; /* 12px */
+  --space-4: 1rem;    /* 16px */
+  --space-6: 1.5rem;  /* 24px */
+  --space-8: 2rem;    /* 32px */
+  --space-12: 3rem;   /* 48px */
+  --space-16: 4rem;   /* 64px */
+  
+  /* === SEMANTIC SPACING TOKENS === */
+  --container-padding: var(--space-6);
+  --section-spacing: var(--space-12);
+  --card-padding: var(--space-6);
+  --element-spacing: var(--space-4);
+}
+```
+
+### Design Token Usage Patterns
+
+```vue
+<!-- Component Implementation -->
+<template>
+  <div 
+    class="card" 
+    style="padding: var(--card-padding); margin-bottom: var(--section-spacing);"
+  >
+    <div style="display: flex; gap: var(--element-spacing);">
+      <!-- Content with consistent spacing -->
+    </div>
+  </div>
+</template>
+```
+
+### Tailwind CSS v4 Integration
+
+```js
+// postcss.config.js
+export default {
+  plugins: {
+    '@tailwindcss/postcss': {},
+  },
+}
+```
+
+```css
+/* main.css - Tailwind v4 Import */
+@import "tailwindcss";
+@import './base.css';
+
+/* Custom utilities built on design tokens */
+.container-page {
+  max-width: 1280px;
+  margin: 0 auto;
+  padding: var(--container-padding);
+}
+```
+
+---
+
+## Nielsen's Heuristics Technical Implementation
+
+### 1. System Status Visibility
+```vue
+<!-- Loading States with ARIA -->
+<div 
+  v-if="isLoading" 
+  role="status" 
+  aria-live="polite" 
+  aria-label="Loading content"
+>
+  <LoadingSkeleton type="persona" />
+  <div class="sr-only">Loading your persona...</div>
+</div>
+```
+
+### 2. Error Recovery Implementation
+```vue
+<!-- Error States with Recovery Actions -->
+<div 
+  v-if="error" 
+  role="alert" 
+  aria-live="assertive"
+  class="card border-red-500/50 bg-red-500/10"
+>
+  <div class="flex items-center" style="gap: var(--element-spacing);">
+    <div class="text-red-400" role="img" aria-label="Error">⚠️</div>
+    <div>
+      <h3 class="font-semibold text-red-300">Something went wrong</h3>
+      <p class="text-red-400 text-sm">{{ error }}</p>
+      <button @click="handleRetry" class="mt-3 underline">
+        Try again
+      </button>
+    </div>
+  </div>
+</div>
+```
+
+### 3. Accessibility Architecture
+```typescript
+// Button.vue - Comprehensive ARIA Implementation
+interface Props {
+  variant?: 'primary' | 'secondary' | 'ghost'
+  size?: 'sm' | 'md' | 'lg'
+  loading?: boolean
+  disabled?: boolean
+  'aria-describedby'?: string
+  'aria-label'?: string
+}
+
+const buttonProps = computed(() => ({
+  'aria-disabled': props.disabled || props.loading,
+  'aria-busy': props.loading,
+  'role': 'button',
+  'tabindex': props.disabled ? -1 : 0
+}))
+```
 
 ---
 

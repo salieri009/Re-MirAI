@@ -30,31 +30,153 @@ Re:MirAI's design system embodies the mystical essence of AI persona summoning t
 
 ---
 
+## Design Token System
+
+> **The Illusionist's Toolkit:** Following industry best practices from Designership.com's 4-Point Grid System and Nielsen's Usability Heuristics.
+
+### 4-Point Grid Spacing System
+
+All spacing in Re:MirAI follows a **strict 4-point grid system** where every measurement is divisible by 4px. This ensures pixel-perfect alignment across all devices and maintains visual consistency.
+
+```css
+:root {
+  /* === 4-POINT GRID SPACING SYSTEM === */
+  /* Base unit: 4px - All spacing MUST be divisible by 4 */
+  --space-1: 0.25rem; /* 4px - micro spacing */
+  --space-2: 0.5rem;  /* 8px - tight spacing */
+  --space-3: 0.75rem; /* 12px - small spacing */
+  --space-4: 1rem;    /* 16px - base spacing */
+  --space-5: 1.25rem; /* 20px - medium spacing */
+  --space-6: 1.5rem;  /* 24px - large spacing */
+  --space-8: 2rem;    /* 32px - section spacing */
+  --space-10: 2.5rem; /* 40px - container spacing */
+  --space-12: 3rem;   /* 48px - page spacing */
+  --space-16: 4rem;   /* 64px - hero spacing */
+  --space-20: 5rem;   /* 80px - large sections */
+  --space-24: 6rem;   /* 96px - massive spacing */
+}
+```
+
+### Semantic Spacing Tokens
+
+These tokens create a **clear hierarchy** and ensure consistency across all components:
+
+```css
+/* === SEMANTIC SPACING TOKENS === */
+/* Container Hierarchy (Large → Small) */
+--container-padding: var(--space-6);    /* 24px - main containers */
+--section-spacing: var(--space-12);     /* 48px - between major sections */
+--subsection-spacing: var(--space-8);   /* 32px - between subsections */
+--card-padding: var(--space-6);         /* 24px - card internal padding */
+--card-spacing: var(--space-4);         /* 16px - between cards */
+--element-spacing: var(--space-4);      /* 16px - between elements */
+--text-spacing: var(--space-2);         /* 8px - text elements */
+--tight-spacing: var(--space-2);        /* 8px - closely related items */
+--micro-spacing: var(--space-1);        /* 4px - micro adjustments */
+```
+
+### Usage Guidelines
+
+1. **Always use tokens**: Never hardcode spacing values
+2. **Respect hierarchy**: Larger containers get larger spacing
+3. **Consistent application**: Use the same token for similar relationships
+4. **4px rule**: All custom spacing must be divisible by 4
+
+---
+
 ## Color System
 
 ### Primary Palette
 
 ```css
 :root {
-  /* Dark Mystical Backgrounds */
-  --color-bg-primary: #0a0e27;    /* Deep cosmic blue */
-  --color-bg-secondary: #1a1f3a;  /* Elevated surface */
-  --color-bg-accent: #2d1b4e;     /* Purple accent background */
+  /* === COLOR SYSTEM === */
+  --color-bg-primary: #0a0e27;
+  --color-bg-secondary: #1a1f3a;
+  --color-bg-accent: #2d1b4e;
+  --color-text-primary: #ffffff;
+  --color-text-secondary: #a0aec0;
+  --color-text-muted: rgba(160, 174, 192, 0.8);
+  --color-accent: #6d28d9;
+  --color-accent-hover: #7c3aed;
+  --color-border: rgba(79, 70, 229, 0.5);
+  --color-border-light: rgba(79, 70, 229, 0.2);
   
-  /* Text Hierarchy */
-  --color-text-primary: #ffffff;     /* Primary text */
-  --color-text-secondary: #a0aec0;   /* Secondary text */
-  --color-text-muted: rgba(160, 174, 192, 0.8); /* Muted text */
-  
-  /* Interactive Elements */
-  --color-accent: #6d28d9;        /* Primary purple */
-  --color-accent-hover: #7c3aed;  /* Hover state */
-  --color-border: rgba(79, 70, 229, 0.5);      /* Subtle borders */
-  --color-border-light: rgba(79, 70, 229, 0.2); /* Light borders */
+  /* State Colors (Nielsen Heuristic: System Status Visibility) */
+  --color-success: #10b981;
+  --color-warning: #f59e0b;
+  --color-error: #ef4444;
+  --color-info: #06b6d4;
+  --color-loading: #8b5cf6;
 }
 ```
 
-### Persona Rarity System
+---
+
+## Nielsen's 10 Usability Heuristics Implementation
+
+> **The Illusionist's Standards:** Every UI element follows Nielsen's proven usability principles for maximum user satisfaction.
+
+### 1. **Visibility of System Status**
+- **Loading States**: Skeleton UI instead of spinners
+- **Progress Indicators**: Clear percentage and milestone markers
+- **System Feedback**: `aria-live` regions for screen readers
+- **Status Colors**: Consistent color coding for different states
+
+```css
+/* Implementation */
+role="status" aria-live="polite"  /* Loading states */
+:loading="true" :aria-busy="true" /* Button states */
+```
+
+### 2. **Match Between System and Real World**
+- **Familiar Language**: "Energy Points" instead of technical terms
+- **Real-World Metaphors**: "Ritual", "Summoning", "Persona Room"
+- **Progressive Disclosure**: Information revealed in natural order
+
+### 3. **User Control and Freedom**
+- **Clear Navigation**: Breadcrumbs on every page
+- **Undo Actions**: "Try again" buttons for errors
+- **Escape Routes**: Always provide back/cancel options
+
+### 4. **Consistency and Standards**
+- **4-Point Grid**: All spacing follows the same system
+- **Design Tokens**: Consistent visual language
+- **Component Library**: Reusable, standardized components
+
+### 5. **Error Prevention**
+- **Input Validation**: Real-time feedback on forms
+- **Confirmation Dialogs**: For destructive actions
+- **Clear Labels**: Descriptive button text and aria-labels
+
+### 6. **Recognition Rather Than Recall**
+- **Visual Cues**: Icons paired with text
+- **Status Indicators**: Clear visual states
+- **Contextual Information**: Always show where users are
+
+### 7. **Flexibility and Efficiency of Use**
+- **Keyboard Navigation**: Full keyboard accessibility
+- **Multiple Paths**: Different ways to reach same goals
+- **Responsive Design**: Works on all device sizes
+
+### 8. **Aesthetic and Minimalist Design**
+- **Information Hierarchy**: Clear visual priorities
+- **Purposeful Elements**: Every element serves a function
+- **White Space**: Breathing room between elements
+
+### 9. **Help Users Recognize, Diagnose, and Recover from Errors**
+- **Specific Error Messages**: Clear problem description
+- **Recovery Actions**: "Try again" functionality
+- **Error Context**: Show exactly where the error occurred
+
+### 10. **Help and Documentation**
+- **Contextual Help**: `aria-describedby` attributes
+- **Screen Reader Support**: Comprehensive ARIA labels
+- **Progressive Disclosure**: Information revealed as needed
+
+---
+
+## Persona Rarity System
 Inspired by gacha games, each persona rarity has its distinct color language:
 
 - **N (Normal)**: `#9ca3af` - Neutral gray, common and approachable

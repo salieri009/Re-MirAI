@@ -165,10 +165,12 @@
               <span class="text-gradient block">Start Knowing.</span>
             </h2>
           </div>
-          <p class="text-xl md:text-2xl text-secondary max-w-3xl mx-auto leading-relaxed">
-            While personality tests tell you what <em>you</em> think about yourself, 
-            <strong class="text-white">Re:MirAI reveals how your friends actually see you.</strong>
-          </p>
+          <div style="display: flex; justify-content: center; width: 100%;">
+            <p class="text-xl md:text-2xl text-secondary max-w-lg text-center leading-relaxed" style="text-align: center; margin: 0 auto;">
+              While personality tests tell you what <em>you</em> think about yourself, 
+              <strong class="text-white">Re:MirAI reveals how your friends actually see you.</strong>
+            </p>
+          </div>
           
           <!-- Trust Features (Nielsen: Consistency and Standards) -->
           <div class="flex flex-wrap justify-center items-center text-sm text-muted" style="gap: var(--subsection-spacing); margin-top: var(--subsection-spacing);">
@@ -443,10 +445,12 @@
               <div class="bg-gradient-to-r from-purple-500/10 to-pink-500/10 rounded-2xl border border-purple-500/30" style="padding: var(--subsection-spacing);">
                 <div class="text-center" style="display: flex; flex-direction: column; gap: var(--card-spacing);">
                   <h3 class="text-2xl font-semibold text-white">Perfect for Gen Z & Millennials</h3>
-                  <p class="text-lg text-secondary max-w-xl mx-auto" style="line-height: 1.6;">
-                    If you love personality tests, zodiac compatibility, or MBTI discussions, 
-                    you'll be <strong class="text-gradient">obsessed</strong> with Re:MirAI.
-                  </p>
+                  <div style="display: flex; justify-content: center; width: 100%;">
+                    <p class="text-lg text-secondary max-w-sm text-center" style="line-height: 1.6; text-align: center; margin: 0 auto;">
+                      If you love personality tests, zodiac compatibility, or MBTI discussions, 
+                      you'll be <strong class="text-gradient">obsessed</strong> with Re:MirAI.
+                    </p>
+                  </div>
                   
                   <!-- Viral Elements (Nielsen: Recognition rather than recall) -->
                   <div class="flex flex-wrap justify-center items-center" style="gap: var(--card-spacing);">

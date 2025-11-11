@@ -4,6 +4,15 @@
 
 Re:MirAI's user journey is structured as a mystical narrative, guiding users through the process of digital self-discovery and AI persona creation. Each page serves a specific purpose in this transformative experience.
 
+> **The Illusionist's Page Design:** Every page implements Nielsen's 10 Usability Heuristics, 4-Point Grid System, and WCAG 2.1 AA accessibility standards.
+
+### Universal Page Standards
+- **System Status Visibility**: LoadingSkeleton UI for all loading states
+- **User Control & Freedom**: Breadcrumb navigation, clear escape routes
+- **Consistency**: 4-point grid spacing, design token usage across all pages
+- **Error Prevention**: Input validation, confirmation dialogs
+- **Accessibility**: Full keyboard navigation, screen reader support, ARIA labels
+
 ### Information Architecture
 ```
 Landing Page → Authentication → Dashboard → Ritual Creation → Summoning → Persona Room → Chat
@@ -20,11 +29,12 @@ Landing Page → Authentication → Dashboard → Ritual Creation → Summoning 
 
 The landing page serves as the mystical gateway to Re:MirAI, immediately immersing visitors in the otherworldly aesthetic while clearly communicating the value proposition.
 
-#### Visual Design
-- **Hero Section**: Massive title with animated gradient text
-- **Background**: Deep cosmic blue (`#0a0e27`) with subtle particle effects
-- **Typography**: Large, bold display fonts that feel both futuristic and magical
-- **Call-to-Action**: "Begin the Ritual" - action-oriented, thematically appropriate
+#### Visual Design (Nielsen Heuristic Compliant)
+- **Hero Section**: 4-point grid applied, semantic spacing tokens
+- **Background**: Deep cosmic blue with `aria-hidden="true"` decorative elements
+- **Typography**: WCAG AA contrast ratios, scalable font sizes
+- **Call-to-Action**: "Start Discovery" - actionable verbs with `aria-describedby`
+- **Accessibility**: Full keyboard navigation, screen reader descriptions
 
 #### Content Strategy
 1. **Hook**: "The mirror reflects your soul. What image do you cast in others?"

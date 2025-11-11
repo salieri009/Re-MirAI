@@ -314,12 +314,6 @@ const goToRoom = () => {
   }
 }
 
-const _goToChat = () => {
-  if (persona.value) {
-    router.push(`/chat/${persona.value.id}`)
-  }
-}
-
 const handleLogout = () => {
   authStore.logout()
   router.push('/login')

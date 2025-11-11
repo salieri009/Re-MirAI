@@ -26,15 +26,13 @@
 
 <script setup lang="ts">
 import { ref, onMounted } from 'vue'
-import { useRoute, useRouter } from 'vue-router'
+import { useRouter } from 'vue-router'
 import Button from '@/components/common/Button.vue'
 import PersonaCard from '@/components/common/PersonaCard.vue'
 import type { Persona } from '@/mocks/data'
 
-const route = useRoute()
 const router = useRouter()
 
-const _ritualId = route.params.ritualId as string
 const persona = ref<Persona | null>(null)
 
 onMounted(async () => {
