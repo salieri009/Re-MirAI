@@ -60,4 +60,3 @@ coverage/
 # AWS
 .aws-sam/
 .chalice/
-
