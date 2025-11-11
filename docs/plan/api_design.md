@@ -1,143 +1,184 @@
-# API Design Specification
+# API Design Specification (Subculture Ver.)
 
-This document provides a detailed specification for the REST API of the Persona AI project.
+This document provides a detailed specification for the REST API of the Re:MirAI project, aligned with the Experience Design Document.
 
 ## 1. General Principles
 
 *   All API endpoints are prefixed with `/api/v1`.
-*   Authentication is handled via JWT Bearer tokens in the `Authorization` header for protected endpoints.
+*   Authentication is handled via JWT Bearer tokens, obtained through social login.
 *   Request and response bodies are in JSON format.
-*   Standard HTTP status codes are used (e.g., `200 OK`, `201 Created`, `400 Bad Request`, `401 Unauthorized`, `404 Not Found`).
+*   Standard HTTP status codes are used. Asynchronous operations will use `202 Accepted`.
+*   Endpoint naming conventions reflect the project's lore (e.g., "Ritual," "Summon").
 
 ## 2. Endpoints
 
 ### 2.1. Authentication (`/auth`)
 
-*   **`POST /auth/register`**
-    *   **Description:** Registers a new user.
+*   **`POST /auth/google-login`**
+    *   **Description:** Authenticates a user via their Google ID token. Creates a new user on first login or logs in an existing user.
     *   **Request Body:**
         ```json
         {
-          "username": "string",
-          "email": "string (email format)",
-          "password": "string (min 8 chars)"
-        }
-        ```
-    *   **Response (201 Created):**
-        ```json
-        {
-          "user_id": "uuid",
-          "token": "string (jwt)"
-        }
-        ```
-
-*   **`POST /auth/login`**
-    *   **Description:** Logs in an existing user.
-    *   **Request Body:**
-        ```json
-        {
-          "email": "string",
-          "password": "string"
+          "token": "string (Google ID Token)"
         }
         ```
     *   **Response (200 OK):**
         ```json
         {
-          "user_id": "uuid",
-          "token": "string (jwt)"
+          "token": "string (Our app's JWT)",
+          "user": {
+            "id": "uuid",
+            "displayName": "string",
+            "email": "string",
+            "profileImageUrl": "string",
+            "memoryCrystals": 100
+          }
         }
         ```
 
-### 2.2. Users (`/users`)
+### 2.2. User Profile (`/users`)
 
 *   **`GET /users/me`**
     *   **Description:** Retrieves the profile of the currently authenticated user.
     *   **Authentication:** Required.
-    *   **Response (200 OK):**
-        ```json
-        {
-          "id": "uuid",
-          "username": "string",
-          "email": "string"
-        }
-        ```
+    *   **Response (200 OK):** Returns the same user object as the login response.
 
-### 2.3. Surveys (`/surveys`)
+### 2.3. The Ritual (Survey) (`/ritual`)
 
-*   **`POST /surveys`**
-    *   **Description:** Generates a new, unique survey for the authenticated user.
+*   **`POST /ritual`**
+    *   **Description:** Creates a new "Summoning Ritual" (survey) for the user.
     *   **Authentication:** Required.
     *   **Response (201 Created):**
         ```json
         {
-          "survey_id": "uuid",
-          "survey_url": "string (full URL)"
+          "ritualId": "uuid",
+          "invitationUrl": "string (Full URL for friends)"
         }
         ```
 
-*   **`GET /surveys/{survey_id}`**
-    *   **Description:** Fetches the questions for a specific survey. This is a public endpoint for friends to access.
+*   **`GET /ritual/me`**
+    *   **Description:** Gets the status of the user's current active ritual.
+    *   **Authentication:** Required.
     *   **Response (200 OK):**
         ```json
         {
-          "survey_id": "uuid",
+          "ritualId": "uuid",
+          "invitationUrl": "string",
+          "responsesCount": 2,
+          "minimumResponses": 3,
+          "isSummonable": false
+        }
+        ```
+
+*   **`GET /ritual/{ritualId}`** (Public)
+    *   **Description:** Fetches the questions for a specific ritual.
+    *   **Response (200 OK):**
+        ```json
+        {
+          "ritualId": "uuid",
+          "creatorName": "string",
           "questions": [
-            { "id": "q1", "text": "...", "type": "multiple-choice", "options": [...] },
-            { "id": "q2", "text": "...", "type": "text" }
+            { "id": "q1", "text": "...", "type": "multiple-choice", "options": [...] }
           ]
         }
         ```
 
-*   **`POST /surveys/{survey_id}/responses`**
-    *   **Description:** Submits a set of answers for a survey.
+*   **`POST /ritual/{ritualId}/responses`** (Public)
+    *   **Description:** Submits a "perception" (answers) for a ritual.
     *   **Request Body:**
         ```json
         {
-          "answers": {
-            "q1": "option_a",
-            "q2": "Some text answer."
-          }
+          "answers": { "q1": "option_a", "q2": "Some text." }
         }
         ```
     *   **Response (201 Created):**
         ```json
+        { "message": "Your perception has been sent to the vessel." }
+        ```
+
+### 2.4. Persona Summoning & Interaction (`/personas`)
+
+*   **`POST /personas/summon`**
+    *   **Description:** Begins the summoning process for the user's Persona. This triggers the asynchronous backend process.
+    *   **Authentication:** Required.
+    *   **Request Body:**
+        ```json
         {
-          "status": "success",
-          "message": "Response submitted successfully."
+          "mode": "Fated" | "Alchemic",
+          "archetypeFilter": "string (Required if mode is 'Alchemic', e.g., 'Yandere')"
+        }
+        ```
+    *   **Response (202 Accepted):**
+        ```json
+        {
+          "status": "summoning_initiated",
+          "message": "The summoning has begun. Check status periodically."
         }
         ```
 
-### 2.4. Personas (`/personas`)
-
 *   **`GET /personas/me`**
-    *   **Description:** Retrieves the authenticated user's generated AI persona. If the persona has not been generated yet, it triggers the synthesis process. The initial response may indicate that the persona is being generated.
+    *   **Description:** Retrieves the user's primary Persona. Used for polling the status after summoning and for fetching the main Persona data.
     *   **Authentication:** Required.
     *   **Response (200 OK):**
         ```json
+        // When summoning is in progress
+        { "status": "summoning" }
+
+        // When ready
         {
-          "persona_id": "uuid",
-          "status": "ready | generating",
-          "persona_prompt": "string (The full prompt for the LLM)",
-          "illustration_url": "string (URL)",
-          "chat_history": [
-            { "sender": "user", "message": "Hello" },
-            { "sender": "ai", "message": "Hi there!" }
-          ]
+          "id": "uuid",
+          "name": "Rei",
+          "status": "ready",
+          "archetype": "Yandere",
+          "rarity": "SSR",
+          "title": "Yandere hiding her kindness",
+          "illustrationUrl": "string (URL)",
+          "stats": {
+            "Charisma": 80,
+            "Intellect": 75,
+            "Kindness": 95,
+            "Instability": 90,
+            "Spirit": 60
+          },
+          "bondLevel": 1,
+          "bondProgress": 0.0
         }
         ```
 
 *   **`POST /personas/me/chat`**
-    *   **Description:** Sends a message to the user's persona and gets a response.
+    *   **Description:** Sends a message to the user's Persona and gets a response.
     *   **Authentication:** Required.
-    *   **Request Body:**
-        ```json
-        {
-          "message": "string"
-        }
-        ```
+    *   **Request Body:** `{"message": "string"}`
+    *   **Response (200 OK):** `{"reply": "string (AI's reply)"}`
+
+*   **`GET /personas/me/chat`**
+    *   **Description:** Retrieves the chat history for the user's Persona.
+    *   **Authentication:** Required.
+    *   **Query Params:** `?limit=20&offset=0` for pagination.
     *   **Response (200 OK):**
         ```json
         {
-          "response": "string (AI's reply)"
+          "history": [
+            { "sender": "user", "message": "Hello", "timestamp": "iso_string" },
+            { "sender": "ai", "message": "Hi there!", "timestamp": "iso_string" }
+          ]
+        }
+        ```
+
+### 2.5. Social & Showcase (`/social`)
+
+*   **`GET /social/profile/{userId}`** (Public)
+    *   **Description:** Gets the public-facing profile card data for a specific user's Persona.
+    *   **Response (200 OK):** A subset of the `GET /personas/me` response, containing only public information (name, archetype, rarity, illustration, stats).
+
+*   **`GET /social/compatibility`**
+    *   **Description:** Generates a compatibility report between the user's Persona and another user's Persona.
+    *   **Authentication:** Required.
+    *   **Query Params:** `?otherUserId=uuid`
+    *   **Response (200 OK):**
+        ```json
+        {
+          "chemistryScore": 95,
+          "analysis": "A classic case of 'energetic person melts the ice queen.'"
         }
         ```
