@@ -161,4 +161,6 @@ This project is licensed under the MIT License - see the LICENSE file for detail
 
 Made with care by the Re:MirAI Team
 
-[Website](#) | [Contact](mailto:contact@remirai.com) | [Twitter](#)
+[Website](#null) | [Contact](mailto:kordalek@naver.com) | [Twitter](#null) | [YouTube](https://youtu.be/V-PbPYGfWf8)
+
+###special thanks to Blonix 
