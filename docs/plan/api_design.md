@@ -56,6 +56,17 @@ This document provides a detailed specification for the REST API of the Re:MirAI
         }
         ```
 
+*   **`POST /ritual/practice`**
+    *   **Description:** (NEW) Initiates a practice summon based on the user's self-perception.
+    *   **Authentication:** Required.
+    *   **Request Body:**
+        ```json
+        {
+          "answers": { "q1": "option_a", "q2": "Some text." }
+        }
+        ```
+    *   **Response (200 OK):** Returns a low-rarity "Proto-Persona" object, similar to the `GET /personas/me` response but with a status of `practice`.
+
 *   **`GET /ritual/me`**
     *   **Description:** Gets the status of the user's current active ritual.
     *   **Authentication:** Required.
@@ -78,7 +89,7 @@ This document provides a detailed specification for the REST API of the Re:MirAI
           "ritualId": "uuid",
           "creatorName": "string",
           "questions": [
-            { "id": "q1", "text": "...", "type": "multiple-choice", "options": [...] }
+            { "id": "q1", "text": "...", "type": "pick-a-card", "options": [{ "id": "card1", "text": "...", "imageUrl": "..." }] }
           ]
         }
         ```
@@ -88,12 +99,15 @@ This document provides a detailed specification for the REST API of the Re:MirAI
     *   **Request Body:**
         ```json
         {
-          "answers": { "q1": "option_a", "q2": "Some text." }
+          "answers": { "q1": "card1_id", "q2": "card3_id" }
         }
         ```
     *   **Response (201 Created):**
         ```json
-        { "message": "Your perception has been sent to the vessel." }
+        {
+          "message": "Your perception has been sent to the vessel.",
+          "resultUrl": "string (URL to the Result Teaser Page)"
+        }
         ```
 
 ### 2.4. Persona Summoning & Interaction (`/personas`)
@@ -165,7 +179,38 @@ This document provides a detailed specification for the REST API of the Re:MirAI
         }
         ```
 
-### 2.5. Social & Showcase (`/social`)
+### 2.5. Quests (`/quests`)
+
+*   **`GET /quests/me`**
+    *   **Description:** (NEW) Retrieves the list of available quests for the user.
+    *   **Authentication:** Required.
+    *   **Response (200 OK):**
+        ```json
+        {
+          "quests": [
+            {
+              "id": "quest1",
+              "title": "Break the Ice",
+              "description": "Say 'hello' to your Persona.",
+              "status": "not-started" | "completed",
+              "reward": { "type": "memory_crystals", "amount": 10 }
+            }
+          ]
+        }
+        ```
+
+*   **`POST /quests/{questId}/complete`**
+    *   **Description:** (NEW) Marks a quest as complete. The server should validate if the completion condition was met.
+    *   **Authentication:** Required.
+    *   **Response (200 OK):**
+        ```json
+        {
+          "message": "Quest completed!",
+          "reward": { "type": "memory_crystals", "amount": 10 }
+        }
+        ```
+
+### 2.6. Social & Showcase (`/social`)
 
 *   **`GET /social/profile/{userId}`** (Public)
     *   **Description:** Gets the public-facing profile card data for a specific user's Persona.
