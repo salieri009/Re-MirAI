@@ -139,7 +139,7 @@ export const ritualService = {
     return response.data
   },
 
-  async practiceSummon(answers: Record<string, string>): Promise<Persona> {
+  async practiceSummon(_answers: Record<string, string>): Promise<Persona> {
     if (USE_MOCK_DATA) {
       await new Promise((resolve) => setTimeout(resolve, 1000))
       return {
@@ -157,7 +157,7 @@ export const ritualService = {
 }
 
 export const personaService = {
-  async summonPersona(mode: 'Fated' | 'Alchemic', archetypeFilter?: string): Promise<{ status: string; message: string }> {
+  async summonPersona(_mode: 'Fated' | 'Alchemic', _archetypeFilter?: string): Promise<{ status: string; message: string }> {
     if (USE_MOCK_DATA) {
       await new Promise((resolve) => setTimeout(resolve, 500))
       return {
@@ -189,7 +189,7 @@ export const personaService = {
     throw new Error('Backend not ready')
   },
 
-  async sendChatMessage(message: string): Promise<{ reply: string }> {
+  async sendChatMessage(_message: string): Promise<{ reply: string }> {
     if (USE_MOCK_DATA) {
       await new Promise((resolve) => setTimeout(resolve, 800))
       const replies = [
@@ -257,7 +257,7 @@ export const questService = {
 }
 
 export const socialService = {
-  async getPublicProfile(userId: string): Promise<Persona> {
+  async getPublicProfile(_userId: string): Promise<Persona> {
     if (USE_MOCK_DATA) {
       await new Promise((resolve) => setTimeout(resolve, 300))
       return mockData.mockPersona
@@ -269,7 +269,7 @@ export const socialService = {
     throw new Error('Backend not ready')
   },
 
-  async getCompatibility(otherUserId: string): Promise<{ chemistryScore: number; analysis: string }> {
+  async getCompatibility(_otherUserId: string): Promise<{ chemistryScore: number; analysis: string }> {
     if (USE_MOCK_DATA) {
       await new Promise((resolve) => setTimeout(resolve, 500))
       return {

@@ -38,26 +38,28 @@ const copied = ref(false)
 const platforms = [
   {
     name: 'Instagram',
-    share: (url: string, text: string) => {
+    share: (url: string) => {
       // Instagram doesn't support direct sharing, so copy to clipboard
       copyToClipboard(url)
     },
   },
   {
     name: 'Twitter',
-    share: (url: string, text: string) => {
-      window.open(`https://twitter.com/intent/tweet?text=${encodeURIComponent(text)}&url=${encodeURIComponent(url)}`, '_blank')
+    share: (url: string, text?: string) => {
+      const shareText = text || 'Check this out!'
+      window.open(`https://twitter.com/intent/tweet?text=${encodeURIComponent(shareText)}&url=${encodeURIComponent(url)}`, '_blank')
     },
   },
   {
     name: 'WhatsApp',
-    share: (url: string, text: string) => {
-      window.open(`https://wa.me/?text=${encodeURIComponent(text + ' ' + url)}`, '_blank')
+    share: (url: string, text?: string) => {
+      const shareText = text || 'Check this out!'
+      window.open(`https://wa.me/?text=${encodeURIComponent(shareText + ' ' + url)}`, '_blank')
     },
   },
 ]
 
-const shareToPlatform = (platform: { share: (url: string, text: string) => void }) => {
+const shareToPlatform = (platform: { share: (url: string, text?: string) => void }) => {
   platform.share(props.url, props.text)
 }
 
@@ -72,7 +74,7 @@ const copyLink = async () => {
 const copyToClipboard = async (text: string) => {
   try {
     await navigator.clipboard.writeText(text)
-  } catch (err) {
+  } catch {
     // Fallback for older browsers
     const textArea = document.createElement('textarea')
     textArea.value = text

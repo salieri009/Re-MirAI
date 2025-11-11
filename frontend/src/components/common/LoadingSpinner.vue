@@ -26,6 +26,7 @@
 </template>
 
 <script setup lang="ts">
+import { computed } from 'vue'
 interface Props {
   size?: 'sm' | 'md' | 'lg'
   text?: string
@@ -36,15 +37,15 @@ const props = withDefaults(defineProps<Props>(), {
   text: '',
 })
 
-const sizeClass = {
+const sizeClass = computed(() => ({
   sm: 'p-4',
   md: 'p-8',
   lg: 'p-16',
-}
+}[props.size]))
 
-const spinnerSizeClass = {
+const spinnerSizeClass = computed(() => ({
   sm: 'h-4 w-4',
   md: 'h-8 w-8',
   lg: 'h-12 w-12',
-}
+}[props.size]))
 </script>
