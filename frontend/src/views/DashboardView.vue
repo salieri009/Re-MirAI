@@ -1,42 +1,79 @@
 <template>
-  <div class="container-page">
-    <!-- Loading State with Skeleton UI -->
-    <div v-if="isLoading" class="space-y-6">
+  <div class="min-h-screen bg-akashic" style="padding: var(--container-padding);">
+    <!-- Loading State with Skeleton UI (Nielsen: System Status Visibility) -->
+    <div v-if="isLoading" class="space-y-8" role="status" aria-live="polite" aria-label="Loading dashboard">
       <LoadingSkeleton type="header" />
       <LoadingSkeleton type="persona" />
       <LoadingSkeleton type="progress" />
+      <div class="sr-only">Loading your dashboard...</div>
     </div>
 
-    <!-- Error State -->
-    <div v-else-if="error" class="card border-red-500/50 bg-red-500/10">
-      <div class="flex items-center space-x-3">
-        <div class="w-6 h-6 text-red-400">⚠️</div>
-        <p class="text-red-400">{{ error }}</p>
+    <!-- Error State (Nielsen: Error Recovery) -->
+    <div v-else-if="error" class="card border-red-500/50 bg-red-500/10" role="alert" aria-live="assertive">
+      <div class="flex items-center" style="gap: var(--element-spacing);">
+        <div class="flex-shrink-0 text-red-400 text-xl" role="img" aria-label="Error">⚠️</div>
+        <div class="flex-1">
+          <h3 class="font-semibold text-red-300 mb-1">Something went wrong</h3>
+          <p class="text-red-400 text-sm">{{ error }}</p>
+          <button 
+            @click="handleRetry" 
+            class="mt-3 text-sm text-red-300 hover:text-red-200 underline focus:outline-none focus:ring-2 focus:ring-red-500"
+          >
+            Try again
+          </button>
+        </div>
       </div>
     </div>
 
-    <!-- Main Dashboard Content -->
-    <div v-else class="space-y-6">
-      <!-- User Header Section -->
-      <header class="card bg-gradient-to-r from-indigo-500/10 to-purple-500/10 border-indigo-500/20">
+    <!-- Main Dashboard Content (4-Point Grid Applied) -->
+    <div v-else style="display: flex; flex-direction: column; gap: var(--section-spacing);">
+      <!-- User Header Section (Nielsen: User Control & Freedom) -->
+      <header 
+        class="card bg-gradient-to-r from-indigo-500/10 to-purple-500/10 border-indigo-500/20" 
+        style="padding: var(--card-padding);"
+        role="banner"
+      >
         <div class="flex items-center justify-between">
-          <div class="flex items-center space-x-4">
-            <div class="w-12 h-12 bg-gradient-to-br from-indigo-500 to-purple-600 rounded-full flex items-center justify-center text-white font-bold text-lg">
+          <div class="flex items-center" style="gap: var(--element-spacing);">
+            <div 
+              class="w-12 h-12 bg-gradient-to-br from-indigo-500 to-purple-600 rounded-full flex items-center justify-center text-white font-bold text-lg" 
+              role="img" 
+              :aria-label="`Avatar for ${user?.displayName}`"
+            >
               {{ userInitials }}
             </div>
             <div>
-              <h1 class="text-xl font-semibold text-white">Welcome back, {{ user?.displayName }}</h1>
-              <div class="flex items-center space-x-2 mt-1">
+              <h1 class="text-xl font-semibold text-white" style="margin-bottom: var(--micro-spacing);">
+                Welcome back, {{ user?.displayName }}
+              </h1>
+              <div class="flex items-center" style="gap: var(--text-spacing);">
                 <span class="text-sm text-secondary">Energy Points:</span>
-                <div class="flex items-center space-x-1">
-                  <span class="text-yellow-400">⚡</span>
-                  <span class="font-medium text-yellow-400">{{ user?.memoryCrystals || 0 }}</span>
+                <div class="flex items-center" style="gap: var(--micro-spacing);">
+                  <span class="text-yellow-400" role="img" aria-label="Energy">⚡</span>
+                  <span class="font-medium text-yellow-400" aria-label="Current energy points">
+                    {{ user?.memoryCrystals || 0 }}
+                  </span>
                 </div>
               </div>
             </div>
           </div>
-          <Button variant="ghost" size="sm" @click="handleLogout" class="text-muted hover:text-white">
-            <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          
+          <!-- Logout Button (Nielsen: User Control) -->
+          <Button 
+            variant="ghost" 
+            size="sm" 
+            @click="handleLogout" 
+            class="text-muted hover:text-white"
+            aria-label="Sign out of your account"
+          >
+            <svg 
+              class="w-4 h-4" 
+              style="margin-right: var(--tight-spacing);" 
+              fill="none" 
+              stroke="currentColor" 
+              viewBox="0 0 24 24"
+              aria-hidden="true"
+            >
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1"/>
             </svg>
             Logout
@@ -44,10 +81,20 @@
         </div>
       </header>
 
-      <!-- Persona Section -->
-      <section class="grid lg:grid-cols-2 gap-6">
+      <!-- Persona Section (Nielsen: Aesthetic & Minimalist Design) -->
+      <section 
+        class="grid lg:grid-cols-2" 
+        style="gap: var(--card-spacing);"
+        role="main"
+        aria-label="Persona management section"
+      >
         <!-- Persona Status Card -->
-        <div class="card hover:shadow-xl transition-shadow duration-300">
+        <div 
+          class="card hover:shadow-xl transition-shadow duration-300" 
+          style="padding: var(--card-padding);"
+          role="region"
+          aria-label="Your AI Persona status"
+        >
           <!-- Summoning State -->
           <div v-if="personaStatus === 'summoning'" class="text-center space-y-6 py-8">
             <div class="w-20 h-20 mx-auto bg-gradient-to-br from-purple-500 to-pink-500 rounded-full flex items-center justify-center animate-pulse">
@@ -267,7 +314,7 @@ const goToRoom = () => {
   }
 }
 
-const goToChat = () => {
+const _goToChat = () => {
   if (persona.value) {
     router.push(`/chat/${persona.value.id}`)
   }
@@ -284,7 +331,7 @@ const copyRitualLink = async () => {
     try {
       await navigator.clipboard.writeText(url)
       // You could add a toast notification here
-    } catch (err) {
+    } catch {
       // Fallback for older browsers
       const textArea = document.createElement('textarea')
       textArea.value = url
@@ -293,6 +340,19 @@ const copyRitualLink = async () => {
       document.execCommand('copy')
       document.body.removeChild(textArea)
     }
+  }
+}
+
+// Nielsen Heuristic: Help users recover from errors
+const handleRetry = async () => {
+  try {
+    await Promise.all([
+      authStore.fetchUserProfile(),
+      personaStore.fetchPersona(),
+      ritualStore.fetchMyRitual(),
+    ])
+  } catch (error) {
+    console.error('Retry failed:', error)
   }
 }
 </script>

@@ -1,51 +1,100 @@
 <template>
   <div class="min-h-screen bg-akashic">
-    <!-- Hero Section -->
-    <section class="relative overflow-hidden min-h-screen flex items-center">
+    <!-- Hero Section (Nielsen: Aesthetic & Minimalist Design) -->
+    <section 
+      class="relative overflow-hidden min-h-screen flex items-center" 
+      role="main"
+      aria-label="Welcome to Re:MirAI"
+    >
       <!-- Background Visual Elements -->
       <div class="absolute inset-0 bg-gradient-to-br from-indigo-900/20 via-purple-900/20 to-pink-900/20"></div>
-      <div class="absolute top-20 left-10 w-32 h-32 bg-indigo-500/10 rounded-full blur-3xl animate-pulse"></div>
-      <div class="absolute bottom-20 right-10 w-48 h-48 bg-purple-500/10 rounded-full blur-3xl animate-pulse" style="animation-delay: 1s;"></div>
+      <div class="absolute top-20 left-10 w-32 h-32 bg-indigo-500/10 rounded-full blur-3xl animate-pulse" aria-hidden="true"></div>
+      <div class="absolute bottom-20 right-10 w-48 h-48 bg-purple-500/10 rounded-full blur-3xl animate-pulse" style="animation-delay: 1s;" aria-hidden="true"></div>
       
-      <div class="container-page relative z-10">
-        <div class="grid lg:grid-cols-2 gap-12 items-center">
-          <!-- Left Column: Content -->
-          <div class="space-y-8 text-center lg:text-left animate-fade-in">
+      <div class="container-page relative z-10" style="padding: var(--container-padding);">
+        <div class="grid lg:grid-cols-2 items-center" style="gap: var(--section-spacing);">
+          <!-- Left Column: Content (4-Point Grid Applied) -->
+          <div 
+            class="text-center lg:text-left animate-fade-in" 
+            style="display: flex; flex-direction: column; gap: var(--subsection-spacing);"
+          >
             <!-- Company Logo/Brand -->
             <div class="flex justify-center lg:justify-start">
-              <div class="text-2xl font-bold text-gradient">Re:MirAI</div>
+              <div class="text-2xl font-bold text-gradient" role="img" aria-label="Re:MirAI Logo">Re:MirAI</div>
             </div>
             
-            <!-- Main Headline (5-7 words as per UX Planet) -->
+            <!-- Main Headline (Nielsen: Match system and real world) -->
             <h1 class="text-4xl md:text-6xl lg:text-7xl font-bold text-white leading-tight">
               Discover Your
               <span class="text-gradient block shimmer-text">True Self</span>
             </h1>
             
-            <!-- Description (20 words max as per UX Planet) -->
-            <p class="text-xl md:text-2xl text-secondary max-w-lg mx-auto lg:mx-0">
+            <!-- Description (Nielsen: Help users understand) -->
+            <p 
+              class="text-xl md:text-2xl text-secondary max-w-lg mx-auto lg:mx-0"
+              role="doc-subtitle"
+            >
               AI Persona created from how your friends actually see you.
             </p>
             
-            <!-- Primary CTA (actionable verb as per UX Planet) -->
-            <div class="flex flex-col sm:flex-row gap-4 justify-center lg:justify-start">
-              <Button size="lg" class="text-lg px-8 py-4" @click="goToLogin">
+            <!-- Primary CTA (Nielsen: User Control & Freedom) -->
+            <div 
+              class="flex flex-col sm:flex-row justify-center lg:justify-start" 
+              style="gap: var(--element-spacing);"
+              role="group"
+              aria-label="Get started options"
+            >
+              <Button 
+                size="lg" 
+                class="text-lg" 
+                @click="goToLogin"
+                aria-describedby="start-description"
+              >
                 Start Discovery
               </Button>
-              <Button variant="ghost" size="lg" class="text-lg px-8 py-4" @click="scrollToHowItWorks">
+              <Button 
+                variant="ghost" 
+                size="lg" 
+                class="text-lg" 
+                @click="scrollToHowItWorks"
+                aria-describedby="how-it-works-description"
+              >
                 See How
               </Button>
             </div>
             
-            <!-- Social Proof -->
-            <div class="flex items-center justify-center lg:justify-start space-x-6 text-sm text-muted">
-              <div class="flex items-center space-x-2">
-                <div class="flex -space-x-2">
-                  <div class="w-8 h-8 bg-gradient-to-r from-pink-500 to-rose-500 rounded-full border-2 border-white"></div>
-                  <div class="w-8 h-8 bg-gradient-to-r from-purple-500 to-indigo-500 rounded-full border-2 border-white"></div>
-                  <div class="w-8 h-8 bg-gradient-to-r from-blue-500 to-cyan-500 rounded-full border-2 border-white"></div>
+            <!-- Screen Reader Descriptions -->
+            <div class="sr-only">
+              <div id="start-description">Begin creating your AI persona by signing up</div>
+              <div id="how-it-works-description">Learn about the process of creating your AI persona</div>
+            </div>
+            
+            <!-- Social Proof (Nielsen: Help users trust the system) -->
+            <div 
+              class="flex items-center justify-center lg:justify-start text-sm text-muted" 
+              style="gap: var(--card-spacing);"
+              role="group"
+              aria-label="Social proof"
+            >
+              <div class="flex items-center" style="gap: var(--text-spacing);">
+                <div class="flex" style="gap: calc(var(--micro-spacing) * -1);">
+                  <div 
+                    class="w-8 h-8 bg-gradient-to-r from-pink-500 to-rose-500 rounded-full border-2 border-white"
+                    role="img"
+                    aria-label="User avatar"
+                  ></div>
+                  <div 
+                    class="w-8 h-8 bg-gradient-to-r from-purple-500 to-indigo-500 rounded-full border-2 border-white"
+                    role="img"
+                    aria-label="User avatar"
+                  ></div>
+                  <div 
+                    class="w-8 h-8 bg-gradient-to-r from-blue-500 to-cyan-500 rounded-full border-2 border-white"
+                    role="img"
+                    aria-label="User avatar"
+                  ></div>
                 </div>
-                <span>1000+ Personas Created</span>
+                <span aria-label="1000 plus personas have been created">1000+ Personas Created</span>
               </div>
             </div>
           </div>
@@ -102,55 +151,105 @@
       </div>
     </section>
 
-    <!-- How It Works Section -->
-    <section id="how-it-works" class="py-24 bg-gradient-to-b from-transparent to-indigo-900/10">
-      <div class="container-page">
-        <div class="text-center space-y-8 mb-16">
-          <h2 class="text-4xl md:text-5xl font-bold text-gradient">How It Works</h2>
+    <!-- How It Works Section (Nielsen: Help users understand) -->
+    <section 
+      id="how-it-works" 
+      class="bg-gradient-to-b from-transparent to-indigo-900/10" 
+      style="padding: var(--section-spacing) 0;"
+      role="region"
+      aria-labelledby="how-it-works-heading"
+    >
+      <div class="container-page" style="padding: 0 var(--container-padding);">
+        <!-- Section Header -->
+        <div 
+          class="text-center" 
+          style="display: flex; flex-direction: column; gap: var(--subsection-spacing); margin-bottom: var(--section-spacing);"
+        >
+          <h2 id="how-it-works-heading" class="text-4xl md:text-5xl font-bold text-gradient">
+            How It Works
+          </h2>
           <p class="text-xl text-secondary max-w-2xl mx-auto">
             Three simple steps to discover your authentic self through AI
           </p>
         </div>
         
-        <div class="grid md:grid-cols-3 gap-8 relative">
+        <!-- Process Steps -->
+        <div 
+          class="grid md:grid-cols-3 relative" 
+          style="gap: var(--subsection-spacing);"
+          role="list"
+          aria-label="Process steps"
+        >
           <!-- Step Connectors -->
           <div class="hidden md:block absolute top-1/2 left-1/3 w-1/3 h-0.5 bg-gradient-to-r from-indigo-500/50 to-purple-500/50 transform -translate-y-1/2 z-0"></div>
           <div class="hidden md:block absolute top-1/2 right-1/3 w-1/3 h-0.5 bg-gradient-to-r from-purple-500/50 to-pink-500/50 transform -translate-y-1/2 z-0"></div>
           
-          <!-- Step 1 -->
-          <div class="card text-center space-y-6 relative z-10 hover:scale-105 transition-transform duration-300">
-            <div class="w-16 h-16 mx-auto bg-gradient-to-br from-indigo-500 to-purple-600 rounded-full flex items-center justify-center text-2xl font-bold text-white shadow-lg">
+          <!-- Step 1 (Nielsen: Recognition rather than recall) -->
+          <div 
+            class="card text-center relative z-10 hover:scale-105 transition-transform duration-300" 
+            style="display: flex; flex-direction: column; gap: var(--card-spacing); padding: var(--card-padding);"
+            role="listitem"
+            tabindex="0"
+          >
+            <div 
+              class="w-16 h-16 mx-auto bg-gradient-to-br from-indigo-500 to-purple-600 rounded-full flex items-center justify-center text-2xl font-bold text-white shadow-lg"
+              role="img"
+              aria-label="Step 1"
+            >
               1
             </div>
-            <div class="text-4xl mb-4">🔮</div>
+            <div class="text-4xl" role="img" aria-label="Crystal ball">🔮</div>
             <h3 class="text-xl font-bold text-white">Create Your Ritual</h3>
             <p class="text-secondary">Set up a personalized survey to gather insights from your friends</p>
           </div>
           
           <!-- Step 2 -->
-          <div class="card text-center space-y-6 relative z-10 hover:scale-105 transition-transform duration-300">
-            <div class="w-16 h-16 mx-auto bg-gradient-to-br from-purple-500 to-pink-600 rounded-full flex items-center justify-center text-2xl font-bold text-white shadow-lg">
+          <div 
+            class="card text-center relative z-10 hover:scale-105 transition-transform duration-300" 
+            style="display: flex; flex-direction: column; gap: var(--card-spacing); padding: var(--card-padding);"
+            role="listitem"
+            tabindex="0"
+          >
+            <div 
+              class="w-16 h-16 mx-auto bg-gradient-to-br from-purple-500 to-pink-600 rounded-full flex items-center justify-center text-2xl font-bold text-white shadow-lg"
+              role="img"
+              aria-label="Step 2"
+            >
               2
             </div>
-            <div class="text-4xl mb-4">💎</div>
+            <div class="text-4xl" role="img" aria-label="Diamond">💎</div>
             <h3 class="text-xl font-bold text-white">Collect Perceptions</h3>
             <p class="text-secondary">Your friends share how they truly see your personality</p>
           </div>
           
           <!-- Step 3 -->
-          <div class="card text-center space-y-6 relative z-10 hover:scale-105 transition-transform duration-300">
-            <div class="w-16 h-16 mx-auto bg-gradient-to-br from-pink-500 to-rose-600 rounded-full flex items-center justify-center text-2xl font-bold text-white shadow-lg">
+          <div 
+            class="card text-center relative z-10 hover:scale-105 transition-transform duration-300" 
+            style="display: flex; flex-direction: column; gap: var(--card-spacing); padding: var(--card-padding);"
+            role="listitem"
+            tabindex="0"
+          >
+            <div 
+              class="w-16 h-16 mx-auto bg-gradient-to-br from-pink-500 to-rose-600 rounded-full flex items-center justify-center text-2xl font-bold text-white shadow-lg"
+              role="img"
+              aria-label="Step 3"
+            >
               3
             </div>
-            <div class="text-4xl mb-4">✨</div>
+            <div class="text-4xl" role="img" aria-label="Sparkles">✨</div>
             <h3 class="text-xl font-bold text-white">Meet Your Persona</h3>
             <p class="text-secondary">Discover your AI companion, crafted from authentic relationships</p>
           </div>
         </div>
         
-        <!-- Bottom CTA -->
-        <div class="text-center mt-16">
-          <Button size="lg" class="text-lg px-10 py-4" @click="goToLogin">
+        <!-- Bottom CTA (Nielsen: Consistency across pages) -->
+        <div class="text-center" style="margin-top: var(--section-spacing);">
+          <Button 
+            size="lg" 
+            class="text-lg" 
+            @click="goToLogin"
+            aria-label="Start creating your AI persona journey"
+          >
             Start Your Journey
           </Button>
         </div>
