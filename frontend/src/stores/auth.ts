@@ -1,57 +1,80 @@
-import { defineStore } from 'pinia';
-import api from '@/services/api';
+import { defineStore } from 'pinia'
+import { authService, userService } from '@/services/api'
+import type { User } from '@/mocks/data'
 
-interface User {
-  id: string;
-  email: string;
-  name: string;
-  google_id?: string;
+// Safe localStorage access
+const getStoredToken = () => {
+  if (typeof window !== 'undefined') {
+    return localStorage.getItem('authToken') || ''
+  }
+  return ''
+}
+
+const setStoredToken = (token: string) => {
+  if (typeof window !== 'undefined') {
+    localStorage.setItem('authToken', token)
+  }
+}
+
+const removeStoredToken = () => {
+  if (typeof window !== 'undefined') {
+    localStorage.removeItem('authToken')
+  }
 }
 
 export const useAuthStore = defineStore('auth', {
   state: () => ({
     user: null as User | null,
-    token: localStorage.getItem('authToken') || '',
+    token: getStoredToken(),
     isLoading: false,
     error: null as string | null,
   }),
+
   getters: {
     isAuthenticated: (state) => !!state.token && !!state.user,
   },
+
   actions: {
-    async loginWithGoogle(googleToken: string) {
-      this.isLoading = true;
-      this.error = null;
+    async loginWithGoogle(googleToken?: string) {
+      this.isLoading = true
+      this.error = null
+
       try {
-        const response = await api.post('/auth/login', { token: googleToken });
-        this.token = response.data.token;
-        this.user = response.data.user;
-        localStorage.setItem('authToken', this.token);
+        // TODO: Replace with actual Google OAuth when ready
+        // For demo, we'll use a mock token
+        const mockToken = googleToken || 'demo-google-token-' + Date.now()
+        const response = await authService.googleLogin(mockToken)
+        
+        this.token = response.token
+        this.user = response.user
+        setStoredToken(this.token)
       } catch (error) {
-        const err = error as { response?: { data?: { message?: string } } };
-        this.error = err.response?.data?.message || 'Login failed';
-        throw error;
+        const err = error as { response?: { data?: { message?: string } } }
+        this.error = err.response?.data?.message || 'Login failed'
+        throw error
       } finally {
-        this.isLoading = false;
+        this.isLoading = false
       }
     },
+
     async fetchUserProfile() {
-      this.isLoading = true;
+      this.isLoading = true
       try {
-        const response = await api.get('/users/me');
-        this.user = response.data;
+        const user = await userService.getMe()
+        this.user = user
       } catch (error) {
-        const err = error as { response?: { data?: { message?: string } } };
-        this.error = err.response?.data?.message || 'Failed to fetch user';
-        throw error;
+        const err = error as { response?: { data?: { message?: string } } }
+        this.error = err.response?.data?.message || 'Failed to fetch user'
+        throw error
       } finally {
-        this.isLoading = false;
+        this.isLoading = false
       }
     },
+
     logout() {
-      this.user = null;
-      this.token = '';
-      localStorage.removeItem('authToken');
+      this.user = null
+      this.token = ''
+      removeStoredToken()
     },
   },
-});
+})

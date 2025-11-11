@@ -1,93 +1,118 @@
-import { defineStore } from 'pinia';
-import api from '@/services/api';
-
-interface Persona {
-  id: string;
-  name: string;
-  description: string;
-  image_url?: string;
-  status: 'generating' | 'ready' | 'failed';
-  created_at: string;
-}
-
-interface ChatMessage {
-  id: string;
-  message: string;
-  reply: string;
-  timestamp: string;
-}
+import { defineStore } from 'pinia'
+import { personaService } from '@/services/api'
+import type { Persona, ChatMessage } from '@/mocks/data'
 
 export const usePersonaStore = defineStore('persona', {
   state: () => ({
-    persona: null as Persona | null,
+    persona: null as Persona | { status: 'summoning' } | null,
     chatHistory: [] as ChatMessage[],
     isLoading: false,
+    isSummoning: false,
     error: null as string | null,
-    pollingInterval: null as number | null,
   }),
-  actions: {
-    async generatePersona() {
-      this.isLoading = true;
-      this.error = null;
-      try {
-        const response = await api.post('/personas/me');
-        this.persona = response.data;
-        if (this.persona?.status === 'generating') {
-          this.startPolling();
-        }
-      } catch (error) {
-        const err = error as { response?: { data?: { message?: string } } };
-        this.error = err.response?.data?.message || 'Failed to generate persona';
-        throw error;
-      } finally {
-        this.isLoading = false;
-      }
+
+  getters: {
+    isPersonaReady: (state) => {
+      return state.persona && 'status' in state.persona && state.persona.status === 'ready'
     },
-    async fetchPersona() {
-      try {
-        const response = await api.get('/personas/me');
-        this.persona = response.data;
-        if (this.persona?.status === 'ready') {
-          this.stopPolling();
-        }
-      } catch (error) {
-        const err = error as { response?: { data?: { message?: string } } };
-        this.error = err.response?.data?.message || 'Failed to fetch persona';
-      }
-    },
-    startPolling() {
-      this.pollingInterval = window.setInterval(() => {
-        this.fetchPersona();
-      }, 5000); // Poll every 5 seconds
-    },
-    stopPolling() {
-      if (this.pollingInterval) {
-        clearInterval(this.pollingInterval);
-        this.pollingInterval = null;
-      }
-    },
-    async sendChatMessage(message: string) {
-      this.isLoading = true;
-      try {
-        const response = await api.post('/personas/me/chat', { message });
-        const chatMessage: ChatMessage = {
-          id: Date.now().toString(),
-          message,
-          reply: response.data.reply,
-          timestamp: new Date().toISOString(),
-        };
-        this.chatHistory.push(chatMessage);
-        return response.data.reply;
-      } catch (error) {
-        const err = error as { response?: { data?: { message?: string } } };
-        this.error = err.response?.data?.message || 'Failed to send message';
-        throw error;
-      } finally {
-        this.isLoading = false;
-      }
-    },
-    clearChatHistory() {
-      this.chatHistory = [];
+    isPersonaSummoning: (state) => {
+      return state.persona && 'status' in state.persona && state.persona.status === 'summoning'
     },
   },
-});
+
+  actions: {
+    async fetchPersona() {
+      this.isLoading = true
+      this.error = null
+
+      try {
+        const persona = await personaService.getMyPersona()
+        this.persona = persona
+      } catch (error) {
+        const err = error as { response?: { data?: { message?: string } } }
+        this.error = err.response?.data?.message || 'Failed to fetch persona'
+        throw error
+      } finally {
+        this.isLoading = false
+      }
+    },
+
+    async summonPersona(mode: 'Fated' | 'Alchemic', archetypeFilter?: string) {
+      this.isSummoning = true
+      this.error = null
+
+      try {
+        await personaService.summonPersona(mode, archetypeFilter)
+        // Start polling for status
+        this.startPollingPersonaStatus()
+      } catch (error) {
+        const err = error as { response?: { data?: { message?: string } } }
+        this.error = err.response?.data?.message || 'Failed to initiate summoning'
+        this.isSummoning = false
+        throw error
+      }
+    },
+
+    startPollingPersonaStatus() {
+      const pollInterval = setInterval(async () => {
+        try {
+          const persona = await personaService.getMyPersona()
+          this.persona = persona
+
+          if ('status' in persona && persona.status === 'ready') {
+            clearInterval(pollInterval)
+            this.isSummoning = false
+          }
+        } catch (error) {
+          console.error('Error polling persona status:', error)
+          clearInterval(pollInterval)
+          this.isSummoning = false
+        }
+      }, 3000) // Poll every 3 seconds
+
+      // Stop polling after 5 minutes
+      setTimeout(() => {
+        clearInterval(pollInterval)
+        this.isSummoning = false
+      }, 300000)
+    },
+
+    async sendMessage(message: string) {
+      try {
+        const response = await personaService.sendChatMessage(message)
+        
+        // Add user message and AI response to history
+        const userMessage: ChatMessage = {
+          sender: 'user',
+          message,
+          timestamp: new Date().toISOString(),
+        }
+        const aiMessage: ChatMessage = {
+          sender: 'ai',
+          message: response.reply,
+          timestamp: new Date().toISOString(),
+        }
+
+        this.chatHistory.push(userMessage, aiMessage)
+      } catch (error) {
+        const err = error as { response?: { data?: { message?: string } } }
+        this.error = err.response?.data?.message || 'Failed to send message'
+        throw error
+      }
+    },
+
+    async fetchChatHistory() {
+      this.isLoading = true
+      try {
+        const response = await personaService.getChatHistory()
+        this.chatHistory = response.history
+      } catch (error) {
+        const err = error as { response?: { data?: { message?: string } } }
+        this.error = err.response?.data?.message || 'Failed to fetch chat history'
+        throw error
+      } finally {
+        this.isLoading = false
+      }
+    },
+  },
+})

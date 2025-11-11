@@ -1,39 +1,226 @@
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
-
+@import "tailwindcss";
 @import './base.css';
 
+/* Color System */
+:root {
+  --color-bg-primary: #0a0e27;
+  --color-bg-secondary: #1a1f3a;
+  --color-bg-accent: #2d1b4e;
+  --color-text-primary: #ffffff;
+  --color-text-secondary: #a0aec0;
+  --color-text-muted: rgba(160, 174, 192, 0.8);
+  --color-accent: #6d28d9;
+  --color-accent-hover: #7c3aed;
+  --color-border: rgba(79, 70, 229, 0.5);
+  --color-border-light: rgba(79, 70, 229, 0.2);
+  
+  /* Persona Rarity Colors */
+  --color-rarity-n: #9ca3af;
+  --color-rarity-r: #60a5fa;
+  --color-rarity-sr: #a78bfa;
+  --color-rarity-ssr: #f59e0b;
+  --color-rarity-ur: #ef4444;
+  
+  /* Stat Colors */
+  --color-stat-charisma: #4f46e5;
+  --color-stat-intellect: #06b6d4;
+  --color-stat-kindness: #10b981;
+  --color-stat-instability: #ec4899;
+  --color-stat-spirit: #f59e0b;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  background: var(--color-bg-primary);
+  color: var(--color-text-primary);
+  font-family: Inter, system-ui, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
 #app {
-  max-width: 1280px;
+  min-height: 100vh;
+}
+
+/* Button Components */
+.btn {
+  padding: 0.75rem 1.5rem;
+  border-radius: 0.5rem;
+  font-weight: 500;
+  transition: all 0.2s;
+  border: none;
+  cursor: pointer;
+}
+
+.btn:focus {
+  outline: none;
+  box-shadow: 0 0 0 3px rgba(79, 70, 229, 0.5);
+}
+
+.btn-primary {
+  background: #4f46e5;
+  color: white;
+}
+
+.btn-primary:hover {
+  background: #4338ca;
+}
+
+.btn-secondary {
+  background: var(--color-accent);
+  color: white;
+}
+
+.btn-secondary:hover {
+  background: var(--color-accent-hover);
+}
+
+.btn-ghost {
+  background: transparent;
+  border: 2px solid #4f46e5;
+  color: #8190ff;
+}
+
+.btn-ghost:hover {
+  background: rgba(79, 70, 229, 0.1);
+}
+
+/* Card Component */
+.card {
+  background: rgba(26, 31, 58, 0.5);
+  backdrop-filter: blur(8px);
+  border: 1px solid var(--color-border);
+  border-radius: 0.75rem;
+  padding: 1.5rem;
+  box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+}
+
+/* Input Component */
+.input {
+  width: 100%;
+  padding: 0.75rem 1rem;
+  border-radius: 0.5rem;
+  background: rgba(10, 14, 39, 0.5);
+  border: 1px solid var(--color-border);
+  color: var(--color-text-primary);
+  transition: all 0.2s;
+}
+
+.input::placeholder {
+  color: #9ca3af;
+}
+
+.input:focus {
+  outline: none;
+  box-shadow: 0 0 0 3px rgba(79, 70, 229, 0.5);
+  border-color: transparent;
+}
+
+/* Layout Components */
+.container-page {
+  max-width: 80rem;
   margin: 0 auto;
-  padding: 2rem;
-  font-weight: normal;
+  padding: 2rem 1rem;
 }
 
-a,
-.green {
-  text-decoration: none;
-  color: hsla(160, 100%, 37%, 1);
-  transition: 0.4s;
-  padding: 3px;
+/* Text Styles */
+.text-gradient {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  background-clip: text;
+  -webkit-background-clip: text;
+  color: transparent;
 }
 
-@media (hover: hover) {
-  a:hover {
-    background-color: hsla(160, 100%, 37%, 0.2);
-  }
+.text-secondary {
+  color: var(--color-text-secondary);
 }
 
-@media (min-width: 1024px) {
-  body {
-    display: flex;
-    place-items: center;
-  }
+.text-muted {
+  color: var(--color-text-muted);
+}
 
-  #app {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    padding: 0 2rem;
-  }
+/* Background Styles */
+.bg-akashic {
+  background: linear-gradient(180deg, var(--color-bg-primary) 0%, var(--color-bg-secondary) 50%, var(--color-bg-accent) 100%);
+}
+
+.bg-mystical {
+  background: var(--color-bg-secondary);
+}
+
+.bg-card {
+  background: rgba(26, 31, 58, 0.5);
+}
+
+/* Persona Rarity Styles */
+.rarity-n { background: var(--color-rarity-n); }
+.rarity-r { background: var(--color-rarity-r); }
+.rarity-sr { background: var(--color-rarity-sr); }
+.rarity-ssr { background: var(--color-rarity-ssr); }
+.rarity-ur { 
+  background: var(--color-rarity-ur);
+  animation: glow 2s ease-in-out infinite alternate;
+}
+
+/* Stat Color Classes */
+.stat-charisma { background: var(--color-stat-charisma); }
+.stat-intellect { background: var(--color-stat-intellect); }
+.stat-kindness { background: var(--color-stat-kindness); }
+.stat-instability { background: var(--color-stat-instability); }
+.stat-spirit { background: var(--color-stat-spirit); }
+
+/* Progress Bar */
+.progress-bg {
+  background: rgba(10, 14, 39, 0.8);
+}
+
+.progress-mystical {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+}
+
+/* Glass Effect */
+.glass-effect {
+  background: rgba(255, 255, 255, 0.05);
+  backdrop-filter: blur(12px);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.glow-text {
+  text-shadow: 0 0 10px rgba(109, 40, 217, 0.5);
+}
+
+/* Animations */
+@keyframes glow {
+  from { box-shadow: 0 0 5px rgba(239, 68, 68, 0.5); }
+  to { box-shadow: 0 0 20px rgba(239, 68, 68, 0.8); }
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes slideUp {
+  from { transform: translateY(20px); opacity: 0; }
+  to { transform: translateY(0); opacity: 1; }
+}
+
+@keyframes bounce {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-10px); }
+}
+
+.animate-fade-in {
+  animation: fadeIn 0.5s ease-in-out;
+}
+
+.animate-slide-up {
+  animation: slideUp 0.5s ease-out;
+}
+
+.animate-bounce {
+  animation: bounce 1s infinite;
 }
