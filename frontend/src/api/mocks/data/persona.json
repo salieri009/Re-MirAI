@@ -1,0 +1,21 @@
+{
+  "id": "mock-persona-456",
+  "userId": "mock-user-123",
+  "name": "츤데레 캐릭터",
+  "archetype": "Tsundere",
+  "rarity": "SSR",
+  "title": "겉으로는 차갑지만 속으로는 다정한 자",
+  "status": "ready",
+  "stats": {
+    "social": 65,
+    "creative": 80,
+    "logic": 75,
+    "chill": 45,
+    "boldness": 70
+  },
+  "avatarUrl": null,
+  "bondLevel": 1,
+  "bondProgress": 0.0,
+  "createdAt": "2025-01-02T00:00:00Z"
+}
+

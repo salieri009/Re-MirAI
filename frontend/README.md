@@ -1,130 +1,186 @@
-# Re:MirAI Frontend
+# Persona AI - Frontend
 
-A modern, maintainable frontend application for the Re:MirAI project, built with Vue 3, TypeScript, and Tailwind CSS.
+친구들이 만드는 나만의 AI 페르소나 웹 애플리케이션의 프론트엔드입니다.
 
-## Features
+## 기술 스택
 
-- 🎨 **Global Theme System**: Centralized styling with Tailwind CSS and CSS variables
-- 🔄 **Mock Data Support**: Development-ready with mock data, easy to switch to real API
-- 🏗️ **Modular Architecture**: Clean separation of concerns with stores, services, and components
-- 📱 **Responsive Design**: Mobile-first approach with mystical/sci-fi theme
-- 🔐 **Demo Authentication**: Mock authentication ready for Google OAuth integration
+- **Framework**: Vue 3 (Composition API with `<script setup>`)
+- **Language**: TypeScript
+- **Build Tool**: Vite
+- **State Management**: Pinia
+- **Routing**: Vue Router 4
+- **Styling**: Tailwind CSS v3
+- **API Client**: Axios
+- **Mock API**: axios-mock-adapter
 
-## Project Structure
+## 프로젝트 구조
 
 ```
 src/
-├── assets/          # Global styles and assets
-├── components/      # Reusable components
-│   └── common/      # Common UI components (Button, PersonaCard, etc.)
-├── mocks/          # Mock data for development
-├── router/         # Vue Router configuration
-├── services/       # API services (with mock mode)
-├── stores/         # Pinia stores (auth, persona, ritual, quest)
-└── views/          # Page components
-    ├── auth/       # Authentication pages
-    ├── chat/       # Chat interface
-    ├── ritual/     # Ritual/survey pages
-    ├── room/       # Persona room
-    ├── summon/     # Summoning scene
-    ├── survey/     # Survey pages
-    └── social/     # Social features
+├── api/              # API 클라이언트, 타입, Mock 데이터
+├── assets/           # 정적 자산
+├── components/       # 재사용 가능한 Vue 컴포넌트
+│   ├── base/         # 범용 기본 컴포넌트
+│   └── domain/       # 도메인 특화 컴포넌트
+├── composables/      # Composition API 재사용 함수
+├── layouts/          # 페이지 레이아웃 컴포넌트
+├── router/           # Vue Router 설정
+├── stores/           # Pinia 스토어
+├── styles/           # 전역 스타일
+├── types/            # TypeScript 타입 정의
+├── utils/            # 유틸리티 함수
+└── views/            # 페이지 컴포넌트
 ```
 
-## Getting Started
+## 시작하기
 
-### Prerequisites
-
-- Node.js 20.19.0+ or 22.12.0+
-- npm or yarn
-
-### Installation
+### 설치
 
 ```bash
 npm install
 ```
 
-### Development
+### 개발 서버 실행
 
 ```bash
 npm run dev
 ```
 
-The app will be available at `http://localhost:5173`
+개발 서버가 `http://localhost:5173`에서 실행됩니다.
 
-### Build
+### 빌드
 
 ```bash
 npm run build
 ```
 
-### Type Checking
+프로덕션용 빌드가 `dist/` 디렉토리에 생성됩니다.
+
+### 빌드 미리보기
+
+```bash
+npm run preview
+```
+
+### 타입 체크
 
 ```bash
 npm run type-check
 ```
 
-## Switching to Real API
+## 환경 변수
 
-The project uses mock data by default. To switch to the real API:
+프로젝트 루트의 `.env` 파일에서 다음 환경 변수를 설정할 수 있습니다:
 
-1. **Update API Service** (`src/services/api.ts`):
-   - Set `USE_MOCK_DATA = false`
-   - Uncomment the actual API calls
-   - Remove or comment out mock implementations
+```env
+VITE_API_BASE_URL=/api/v1
+VITE_MOCK_API=true
+```
 
-2. **Update Authentication** (`src/stores/auth.ts` and `src/views/auth/LoginView.vue`):
-   - Replace mock Google OAuth with actual Google OAuth implementation
-   - Update the `loginWithGoogle` method
+- `VITE_API_BASE_URL`: API 서버의 베이스 URL
+- `VITE_MOCK_API`: Mock API 활성화 여부 (`true`/`false`)
 
-3. **Environment Variables**:
-   - Create `.env` file with `VITE_API_BASE_URL=your-api-url`
+## Phase 1 개발
 
-## Key Features
+현재는 Phase 1 개발 단계로, Mock API를 사용하여 백엔드 없이 프론트엔드를 개발하고 테스트할 수 있습니다.
 
-### Global Theme
+### Mock API
 
-The theme is centralized in:
-- `tailwind.config.js`: Color palette, animations, and design tokens
-- `src/assets/main.css`: Global styles and utility classes
+`VITE_MOCK_API=true`로 설정하면:
+- 모든 API 호출이 Mock Adapter에 의해 가로채집니다
+- `src/api/mocks/data/` 디렉토리의 JSON 파일에서 Mock 데이터를 제공합니다
+- 실제 네트워크 지연을 시뮬레이션합니다
 
-### Mock Data
+### 실제 API로 전환
 
-All mock data is in `src/mocks/data.ts`. The API service automatically uses mock data when `USE_MOCK_DATA = true`.
+Phase 2에서 실제 백엔드 API를 연결하려면:
+1. `.env` 파일에서 `VITE_MOCK_API=false`로 설정
+2. `VITE_API_BASE_URL`을 실제 백엔드 서버 URL로 변경
+3. 코드 변경 없이 자동으로 실제 API를 사용합니다
 
-### State Management
+## 주요 기능
 
-Pinia stores are organized by domain:
-- `auth`: User authentication and profile
-- `persona`: Persona data and chat
-- `ritual`: Survey/ritual management
-- `quest`: Quest system
+### 페이지
 
-## Pages
+- `/` - 랜딩 페이지 (WelcomePage)
+- `/auth` - 로그인 페이지 (AuthPage)
+- `/analysis` - 분석 대시보드 (AnalysisHub)
+- `/survey/:analysisId` - 설문 작성 페이지 (SurveyPage)
+- `/persona/reveal` - 페르소나 생성 애니메이션 (PersonaReveal)
+- `/persona/chat` - 페르소나와 채팅 (PersonaChat)
 
-- **Landing** (`/`): Welcome page with "How It Works"
-- **Login** (`/login`): Google OAuth login (demo mode)
-- **Dashboard** (`/dashboard`): Main user hub
-- **Ritual Hub** (`/ritual`): Create and manage surveys
-- **Summoning** (`/summon`): Persona summoning scene
-- **Persona Room** (`/room/:personaId`): Persona's room with quests
-- **Chat** (`/chat/:personaId`): Chat with Persona
-- **Survey** (`/survey/:ritualId`): Public survey page
-- **Public Profile** (`/profile/:userId`): Shareable persona profile
+### 컴포넌트
 
-## Development Notes
+#### Base 컴포넌트
+- `BaseButton` - 버튼
+- `BaseCard` - 카드 컨테이너
+- `BaseInput` - 입력 필드
+- `BaseModal` - 모달 다이얼로그
+- `BaseSpinner` - 로딩 스피너
+- `BaseNotification` - Toast 알림
 
-- All API calls are commented with `// TODO: Uncomment when backend is ready`
-- Mock data simulates API delays for realistic development
-- Authentication is in demo mode - no actual Google OAuth yet
-- All components use the global theme system for consistency
+#### Domain 컴포넌트
+- `GoogleLoginButton` - Google 로그인 버튼
+- `ShareLinkCard` - 링크 공유 카드
+- `ResponseTracker` - 응답 진행 상황 트래커
+- `PersonaHeader` - 페르소나 헤더
+- `ChatWindow` - 채팅 윈도우
+- `ChatMessage` - 채팅 메시지
+- `ChatInput` - 채팅 입력
+- `QuestionCard` - 설문 질문 카드
 
-## Tech Stack
+### 상태 관리 (Pinia Stores)
 
-- **Vue 3** (Composition API)
-- **TypeScript**
-- **Vite**
-- **Pinia** (State management)
-- **Vue Router**
-- **Tailwind CSS**
-- **GSAP** (For animations - ready for summoning scene)
+- `authStore` - 사용자 인증 및 프로필
+- `analysisStore` - 프로필 분석 생성 및 상태
+- `personaStore` - 페르소나 생성 및 채팅
+- `uiStore` - 전역 UI 상태 (로딩, 알림)
+
+## 개발 가이드
+
+### 컴포넌트 작성
+
+모든 컴포넌트는 `<script setup>` 문법을 사용합니다:
+
+```vue
+<script setup lang="ts">
+import { ref } from 'vue'
+
+interface Props {
+  title: string
+}
+
+const props = defineProps<Props>()
+</script>
+
+<template>
+  <div>{{ title }}</div>
+</template>
+```
+
+### 경로 별칭
+
+TypeScript와 Vite 모두 `@/` 별칭을 지원합니다:
+
+```typescript
+import { useAuthStore } from '@/stores/auth'
+import BaseButton from '@/components/base/BaseButton.vue'
+```
+
+### 스타일링
+
+Tailwind CSS 유틸리티 클래스를 사용합니다:
+
+```vue
+<template>
+  <button class="px-4 py-2 bg-primary-600 text-white rounded-lg hover:bg-primary-700">
+    Click me
+  </button>
+</template>
+```
+
+커스텀 색상과 타이포그래피는 `tailwind.config.js`에 정의되어 있습니다.
+
+## 라이선스
+
+이 프로젝트는 비공개 프로젝트입니다.

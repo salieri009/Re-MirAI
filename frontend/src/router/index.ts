@@ -1,81 +1,78 @@
 import { createRouter, createWebHistory } from 'vue-router'
+import type { RouteRecordRaw } from 'vue-router'
 import { useAuthStore } from '@/stores/auth'
+
+const routes: RouteRecordRaw[] = [
+  {
+    path: '/',
+    name: 'welcome',
+    component: () => import('@/views/WelcomePage.vue'),
+    meta: { requiresAuth: false },
+  },
+  {
+    path: '/auth',
+    name: 'auth',
+    component: () => import('@/views/auth/AuthPage.vue'),
+    meta: { requiresAuth: false },
+  },
+  {
+    path: '/analysis',
+    name: 'analysis-hub',
+    component: () => import('@/views/analysis/AnalysisHub.vue'),
+    meta: { requiresAuth: true },
+  },
+  {
+    path: '/survey/:analysisId',
+    name: 'survey',
+    component: () => import('@/views/survey/SurveyPage.vue'),
+    meta: { requiresAuth: false },
+  },
+  {
+    path: '/persona/reveal',
+    name: 'persona-reveal',
+    component: () => import('@/views/reveal/PersonaReveal.vue'),
+    meta: { requiresAuth: true },
+  },
+  {
+    path: '/persona/chat',
+    name: 'persona-chat',
+    component: () => import('@/views/persona/PersonaChat.vue'),
+    meta: { requiresAuth: true },
+  },
+  {
+    path: '/:pathMatch(.*)*',
+    name: 'not-found',
+    component: () => import('@/views/NotFoundPage.vue'),
+    meta: { requiresAuth: false },
+  },
+]
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
-  routes: [
-    {
-      path: '/',
-      name: 'landing',
-      component: () => import('@/views/LandingView.vue'),
-      meta: { requiresAuth: false },
-    },
-    {
-      path: '/login',
-      name: 'login',
-      component: () => import('@/views/auth/LoginView.vue'),
-      meta: { requiresAuth: false },
-    },
-    {
-      path: '/dashboard',
-      name: 'dashboard',
-      component: () => import('@/views/DashboardView.vue'),
-      meta: { requiresAuth: true },
-    },
-    {
-      path: '/ritual',
-      name: 'ritual',
-      component: () => import('@/views/ritual/RitualHubView.vue'),
-      meta: { requiresAuth: true },
-    },
-    {
-      path: '/summon',
-      name: 'summon',
-      component: () => import('@/views/summon/SummoningView.vue'),
-      meta: { requiresAuth: true },
-    },
-    {
-      path: '/room/:personaId?',
-      name: 'persona-room',
-      component: () => import('@/views/room/PersonaRoomView.vue'),
-      meta: { requiresAuth: true },
-    },
-    {
-      path: '/chat/:personaId?',
-      name: 'chat',
-      component: () => import('@/views/chat/ChatView.vue'),
-      meta: { requiresAuth: true },
-    },
-    {
-      path: '/survey/:ritualId',
-      name: 'survey',
-      component: () => import('@/views/survey/SurveyView.vue'),
-      meta: { requiresAuth: false },
-    },
-    {
-      path: '/ritual/:ritualId/result',
-      name: 'ritual-result',
-      component: () => import('@/views/ritual/RitualResultView.vue'),
-      meta: { requiresAuth: false },
-    },
-    {
-      path: '/profile/:userId',
-      name: 'public-profile',
-      component: () => import('@/views/social/PublicProfileView.vue'),
-      meta: { requiresAuth: false },
-    },
-  ],
+  routes,
 })
 
-// Navigation guard
+// Navigation Guard
 router.beforeEach((to, _from, next) => {
   const authStore = useAuthStore()
+  const requiresAuth = to.meta.requiresAuth as boolean
 
-  if (to.meta.requiresAuth && !authStore.isAuthenticated) {
-    next({ name: 'login', query: { redirect: to.fullPath } })
+  // Check if route requires authentication
+  if (requiresAuth && !authStore.isAuthenticated) {
+    // Store intended destination
+    const intendedPath = to.fullPath
+    localStorage.setItem('intended_path', intendedPath)
+    
+    // Redirect to auth
+    next('/auth')
+  } else if (to.path === '/auth' && authStore.isAuthenticated) {
+    // If already authenticated and trying to access auth page, redirect to analysis
+    next('/analysis')
   } else {
+    // Allow navigation
     next()
   }
 })
 
 export default router
+

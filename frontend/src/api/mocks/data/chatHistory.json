@@ -1,0 +1,24 @@
+[
+  {
+    "id": 1,
+    "personaId": "mock-persona-456",
+    "sender": "ai",
+    "message": "흥... 뭐야, 나한테 할 말이 있어?",
+    "timestamp": "2025-01-02T10:00:00Z"
+  },
+  {
+    "id": 2,
+    "personaId": "mock-persona-456",
+    "sender": "user",
+    "message": "안녕! 처음 만나서 반가워",
+    "timestamp": "2025-01-02T10:01:00Z"
+  },
+  {
+    "id": 3,
+    "personaId": "mock-persona-456",
+    "sender": "ai",
+    "message": "반갑긴... 뭐, 그냥 이야기나 하자고.",
+    "timestamp": "2025-01-02T10:01:30Z"
+  }
+]
+

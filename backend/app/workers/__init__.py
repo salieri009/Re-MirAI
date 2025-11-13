@@ -1,1 +1,0 @@
-"""Initialize workers module."""

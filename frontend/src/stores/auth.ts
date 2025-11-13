@@ -1,80 +1,71 @@
 import { defineStore } from 'pinia'
-import { authService, userService } from '@/services/api'
-import type { User } from '@/mocks/data'
+import { ref, computed } from 'vue'
+import type { User } from '@/types'
+import { loginWithGoogle } from '@/api/endpoints/auth'
 
-// Safe localStorage access
-const getStoredToken = () => {
-  if (typeof window !== 'undefined') {
-    return localStorage.getItem('authToken') || ''
+export const useAuthStore = defineStore('auth', () => {
+  // State
+  const user = ref<User | null>(null)
+  const token = ref<string | null>(null)
+
+  // Getters
+  const isAuthenticated = computed(() => !!(token.value && user.value))
+
+  // Actions
+  async function login(googleToken: string): Promise<void> {
+    try {
+      // Real API call (will use mock in Phase 1)
+      const response = await loginWithGoogle(googleToken)
+      
+      // Store token and user
+      token.value = response.jwt
+      user.value = response.user
+      
+      // Persist to localStorage
+      localStorage.setItem('auth_token', response.jwt)
+      localStorage.setItem('user', JSON.stringify(response.user))
+    } catch (error) {
+      console.error('Login failed:', error)
+      throw error
+    }
   }
-  return ''
-}
 
-const setStoredToken = (token: string) => {
-  if (typeof window !== 'undefined') {
-    localStorage.setItem('authToken', token)
+  function logout(): void {
+    // Clear state
+    user.value = null
+    token.value = null
+    
+    // Clear localStorage
+    localStorage.removeItem('auth_token')
+    localStorage.removeItem('user')
+    
+    // Redirect to auth page
+    window.location.href = '/auth'
   }
-}
 
-const removeStoredToken = () => {
-  if (typeof window !== 'undefined') {
-    localStorage.removeItem('authToken')
-  }
-}
-
-export const useAuthStore = defineStore('auth', {
-  state: () => ({
-    user: null as User | null,
-    token: getStoredToken(),
-    isLoading: false,
-    error: null as string | null,
-  }),
-
-  getters: {
-    isAuthenticated: (state) => !!state.token && !!state.user,
-  },
-
-  actions: {
-    async loginWithGoogle(googleToken?: string) {
-      this.isLoading = true
-      this.error = null
-
+  async function initialize(): Promise<void> {
+    // Check for existing token in localStorage
+    const storedToken = localStorage.getItem('auth_token')
+    const storedUser = localStorage.getItem('user')
+    
+    if (storedToken && storedUser) {
       try {
-        // TODO: Replace with actual Google OAuth when ready
-        // For demo, we'll use a mock token
-        const mockToken = googleToken || 'demo-google-token-' + Date.now()
-        const response = await authService.googleLogin(mockToken)
-        
-        this.token = response.token
-        this.user = response.user
-        setStoredToken(this.token)
+        token.value = storedToken
+        user.value = JSON.parse(storedUser)
       } catch (error) {
-        const err = error as { response?: { data?: { message?: string } } }
-        this.error = err.response?.data?.message || 'Login failed'
-        throw error
-      } finally {
-        this.isLoading = false
+        console.error('Failed to restore session:', error)
+        logout()
       }
-    },
+    }
+  }
 
-    async fetchUserProfile() {
-      this.isLoading = true
-      try {
-        const user = await userService.getMe()
-        this.user = user
-      } catch (error) {
-        const err = error as { response?: { data?: { message?: string } } }
-        this.error = err.response?.data?.message || 'Failed to fetch user'
-        throw error
-      } finally {
-        this.isLoading = false
-      }
-    },
-
-    logout() {
-      this.user = null
-      this.token = ''
-      removeStoredToken()
-    },
-  },
+  return {
+    user,
+    token,
+    isAuthenticated,
+    login,
+    logout,
+    initialize,
+  }
 })
+

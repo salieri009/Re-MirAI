@@ -1,0 +1,10 @@
+{
+  "id": "mock-user-123",
+  "googleId": "google-123456",
+  "email": "user@example.com",
+  "displayName": "테스트 유저",
+  "profileImageUrl": null,
+  "credits": 100,
+  "createdAt": "2025-01-01T00:00:00Z"
+}
+
