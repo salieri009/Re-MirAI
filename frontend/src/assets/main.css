@@ -155,6 +155,20 @@ body {
   background: rgba(59, 130, 246, 0.1);  /* Light blue background */
 }
 
+/* Light button variant for use on dark/gradient backgrounds */
+.btn-light {
+  background: #ffffff;
+  color: #0f172a;
+  border: none;
+  font-weight: 600;
+}
+
+.btn-light:hover {
+  background: #f8fafc;
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+}
+
 /* Card Component (Blonix: Light Theme) */
 .card {
   background: var(--color-bg-secondary);  /* White background */
@@ -513,12 +527,188 @@ body {
   filter: blur(40px);
 }
 
-/* Reduced motion support for interactive animations */
+/* === PROFESSIONAL MIRROR EFFECT === */
+/* Interactive mirror reflection background media */
+/* Represents the core concept: "Mirror" - reflecting how others see you */
+
+/* Mirror Reflection Container */
+.mirror-effect-container {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  pointer-events: none;
+  z-index: var(--z-decorative);
+  /* CSS custom properties for mirror distortion */
+  --mirror-x: 0.5;
+  --mirror-y: 0.5;
+  --mirror-distortion: 0;
+}
+
+/* Mirror Reflection Layer (Main Reflection) */
+.mirror-reflection {
+  position: absolute;
+  inset: -20%;
+  background: 
+    linear-gradient(135deg, rgba(255, 255, 255, 0.12) 0%, rgba(255, 255, 255, 0.06) 30%, transparent 60%),
+    linear-gradient(225deg, rgba(255, 255, 255, 0.1) 0%, rgba(255, 255, 255, 0.05) 30%, transparent 60%),
+    linear-gradient(45deg, rgba(255, 255, 255, 0.08) 0%, transparent 40%),
+    radial-gradient(ellipse 100% 60% at 50% 50%, rgba(255, 255, 255, 0.06) 0%, transparent 70%);
+  background-size: 200% 200%, 200% 200%, 150% 150%, 100% 100%;
+  background-position: 
+    calc(var(--mirror-x) * 20% - 10%) calc(var(--mirror-y) * 20% - 10%),
+    calc((1 - var(--mirror-x)) * 20% - 10%) calc((1 - var(--mirror-y)) * 20% - 10%),
+    50% 50%,
+    50% 50%;
+  /* Mirror-like reflection effect with subtle vertical flip */
+  transform: scaleY(-0.98) scaleX(1.02);
+  opacity: calc(0.25 + var(--mirror-distortion) * 0.15);
+  mix-blend-mode: overlay;
+  filter: blur(1.5px);
+  will-change: transform, opacity, background-position;
+  transition: background-position 0.6s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.6s ease-out;
+}
+
+/* Mirror Distortion Wave (Ripple Effect) */
+.mirror-distortion {
+  position: absolute;
+  inset: 0;
+  background: 
+    radial-gradient(
+      circle at calc(var(--mirror-x) * 100%) calc(var(--mirror-y) * 100%),
+      transparent 0%,
+      transparent calc(15% + var(--mirror-distortion) * 8%),
+      rgba(255, 255, 255, 0.15) calc(20% + var(--mirror-distortion) * 8%),
+      rgba(255, 255, 255, 0.08) calc(25% + var(--mirror-distortion) * 8%),
+      rgba(255, 255, 255, 0.03) calc(30% + var(--mirror-distortion) * 8%),
+      transparent calc(35% + var(--mirror-distortion) * 8%)
+    ),
+    radial-gradient(
+      ellipse 120% 80% at calc(var(--mirror-x) * 100%) calc(var(--mirror-y) * 100%),
+      transparent 0%,
+      rgba(255, 255, 255, 0.05) calc(25% + var(--mirror-distortion) * 5%),
+      transparent calc(40% + var(--mirror-distortion) * 5%)
+    );
+  border-radius: 50%;
+  transform: scale(calc(1 + var(--mirror-distortion) * 0.4)) rotate(calc(var(--mirror-distortion) * 5deg));
+  opacity: calc(0.4 * (0.7 + var(--mirror-distortion) * 0.6));
+  transition: transform 0.7s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.7s ease-out;
+  will-change: transform, opacity;
+  filter: blur(3px);
+  mix-blend-mode: soft-light;
+}
+
+/* Mirror Edge Distortion (Subtle wave at edges) */
+.mirror-edge-distortion {
+  position: absolute;
+  inset: 0;
+  background: 
+    linear-gradient(90deg, transparent 0%, rgba(255, 255, 255, 0.04) 3%, transparent 6%, rgba(255, 255, 255, 0.03) 9%, transparent 12%, rgba(255, 255, 255, 0.02) 15%, transparent 18%),
+    linear-gradient(0deg, transparent 0%, rgba(255, 255, 255, 0.04) 3%, transparent 6%, rgba(255, 255, 255, 0.03) 9%, transparent 12%, rgba(255, 255, 255, 0.02) 15%, transparent 18%),
+    radial-gradient(ellipse 120% 100% at 0% 50%, rgba(255, 255, 255, 0.02) 0%, transparent 15%),
+    radial-gradient(ellipse 120% 100% at 100% 50%, rgba(255, 255, 255, 0.02) 0%, transparent 15%);
+  background-size: 300% 100%, 100% 300%, 50% 100%, 50% 100%;
+  background-position: 
+    calc(var(--mirror-x) * 10% - 5%) 0%,
+    0% calc(var(--mirror-y) * 10% - 5%),
+    0% 50%,
+    100% 50%;
+  animation: mirrorEdgeWave 12s ease-in-out infinite;
+  opacity: 0.35;
+  mix-blend-mode: soft-light;
+  will-change: background-position;
+  filter: blur(0.5px);
+}
+
+@keyframes mirrorEdgeWave {
+  0%, 100% {
+    background-position: 0% 0%, 0% 0%;
+  }
+  50% {
+    background-position: 100% 0%, 0% 100%;
+  }
+}
+
+/* Mirror Depth Layer (Creates 3D depth illusion) */
+.mirror-depth {
+  position: absolute;
+  inset: 0;
+  background: 
+    radial-gradient(ellipse 90% 55% at 50% 50%, rgba(0, 0, 0, 0.08) 0%, transparent 65%),
+    radial-gradient(ellipse 70% 45% at 30% 70%, rgba(0, 0, 0, 0.04) 0%, transparent 55%),
+    radial-gradient(ellipse 60% 50% at 70% 30%, rgba(0, 0, 0, 0.03) 0%, transparent 50%);
+  opacity: calc(0.15 + var(--mirror-distortion) * 0.1);
+  mix-blend-mode: multiply;
+  will-change: opacity;
+  transition: opacity 0.5s ease-out;
+}
+
+/* Mirror Highlight (Cursor-responsive shine) */
+.mirror-highlight {
+  position: absolute;
+  width: 400px;
+  height: 400px;
+  background: radial-gradient(
+    circle,
+    rgba(255, 255, 255, 0.5) 0%,
+    rgba(255, 255, 255, 0.3) 20%,
+    rgba(255, 255, 255, 0.1) 40%,
+    transparent 70%
+  );
+  border-radius: 50%;
+  transform: translate(
+    calc(var(--mirror-x) * 100% - 200px),
+    calc(var(--mirror-y) * 100% - 200px)
+  ) scale(calc(0.7 + var(--mirror-distortion) * 0.5));
+  opacity: calc(0.25 * (0.6 + var(--mirror-distortion) * 0.8));
+  transition: transform 0.5s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.5s ease-out;
+  filter: blur(30px);
+  will-change: transform, opacity;
+  mix-blend-mode: overlay;
+  pointer-events: none;
+}
+
+/* Mirror Ripple Animation (On cursor movement) */
+@keyframes mirrorRipple {
+  0% {
+    transform: scale(0.8);
+    opacity: 0.6;
+  }
+  50% {
+    transform: scale(1.2);
+    opacity: 0.3;
+  }
+  100% {
+    transform: scale(1.6);
+    opacity: 0;
+  }
+}
+
+.mirror-ripple {
+  position: absolute;
+  width: 200px;
+  height: 200px;
+  border: 2px solid rgba(255, 255, 255, 0.3);
+  border-radius: 50%;
+  transform: translate(
+    calc(var(--mirror-x) * 100% - 100px),
+    calc(var(--mirror-y) * 100% - 100px)
+  );
+  animation: mirrorRipple 1.5s ease-out forwards;
+  pointer-events: none;
+  will-change: transform, opacity;
+}
+
+/* Reduced motion support for mirror effect */
 @media (prefers-reduced-motion: reduce) {
   .interactive-akashic-bg,
   .interactive-gradient-mesh,
   .interactive-particle,
-  .interactive-orb {
+  .interactive-orb,
+  .mirror-effect-container,
+  .mirror-reflection,
+  .mirror-distortion,
+  .mirror-edge-distortion,
+  .mirror-highlight {
     transition: none;
     animation: none;
   }
@@ -534,6 +724,16 @@ body {
   .interactive-orb {
     opacity: 0.1;
     transform: scale(1);
+  }
+  
+  .mirror-distortion {
+    transform: scale(1);
+    opacity: 0.1;
+  }
+  
+  .mirror-highlight {
+    transform: translate(50%, 50%) scale(1);
+    opacity: 0.1;
   }
 }
 

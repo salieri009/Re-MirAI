@@ -1,16 +1,16 @@
 <template>
   <div class="min-h-screen bg-primary">
-    <!-- Global Header -->
+    <!-- Global Header (KickoffLabs: Minimal Header Space) -->
     <section 
       class="w-full" 
-      style="padding: var(--container-padding) 0;"
+      style="padding: var(--element-spacing) 0;"
       role="banner"
       aria-label="Site header"
     >
       <div class="container-page">
         <div class="flex justify-between items-center">
-          <!-- Logo -->
-          <div class="text-2xl font-semibold text-gradient" role="img" aria-label="Re:MirAI Logo">
+          <!-- Logo (Grayscale - No gradient) -->
+          <div class="text-2xl font-semibold text-on-light" role="img" aria-label="Re:MirAI Logo">
             Re:MirAI
           </div>
           <!-- Log In Button -->
@@ -45,6 +45,29 @@
         <div class="noise-layer" aria-hidden="true"></div>
       </div>
       
+      <!-- Professional Mirror Effect (Interactive Background Media) -->
+      <!-- Core Concept: Visual representation of "Mirror" - reflecting how others see you -->
+      <div 
+        ref="mirrorEffectRef"
+        class="mirror-effect-container" 
+        aria-hidden="true"
+      >
+        <!-- Mirror Reflection Layer (Main reflection) -->
+        <div class="mirror-reflection" aria-hidden="true"></div>
+        
+        <!-- Mirror Distortion Wave (Ripple effect on cursor movement) -->
+        <div class="mirror-distortion" aria-hidden="true"></div>
+        
+        <!-- Mirror Edge Distortion (Subtle wave effect at edges) -->
+        <div class="mirror-edge-distortion" aria-hidden="true"></div>
+        
+        <!-- Mirror Depth Layer (3D depth illusion) -->
+        <div class="mirror-depth" aria-hidden="true"></div>
+        
+        <!-- Mirror Highlight (Cursor-responsive shine) -->
+        <div class="mirror-highlight" aria-hidden="true"></div>
+      </div>
+
       <!-- Interactive Akashic Flow Animation (Cursor-Responsive) -->
       <!-- Core Concept: Represents anonymous feedback data flowing through the system -->
       <!-- Z-Index: Behind content (var(--z-decorative)) -->
@@ -130,26 +153,23 @@
             class="text-center animate-fade-in" 
             style="display: flex; flex-direction: column; gap: var(--subsection-spacing); align-items: center;"
           >
-            <!-- Main Headline -->
-            <!-- Nielsen: Readability - High contrast, large size -->
-            <!-- Webflow Typography: Distinct font design, large, high-contrast -->
-            <h1 class="text-4xl md:text-6xl lg:text-7xl font-bold text-on-light leading-tight tracking-tight w-full" style="line-height: 1.2;">
+            <!-- Main Headline (KickoffLabs: Level 1 - Largest, Boldest) -->
+            <!-- Squint Test: This should be the ONLY thing visible when squinting -->
+            <h1 class="text-5xl md:text-6xl lg:text-7xl font-bold text-on-light leading-tight tracking-tight w-full" style="line-height: 1.2;">
               Stop Guessing. Start Knowing.
             </h1>
             
-            <!-- Description -->
-            <!-- Nielsen: Readability - Increased line-height and font size -->
-            <!-- Webflow Typography: Appropriate spacing, readable size -->
+            <!-- Description (KickoffLabs: Level 2 - Supporting, Regular Weight) -->
+            <!-- Grayscale text with single accent word -->
             <p 
-              class="text-xl md:text-2xl text-on-light max-w-lg lg:max-w-2xl mx-auto leading-relaxed w-full"
+              class="text-lg md:text-xl text-on-light max-w-lg lg:max-w-2xl mx-auto leading-relaxed w-full"
               role="doc-subtitle"
               style="line-height: 1.75; font-weight: 400;"
             >
-              AI Persona created from how your friends <em>*actually*</em> see you. Discover the self you never knew.
+              AI Persona created from how your friends <em class="text-indigo-600 font-medium">*actually*</em> see you. Discover the self you never knew.
             </p>
             
-            <!-- Primary CTA -->
-            <!-- Nielsen: User Control & Freedom - Single clear action path -->
+            <!-- Primary CTA (KickoffLabs: Single Action Focus) -->
             <div 
               class="flex flex-col sm:flex-row justify-center" 
               style="gap: var(--element-spacing);"
@@ -171,10 +191,10 @@
               <div id="start-description">Begin creating your AI persona by signing up</div>
             </div>
             
-            <!-- Trust Indicators -->
+            <!-- Trust Indicators (KickoffLabs: Proximity Principle - Close to CTA) -->
             <div 
               class="flex items-center justify-center text-sm text-muted" 
-              style="gap: var(--card-spacing);"
+              style="gap: var(--text-spacing); margin-top: var(--text-spacing);"
               role="group"
               aria-label="Trust indicators"
             >
@@ -252,20 +272,18 @@
           style="display: flex; flex-direction: column; gap: var(--subsection-spacing); margin-bottom: calc(var(--section-spacing) * 1.5);"
         >
           <div class="space-y-4">
-            <!-- Nielsen: Readability - High contrast badge text -->
-            <div class="inline-block px-4 py-2 bg-indigo-500/20 rounded-full text-sm text-indigo-300 font-medium" style="line-height: 1.5;">
+            <!-- Badge (Grayscale - No colored background) -->
+            <div class="inline-block px-4 py-2 bg-slate-100 rounded-full text-sm text-on-light font-medium" style="line-height: 1.5;">
               The Mirror of Relationships
             </div>
-            <!-- Nielsen: Readability - High contrast text on light background -->
-            <!-- Webflow Typography: Use contrast to create hierarchy - H2 distinct from H1 -->
-            <h2 id="how-it-works-heading" class="text-4xl md:text-6xl font-bold text-on-light leading-tight tracking-tight" style="line-height: 1.2;">
+            <!-- Section Headline (KickoffLabs: Level 3 - Section Header) -->
+            <h2 id="how-it-works-heading" class="text-3xl md:text-5xl font-bold text-on-light leading-tight tracking-tight" style="line-height: 1.2;">
               Discover Your True Self in 3 Steps
             </h2>
           </div>
           <div style="display: flex; justify-content: center; width: 100%;">
-            <!-- Nielsen: Readability - Increased line-height and font size for better readability -->
-            <!-- Webflow Typography: Appropriate spacing for body text -->
-            <p class="text-lg md:text-xl lg:text-2xl text-on-light max-w-lg text-center leading-relaxed" style="text-align: center; margin: 0 auto; line-height: 1.75; font-weight: 400;">
+            <!-- Section Description (KickoffLabs: Level 4 - Body Text) -->
+            <p class="text-base md:text-lg text-on-light max-w-lg text-center leading-relaxed" style="text-align: center; margin: 0 auto; line-height: 1.75; font-weight: 400;">
               While personality tests tell you what you think, Re:MirAI reveals how your friends actually see you.
             </p>
           </div>
@@ -315,7 +333,7 @@
             </div>
             <!-- Nielsen: Readability - High contrast text on light background -->
             <h3 class="text-2xl md:text-3xl font-semibold text-on-light" style="margin-bottom: var(--element-spacing); line-height: 1.3;">
-              Re:MirAI gives you the <span class="text-gradient">truth</span> about yourself
+              Re:MirAI gives you the <strong class="text-on-light font-semibold">truth</strong> about yourself
             </h3>
             <p class="text-base md:text-lg text-on-light max-w-2xl mx-auto" style="line-height: 1.75; opacity: 0.9;">
               Based on anonymous insights from people who know you best
@@ -553,7 +571,7 @@
                   
                   <!-- Solution Section (Centered Alignment) -->
                   <div class="text-center" style="display: flex; flex-direction: column; gap: var(--element-spacing);">
-                    <h3 class="text-2xl font-semibold text-gradient">The Re:MirAI Advantage</h3>
+                    <h3 class="text-2xl font-semibold text-on-light">The Re:MirAI Advantage</h3>
                     <!-- KickoffLabs Compliance: Replaced green checkmarks with indigo/purple -->
                     <div style="display: flex; flex-direction: column; gap: var(--tight-spacing);">
                       <div class="flex items-start space-x-3">
@@ -686,82 +704,66 @@
           </div>
         </div>
 
-        <!-- Enhanced CTA Section (Awebco: Single Primary CTA) -->
-        <div class="relative" style="margin-top: var(--section-spacing);">
-          <div class="text-center" style="display: flex; flex-direction: column; gap: var(--subsection-spacing);">
-            <!-- Urgency/Scarcity Element -->
-            <!-- KickoffLabs Compliance: Replaced green with indigo -->
-            <!-- Nielsen: Readability - High contrast text -->
-            <div class="inline-flex items-center rounded-full text-on-light text-sm font-medium" style="gap: var(--element-spacing); padding: var(--element-spacing) var(--card-spacing); background-color: rgba(59, 130, 246, 0.2); margin: 0 auto; line-height: 1.5;">
-              <div class="w-2 h-2 bg-primary-400 rounded-full animate-pulse"></div>
-              <span>Free during early access • Limited time</span>
+      </div>
+    </section>
+
+    <!-- Final CTA Section -->
+    <section 
+      id="final-cta" 
+      class="relative overflow-hidden bg-gradient-to-r from-indigo-500 to-purple-600" 
+      style="padding: var(--section-spacing) 0;"
+      role="region"
+      aria-labelledby="final-cta-heading"
+    >
+      <div class="container-page">
+        <div 
+          class="flex flex-col items-center text-center" 
+          style="display: flex; flex-direction: column; gap: var(--subsection-spacing); align-items: center; text-align: center;"
+        >
+          <!-- Headline -->
+          <h2 
+            id="final-cta-heading" 
+            class="text-4xl md:text-5xl font-bold text-white"
+            style="line-height: 1.2;"
+          >
+            Ready to see yourself through their eyes?
+          </h2>
+          
+          <!-- Description -->
+          <p 
+            class="text-xl text-white/90 max-w-2xl mx-auto"
+            style="line-height: 1.75;"
+          >
+            Start your discovery now. No signup required.
+          </p>
+          
+          <!-- CTA Button -->
+          <div style="display: flex; flex-direction: column; gap: var(--element-spacing);">
+            <Button 
+              variant="light" 
+              size="lg" 
+              class="text-lg" 
+              @click="goToLogin"
+              aria-describedby="final-cta-description"
+            >
+              Create Your AI Mirror (Free)
+            </Button>
+            
+            <!-- Screen Reader Description -->
+            <div class="sr-only">
+              <div id="final-cta-description">Start creating your AI persona for free, no signup required</div>
             </div>
             
-            <!-- Primary CTA -->
-            <div style="display: flex; flex-direction: column; gap: var(--subsection-spacing);">
-              <h3 class="text-3xl md:text-4xl font-bold text-white">
-                Ready to see yourself through <span class="text-gradient">their eyes</span>?
-              </h3>
-              
-              <div class="flex flex-col sm:flex-row items-center justify-center" style="gap: var(--element-spacing);">
-                <!-- 30-Year Architect: CTA Consistency - Unified Core Action -->
-                <Button 
-                  size="lg" 
-                  class="text-lg px-12 py-4 bg-gradient-to-r from-indigo-500 to-purple-600 hover:from-indigo-600 hover:to-purple-700 shadow-lg hover:shadow-xl hover:shadow-purple-500/25 transform hover:scale-105 transition-all duration-300" 
-                  @click="goToLogin"
-                  aria-describedby="primary-cta-description"
-                >
-                  <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"/>
-                  </svg>
-                  Create Your Mirror
-                </Button>
-                
-                <!-- Secondary CTA (Prismic: Limited Secondary Options) -->
-                <Button 
-                  variant="ghost" 
-                  size="lg" 
-                  class="text-lg px-8 py-4" 
-                  @click="showLiveDemo"
-                  aria-describedby="secondary-cta-description"
-                >
-                  <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/>
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"/>
-                  </svg>
-                  See Live Demo
-                </Button>
-              </div>
-              
-              <!-- CTA Descriptions for Screen Readers -->
-              <div class="sr-only">
-                <div id="primary-cta-description">Start creating your AI persona by signing up with Google</div>
-                <div id="secondary-cta-description">Watch a live demonstration of the persona creation process</div>
-              </div>
-              
-              <!-- Trust Signals (Centered & Balanced) -->
-              <div class="flex flex-wrap items-center justify-center text-xs text-muted" style="gap: var(--element-spacing); margin-top: var(--element-spacing);">
-                <div class="flex items-center" style="gap: var(--text-spacing);">
-                  <!-- KickoffLabs Compliance: Replaced green with indigo -->
-                <svg class="w-4 h-4 text-indigo-400" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true">
-                    <path d="M12 2l2.09 6.26L20 10l-5.91 1.74L12 22l-2.09-6.26L4 14l5.91-1.74L12 2z"/>
-                  </svg>
-                  <span>Free to start</span>
-                </div>
-                <div class="flex items-center" style="gap: var(--text-spacing);">
-                  <!-- KickoffLabs Compliance: Replaced blue with purple -->
-                <svg class="w-4 h-4 text-purple-400" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true">
-                    <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"/>
-                  </svg>
-                  <span>Privacy protected</span>
-                </div>
-                <div class="flex items-center" style="gap: var(--text-spacing);">
-                  <svg class="w-4 h-4 text-purple-400" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true">
-                    <path d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm-5 14H7v-2h7v2zm3-4H7v-2h10v2zm0-4H7V7h10v2z"/>
-                  </svg>
-                  <span>No spam, ever</span>
-                </div>
-              </div>
+            <!-- Trust Signals -->
+            <div 
+              class="flex items-center justify-center text-sm text-white/80" 
+              style="gap: var(--card-spacing); margin-top: var(--element-spacing);"
+              role="group"
+              aria-label="Trust signals"
+            >
+              <span>Free to start</span>
+              <span>|</span>
+              <span>Anonymous feedback guaranteed</span>
             </div>
           </div>
         </div>
@@ -783,12 +785,16 @@ const router = useRouter()
 // Interactive cursor tracking for Akashic Flow animation
 const heroSectionRef = ref<HTMLElement | null>(null)
 const interactiveBgRef = ref<HTMLElement | null>(null)
+const mirrorEffectRef = ref<HTMLElement | null>(null)
 const cursorX = ref(0.5) // Normalized 0-1
 const cursorY = ref(0.5)
 const cursorProximity = ref(0.5) // Distance from center (0-1)
+const mirrorDistortion = ref(0) // Mirror distortion intensity (0-1)
 
 let rafId: number | null = null
 let isTracking = false
+let lastCursorX = 0.5
+let lastCursorY = 0.5
 
 // Throttled update function using requestAnimationFrame (60fps)
 const updateCursorPosition = () => {
@@ -802,13 +808,59 @@ const updateCursorPosition = () => {
   )
   cursorProximity.value = Math.min(distance * 2, 1) // Normalize to 0-1
   
-  // Apply CSS custom properties
+  // Calculate cursor movement speed for mirror distortion
+  const movementX = Math.abs(cursorX.value - lastCursorX)
+  const movementY = Math.abs(cursorY.value - lastCursorY)
+  const movementSpeed = Math.sqrt(movementX * movementX + movementY * movementY)
+  
+  // Update mirror distortion based on movement speed
+  const newDistortion = Math.min(movementSpeed * 12, 1)
+  if (newDistortion > mirrorDistortion.value) {
+    mirrorDistortion.value = newDistortion
+  }
+  
+  // Apply CSS custom properties for Akashic Flow
   interactiveBgRef.value.style.setProperty('--cursor-x', cursorX.value.toString())
   interactiveBgRef.value.style.setProperty('--cursor-y', cursorY.value.toString())
   interactiveBgRef.value.style.setProperty('--cursor-proximity', cursorProximity.value.toString())
   
+  // Apply CSS custom properties for Mirror Effect
+  if (mirrorEffectRef.value) {
+    mirrorEffectRef.value.style.setProperty('--mirror-x', cursorX.value.toString())
+    mirrorEffectRef.value.style.setProperty('--mirror-y', cursorY.value.toString())
+    mirrorEffectRef.value.style.setProperty('--mirror-distortion', mirrorDistortion.value.toString())
+    
+    // Start continuous animation loop if not already running
+    if (mirrorAnimationId === null && mirrorDistortion.value > 0.01) {
+      mirrorAnimationId = requestAnimationFrame(animateMirrorDistortion)
+    }
+  }
+  
+  lastCursorX = cursorX.value
+  lastCursorY = cursorY.value
+  
   isTracking = false
   rafId = null
+}
+
+// Continuous animation loop for mirror distortion decay
+let mirrorAnimationId: number | null = null
+
+const animateMirrorDistortion = () => {
+  if (mirrorEffectRef.value) {
+    // Decay distortion over time for smooth fade-out
+    if (mirrorDistortion.value > 0.01) {
+      mirrorDistortion.value *= 0.96
+      mirrorEffectRef.value.style.setProperty('--mirror-distortion', mirrorDistortion.value.toString())
+      mirrorAnimationId = requestAnimationFrame(animateMirrorDistortion)
+    } else {
+      mirrorDistortion.value = 0
+      if (mirrorEffectRef.value) {
+        mirrorEffectRef.value.style.setProperty('--mirror-distortion', '0')
+      }
+      mirrorAnimationId = null
+    }
+  }
 }
 
 // Mouse move handler
@@ -849,8 +901,18 @@ const handleMouseLeave = () => {
   cursorX.value = 0.5
   cursorY.value = 0.5
   cursorProximity.value = 0
+  mirrorDistortion.value = 0
+  lastCursorX = 0.5
+  lastCursorY = 0.5
+  
   if (interactiveBgRef.value) {
     updateCursorPosition()
+  }
+  
+  if (mirrorEffectRef.value) {
+    mirrorEffectRef.value.style.setProperty('--mirror-x', '0.5')
+    mirrorEffectRef.value.style.setProperty('--mirror-y', '0.5')
+    mirrorEffectRef.value.style.setProperty('--mirror-distortion', '0')
   }
 }
 
@@ -870,6 +932,9 @@ onUnmounted(() => {
   }
   if (rafId !== null) {
     cancelAnimationFrame(rafId)
+  }
+  if (mirrorAnimationId !== null) {
+    cancelAnimationFrame(mirrorAnimationId)
   }
 })
 

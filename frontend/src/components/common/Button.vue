@@ -46,7 +46,7 @@
 
 <script setup lang="ts">
 interface Props {
-  variant?: 'primary' | 'secondary' | 'ghost'
+  variant?: 'primary' | 'secondary' | 'ghost' | 'light'
   size?: 'sm' | 'md' | 'lg'
   type?: 'button' | 'submit' | 'reset'
   disabled?: boolean
@@ -69,6 +69,7 @@ const variantClass: Record<Props['variant'] & string, string> = {
   primary: 'btn-primary',
   secondary: 'btn-secondary',
   ghost: 'btn-ghost',
+  light: 'btn-light',
 }
 
 // KickoffLabs Compliance: 4-Point Grid System - All spacing must be multiples of 4px
