@@ -1,8 +1,26 @@
-# Project Plan: Persona AI
+---
+title: Re:MirAI Project Plan
+description: Project goals, target audience, core features, and roadmap
+version: 1.0.0
+last_updated: 2025-11-18
+status: active
+audience: all
+---
+
+# Project Plan: Re:MirAI
 
 ## 1. Project Overview
 
-This document outlines the project plan for "Persona AI," a web application designed to create a unique AI chatbot persona for a user, based on collective feedback from their friends. The core idea is to answer the question, "How do others see me?" by generating an interactive AI that reflects an "objective" view of the user's personality. The platform will also include social and entertainment features to drive engagement.
+This document outlines the project plan for "Re:MirAI," a web application designed to create a unique AI chatbot persona for a user, based on collective feedback from their friends. The core idea is to answer the question, "How do others see me?" by generating an interactive AI that reflects an "objective" view of the user's personality. 
+
+**Design Philosophy (Blonix Branch Priority):**
+*   **Light Theme First:** Clean, bright interface optimized for daytime use and accessibility
+*   **Modern Aesthetics:** Fuchsia/Pink primary colors with Blue secondary for a fresh, contemporary feel
+*   **User-Centric:** Prioritizes ease of use, clarity, and professional appeal over immersive gaming aesthetics
+*   **Accessibility:** High contrast, readable typography (Inter + Poppins), and WCAG-compliant design
+*   **Broad Appeal:** Welcoming to users of all backgrounds, not requiring subculture knowledge
+
+The platform will also include social and entertainment features to drive engagement.
 
 ## 2. Goals
 
@@ -12,10 +30,16 @@ This document outlines the project plan for "Persona AI," a web application desi
     *   Establish a platform for unique AI-driven social interactions.
     *   Explore viable monetization strategies through premium features.
 
-## 3. Target Audience
+## 3. Target Audience (Blonix Branch Priority)
 
-*   **Primary:** Teenagers and young adults (10s-20s) who are active on social media and interested in personality trends (like MBTI, horoscopes, etc.).
-*   **Secondary:** Writers, creators, and role-players looking for tools to build and define characters.
+*   **Primary:** General users (all ages) seeking self-discovery through AI-powered personality insights. The platform prioritizes:
+    *   **Accessibility:** Light theme with high contrast for optimal readability
+    *   **User-friendliness:** Clean, modern interface that doesn't require gaming or subculture knowledge
+    *   **Professional appeal:** Suitable for both personal use and professional self-reflection
+    *   **Broad appeal:** Accessible to users who prefer bright, welcoming interfaces over dark, immersive themes
+*   **Secondary:** 
+    *   Teenagers and young adults (10s-20s) active on social media and interested in personality trends (MBTI, horoscopes, etc.)
+    *   Writers, creators, and role-players looking for tools to build and define characters
 
 ## 4. Core Features
 

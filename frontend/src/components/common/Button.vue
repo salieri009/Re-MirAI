@@ -71,10 +71,10 @@ const variantClass: Record<Props['variant'] & string, string> = {
   ghost: 'btn-ghost',
 }
 
-// 4-Point Grid System Applied (Designership.com)
+// KickoffLabs Compliance: 4-Point Grid System - All spacing must be multiples of 4px
 const sizeClass: Record<Props['size'] & string, string> = {
   sm: 'px-4 py-2 text-sm min-h-8',   // 16px, 8px, 32px height - all divisible by 4
-  md: 'px-6 py-3 min-h-12',          // 24px, 12px, 48px height - all divisible by 4
+  md: 'px-6 py-4 min-h-12',          // 24px, 16px, 48px height - all divisible by 4 (fixed: py-3 → py-4)
   lg: 'px-8 py-4 text-lg min-h-14',  // 32px, 16px, 56px height - all divisible by 4
 }
 </script>

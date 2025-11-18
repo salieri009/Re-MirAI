@@ -1,14 +1,23 @@
+---
+title: Design & Architecture
+description: Technical design and architecture for Re:MirAI with Blonix Branch priority
+version: 1.0.0
+last_updated: 2025-11-18
+status: active
+audience: developers
+---
+
 # Design & Architecture: Re:MirAI
 
-This document details the technical design and architecture for the "Re:MirAI" project, aligning with the subculture-focused experience design.
+This document details the technical design and architecture for the "Re:MirAI" project, **prioritizing the Blonix Branch design philosophy**: a modern, accessible, and user-friendly experience with a light theme optimized for general users (B2C service).
 
 ## 1. System Architecture
 
 The application follows a client-server model, designed to create an immersive and responsive experience.
 
-*   **Frontend (Client):** A modern web application built with Vue.js, responsible for rendering the mystical UI and handling user interactions.
-*   **Backend:** A serverless backend on AWS, orchestrating business logic, database interactions, and the AI "summoning" process.
-*   **Database:** A PostgreSQL database for storing all persistent data, from user profiles to summoned Personas.
+*   **Frontend (Client):** A modern web application built with Vue.js, responsible for rendering a clean, accessible UI with a light theme (Blonix Branch style) optimized for readability and user engagement.
+*   **Backend:** A serverless backend on AWS, orchestrating business logic, database interactions, and the AI persona creation process.
+*   **Database:** A PostgreSQL database for storing all persistent data, from user profiles to created Personas.
 *   **AI Services:** External AI services for Large Language Models (LLM) for chat and Image Generation for Persona illustrations.
 
 ```
@@ -34,17 +43,19 @@ The application follows a client-server model, designed to create an immersive a
 *   **Framework:** Vue 3 with the Composition API for robust state management.
 *   **Build Tool:** Vite for a fast and modern development workflow.
 *   **Language:** TypeScript for type safety and enhanced code quality.
-*   **Styling:** Tailwind CSS for rapid, utility-first UI development.
-*   **Animations:** GSAP (GreenSock Animation Platform) for creating the high-quality, smooth animations crucial for the "Summoning Scene" and other magical UI effects.
+*   **Styling:** Tailwind CSS for rapid, utility-first UI development with **Blonix Branch color system** (Fuchsia/Pink Primary, Blue Secondary, Light Theme).
+*   **Typography:** Inter + Poppins font family for a friendly, modern feel.
+*   **Theme:** Light theme with high contrast for optimal accessibility and readability.
+*   **Animations:** Subtle, performance-optimized animations that enhance usability without overwhelming users.
 
 ### Key Pages & Components:
-*   **`views/LandingPage.vue`:** The "Invitation" page, drawing users into the world with animated visuals of the Akashic Stream.
-*   **`views/auth/Auth.vue`:** Handles the primary Google Social Login flow.
-*   **`views/ritual/RitualHub.vue`:** The hub for "Preparing the Vessel," where users create and share their survey link and track incoming "Relational Crystals" (responses).
-*   **`views/summon/SummoningScene.vue`:** A full-screen, heavily animated component that handles the "gacha" moment of the Persona reveal.
-*   **`views/room/PersonaRoom.vue`:** The main user hub, displaying the summoned Persona and providing access to chat, bond level, and other features.
-*   **`components/chat/ChatWindow.vue`:** The immersive interface for interacting with the AI Persona.
-*   **`views/survey/SurveyPage.vue`:** The public-facing page where friends fill out the survey.
+*   **`views/LandingView.vue`:** The main entry point with a clean, modern design showcasing the value proposition with a light theme and Fuchsia/Pink accents.
+*   **`views/auth/LoginView.vue`:** Handles the primary Google Social Login flow with minimal friction and clear visual hierarchy.
+*   **`views/DashboardView.vue`:** The main user hub with state-driven UI, displaying persona status and contextual actions with high clarity.
+*   **`views/survey/SurveyView.vue`:** The public-facing page where friends provide anonymous feedback with an intuitive, accessible interface.
+*   **`views/summon/SummoningView.vue`:** The persona creation interface with clear progress indicators and user-friendly messaging.
+*   **`views/room/PersonaRoomView.vue`:** The persona interaction hub, displaying the created persona and providing access to chat and quest features.
+*   **`views/chat/ChatView.vue`:** The chat interface for interacting with the AI Persona, optimized for readability and ease of use.
 
 ## 3. Backend (AWS Chalice)
 
@@ -120,11 +131,11 @@ The schema is designed to support the new lore and features, such as social logi
 
 The core of the experience lies in translating survey data into a compelling AI Persona.
 
-*   **Persona Synthesis (The Summoning):** An asynchronous backend process will:
+*   **Persona Synthesis (Persona Creation):** An asynchronous backend process will:
     1.  Fetch all `ritual_responses` for a user's active ritual.
     2.  Aggregate the data, converting answers into the five core stats: `[Charisma]`, `[Intellect]`, `[Kindness]`, `[Instability]`, `[Spirit]`.
     3.  Determine **Rarity** based on data concentration, paradox bonuses (e.g., high Kindness and Instability), and the number of respondents.
-    4.  Determine the final **Archetype** based on the stat distribution and the user's chosen Summoning Mode.
+    4.  Determine the final **Archetype** based on the stat distribution and the user's chosen Persona Creation Mode (Auto or Custom).
     5.  Construct a detailed master prompt for the LLM.
 
 *   **Master Prompt Structure:**

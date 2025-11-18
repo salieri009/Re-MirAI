@@ -30,17 +30,33 @@
   --tight-spacing: var(--space-2);        /* 8px - closely related items */
   --micro-spacing: var(--space-1);        /* 4px - micro adjustments */
   
-  /* === COLOR SYSTEM === */
-  --color-bg-primary: #0a0e27;
-  --color-bg-secondary: #1a1f3a;
-  --color-bg-accent: #2d1b4e;
-  --color-text-primary: #ffffff;
-  --color-text-secondary: #a0aec0;
-  --color-text-muted: rgba(160, 174, 192, 0.8);
-  --color-accent: #6d28d9;
-  --color-accent-hover: #7c3aed;
-  --color-border: rgba(79, 70, 229, 0.5);
-  --color-border-light: rgba(79, 70, 229, 0.2);
+  /* === Z-INDEX SCALE === */
+  /* Increments of 10 for flexibility and future additions */
+  --z-base: 0;           /* Default stacking context */
+  --z-decorative: 1;     /* Background decorative elements (blur circles, patterns) */
+  --z-content: 10;        /* Main content containers */
+  --z-sticky: 20;        /* Sticky headers, navigation bars */
+  --z-dropdown: 30;      /* Dropdown menus, select options */
+  --z-overlay: 40;       /* Overlays, tooltips, popovers */
+  --z-modal: 50;         /* Modal dialogs */
+  --z-popover: 60;       /* Popovers over modals */
+  --z-toast: 70;         /* Toast notifications */
+  --z-maximum: 100;      /* Maximum z-index (rarely used, emergency override) */
+  
+  /* === COLOR SYSTEM (Figma Color Scheme 41: Festive Eve - Blue/Purple Gradient) === */
+  /* Ethereal, dreamy, perfect for AI persona creation */
+  --color-bg-primary: #f8fafc;        /* Light gray background */
+  --color-bg-secondary: #ffffff;      /* White card background */
+  --color-bg-accent: #eff6ff;         /* Light blue accent (from primary-50) */
+  --color-text-primary: #0f172a;      /* Dark gray text */
+  --color-text-secondary: #64748b;    /* Medium gray text */
+  --color-text-muted: rgba(100, 116, 139, 0.8);
+  --color-accent: #3b82f6;            /* Blue primary (start of gradient) */
+  --color-accent-hover: #2563eb;      /* Darker blue on hover */
+  --color-accent-secondary: #7c3aed;  /* Purple secondary (end of gradient) */
+  --color-accent-gradient: linear-gradient(135deg, #3b82f6 0%, #7c3aed 100%);
+  --color-border: rgba(226, 232, 240, 1);  /* Light border */
+  --color-border-light: rgba(226, 232, 240, 0.5);
   
   /* State Colors (Nielsen Heuristic: System Status Visibility) */
   --color-success: #10b981;
@@ -68,10 +84,16 @@
   box-sizing: border-box;
 }
 
+/* Webflow Typography: Base body styles for readability and accessibility */
 body {
   background: var(--color-bg-primary);
   color: var(--color-text-primary);
-  font-family: Inter, system-ui, sans-serif;
+  /* Webflow Typography: Single font family for consistency */
+  font-family: Inter, Poppins, system-ui, sans-serif;
+  /* Webflow Typography: Minimum 16px for body text (WCAG AA) */
+  font-size: 1rem; /* 16px */
+  /* Webflow Typography: Comfortable line-height for body text */
+  line-height: 1.5;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
@@ -81,8 +103,9 @@ body {
 }
 
 /* Button Components */
+/* KickoffLabs Compliance: 4px grid system - padding must be multiple of 4px */
 .btn {
-  padding: 0.75rem 1.5rem;
+  padding: 0.5rem 1.5rem; /* 8px 24px - both multiples of 4px */
   border-radius: 0.5rem;
   font-weight: 500;
   transition: all 0.2s;
@@ -92,16 +115,18 @@ body {
 
 .btn:focus {
   outline: none;
-  box-shadow: 0 0 0 3px rgba(79, 70, 229, 0.5);
+  box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.5);  /* Blue focus ring (Figma Festive Eve) */
 }
 
+/* Figma Color Scheme 41: Festive Eve - Blue to Purple gradient buttons */
 .btn-primary {
-  background: #4f46e5;
+  background: linear-gradient(135deg, #3b82f6 0%, #7c3aed 100%);
   color: white;
+  border: none;
 }
 
 .btn-primary:hover {
-  background: #4338ca;
+  background: linear-gradient(135deg, #2563eb 0%, #6d28d9 100%);
 }
 
 .btn-secondary {
@@ -113,35 +138,40 @@ body {
   background: var(--color-accent-hover);
 }
 
+/* Figma Color Scheme 41: Festive Eve - Blue border ghost button */
 .btn-ghost {
   background: transparent;
-  border: 2px solid #4f46e5;
-  color: #8190ff;
+  border: 2px solid #3b82f6;  /* Blue border */
+  color: #3b82f6;
 }
 
 .btn-ghost:hover {
-  background: rgba(79, 70, 229, 0.1);
+  background: rgba(59, 130, 246, 0.1);  /* Light blue background */
 }
 
-/* Card Component */
+/* Card Component (Blonix: Light Theme) */
 .card {
-  background: rgba(26, 31, 58, 0.5);
-  -webkit-backdrop-filter: blur(8px);
-  backdrop-filter: blur(8px);
+  background: var(--color-bg-secondary);  /* White background */
   border: 1px solid var(--color-border);
   border-radius: 0.75rem;
   padding: 1.5rem;
-  box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06);
 }
 
 /* Input Component */
+/* KickoffLabs Compliance: 4px grid system - padding must be multiple of 4px */
+/* Webflow Typography: Minimum 16px font size for readability */
 .input {
   width: 100%;
-  padding: 0.75rem 1rem;
+  padding: 0.5rem 1rem; /* 8px 16px - both multiples of 4px */
   border-radius: 0.5rem;
-  background: rgba(10, 14, 39, 0.5);
+  background: var(--color-bg-secondary);  /* White background */
   border: 1px solid var(--color-border);
   color: var(--color-text-primary);
+  /* Webflow Typography: Minimum font size for accessibility */
+  font-size: 1rem; /* 16px */
+  /* Webflow Typography: Comfortable line-height */
+  line-height: 1.5;
   transition: all 0.2s;
 }
 
@@ -151,36 +181,47 @@ body {
 
 .input:focus {
   outline: none;
-  box-shadow: 0 0 0 3px rgba(79, 70, 229, 0.5);
+  box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.5);  /* Blue focus ring (Figma Festive Eve) */
   border-color: transparent;
 }
 
 /* Layout Components */
+/* KickoffLabs Compliance: Use CSS variables for consistent padding */
 .container-page {
   max-width: 80rem;
   margin: 0 auto;
-  padding: 2rem 1rem;
+  padding: var(--section-spacing) var(--container-padding); /* 48px 24px - both multiples of 4px */
 }
 
-/* Text Styles */
+/* Webflow Typography: Distinct font design for main message - High contrast gradient text */
+/* Figma Color Scheme 41: Festive Eve - Blue to Purple text gradient */
 .text-gradient {
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  background: linear-gradient(135deg, #3b82f6 0%, #7c3aed 100%);
   -webkit-background-clip: text;
   background-clip: text;
   color: transparent;
+  /* Webflow Typography: Strong font weight for emphasis */
+  font-weight: 700;
+  /* Webflow Typography: Tight letter-spacing for headlines */
+  letter-spacing: -0.02em;
 }
 
+/* Webflow Typography: Secondary text with appropriate contrast */
 .text-secondary {
   color: var(--color-text-secondary);
+  /* Webflow Typography: Maintain readable line-height */
+  line-height: 1.6;
 }
 
+/* Webflow Typography: Muted text for less important information */
 .text-muted {
   color: var(--color-text-muted);
+  line-height: 1.6;
 }
 
-/* Background Styles */
-.bg-akashic {
-  background: linear-gradient(180deg, var(--color-bg-primary) 0%, var(--color-bg-secondary) 50%, var(--color-bg-accent) 100%);
+/* Background Styles (Blonix: Light Theme) */
+.bg-primary {
+  background: var(--color-bg-primary);  /* Light gray solid background */
 }
 
 .bg-mystical {
@@ -188,7 +229,7 @@ body {
 }
 
 .bg-card {
-  background: rgba(26, 31, 58, 0.5);
+  background: var(--color-bg-secondary);  /* White card background */
 }
 
 /* Persona Rarity Styles */
@@ -213,8 +254,9 @@ body {
   background: rgba(10, 14, 39, 0.8);
 }
 
+/* Figma Color Scheme 41: Festive Eve - Blue to Purple progress gradient */
 .progress-mystical {
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  background: linear-gradient(135deg, #3b82f6 0%, #7c3aed 100%);
 }
 
 /* Glass Effect */

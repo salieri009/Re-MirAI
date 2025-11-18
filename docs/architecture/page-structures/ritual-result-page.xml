@@ -1,0 +1,140 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<page-structure>
+  <metadata>
+    <name>Ritual Result Page</name>
+    <route>/ritual/:ritualId/result</route>
+    <component>RitualResultView.vue</component>
+    <description>Displays the persona result after completing a survey ritual</description>
+  </metadata>
+
+  <design-principles>
+    <principle source="kickofflabs.com">
+      <name>Color Palette Limitation</name>
+      <compliance>Yes</compliance>
+      <details>Uses 1-2 colors: indigo/purple gradient for primary actions</details>
+    </principle>
+    <principle source="kickofflabs.com">
+      <name>Single Font Family</name>
+      <compliance>Yes</compliance>
+      <details>Uses Inter font family throughout</details>
+    </principle>
+    <principle source="kickofflabs.com">
+      <name>4px Grid System</name>
+      <compliance>Yes</compliance>
+      <details>All spacing uses 4px increments</details>
+    </principle>
+  </design-principles>
+
+  <color-palette>
+    <primary-cta>
+      <color>indigo-500 to purple-600 gradient</color>
+      <usage>Primary action buttons</usage>
+    </primary-cta>
+    <background>
+      <color>akashic gradient</color>
+      <usage>Page background</usage>
+    </background>
+  </color-palette>
+
+  <typography>
+    <font-family>Inter, system-ui, sans-serif</font-family>
+    <variations>
+      <variation>
+        <name>Page Title</name>
+        <weight>bold (700)</weight>
+        <size>text-3xl (30px)</size>
+        <effect>text-gradient</effect>
+      </variation>
+      <variation>
+        <name>Section Headings</name>
+        <weight>bold (700)</weight>
+        <size>text-2xl (24px)</size>
+      </variation>
+    </variations>
+  </typography>
+
+  <spacing-system>
+    <base-unit>4px</base-unit>
+    <usage>
+      <spacing>space-y-8 (32px) between major sections</spacing>
+      <spacing>mb-4 (16px) after title</spacing>
+      <spacing>mb-6 (24px) after description</spacing>
+      <spacing>gap-4 (16px) between action buttons</spacing>
+    </usage>
+  </spacing-system>
+
+  <layout-structure>
+    <container type="page">
+      <max-width>max-w-2xl</max-width>
+      <spacing>space-y-8</spacing>
+      
+      <header-card>
+        <type>card</type>
+        <alignment>text-center</alignment>
+        <title>Ritual Complete!</title>
+        <size>text-3xl</size>
+        <effect>text-gradient</effect>
+        <spacing-bottom>mb-4</spacing-bottom>
+        <description>Your perception has been sent to the vessel. Here's the result:</description>
+        <color>text-secondary</color>
+        <spacing-bottom>mb-6</spacing-bottom>
+      </header-card>
+      
+      <persona-card conditional="persona exists">
+        <type>card</type>
+        <component>PersonaCard</component>
+      </persona-card>
+      
+      <cta-card>
+        <type>card</type>
+        <alignment>text-center</alignment>
+        <spacing>space-y-6</spacing>
+        <title>You've helped summon their Persona.</title>
+        <size>text-2xl</size>
+        <weight>bold</weight>
+        <description>Now, it's your turn. Begin your own summoning ritual.</description>
+        <color>text-secondary</color>
+        
+        <actions>
+          <layout>flex gap-4 justify-center</layout>
+          <button type="primary" size="lg" text="Begin Your Ritual" />
+          <button type="ghost" size="lg" text="Sign In" />
+        </actions>
+      </cta-card>
+    </container>
+  </layout-structure>
+
+  <components>
+    <component name="Button" usage="Navigation actions">
+      <variants>primary, ghost</variants>
+      <sizes>lg</sizes>
+    </component>
+    <component name="PersonaCard" usage="Display summoned persona">
+      <size>default</size>
+    </component>
+  </components>
+
+  <states>
+    <state type="loading">
+      <display>Loading persona data</display>
+    </state>
+    <state type="ready">
+      <display>Persona card with CTA</display>
+    </state>
+  </states>
+
+  <accessibility>
+    <aria-labels>Buttons have descriptive labels</aria-labels>
+    <semantic-html>Uses proper heading hierarchy</semantic-html>
+  </accessibility>
+
+  <responsive-design>
+    <breakpoints>
+      <mobile>Default</mobile>
+    </breakpoints>
+    <adaptations>
+      <adaptation>Action buttons: stack on mobile, side-by-side on desktop</adaptation>
+    </adaptations>
+  </responsive-design>
+</page-structure>
+

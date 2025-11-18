@@ -19,9 +19,14 @@ html {
 
 body {
   min-height: 100vh;
-  line-height: 1.6;
-  font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Fira Sans', 'Droid Sans', 'Helvetica Neue', sans-serif;
+  /* Webflow Typography: Appropriate spacing - 1.5 for body text (comfortable readability) */
+  line-height: 1.5;
+  /* Webflow Typography: Single font family (Inter + Poppins) for consistency */
+  font-family: 'Inter', 'Poppins', system-ui, sans-serif;
+  /* Webflow Typography: Optimize legibility and rendering */
   text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  /* Webflow Typography: Minimum font size for readability (16px = 1rem) */
+  font-size: 1rem;
 }

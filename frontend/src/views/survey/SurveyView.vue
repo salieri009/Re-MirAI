@@ -4,17 +4,18 @@
       <LoadingSpinner size="lg" text="Loading survey..." />
     </div>
 
-    <div v-else-if="error" class="card bg-red-900 bg-opacity-20 border-red-500">
-      <p class="text-red-400">{{ error }}</p>
+    <!-- KickoffLabs Compliance: Replaced red with purple (error states use purple) -->
+    <div v-else-if="error" class="card bg-purple-900 bg-opacity-20 border-purple-500">
+      <p class="text-purple-400">{{ error }}</p>
     </div>
 
     <div v-else-if="questions.length > 0 && currentQuestion" class="max-w-2xl mx-auto space-y-8">
       <div class="card text-center">
-        <h1 class="text-3xl font-bold text-gradient mb-2">The Ritual</h1>
+        <h1 class="text-3xl font-bold text-gradient mb-2">Feedback Survey</h1>
         <p class="text-secondary">
-          You are contributing a perception for {{ creatorName }}'s summoning ritual.
+          You are contributing feedback for {{ creatorName }}'s persona creation.
         </p>
-        <p class="text-indigo-400 mt-2 font-medium">Complete the ritual to see the result!</p>
+        <p class="text-indigo-400 mt-2 font-medium">Complete the survey to see the result!</p>
       </div>
 
       <div class="card">

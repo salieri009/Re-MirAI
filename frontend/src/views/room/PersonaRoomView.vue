@@ -1,5 +1,5 @@
 <template>
-  <div class="min-h-screen bg-akashic" style="padding: var(--container-padding);">
+  <div class="min-h-screen bg-primary" style="padding: var(--container-padding);">
     <!-- Loading State (Nielsen: System Status Visibility) -->
     <div 
       v-if="isLoading" 
@@ -17,15 +17,19 @@
     </div>
 
     <!-- Error State (Nielsen: Error Recovery) -->
-    <div v-else-if="error" class="card border-red-500/50 bg-red-500/10" role="alert" aria-live="assertive">
+    <!-- KickoffLabs Compliance: Replaced red with purple (error states use purple with warning icon) -->
+    <div v-else-if="error" class="card border-purple-500/50 bg-purple-500/10" role="alert" aria-live="assertive">
       <div class="flex items-center" style="gap: var(--element-spacing);">
-        <div class="flex-shrink-0 text-red-400 text-xl" role="img" aria-label="Error">⚠️</div>
+        <!-- KickoffLabs Compliance: Replaced emoji with SVG icon -->
+        <svg class="flex-shrink-0 w-5 h-5 text-purple-400" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-label="Error" role="img">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
+        </svg>
         <div class="flex-1">
-          <h3 class="font-semibold text-red-300 mb-1">Unable to load persona room</h3>
-          <p class="text-red-400 text-sm">{{ error }}</p>
+          <h3 class="font-semibold text-purple-300 mb-1">Unable to load persona room</h3>
+          <p class="text-purple-400 text-sm">{{ error }}</p>
           <button 
             @click="handleRetry" 
-            class="mt-3 text-sm text-red-300 hover:text-red-200 underline focus:outline-none focus:ring-2 focus:ring-red-500"
+            class="mt-3 text-sm text-purple-300 hover:text-purple-200 underline focus:outline-none focus:ring-2 focus:ring-purple-500"
           >
             Try again
           </button>
@@ -110,8 +114,9 @@
               style="margin-top: var(--element-spacing); padding-top: var(--element-spacing);"
             >
               <div class="flex items-center" style="gap: var(--tight-spacing);">
+                <!-- KickoffLabs Compliance: Replaced green with indigo -->
                 <div 
-                  class="w-3 h-3 bg-green-400 rounded-full animate-pulse" 
+                  class="w-3 h-3 bg-indigo-400 rounded-full animate-pulse" 
                   role="img" 
                   aria-label="Online status"
                 ></div>
@@ -175,17 +180,18 @@
             </div>
             
             <!-- Success/Error Feedback -->
+            <!-- KickoffLabs Compliance: Replaced green/red with indigo/purple -->
             <div 
               v-if="shareMessage" 
               class="mt-4 p-3 rounded-lg"
-              :class="shareMessage.type === 'success' ? 'bg-green-500/20 border border-green-500/30' : 'bg-red-500/20 border border-red-500/30'"
+              :class="shareMessage.type === 'success' ? 'bg-indigo-500/20 border border-indigo-500/30' : 'bg-purple-500/20 border border-purple-500/30'"
               role="status"
               aria-live="polite"
             >
               <div class="flex items-center" style="gap: var(--tight-spacing);">
                 <div 
                   class="text-sm"
-                  :class="shareMessage.type === 'success' ? 'text-green-300' : 'text-red-300'"
+                  :class="shareMessage.type === 'success' ? 'text-indigo-300' : 'text-purple-300'"
                 >
                   {{ shareMessage.text }}
                 </div>
@@ -194,7 +200,10 @@
                   class="text-xs opacity-60 hover:opacity-100"
                   aria-label="Dismiss message"
                 >
-                  ✕
+                  <!-- KickoffLabs Compliance: Replaced emoji with SVG icon -->
+                  <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+                  </svg>
                 </button>
               </div>
             </div>
@@ -227,8 +236,9 @@
               <div
                 v-for="quest in activeQuests"
                 :key="quest.id"
+                <!-- KickoffLabs Compliance: Replaced green with indigo -->
                 class="quest-item rounded-lg border transition-colors duration-200"
-                :class="quest.status === 'completed' ? 'bg-green-500/10 border-green-500/30' : 'bg-slate-800/50 border-slate-700/50 hover:border-slate-600/50'"
+                :class="quest.status === 'completed' ? 'bg-indigo-500/10 border-indigo-500/30' : 'bg-slate-800/50 border-slate-700/50 hover:border-slate-600/50'"
                 style="padding: var(--tight-spacing);"
                 role="article"
                 :aria-labelledby="`quest-${quest.id}-title`"
@@ -238,17 +248,20 @@
                   <h3 
                     :id="`quest-${quest.id}-title`" 
                     class="font-semibold text-sm"
-                    :class="quest.status === 'completed' ? 'text-green-300' : 'text-white'"
+                    :class="quest.status === 'completed' ? 'text-indigo-300' : 'text-white'"
                   >
                     {{ quest.title }}
                   </h3>
                   <div 
                     v-if="quest.status === 'completed'" 
-                    class="text-green-400 text-xs font-medium"
+                    class="text-indigo-400 text-xs font-medium"
                     role="img"
                     aria-label="Completed"
                   >
-                    ✓
+                    <!-- KickoffLabs Compliance: Replaced emoji with SVG icon -->
+                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
+                    </svg>
                   </div>
                 </div>
                 
@@ -261,7 +274,10 @@
                 
                 <div class="flex items-center justify-between">
                   <div class="text-xs text-indigo-400">
-                    <span role="img" aria-label="Reward">🎁</span>
+                    <!-- KickoffLabs Compliance: Replaced emoji with SVG icon -->
+                    <svg class="w-4 h-4 inline" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-label="Reward" role="img">
+                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v13m0-13V6a2 2 0 112 2v2m0 0v5a2 2 0 11-2 0V8m0 0H9m3 0h3" />
+                    </svg>
                     {{ quest.reward.amount }} {{ quest.reward.type }}
                   </div>
                   
@@ -275,14 +291,18 @@
                   >
                     Complete
                   </Button>
-                  <span v-else class="text-xs text-green-300">Completed</span>
+                  <!-- KickoffLabs Compliance: Replaced green with indigo -->
+                  <span v-else class="text-xs text-indigo-300">Completed</span>
                 </div>
               </div>
             </div>
             
             <!-- Empty State -->
             <div v-else class="text-center text-secondary" style="padding: var(--subsection-spacing);">
-              <div class="text-4xl mb-2">🎯</div>
+              <!-- KickoffLabs Compliance: Replaced emoji with SVG icon -->
+              <svg class="w-16 h-16 mx-auto mb-2 text-indigo-400" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+              </svg>
               <p>All quests completed!</p>
               <p class="text-xs mt-1">Check back later for new challenges</p>
             </div>

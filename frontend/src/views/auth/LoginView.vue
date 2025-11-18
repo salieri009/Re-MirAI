@@ -1,10 +1,14 @@
 <template>
-  <div class="min-h-screen bg-akashic flex items-center justify-center">
+  <div class="min-h-screen bg-primary flex items-center justify-center">
     <div class="card max-w-md w-full mx-4 animate-slide-up">
       <div class="text-center space-y-6">
+        <!-- Logo (KickoffLabs Compliance: Center-top placement, appropriate size) -->
+        <div class="flex justify-center" style="margin-bottom: var(--card-spacing);">
+          <Logo size="lg" aria-context="Login Logo" />
+        </div>
         <h1 class="text-3xl font-bold text-gradient">Welcome to Re:MirAI</h1>
         <p class="text-secondary">
-          Sign in to begin your summoning ritual
+          Sign in to create your AI persona
         </p>
 
         <div class="space-y-4 mt-8">
@@ -28,8 +32,9 @@
           </p>
         </div>
 
-        <div v-if="error" class="mt-4 p-4 bg-red-900 bg-opacity-20 border border-red-500 rounded-lg">
-          <p class="text-red-400 text-sm">{{ error }}</p>
+        <!-- KickoffLabs Compliance: Replaced red with purple (error states use purple) -->
+        <div v-if="error" class="mt-4 p-4 bg-purple-900 bg-opacity-20 border border-purple-500 rounded-lg">
+          <p class="text-purple-400 text-sm">{{ error }}</p>
         </div>
       </div>
     </div>
@@ -41,6 +46,7 @@ import { ref } from 'vue'
 import { useRouter, useRoute } from 'vue-router'
 import { useAuthStore } from '@/stores/auth'
 import Button from '@/components/common/Button.vue'
+import Logo from '@/components/common/Logo.vue'
 
 const router = useRouter()
 const route = useRoute()

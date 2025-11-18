@@ -1,0 +1,252 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<page-structure>
+  <metadata>
+    <name>Landing Page</name>
+    <route>/</route>
+    <component>LandingView.vue</component>
+    <description>Main entry point for Re:MirAI - showcases value proposition and onboarding flow</description>
+  </metadata>
+
+  <design-principles>
+    <principle source="kickofflabs.com">
+      <name>Color Palette Limitation</name>
+      <compliance>Yes</compliance>
+      <details>Uses 1-2 primary colors (indigo/purple gradient) with one CTA color (indigo-500 to purple-600 gradient)</details>
+    </principle>
+    <principle source="kickofflabs.com">
+      <name>Single Font Family</name>
+      <compliance>Yes</compliance>
+      <details>Uses Inter font family throughout with variations (bold, semibold, regular) for hierarchy</details>
+    </principle>
+    <principle source="kickofflabs.com">
+      <name>4px Grid System</name>
+      <compliance>Yes</compliance>
+      <details>All spacing uses CSS variables based on 4px increments: --section-spacing (48px), --card-padding (24px), --element-spacing (16px), --text-spacing (8px), --micro-spacing (4px)</details>
+    </principle>
+    <principle source="kickofflabs.com">
+      <name>Consistent Padding</name>
+      <compliance>Yes</compliance>
+      <details>All sections use consistent padding via CSS variables, maintaining visual rhythm</details>
+    </principle>
+  </design-principles>
+
+  <color-palette>
+    <primary-cta>
+      <color>indigo-500 to purple-600 gradient</color>
+      <usage>Primary buttons, main CTAs ("Start Discovery", "Begin Your Discovery")</usage>
+      <hex-start>#6366f1</hex-start>
+      <hex-end>#9333ea</hex-end>
+    </primary-cta>
+    <complementary>
+      <color>indigo/purple/pink gradient accents</color>
+      <usage>Background gradients, decorative elements, hover states</usage>
+      <hex-values>#667eea, #764ba2, #ec4899</hex-values>
+    </complementary>
+    <background>
+      <color>akashic gradient (dark blue to purple)</color>
+      <usage>Page background, card backgrounds</usage>
+      <hex-values>#0a0e27, #1a1f3a, #2d1b4e</hex-values>
+    </background>
+    <text>
+      <primary>#ffffff</primary>
+      <secondary>#a0aec0</secondary>
+      <muted>rgba(160, 174, 192, 0.8)</muted>
+    </text>
+  </color-palette>
+
+  <typography>
+    <font-family>Inter, system-ui, sans-serif</font-family>
+    <variations>
+      <variation>
+        <name>Headings</name>
+        <weight>bold (700)</weight>
+        <sizes>text-4xl (36px), text-6xl (60px), text-7xl (72px)</sizes>
+      </variation>
+      <variation>
+        <name>Subheadings</name>
+        <weight>semibold (600)</weight>
+        <sizes>text-xl (20px), text-2xl (24px), text-3xl (30px)</sizes>
+      </variation>
+      <variation>
+        <name>Body</name>
+        <weight>regular (400)</weight>
+        <sizes>text-base (16px), text-lg (18px), text-xl (20px)</sizes>
+      </variation>
+      <variation>
+        <name>Small Text</name>
+        <weight>regular (400)</weight>
+        <sizes>text-sm (14px), text-xs (12px)</sizes>
+      </variation>
+    </variations>
+    <special-effects>
+      <effect>text-gradient (linear-gradient 135deg, #667eea to #764ba2)</effect>
+      <effect>shimmer-text animation for "True Self"</effect>
+    </special-effects>
+  </typography>
+
+  <spacing-system>
+    <base-unit>4px</base-unit>
+    <tokens>
+      <token name="--container-padding" value="24px" multiplier="6" />
+      <token name="--section-spacing" value="48px" multiplier="12" />
+      <token name="--subsection-spacing" value="32px" multiplier="8" />
+      <token name="--card-padding" value="24px" multiplier="6" />
+      <token name="--card-spacing" value="16px" multiplier="4" />
+      <token name="--element-spacing" value="16px" multiplier="4" />
+      <token name="--text-spacing" value="8px" multiplier="2" />
+      <token name="--tight-spacing" value="8px" multiplier="2" />
+      <token name="--micro-spacing" value="4px" multiplier="1" />
+    </tokens>
+  </spacing-system>
+
+  <layout-structure>
+    <section id="hero" type="full-width">
+      <container-type>container-page</container-type>
+      <padding>var(--container-padding)</padding>
+      <layout>grid lg:grid-cols-2</layout>
+      <gap>var(--section-spacing)</gap>
+      
+      <column id="content">
+        <alignment>center</alignment>
+        <spacing>var(--subsection-spacing)</spacing>
+        <elements>
+          <element type="logo">Re:MirAI (text-2xl, centered)</element>
+          <element type="headline">
+            <text>Discover Your True Self</text>
+            <size>text-4xl md:text-6xl lg:text-7xl</size>
+            <spacing-bottom>var(--element-spacing)</spacing-bottom>
+          </element>
+          <element type="description">
+            <text>AI Persona created from how your friends actually see you.</text>
+            <size>text-xl md:text-2xl</size>
+            <spacing-bottom>var(--element-spacing)</spacing-bottom>
+          </element>
+          <element type="cta-group">
+            <layout>flex flex-col sm:flex-row justify-center</layout>
+            <gap>var(--element-spacing)</gap>
+            <buttons>
+              <button type="primary" text="Start Discovery" size="lg" />
+              <button type="ghost" text="See How" size="lg" />
+            </buttons>
+          </element>
+          <element type="trust-indicators">
+            <layout>flex items-center justify-center</layout>
+            <gap>var(--card-spacing)</gap>
+            <items>Free to start, Privacy protected</items>
+          </element>
+        </elements>
+      </column>
+      
+      <column id="visual">
+        <alignment>center</alignment>
+        <element type="persona-card-mockup">
+          <size>max-w-md lg:max-w-lg</size>
+          <spacing>var(--card-padding)</spacing>
+        </element>
+      </column>
+    </section>
+
+    <section id="how-it-works" type="full-width">
+      <background>gradient from-transparent via-indigo-900/5 to-purple-900/10</background>
+      <padding>var(--section-spacing) 0</padding>
+      <container-type>container-page</container-type>
+      
+      <header>
+        <spacing-bottom>calc(var(--section-spacing) * 1.5)</spacing-bottom>
+        <elements>
+          <badge>text-indigo-300, bg-indigo-500/20</badge>
+          <headline>Stop Guessing. Start Knowing.</headline>
+          <description>While personality tests tell you what you think about yourself, Re:MirAI reveals how your friends actually see you.</description>
+          <trust-features>Quick setup, Anonymous feedback, AI-powered insights</trust-features>
+        </elements>
+      </header>
+      
+      <process-flow>
+        <layout>grid lg:grid-cols-3</layout>
+        <gap>var(--card-spacing)</gap>
+        <steps>
+          <step number="1" color="indigo" icon="IconMirror">
+            <title>The Mirror Setup</title>
+            <description>Create and share your survey</description>
+            <padding>var(--card-padding)</padding>
+          </step>
+          <step number="2" color="purple" icon="IconChat">
+            <title>The Truth Unveiled</title>
+            <description>Real perceptions, raw insights</description>
+            <padding>var(--card-padding)</padding>
+          </step>
+          <step number="3" color="pink" icon="IconRobot">
+            <title>Your AI Twin</title>
+            <description>AI-powered personality mirror</description>
+            <padding>var(--card-padding)</padding>
+          </step>
+        </steps>
+      </process-flow>
+      
+      <value-proposition>
+        <layout>grid md:grid-cols-2</layout>
+        <padding>var(--subsection-spacing)</padding>
+        <sections>
+          <section type="problem">
+            <title>The Problem with Self-Assessment</title>
+            <items>MBTI Tests, Personality Apps, Asking Friends Directly</items>
+          </section>
+          <section type="solution">
+            <title>The Re:MirAI Advantage</title>
+            <items>Anonymous Feedback, AI-Powered Synthesis, Interactive AI Persona</items>
+          </section>
+        </sections>
+      </value-proposition>
+      
+      <cta-section>
+        <spacing-top>var(--section-spacing)</spacing-top>
+        <elements>
+          <urgency-badge>Free during early access</urgency-badge>
+          <headline>Ready to see yourself through their eyes?</headline>
+          <buttons>
+            <button type="primary" text="Begin Your Discovery" size="lg" />
+            <button type="ghost" text="See Live Demo" size="lg" />
+          </buttons>
+          <trust-signals>Free to start, Privacy protected, No spam</trust-signals>
+        </elements>
+      </cta-section>
+    </section>
+  </layout-structure>
+
+  <components>
+    <component name="Button" usage="Primary CTAs, secondary actions">
+      <variants>primary, ghost</variants>
+      <sizes>sm, md, lg</sizes>
+      <spacing>4px grid compliant (px-4 py-2, px-6 py-3, px-8 py-4)</spacing>
+    </component>
+    <component name="PersonaCard" usage="Hero visual mockup">
+      <size>max-w-md lg:max-w-lg</size>
+      <spacing>var(--card-padding)</spacing>
+    </component>
+    <component name="IconMirror" usage="Step 1 visual" />
+    <component name="IconChat" usage="Step 2 visual" />
+    <component name="IconRobot" usage="Step 3 visual" />
+  </components>
+
+  <accessibility>
+    <aria-labels>All interactive elements have aria-labels</aria-labels>
+    <semantic-html>Uses semantic HTML (section, header, nav, main)</semantic-html>
+    <screen-reader>sr-only class for descriptive text</screen-reader>
+    <focus-states>All interactive elements have focus:ring-4 focus:ring-primary/30</focus-states>
+  </accessibility>
+
+  <responsive-design>
+    <breakpoints>
+      <mobile>Default (mobile-first)</mobile>
+      <tablet>md: (768px+)</tablet>
+      <desktop>lg: (1024px+)</desktop>
+    </breakpoints>
+    <adaptations>
+      <adaptation>Hero section: single column on mobile, two columns on desktop</adaptation>
+      <adaptation>Process flow: single column on mobile, three columns on desktop</adaptation>
+      <adaptation>Font sizes: scale down on mobile (text-4xl → text-6xl → text-7xl)</adaptation>
+      <adaptation>Button layout: column on mobile, row on desktop</adaptation>
+    </adaptations>
+  </responsive-design>
+</page-structure>
+

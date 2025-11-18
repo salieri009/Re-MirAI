@@ -1,5 +1,5 @@
 <template>
-  <div class="min-h-screen bg-akashic">
+  <div class="min-h-screen bg-primary">
     <!-- Hero Section (Nielsen: Aesthetic & Minimalist Design) -->
     <section 
       class="relative overflow-hidden min-h-screen flex items-center" 
@@ -7,32 +7,35 @@
       aria-label="Welcome to Re:MirAI"
     >
       <!-- Background Visual Elements -->
-      <div class="absolute inset-0 bg-gradient-to-br from-indigo-900/20 via-purple-900/20 to-pink-900/20"></div>
-      <div class="absolute top-20 left-10 w-32 h-32 bg-indigo-500/10 rounded-full blur-3xl animate-pulse" aria-hidden="true"></div>
-      <div class="absolute bottom-20 right-10 w-48 h-48 bg-purple-500/10 rounded-full blur-3xl animate-pulse" style="animation-delay: 1s;" aria-hidden="true"></div>
+      <!-- Figma Color Scheme 41: Festive Eve - Blue/Purple gradient background -->
+      <div class="absolute inset-0 bg-gradient-to-br from-primary-50/50 via-primary-100/30 to-secondary-50/50"></div>
+      <div class="absolute top-20 left-10 w-32 h-32 bg-primary-400/10 rounded-full blur-3xl animate-pulse" aria-hidden="true"></div>
+      <div class="absolute bottom-20 right-10 w-48 h-48 bg-secondary-400/10 rounded-full blur-3xl animate-pulse" style="animation-delay: 1s;" aria-hidden="true"></div>
       
-      <div class="container-page relative z-10" style="padding: var(--container-padding);">
+      <!-- KickoffLabs Compliance: Use CSS variable for z-index -->
+      <div class="container-page relative" style="padding: var(--container-padding); z-index: var(--z-content);">
         <div class="grid lg:grid-cols-2 items-center" style="gap: var(--section-spacing);">
           <!-- Content Column (Nielsen: Consistency and Standards) -->
           <div 
             class="text-center animate-fade-in" 
             style="display: flex; flex-direction: column; gap: var(--subsection-spacing);"
           >
-            <!-- Company Logo/Brand (Centered for consistency) -->
+            <!-- Company Logo/Brand (KickoffLabs Compliance: Appropriate size, centered placement) -->
             <div class="flex justify-center">
-              <div class="text-2xl font-bold text-gradient" role="img" aria-label="Re:MirAI Logo">Re:MirAI</div>
+              <div class="text-3xl md:text-4xl font-bold text-gradient" role="img" aria-label="Re:MirAI Logo">Re:MirAI</div>
             </div>
             
-            <!-- Main Headline (Nielsen: Match system and real world) -->
-            <h1 class="text-4xl md:text-6xl lg:text-7xl font-bold text-white leading-tight">
+            <!-- Main Headline (Webflow Typography: Distinct font design, large, high-contrast) -->
+            <h1 class="text-4xl md:text-6xl lg:text-7xl font-bold text-white leading-tight tracking-tight">
               Discover Your
               <span class="text-gradient block shimmer-text">True Self</span>
             </h1>
             
-            <!-- Description (Nielsen: Help users understand) -->
+            <!-- Description (Webflow Typography: Appropriate spacing, readable size) -->
             <p 
-              class="text-xl md:text-2xl text-secondary max-w-lg mx-auto"
+              class="text-xl md:text-2xl text-secondary max-w-lg mx-auto leading-relaxed"
               role="doc-subtitle"
+              style="line-height: 1.6;"
             >
               AI Persona created from how your friends actually see you.
             </p>
@@ -77,13 +80,15 @@
               aria-label="Trust indicators"
             >
               <div class="flex items-center" style="gap: var(--text-spacing);">
-                <svg class="w-4 h-4 text-green-400" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                <!-- KickoffLabs Compliance: Replaced green with indigo -->
+                <svg class="w-4 h-4 text-indigo-400" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true">
                   <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"/>
                 </svg>
                 <span>Free to start</span>
               </div>
               <div class="flex items-center" style="gap: var(--text-spacing);">
-                <svg class="w-4 h-4 text-blue-400" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                <!-- KickoffLabs Compliance: Replaced blue with purple -->
+                <svg class="w-4 h-4 text-purple-400" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true">
                   <path d="M12 1L3 5v6c0 5.55 3.84 10.74 9 12 5.16-1.26 9-6.45 9-12V5l-9-4z"/>
                 </svg>
                 <span>Privacy protected</span>
@@ -96,7 +101,8 @@
             <div class="relative mx-auto max-w-md lg:max-w-lg">
               <!-- Main Persona Card Mockup -->
               <div class="card relative transform rotate-3 hover:rotate-0 transition-transform duration-500">
-                <div class="aspect-[3/4] bg-gradient-to-br from-indigo-600 via-purple-600 to-pink-600 rounded-xl p-6 text-white">
+                <!-- Figma Festive Eve: Blue to Purple gradient -->
+                <div class="aspect-[3/4] bg-gradient-primary rounded-xl p-6 text-white">
                   <div class="h-full flex flex-col justify-between">
                     <!-- Persona Image Placeholder -->
                     <div class="w-24 h-24 mx-auto bg-white/20 rounded-full flex items-center justify-center mb-4">
@@ -114,11 +120,11 @@
                       <!-- Stats Preview -->
                       <div class="grid grid-cols-2 gap-2 text-xs mt-4">
                         <div class="bg-white/10 rounded p-2">
-                          <div class="text-blue-200">Charisma</div>
+                          <div class="text-primary-200">Charisma</div>
                           <div class="font-bold">85</div>
                         </div>
                         <div class="bg-white/10 rounded p-2">
-                          <div class="text-green-200">Kindness</div>
+                          <div class="text-secondary-200">Kindness</div>
                           <div class="font-bold">92</div>
                         </div>
                       </div>
@@ -128,8 +134,8 @@
               </div>
               
               <!-- Decorative Elements (Minimal, Nielsen: Aesthetic & Minimalist) -->
-              <div class="absolute -top-4 -left-4 w-3 h-3 bg-indigo-400 rounded-full opacity-60 animate-pulse" aria-hidden="true"></div>
-              <div class="absolute -bottom-4 -right-4 w-2 h-2 bg-purple-400 rounded-full opacity-60 animate-pulse" style="animation-delay: 2s;" aria-hidden="true"></div>
+              <div class="absolute -top-4 -left-4 w-3 h-3 bg-primary-400 rounded-full opacity-60 animate-pulse" aria-hidden="true"></div>
+              <div class="absolute -bottom-4 -right-4 w-2 h-2 bg-secondary-400 rounded-full opacity-60 animate-pulse" style="animation-delay: 2s;" aria-hidden="true"></div>
             </div>
           </div>
         </div>
@@ -139,51 +145,70 @@
     <!-- How It Works Section (Prismic: Benefits over Features) -->
     <section 
       id="how-it-works" 
-      class="relative overflow-hidden bg-gradient-to-b from-transparent via-indigo-900/5 to-purple-900/10" 
+      class="relative overflow-hidden bg-gradient-to-b from-transparent via-primary-900/5 to-secondary-900/10" 
       style="padding: var(--section-spacing) 0;"
       role="region"
       aria-labelledby="how-it-works-heading"
     >
       <!-- Background Pattern -->
       <div class="absolute inset-0 opacity-30">
-        <div class="absolute top-10 left-1/4 w-64 h-64 bg-indigo-500/10 rounded-full blur-3xl animate-float"></div>
-        <div class="absolute bottom-20 right-1/4 w-96 h-96 bg-purple-500/10 rounded-full blur-3xl animate-float" style="animation-delay: 2s;"></div>
+        <div class="absolute top-10 left-1/4 w-64 h-64 bg-primary-500/10 rounded-full blur-3xl animate-float"></div>
+        <div class="absolute bottom-20 right-1/4 w-96 h-96 bg-secondary-500/10 rounded-full blur-3xl animate-float" style="animation-delay: 2s;"></div>
       </div>
       
-      <div class="container-page relative z-10" style="padding: 0 var(--container-padding);">
+      <!-- KickoffLabs Compliance: Use CSS variable for z-index -->
+      <div class="container-page relative" style="padding: 0 var(--container-padding); z-index: var(--z-content);">
         <!-- Section Header (Awebco: Compelling Value Proposition) -->
         <div 
           class="text-center" 
           style="display: flex; flex-direction: column; gap: var(--subsection-spacing); margin-bottom: calc(var(--section-spacing) * 1.5);"
         >
           <div class="space-y-4">
-            <div class="inline-block px-4 py-2 bg-indigo-500/20 rounded-full text-sm text-indigo-300 font-medium">
+            <div class="inline-block px-4 py-2 bg-primary-500/20 rounded-full text-sm text-primary-300 font-medium">
               The Mirror of Relationships
             </div>
-            <h2 id="how-it-works-heading" class="text-4xl md:text-6xl font-bold text-white leading-tight">
+            <!-- Webflow Typography: Use contrast to create hierarchy - H2 distinct from H1 -->
+            <h2 id="how-it-works-heading" class="text-4xl md:text-6xl font-bold text-white leading-tight tracking-tight">
               Stop Guessing.
               <span class="text-gradient block">Start Knowing.</span>
             </h2>
           </div>
           <div style="display: flex; justify-content: center; width: 100%;">
-            <p class="text-xl md:text-2xl text-secondary max-w-lg text-center leading-relaxed" style="text-align: center; margin: 0 auto;">
+            <!-- Webflow Typography: Appropriate spacing for body text -->
+            <p class="text-xl md:text-2xl text-secondary max-w-lg text-center leading-relaxed" style="text-align: center; margin: 0 auto; line-height: 1.6;">
               While personality tests tell you what <em>you</em> think about yourself, 
               <strong class="text-white">Re:MirAI reveals how your friends actually see you.</strong>
             </p>
           </div>
           
           <!-- Trust Features (Nielsen: Consistency and Standards) -->
+          <!-- KickoffLabs Compliance: All indicators use indigo/purple (2-color palette) -->
           <div class="flex flex-wrap justify-center items-center text-sm text-muted" style="gap: var(--subsection-spacing); margin-top: var(--subsection-spacing);">
             <div class="flex items-center" style="gap: var(--text-spacing);">
-              <div class="w-6 h-6 bg-green-400 rounded-full flex items-center justify-center text-xs font-bold text-black">✓</div>
+              <!-- KickoffLabs Compliance: Replaced emoji with SVG icon -->
+              <div class="w-6 h-6 bg-primary-400 rounded-full flex items-center justify-center">
+                <svg class="w-3 h-3 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M5 13l4 4L19 7" />
+                </svg>
+              </div>
               <span>Quick setup</span>
             </div>
             <div class="flex items-center" style="gap: var(--text-spacing);">
-              <div class="w-6 h-6 bg-blue-400 rounded-full flex items-center justify-center text-xs font-bold text-white">✓</div>
+              <!-- KickoffLabs Compliance: Replaced emoji with SVG icon -->
+              <div class="w-6 h-6 bg-secondary-400 rounded-full flex items-center justify-center">
+                <svg class="w-3 h-3 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M5 13l4 4L19 7" />
+                </svg>
+              </div>
               <span>Anonymous feedback</span>
             </div>
             <div class="flex items-center" style="gap: var(--text-spacing);">
-              <div class="w-6 h-6 bg-purple-400 rounded-full flex items-center justify-center text-xs font-bold text-white">✓</div>
+              <!-- KickoffLabs Compliance: Replaced emoji with SVG icon -->
+              <div class="w-6 h-6 bg-primary-500 rounded-full flex items-center justify-center">
+                <svg class="w-3 h-3 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M5 13l4 4L19 7" />
+                </svg>
+              </div>
               <span>AI-powered insights</span>
             </div>
           </div>
@@ -193,7 +218,7 @@
         <div class="relative">
           <!-- Differentiation Statement (Nielsen: Consistency and Standards) -->
           <div class="text-center" style="margin-bottom: var(--section-spacing);">
-            <div class="inline-flex items-center bg-gradient-to-r from-indigo-500/20 to-purple-500/20 rounded-full text-indigo-300 text-sm font-medium" style="gap: var(--tight-spacing); padding: var(--element-spacing) var(--card-spacing); margin-bottom: var(--card-spacing);">
+            <div class="inline-flex items-center bg-gradient-to-r from-primary-500/20 to-secondary-500/20 rounded-full text-primary-300 text-sm font-medium" style="gap: var(--tight-spacing); padding: var(--element-spacing) var(--card-spacing); margin-bottom: var(--card-spacing);">
               <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/>
               </svg>
@@ -210,12 +235,14 @@
           <!-- Interactive Process Flow -->
           <div class="relative">
             <!-- Animated Connection Lines -->
-            <svg class="absolute inset-0 w-full h-full pointer-events-none hidden lg:block" style="z-index: 1;">
+            <!-- KickoffLabs Compliance: Use CSS variable for z-index consistency -->
+            <svg class="absolute inset-0 w-full h-full pointer-events-none hidden lg:block" style="z-index: var(--z-decorative);">
               <defs>
+                <!-- KickoffLabs Compliance: Consolidated pink to purple -->
                 <linearGradient id="connection-gradient" x1="0%" y1="0%" x2="100%" y2="0%">
                   <stop offset="0%" style="stop-color:#6366f1;stop-opacity:0.6" />
                   <stop offset="50%" style="stop-color:#a855f7;stop-opacity:0.8" />
-                  <stop offset="100%" style="stop-color:#ec4899;stop-opacity:0.6" />
+                  <stop offset="100%" style="stop-color:#9333ea;stop-opacity:0.6" />
                 </linearGradient>
               </defs>
               <path 
@@ -239,14 +266,15 @@
                 class="relative group" 
                 role="listitem"
               >
-                <div class="card demo-highlight bg-gradient-to-br from-indigo-500/10 via-purple-500/5 to-transparent border-indigo-500/30 hover:border-indigo-400/50 transition-all duration-500 hover:shadow-2xl hover:shadow-indigo-500/25" style="padding: var(--card-padding);">
+                <div class="card demo-highlight bg-gradient-to-br from-primary-500/10 via-secondary-500/5 to-transparent border-primary-500/30 hover:border-primary-400/50 transition-all duration-500 hover:shadow-2xl hover:shadow-primary-500/25" style="padding: var(--card-padding);">
                   <div class="text-center" style="display: flex; flex-direction: column; gap: var(--element-spacing);">
                     <!-- Step Number with Animation -->
                     <div class="relative">
-                      <div class="w-20 h-20 mx-auto bg-gradient-to-br from-indigo-500 to-indigo-600 rounded-full flex items-center justify-center text-2xl font-bold text-white shadow-xl group-hover:scale-110 transition-transform duration-300">
-                        <span class="relative z-10">1</span>
+                      <div class="w-20 h-20 mx-auto bg-gradient-primary rounded-full flex items-center justify-center text-2xl font-bold text-white shadow-xl group-hover:scale-110 transition-transform duration-300">
+                        <!-- KickoffLabs Compliance: Use CSS variable for z-index -->
+                        <span class="relative" style="z-index: var(--z-content);">1</span>
                       </div>
-                      <div class="absolute inset-0 w-20 h-20 mx-auto bg-indigo-400 rounded-full animate-ping opacity-20"></div>
+                      <div class="absolute inset-0 w-20 h-20 mx-auto bg-primary-400 rounded-full animate-ping opacity-20"></div>
                     </div>
                     
                     <!-- Visual Metaphor (3D Icon) -->
@@ -257,7 +285,7 @@
                     <!-- Benefit-Focused Content (Nielsen: Consistency) -->
                     <div style="display: flex; flex-direction: column; gap: var(--tight-spacing);">
                       <h3 class="text-xl font-bold text-white">The Mirror Setup</h3>
-                      <p class="text-sm text-indigo-300 font-medium">Create and share your survey</p>
+                      <p class="text-sm text-primary-300 font-medium">Create and share your survey</p>
                       <p class="text-secondary leading-relaxed">
                         Create a personalized questionnaire and share it with friends. 
                         <strong class="text-white">They'll tell you truths you never knew.</strong>
@@ -265,15 +293,15 @@
                     </div>
                     
                     <!-- Micro-interaction (Aligned) -->
-                    <div class="border-t border-indigo-500/20" style="padding-top: var(--element-spacing);">
-                      <div class="text-xs text-indigo-400" style="display: flex; flex-direction: column; gap: var(--micro-spacing);">
+                    <div class="border-t border-primary-500/20" style="padding-top: var(--element-spacing);">
+                      <div class="text-xs text-primary-400" style="display: flex; flex-direction: column; gap: var(--micro-spacing);">
                         <div class="flex justify-between items-center">
                           <span>Process:</span>
                           <span class="font-medium">Simple & Fast</span>
                         </div>
                         <div class="flex justify-between items-center">
                           <span>Privacy:</span>
-                          <span class="font-medium text-green-300">100% Anonymous</span>
+                          <span class="font-medium text-secondary-300">100% Anonymous</span>
                         </div>
                       </div>
                     </div>
@@ -286,12 +314,14 @@
                 class="relative group" 
                 role="listitem"
               >
-                <div class="card demo-highlight bg-gradient-to-br from-purple-500/10 via-pink-500/5 to-transparent border-purple-500/30 hover:border-purple-400/50 transition-all duration-500 hover:shadow-2xl hover:shadow-purple-500/25" style="padding: var(--card-padding);">
+                <!-- KickoffLabs Compliance: Consolidated pink to purple -->
+                <div class="card demo-highlight bg-gradient-to-br from-purple-500/10 via-purple-500/5 to-transparent border-purple-500/30 hover:border-purple-400/50 transition-all duration-500 hover:shadow-2xl hover:shadow-purple-500/25" style="padding: var(--card-padding);">
                   <div class="text-center" style="display: flex; flex-direction: column; gap: var(--element-spacing);">
                     <!-- Step Number -->
                     <div class="relative">
-                      <div class="w-20 h-20 mx-auto bg-gradient-to-br from-purple-500 to-pink-600 rounded-full flex items-center justify-center text-2xl font-bold text-white shadow-xl group-hover:scale-110 transition-transform duration-300">
-                        <span class="relative z-10">2</span>
+                      <div class="w-20 h-20 mx-auto bg-gradient-to-br from-purple-500 to-purple-600 rounded-full flex items-center justify-center text-2xl font-bold text-white shadow-xl group-hover:scale-110 transition-transform duration-300">
+                        <!-- KickoffLabs Compliance: Use CSS variable for z-index -->
+                        <span class="relative" style="z-index: var(--z-content);">2</span>
                       </div>
                       <div class="absolute inset-0 w-20 h-20 mx-auto bg-purple-400 rounded-full animate-ping opacity-20"></div>
                     </div>
@@ -316,11 +346,13 @@
                       <div class="text-xs text-purple-400" style="display: flex; flex-direction: column; gap: var(--micro-spacing);">
                         <div class="flex justify-between items-center">
                           <span>Feedback Type:</span>
-                          <span class="font-medium text-green-300">Anonymous</span>
+                          <!-- KickoffLabs Compliance: Replaced green with indigo -->
+                          <span class="font-medium text-indigo-300">Anonymous</span>
                         </div>
                         <div class="flex justify-between items-center">
                           <span>Privacy:</span>
-                          <span class="font-medium text-blue-300">Protected</span>
+                          <!-- KickoffLabs Compliance: Replaced blue with purple -->
+                          <span class="font-medium text-purple-300">Protected</span>
                         </div>
                       </div>
                     </div>
@@ -333,14 +365,16 @@
                 class="relative group" 
                 role="listitem"
               >
-                <div class="card demo-highlight bg-gradient-to-br from-pink-500/10 via-rose-500/5 to-transparent border-pink-500/30 hover:border-pink-400/50 transition-all duration-500 hover:shadow-2xl hover:shadow-pink-500/25" style="padding: var(--card-padding);">
+                <!-- KickoffLabs Compliance: Consolidated pink to purple (2-color palette) -->
+                <div class="card demo-highlight bg-gradient-to-br from-purple-500/10 via-purple-500/5 to-transparent border-purple-500/30 hover:border-purple-400/50 transition-all duration-500 hover:shadow-2xl hover:shadow-purple-500/25" style="padding: var(--card-padding);">
                   <div class="text-center" style="display: flex; flex-direction: column; gap: var(--element-spacing);">
                     <!-- Step Number -->
                     <div class="relative">
-                      <div class="w-20 h-20 mx-auto bg-gradient-to-br from-pink-500 to-rose-600 rounded-full flex items-center justify-center text-2xl font-bold text-white shadow-xl group-hover:scale-110 transition-transform duration-300">
-                        <span class="relative z-10">3</span>
+                      <div class="w-20 h-20 mx-auto bg-gradient-to-br from-purple-500 to-purple-600 rounded-full flex items-center justify-center text-2xl font-bold text-white shadow-xl group-hover:scale-110 transition-transform duration-300">
+                        <!-- KickoffLabs Compliance: Use CSS variable for z-index -->
+                        <span class="relative" style="z-index: var(--z-content);">3</span>
                       </div>
-                      <div class="absolute inset-0 w-20 h-20 mx-auto bg-pink-400 rounded-full animate-ping opacity-20"></div>
+                      <div class="absolute inset-0 w-20 h-20 mx-auto bg-purple-400 rounded-full animate-ping opacity-20"></div>
                     </div>
                     
                     <!-- Transformation Visual (3D Icon) -->
@@ -351,7 +385,7 @@
                     <!-- The Payoff (Consistent Spacing) -->
                     <div style="display: flex; flex-direction: column; gap: var(--tight-spacing);">
                       <h3 class="text-xl font-bold text-white">Your AI Twin</h3>
-                      <p class="text-sm text-pink-300 font-medium">AI-powered personality mirror</p>
+                      <p class="text-sm text-purple-300 font-medium">AI-powered personality mirror</p>
                       <p class="text-secondary leading-relaxed">
                         Meet your digital reflection—an AI persona that thinks, talks, and reacts 
                         <strong class="text-white">exactly as your friends see you.</strong>
@@ -359,15 +393,15 @@
                     </div>
                     
                     <!-- Value Proposition (Aligned) -->
-                    <div class="border-t border-pink-500/20" style="padding-top: var(--element-spacing);">
-                      <div class="text-xs text-pink-400" style="display: flex; flex-direction: column; gap: var(--micro-spacing);">
+                    <div class="border-t border-purple-500/20" style="padding-top: var(--element-spacing);">
+                      <div class="text-xs text-purple-400" style="display: flex; flex-direction: column; gap: var(--micro-spacing);">
                         <div class="flex justify-between items-center">
                           <span>Interaction:</span>
-                          <span class="font-medium text-cyan-300">24/7 Available</span>
+                          <span class="font-medium text-indigo-300">24/7 Available</span>
                         </div>
                         <div class="flex justify-between items-center">
                           <span>Growth:</span>
-                          <span class="font-medium text-yellow-300">Evolves with you</span>
+                          <span class="font-medium text-purple-300">Evolves with you</span>
                         </div>
                       </div>
                     </div>
@@ -387,24 +421,40 @@
                   <div class="text-center" style="display: flex; flex-direction: column; gap: var(--element-spacing);">
                     <h3 class="text-2xl font-semibold text-white">The Problem with Self-Assessment</h3>
                     <div style="display: flex; flex-direction: column; gap: var(--tight-spacing);">
+                      <!-- KickoffLabs Compliance: Replaced red X marks with indigo/purple outline style -->
                       <div class="flex items-start space-x-3">
-                        <div class="w-6 h-6 bg-red-500 rounded-full flex items-center justify-center text-white text-xs font-bold mt-0.5">✕</div>
+                        <!-- KickoffLabs Compliance: Replaced emoji with SVG icon -->
+                        <div class="w-6 h-6 border-2 border-indigo-500/50 rounded-full flex items-center justify-center mt-0.5">
+                          <svg class="w-3 h-3 text-indigo-300" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+                          </svg>
+                        </div>
                         <div>
-                          <div class="text-red-300 font-medium">MBTI Tests</div>
+                          <div class="text-indigo-300 font-medium">MBTI Tests</div>
                           <div class="text-sm text-secondary">Only reflect your self-perception</div>
                         </div>
                       </div>
                       <div class="flex items-start space-x-3">
-                        <div class="w-6 h-6 bg-red-500 rounded-full flex items-center justify-center text-white text-xs font-bold mt-0.5">✕</div>
+                        <!-- KickoffLabs Compliance: Replaced emoji with SVG icon -->
+                        <div class="w-6 h-6 border-2 border-indigo-500/50 rounded-full flex items-center justify-center mt-0.5">
+                          <svg class="w-3 h-3 text-indigo-300" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+                          </svg>
+                        </div>
                         <div>
-                          <div class="text-red-300 font-medium">Personality Apps</div>
+                          <div class="text-indigo-300 font-medium">Personality Apps</div>
                           <div class="text-sm text-secondary">Generic, not personalized to you</div>
                         </div>
                       </div>
                       <div class="flex items-start space-x-3">
-                        <div class="w-6 h-6 bg-red-500 rounded-full flex items-center justify-center text-white text-xs font-bold mt-0.5">✕</div>
+                        <!-- KickoffLabs Compliance: Replaced emoji with SVG icon -->
+                        <div class="w-6 h-6 border-2 border-indigo-500/50 rounded-full flex items-center justify-center mt-0.5">
+                          <svg class="w-3 h-3 text-indigo-300" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+                          </svg>
+                        </div>
                         <div>
-                          <div class="text-red-300 font-medium">Asking Friends Directly</div>
+                          <div class="text-indigo-300 font-medium">Asking Friends Directly</div>
                           <div class="text-sm text-secondary">People rarely give honest feedback</div>
                         </div>
                       </div>
@@ -414,25 +464,41 @@
                   <!-- Solution Section (Centered Alignment) -->
                   <div class="text-center" style="display: flex; flex-direction: column; gap: var(--element-spacing);">
                     <h3 class="text-2xl font-semibold text-gradient">The Re:MirAI Advantage</h3>
+                    <!-- KickoffLabs Compliance: Replaced green checkmarks with indigo/purple -->
                     <div style="display: flex; flex-direction: column; gap: var(--tight-spacing);">
                       <div class="flex items-start space-x-3">
-                        <div class="w-6 h-6 bg-green-500 rounded-full flex items-center justify-center text-white text-xs font-bold mt-0.5">✓</div>
+                        <!-- KickoffLabs Compliance: Replaced emoji with SVG icon -->
+                        <div class="w-6 h-6 bg-indigo-500 rounded-full flex items-center justify-center mt-0.5">
+                          <svg class="w-3 h-3 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M5 13l4 4L19 7" />
+                          </svg>
+                        </div>
                         <div>
-                          <div class="text-green-300 font-medium">Anonymous Feedback</div>
+                          <div class="text-indigo-300 font-medium">Anonymous Feedback</div>
                           <div class="text-sm text-secondary">Friends share honest perceptions safely</div>
                         </div>
                       </div>
                       <div class="flex items-start space-x-3">
-                        <div class="w-6 h-6 bg-green-500 rounded-full flex items-center justify-center text-white text-xs font-bold mt-0.5">✓</div>
+                        <!-- KickoffLabs Compliance: Replaced emoji with SVG icon -->
+                        <div class="w-6 h-6 bg-purple-500 rounded-full flex items-center justify-center mt-0.5">
+                          <svg class="w-3 h-3 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M5 13l4 4L19 7" />
+                          </svg>
+                        </div>
                         <div>
-                          <div class="text-green-300 font-medium">AI-Powered Synthesis</div>
+                          <div class="text-purple-300 font-medium">AI-Powered Synthesis</div>
                           <div class="text-sm text-secondary">Advanced analysis of multiple perspectives</div>
                         </div>
                       </div>
                       <div class="flex items-start space-x-3">
-                        <div class="w-6 h-6 bg-green-500 rounded-full flex items-center justify-center text-white text-xs font-bold mt-0.5">✓</div>
+                        <!-- KickoffLabs Compliance: Replaced emoji with SVG icon -->
+                        <div class="w-6 h-6 bg-indigo-500 rounded-full flex items-center justify-center mt-0.5">
+                          <svg class="w-3 h-3 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M5 13l4 4L19 7" />
+                          </svg>
+                        </div>
                         <div>
-                          <div class="text-green-300 font-medium">Interactive AI Persona</div>
+                          <div class="text-indigo-300 font-medium">Interactive AI Persona</div>
                           <div class="text-sm text-secondary">Chat with your digital reflection</div>
                         </div>
                       </div>
@@ -442,7 +508,8 @@
               </div>
 
               <!-- Target Audience Connection (Concept: 10-20s Social Media Users) -->
-              <div class="bg-gradient-to-r from-purple-500/10 to-pink-500/10 rounded-2xl border border-purple-500/30" style="padding: var(--subsection-spacing);">
+              <!-- KickoffLabs Compliance: Consolidated pink to purple -->
+              <div class="bg-gradient-to-r from-purple-500/10 to-purple-500/10 rounded-2xl border border-purple-500/30" style="padding: var(--subsection-spacing);">
                 <div class="text-center" style="display: flex; flex-direction: column; gap: var(--card-spacing);">
                   <h3 class="text-2xl font-semibold text-white">Perfect for Gen Z & Millennials</h3>
                   <div style="display: flex; justify-content: center; width: 100%;">
@@ -461,7 +528,7 @@
                       <div class="text-xs text-muted whitespace-nowrap">Shareable Results</div>
                     </div>
                     <div class="text-center" style="display: flex; flex-direction: column; gap: var(--text-spacing); align-items: center;">
-                      <svg class="w-10 h-10 text-pink-300" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                      <svg class="w-10 h-10 text-purple-300" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z"/>
                       </svg>
                       <div class="text-xs text-muted whitespace-nowrap">Social Discussion</div>
@@ -481,7 +548,8 @@
         
         <!-- Value Proposition Section (Nielsen: Help users understand) -->
         <div class="relative" style="margin-top: var(--section-spacing);">
-          <div class="bg-gradient-to-r from-indigo-500/5 via-purple-500/10 to-pink-500/5 rounded-3xl border border-indigo-500/20" style="padding: var(--subsection-spacing);">
+          <!-- KickoffLabs Compliance: Consolidated pink to purple -->
+          <div class="bg-gradient-to-r from-indigo-500/5 via-purple-500/10 to-purple-500/5 rounded-3xl border border-indigo-500/20" style="padding: var(--subsection-spacing);">
             <div class="text-center" style="display: flex; flex-direction: column; gap: var(--subsection-spacing);">
               <h3 class="text-2xl md:text-3xl font-semibold text-white">
                 Discover insights you never knew about yourself
@@ -514,8 +582,9 @@
                 </div>
                 
                 <div class="text-center" style="display: flex; flex-direction: column; gap: var(--tight-spacing); align-items: center;">
-                  <div class="w-16 h-16 bg-pink-500/10 rounded-2xl flex items-center justify-center">
-                    <svg class="w-8 h-8 text-pink-300" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                  <!-- KickoffLabs Compliance: Consolidated pink to purple -->
+                  <div class="w-16 h-16 bg-purple-500/10 rounded-2xl flex items-center justify-center">
+                    <svg class="w-8 h-8 text-purple-300" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
                       <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z"/>
                     </svg>
                   </div>
@@ -531,8 +600,9 @@
         <div class="relative" style="margin-top: var(--section-spacing);">
           <div class="text-center" style="display: flex; flex-direction: column; gap: var(--subsection-spacing);">
             <!-- Urgency/Scarcity Element -->
-            <div class="inline-flex items-center rounded-full text-green-300 text-sm font-medium" style="gap: var(--element-spacing); padding: var(--element-spacing) var(--card-spacing); background-color: rgb(34, 197, 94, 0.2); margin: 0 auto;">
-              <div class="w-2 h-2 bg-green-400 rounded-full animate-pulse"></div>
+            <!-- KickoffLabs Compliance: Replaced green with indigo -->
+            <div class="inline-flex items-center rounded-full text-indigo-300 text-sm font-medium" style="gap: var(--element-spacing); padding: var(--element-spacing) var(--card-spacing); background-color: rgb(99, 102, 241, 0.2); margin: 0 auto;">
+              <div class="w-2 h-2 bg-indigo-400 rounded-full animate-pulse"></div>
               <span>Free during early access • Limited time</span>
             </div>
             
@@ -580,13 +650,15 @@
               <!-- Trust Signals (Centered & Balanced) -->
               <div class="flex flex-wrap items-center justify-center text-xs text-muted" style="gap: var(--element-spacing); margin-top: var(--element-spacing);">
                 <div class="flex items-center" style="gap: var(--text-spacing);">
-                  <svg class="w-4 h-4 text-green-400" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                  <!-- KickoffLabs Compliance: Replaced green with indigo -->
+                <svg class="w-4 h-4 text-indigo-400" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true">
                     <path d="M12 2l2.09 6.26L20 10l-5.91 1.74L12 22l-2.09-6.26L4 14l5.91-1.74L12 2z"/>
                   </svg>
                   <span>Free to start</span>
                 </div>
                 <div class="flex items-center" style="gap: var(--text-spacing);">
-                  <svg class="w-4 h-4 text-blue-400" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                  <!-- KickoffLabs Compliance: Replaced blue with purple -->
+                <svg class="w-4 h-4 text-purple-400" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true">
                     <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"/>
                   </svg>
                   <span>Privacy protected</span>

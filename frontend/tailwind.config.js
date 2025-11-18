@@ -7,26 +7,43 @@ export default {
   theme: {
     extend: {
       colors: {
-        // Mystical/Sci-fi theme colors
+        // Figma Color Scheme 41: Festive Eve - Blue/Purple Gradient (Ethereal & Dreamy)
+        // Perfect for AI persona creation: mysterious, magical, trustworthy
         primary: {
-          50: '#f0f4ff',
-          100: '#e0e9ff',
-          200: '#c7d6ff',
-          300: '#a4b8ff',
-          400: '#8190ff',
-          500: '#6366f1',
-          600: '#4f46e5',
-          700: '#4338ca',
-          800: '#3730a3',
-          900: '#312e81',
+          50: '#eff6ff',   // Lightest blue
+          100: '#dbeafe',
+          200: '#bfdbfe',
+          300: '#93c5fd',
+          400: '#60a5fa',
+          500: '#3b82f6',  // Main Primary (Blue) - Start of gradient
+          600: '#2563eb',
+          700: '#1d4ed8',
+          800: '#1e40af',
+          900: '#1e3a8a',  // Darkest blue
         },
-        mystical: {
-          dark: '#0a0e27',
-          purple: '#6d28d9',
-          blue: '#3b82f6',
-          cyan: '#06b6d4',
-          pink: '#ec4899',
+        secondary: {
+          50: '#f5f3ff',   // Lightest purple
+          100: '#ede9fe',
+          200: '#ddd6fe',
+          300: '#c4b5fd',
+          400: '#a78bfa',
+          500: '#7c3aed',  // Main Secondary (Purple) - End of gradient
+          600: '#6d28d9',
+          700: '#5b21b6',
+          800: '#4c1d95',
+          900: '#3b1f6f',  // Darkest purple
         },
+        // Light Theme Surface Colors
+        'surface-ground': '#f8fafc',
+        'surface-card': '#ffffff',
+        'surface-border': '#e2e8f0',
+        'text-primary': '#0f172a',
+        'text-secondary': '#64748b',
+        // State Colors
+        success: '#10b981',
+        warning: '#f59e0b',
+        danger: '#ef4444',
+        // Persona Rarity (kept for compatibility)
         persona: {
           n: '#9ca3af',
           r: '#60a5fa',
@@ -36,8 +53,8 @@ export default {
         },
       },
       fontFamily: {
-        sans: ['Inter', 'system-ui', 'sans-serif'],
-        display: ['Poppins', 'system-ui', 'sans-serif'],
+        // Blonix Branch: Inter + Poppins for friendly, modern feel
+        sans: ['Inter', 'Poppins', 'system-ui', 'sans-serif'],
       },
       animation: {
         'fade-in': 'fadeIn 0.5s ease-in-out',
@@ -64,7 +81,12 @@ export default {
         },
       },
       backgroundImage: {
-        'gradient-mystical': 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
+        // Figma Color Scheme 41: Festive Eve - Blue to Purple gradient
+        'gradient-primary': 'linear-gradient(135deg, #3b82f6 0%, #7c3aed 100%)',
+        'gradient-soft': 'linear-gradient(135deg, #60a5fa 0%, #a78bfa 100%)',
+        'gradient-subtle': 'linear-gradient(135deg, #bfdbfe 0%, #c4b5fd 100%)',
+        // Legacy gradients (kept for compatibility)
+        'gradient-mystical': 'linear-gradient(135deg, #3b82f6 0%, #7c3aed 100%)',
         'gradient-akashic': 'linear-gradient(180deg, #0a0e27 0%, #1a1f3a 50%, #2d1b4e 100%)',
       },
     },

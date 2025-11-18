@@ -2,31 +2,36 @@
 
 > *"The mirror reflects your soul. What image do you cast in others?"*
 
-## Design Philosophy
+## Design Philosophy (Blonix Branch Priority)
 
-Re:MirAI's design system embodies the mystical essence of AI persona summoning through a sophisticated, modern interface that balances technological precision with emotional depth.
+Re:MirAI's design system prioritizes the **Blonix Branch design philosophy**: a modern, accessible, and user-friendly experience with a light theme optimized for general users (B2C service). The interface balances technological precision with emotional depth while maintaining broad appeal and accessibility.
 
 ### Core Design Principles
 
-#### 1. **Mystical Minimalism**
-- Clean, uncluttered layouts that let the magical elements shine
+#### 1. **Modern Minimalism (Blonix Style)**
+- Clean, uncluttered layouts with a light theme (`#f8fafc` background)
 - Strategic use of negative space to create breathing room
 - Focus on essential elements while maintaining visual hierarchy
+- Bright, welcoming aesthetic that doesn't require gaming or subculture knowledge
 
-#### 2. **Emotional Resonance** 
-- Colors and animations that evoke wonder, connection, and intimacy
-- UI patterns that reflect the personal nature of the relationships being explored
-- Visual metaphors that connect to the spiritual/mystical summoning theme
+#### 2. **User-Centric Design** 
+- Colors (Fuchsia/Pink Primary `#d946ef`, Blue Secondary `#3b82f6`) that evoke freshness and modernity
+- UI patterns that reflect clarity and ease of use
+- Professional appeal suitable for both personal and professional contexts
+- High contrast for optimal readability (dark text `#0f172a` on light background)
 
 #### 3. **Progressive Revelation**
 - Information architecture that gradually reveals complexity
-- Onboarding flow that educates while enchanting
+- Onboarding flow that educates while maintaining clarity
 - UI states that clearly communicate system status and user progress
+- State-driven UI with immediate visual feedback
 
-#### 4. **Accessibility & Inclusivity**
-- High contrast ratios for readability
+#### 4. **Accessibility & Inclusivity (Top Priority)**
+- High contrast ratios (WCAG AA compliant) for readability
+- Light theme optimized for daytime use and reduced eye strain
 - Clear visual hierarchies and intuitive navigation
 - Responsive design that works across all devices
+- Typography: Inter + Poppins for friendly, modern feel
 
 ---
 
@@ -90,17 +95,17 @@ These tokens create a **clear hierarchy** and ensure consistency across all comp
 
 ```css
 :root {
-  /* === COLOR SYSTEM === */
-  --color-bg-primary: #0a0e27;
-  --color-bg-secondary: #1a1f3a;
-  --color-bg-accent: #2d1b4e;
-  --color-text-primary: #ffffff;
-  --color-text-secondary: #a0aec0;
-  --color-text-muted: rgba(160, 174, 192, 0.8);
-  --color-accent: #6d28d9;
-  --color-accent-hover: #7c3aed;
-  --color-border: rgba(79, 70, 229, 0.5);
-  --color-border-light: rgba(79, 70, 229, 0.2);
+  /* === COLOR SYSTEM (Blonix Branch: Light Theme) === */
+  --color-bg-primary: #f8fafc;        /* Light gray background */
+  --color-bg-secondary: #ffffff;      /* White card background */
+  --color-bg-accent: #f1f5f9;         /* Light accent background */
+  --color-text-primary: #0f172a;      /* Dark gray text */
+  --color-text-secondary: #64748b;     /* Medium gray text */
+  --color-text-muted: rgba(100, 116, 139, 0.8);
+  --color-accent: #d946ef;             /* Fuchsia/Pink primary */
+  --color-accent-hover: #c026d3;       /* Darker fuchsia on hover */
+  --color-border: rgba(226, 232, 240, 1);  /* Light border */
+  --color-border-light: rgba(226, 232, 240, 0.5);
   
   /* State Colors (Nielsen Heuristic: System Status Visibility) */
   --color-success: #10b981;
@@ -130,8 +135,8 @@ role="status" aria-live="polite"  /* Loading states */
 ```
 
 ### 2. **Match Between System and Real World**
-- **Familiar Language**: "Energy Points" instead of technical terms
-- **Real-World Metaphors**: "Ritual", "Summoning", "Persona Room"
+- **Familiar Language**: Clear, accessible terminology (e.g., "Survey" instead of technical terms)
+- **Real-World Metaphors**: "Persona Room", "Feedback Collection", "Persona Creation"
 - **Progressive Disclosure**: Information revealed in natural order
 
 ### 3. **User Control and Freedom**
@@ -246,7 +251,7 @@ Small: 0.875rem (14px) - Secondary text, captions
 ### Cards (`card`)
 - **Foundation**: Semi-transparent backgrounds with subtle borders
 - **Effect**: Glassmorphism with backdrop blur
-- **Purpose**: Create depth and hierarchy while maintaining the mystical atmosphere
+- **Purpose**: Create depth and hierarchy while maintaining a modern, clean aesthetic
 - **Shadow**: Soft purple glow to enhance the magical feeling
 
 ### Form Elements (`input`)
