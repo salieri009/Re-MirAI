@@ -720,11 +720,8 @@
 <script setup lang="ts">
 import { ref, onMounted, onUnmounted } from 'vue'
 import { useRouter } from 'vue-router'
-import Button from '@/components/common/Button.vue'
-import DynamicPersonaCard from '@/components/DynamicPersonaCard.vue'
-import IconMirror from '@/components/icons/IconMirror.vue'
-import IconChat from '@/components/icons/IconChat.vue'
-import IconRobot from '@/components/icons/IconRobot.vue'
+import { Button, IconMirror, IconChat, IconRobot } from '@/components/atoms'
+import { DynamicPersonaCard } from '@/components/organisms'
 
 const router = useRouter()
 
