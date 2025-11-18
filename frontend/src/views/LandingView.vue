@@ -153,98 +153,53 @@
             class="text-center animate-fade-in" 
             style="display: flex; flex-direction: column; gap: var(--subsection-spacing); align-items: center;"
           >
-            <!-- Main Headline (KickoffLabs: Level 1 - Largest, Boldest) -->
-            <!-- Squint Test: This should be the ONLY thing visible when squinting -->
+            <!-- Main Headline (V3: Psychological Hook) -->
             <h1 class="text-5xl md:text-6xl lg:text-7xl font-bold text-on-light leading-tight tracking-tight w-full" style="line-height: 1.2;">
-              Stop Guessing. Start Knowing.
+              Stop Guessing.
             </h1>
             
-            <!-- Description (KickoffLabs: Level 2 - Supporting, Regular Weight) -->
-            <!-- Grayscale text with single accent word -->
+            <!-- Description (V3: Contrast Self-Perception vs Reality) -->
             <p 
-              class="text-lg md:text-xl text-on-light max-w-lg lg:max-w-2xl mx-auto leading-relaxed w-full"
+              class="text-xl md:text-2xl text-on-light max-w-lg lg:max-w-2xl mx-auto leading-relaxed w-full"
               role="doc-subtitle"
               style="line-height: 1.75; font-weight: 400;"
             >
-              AI Persona created from how your friends <em class="text-indigo-600 font-medium">*actually*</em> see you. Discover the self you never knew.
+              MBTI is what <em class="text-slate-600 font-normal italic">you</em> answer. 
+              <strong class="text-transparent bg-clip-text bg-gradient-to-r from-indigo-600 to-purple-600 font-semibold shimmer-text">Re:MirAI is what others see.</strong>
             </p>
             
-            <!-- Primary CTA (KickoffLabs: Single Action Focus) -->
+            <!-- Primary CTA (V3: THE ONLY gradient element - Isolation Effect) -->
             <div 
-              class="flex flex-col sm:flex-row justify-center" 
+              class="flex flex-col items-center justify-center" 
               style="gap: var(--element-spacing);"
               role="group"
               aria-label="Get started"
             >
               <Button 
                 size="lg" 
-                class="text-lg" 
+                class="text-lg px-8 py-4 bg-gradient-to-r from-indigo-500 to-purple-600 hover:from-indigo-600 hover:to-purple-700 text-white font-semibold rounded-xl shadow-xl hover:shadow-2xl transition-all duration-300" 
                 @click="goToLogin"
                 aria-describedby="start-description"
               >
-                Create Your AI Mirror
+                See My Real Self
               </Button>
+              
+              <!-- Micro-copy: Anxiety Mitigators -->
+              <p class="text-sm text-slate-600" style="margin-top: var(--tight-spacing);">
+                Free to start · 100% anonymous · Just ~3 responses needed
+              </p>
             </div>
             
             <!-- Screen Reader Descriptions -->
             <div class="sr-only">
-              <div id="start-description">Begin creating your AI persona by signing up</div>
-            </div>
-            
-            <!-- Trust Indicators (KickoffLabs: Proximity Principle - Close to CTA) -->
-            <div 
-              class="flex items-center justify-center text-sm text-muted" 
-              style="gap: var(--text-spacing); margin-top: var(--text-spacing);"
-              role="group"
-              aria-label="Trust indicators"
-            >
-              <span>Free to start</span>
-              <span>|</span>
-              <span>Privacy protected</span>
+              <div id="start-description">Discover your true self through anonymous friend feedback</div>
             </div>
           </div>
           
           <!-- Right Column: Hero Image/Visual -->
+          <!-- Right Column: Dynamic Persona Card (V3: Zeigarnik Effect) -->
           <div class="relative animate-slide-up">
-            <div class="relative mx-auto max-w-md lg:max-w-lg">
-              <!-- Main Persona Card Mockup -->
-              <div class="card relative transform rotate-3 hover:rotate-0 transition-transform duration-500">
-                <!-- Figma Festive Eve: Blue to Purple gradient -->
-                <div class="aspect-[3/4] bg-gradient-primary rounded-xl p-6 text-white">
-                  <div class="h-full flex flex-col justify-between">
-                    <!-- Persona Image Placeholder -->
-                    <div class="w-24 h-24 mx-auto bg-white/20 rounded-full flex items-center justify-center mb-4">
-                      <svg class="w-12 h-12 text-white/80" fill="currentColor" viewBox="0 0 24 24">
-                        <path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/>
-                      </svg>
-                    </div>
-                    
-                    <!-- Persona Details -->
-                    <div class="text-center space-y-3">
-                      <h3 class="text-lg font-semibold">Your AI Persona</h3>
-                      <div class="text-sm opacity-90">Archetype: Mysterious Sage</div>
-                      <div class="text-xs opacity-75">Rarity: SSR</div>
-                      
-                      <!-- Stats Preview -->
-                      <div class="grid grid-cols-2 gap-2 text-xs mt-4">
-                        <div class="bg-white/10 rounded p-2">
-                          <div class="text-primary-200">Charisma</div>
-                          <div class="font-bold">85</div>
-                        </div>
-                        <div class="bg-white/10 rounded p-2">
-                          <div class="text-secondary-200">Kindness</div>
-                          <div class="font-bold">92</div>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-              
-              <!-- Decorative Elements (Minimal, Nielsen: Aesthetic & Minimalist) -->
-              <div class="absolute -top-4 -left-4 w-3 h-3 bg-primary-400 rounded-full opacity-60 animate-pulse" aria-hidden="true"></div>
-              <div class="absolute -bottom-4 -right-4 w-2 h-2 bg-secondary-400 rounded-full opacity-60 animate-pulse" style="animation-delay: 2s;" aria-hidden="true"></div>
-            </div>
+            <DynamicPersonaCard />
           </div>
         </div>
       </div>
@@ -369,7 +324,7 @@
               role="list"
               aria-label="Re:MirAI process steps"
             >
-              <!-- Step 1: The Mirror Setup (Benefits-Focused) -->
+              <!-- Step 1: The Mirror Setup (V3: Anonymity-First Messaging) -->
               <div 
                 class="relative group" 
                 role="listitem"
@@ -390,34 +345,30 @@
                       <IconMirror :size="64" />
                     </div>
                     
-                    <!-- Benefit-Focused Content (Nielsen: Consistency) -->
+                    <!-- V3: Primary Anxiety Mitigator - Anonymity Emphasis -->
                     <div style="display: flex; flex-direction: column; gap: var(--tight-spacing);">
-                      <h3 class="text-xl font-bold text-white">The Mirror Setup</h3>
-                      <p class="text-sm text-primary-300 font-medium">Create and share your survey</p>
+                      <h3 class="text-xl font-bold text-white">Create Your Mirror</h3>
+                      <p class="text-sm text-primary-300 font-medium">Share anonymous survey with friends</p>
                       <p class="text-secondary leading-relaxed">
-                        Create a personalized questionnaire and share it with friends. 
-                        <strong class="text-white">They'll tell you truths you never knew.</strong>
+                        Create your personalized survey in 60 seconds. Share a simple link with friends.
+                        <strong class="text-white"> Nobody knows who said what.</strong>
                       </p>
                     </div>
                     
-                    <!-- Micro-interaction (Aligned) -->
+                    <!-- V3: Lock Icon Emphasis -->
                     <div class="border-t border-primary-500/20" style="padding-top: var(--element-spacing);">
-                      <div class="text-xs text-primary-400" style="display: flex; flex-direction: column; gap: var(--micro-spacing);">
-                        <div class="flex justify-between items-center">
-                          <span>Process:</span>
-                          <span class="font-medium">Simple & Fast</span>
-                        </div>
-                        <div class="flex justify-between items-center">
-                          <span>Privacy:</span>
-                          <span class="font-medium text-secondary-300">100% Anonymous</span>
-                        </div>
+                      <div class="flex items-center justify-center gap-2 text-sm">
+                        <svg class="w-5 h-5 text-secondary-300" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"/>
+                        </svg>
+                        <span class="font-medium text-secondary-300">100% Anonymous Guarantee</span>
                       </div>
                     </div>
                   </div>
                 </div>
               </div>
 
-              <!-- Step 2: The Truth Collection (Emotional Hook) -->
+              <!-- Step 2: The Truth Collection (V3: Honesty Through Anonymity) -->
               <div 
                 class="relative group" 
                 role="listitem"
@@ -439,29 +390,23 @@
                       <IconChat :size="64" />
                     </div>
                     
-                    <!-- The Hook (Consistent Spacing) -->
+                    <!-- V3: Emphasize Anonymous = Honest -->
                     <div style="display: flex; flex-direction: column; gap: var(--tight-spacing);">
-                      <h3 class="text-xl font-bold text-white">The Truth Unveiled</h3>
-                      <p class="text-sm text-purple-300 font-medium">Real perceptions, raw insights</p>
+                      <h3 class="text-xl font-bold text-white">Friends Share Honestly</h3>
+                      <p class="text-sm text-purple-300 font-medium">Because it's completely anonymous</p>
                       <p class="text-secondary leading-relaxed">
-                        Friends share their <em>honest</em> perceptions about your personality. 
-                        <strong class="text-white">Prepare for surprises.</strong>
+                        Your friends answer fun questions about you. Because responses are anonymous, 
+                        <strong class="text-white">they'll tell the truth they never would face-to-face.</strong>
                       </p>
                     </div>
                     
-                    <!-- Feature Highlights (Aligned) -->
+                    <!-- V3: Shield Icon for Protection -->
                     <div class="border-t border-purple-500/20" style="padding-top: var(--element-spacing);">
-                      <div class="text-xs text-purple-400" style="display: flex; flex-direction: column; gap: var(--micro-spacing);">
-                        <div class="flex justify-between items-center">
-                          <span>Feedback Type:</span>
-                          <!-- KickoffLabs Compliance: Replaced green with indigo -->
-                          <span class="font-medium text-indigo-300">Anonymous</span>
-                        </div>
-                        <div class="flex justify-between items-center">
-                          <span>Privacy:</span>
-                          <!-- KickoffLabs Compliance: Replaced blue with purple -->
-                          <span class="font-medium text-purple-300">Protected</span>
-                        </div>
+                      <div class="flex items-center justify-center gap-2 text-sm">
+                        <svg class="w-5 h-5 text-indigo-300" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"/>
+                        </svg>
+                        <span class="font-medium text-purple-300">Your friends' identities protected</span>
                       </div>
                     </div>
                   </div>
@@ -707,7 +652,7 @@
       </div>
     </section>
 
-    <!-- Final CTA Section -->
+    <!-- Final CTA Section (V3: Clear Action) -->
     <section 
       id="final-cta" 
       class="relative overflow-hidden bg-gradient-to-r from-indigo-500 to-purple-600" 
@@ -720,21 +665,21 @@
           class="flex flex-col items-center text-center" 
           style="display: flex; flex-direction: column; gap: var(--subsection-spacing); align-items: center; text-align: center;"
         >
-          <!-- Headline -->
+          <!-- V3: Action-Oriented Headline -->
           <h2 
             id="final-cta-heading" 
             class="text-4xl md:text-5xl font-bold text-white"
             style="line-height: 1.2;"
           >
-            Ready to see yourself through their eyes?
+            Ready to see how others see you?
           </h2>
           
-          <!-- Description -->
+          <!-- V3: Reduced Friction Messaging -->
           <p 
             class="text-xl text-white/90 max-w-2xl mx-auto"
             style="line-height: 1.75;"
           >
-            Start your discovery now. No signup required.
+            Create your mirror in 60 seconds. Free, anonymous, and eye-opening.
           </p>
           
           <!-- CTA Button -->
@@ -776,6 +721,7 @@
 import { ref, onMounted, onUnmounted } from 'vue'
 import { useRouter } from 'vue-router'
 import Button from '@/components/common/Button.vue'
+import DynamicPersonaCard from '@/components/DynamicPersonaCard.vue'
 import IconMirror from '@/components/icons/IconMirror.vue'
 import IconChat from '@/components/icons/IconChat.vue'
 import IconRobot from '@/components/icons/IconRobot.vue'
@@ -941,29 +887,66 @@ onUnmounted(() => {
 const goToLogin = () => {
   router.push('/login')
 }
-
-const scrollToHowItWorks = () => {
-  const element = document.getElementById('how-it-works')
-  element?.scrollIntoView({ behavior: 'smooth' })
-}
-
-const showLiveDemo = () => {
-  // Show a quick demo modal or navigate to a demo page
-  // For now, scroll to the how-it-works section with enhanced focus
-  const element = document.getElementById('how-it-works')
-  element?.scrollIntoView({ behavior: 'smooth', block: 'center' })
-  
-  // Add visual emphasis
-  setTimeout(() => {
-    const cards = document.querySelectorAll('.demo-highlight')
-    cards.forEach((card, index) => {
-      setTimeout(() => {
-        card.classList.add('ring-4', 'ring-indigo-400', 'ring-opacity-50')
-        setTimeout(() => {
-          card.classList.remove('ring-4', 'ring-indigo-400', 'ring-opacity-50')
-        }, 2000)
-      }, index * 500)
-    })
-  }, 500)
-}
 </script>
+
+<style scoped>
+/* V3: Shimmer text effect for "남들이" keyword */
+.shimmer-text {
+  position: relative;
+  display: inline-block;
+}
+
+.shimmer-text::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(
+    90deg,
+    transparent 0%,
+    rgba(255, 255, 255, 0.6) 50%,
+    transparent 100%
+  );
+  animation: shimmer 1.2s ease-in-out 1;
+}
+
+@keyframes shimmer {
+  0% {
+    left: -100%;
+  }
+  100% {
+    left: 200%;
+  }
+}
+
+/* Ensure proper animation for dynamic elements */
+.animate-fade-in {
+  animation: fadeIn 0.8s ease-out;
+}
+
+.animate-slide-up {
+  animation: slideUp 0.8s ease-out;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes slideUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+</style>
