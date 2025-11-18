@@ -61,6 +61,10 @@ export default {
         'slide-up': 'slideUp 0.5s ease-out',
         'glow': 'glow 2s ease-in-out infinite alternate',
         'float': 'float 3s ease-in-out infinite',
+        // Nielsen: Aesthetic & Minimalist Design - Mystical floating animations
+        'float-slow': 'floatSlow 8s ease-in-out infinite',
+        'float-medium': 'floatMedium 12s ease-in-out infinite',
+        'sparkle': 'sparkle 3s ease-in-out infinite',
       },
       keyframes: {
         fadeIn: {
@@ -72,13 +76,35 @@ export default {
           '100%': { transform: 'translateY(0)', opacity: '1' },
         },
         glow: {
-          '0%': { boxShadow: '0 0 5px rgba(109, 40, 217, 0.5)' },
-          '100%': { boxShadow: '0 0 20px rgba(109, 40, 217, 0.8)' },
+          '0%': { boxShadow: '0 0 5px rgba(59, 130, 246, 0.5)' },
+          '100%': { boxShadow: '0 0 20px rgba(124, 58, 237, 0.8)' },
         },
         float: {
           '0%, 100%': { transform: 'translateY(0px)' },
           '50%': { transform: 'translateY(-10px)' },
         },
+        // Mystical floating animation - Slow, ethereal movement
+        floatSlow: {
+          '0%, 100%': { transform: 'translate(0, 0) scale(1)', opacity: '0.3' },
+          '25%': { transform: 'translate(20px, -30px) scale(1.1)', opacity: '0.5' },
+          '50%': { transform: 'translate(-15px, -50px) scale(0.9)', opacity: '0.4' },
+          '75%': { transform: 'translate(10px, -20px) scale(1.05)', opacity: '0.45' },
+        },
+        // Medium speed floating - More dynamic movement
+        floatMedium: {
+          '0%, 100%': { transform: 'translate(0, 0) scale(1) rotate(0deg)', opacity: '0.25' },
+          '33%': { transform: 'translate(30px, -40px) scale(1.2) rotate(120deg)', opacity: '0.4' },
+          '66%': { transform: 'translate(-25px, -60px) scale(0.8) rotate(240deg)', opacity: '0.3' },
+        },
+        // Sparkle effect for magical feel
+        sparkle: {
+          '0%, 100%': { opacity: '0.2', transform: 'scale(0.8)' },
+          '50%': { opacity: '0.6', transform: 'scale(1.2)' },
+        },
+        // XML Prompt: P_Anim_AkashicFlow_Subtle_Perf - Fluidic background animations
+        'fluid-warp': 'fluidWarp 45s ease-in-out infinite',
+        'color-shift': 'colorShift 60s ease-in-out infinite',
+        'noise-flow': 'noiseFlow 40s ease-in-out infinite',
       },
       backgroundImage: {
         // Figma Color Scheme 41: Festive Eve - Blue to Purple gradient

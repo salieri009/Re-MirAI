@@ -9,35 +9,68 @@
       <!-- Background Visual Elements -->
       <!-- Figma Color Scheme 41: Festive Eve - Blue/Purple gradient background -->
       <div class="absolute inset-0 bg-gradient-to-br from-primary-50/50 via-primary-100/30 to-secondary-50/50"></div>
+      
+      <!-- XML Prompt: P_Anim_AkashicFlow_Subtle_Perf - Fluidic Background Animation -->
+      <!-- Nielsen: Aesthetic & Minimalist Design - Barely perceptible, performance-optimized -->
+      <div class="fluidic-bg" aria-hidden="true">
+        <!-- Gradient mesh for organic color flow (30-60s cycles) -->
+        <div class="gradient-mesh" aria-hidden="true"></div>
+        <!-- Noise layer for subtle texture (simulated Perlin/Simplex noise) -->
+        <div class="noise-layer" aria-hidden="true"></div>
+      </div>
+      
+      <!-- Large Background Orbs (Existing) -->
       <div class="absolute top-20 left-10 w-32 h-32 bg-primary-400/10 rounded-full blur-3xl animate-pulse" aria-hidden="true"></div>
       <div class="absolute bottom-20 right-10 w-48 h-48 bg-secondary-400/10 rounded-full blur-3xl animate-pulse" style="animation-delay: 1s;" aria-hidden="true"></div>
       
+      <!-- Floating Interactive Animation Elements (Nielsen: Aesthetic & Minimalist Design - Mystical feel) -->
+      <!-- XML Prompt: P_Anim_AkashicFlow_Subtle_Perf - Subtle, barely perceptible particles -->
+      <!-- Small floating particles for ethereal, mystical atmosphere (Performance-optimized) -->
+      <div class="absolute top-1/4 left-1/4 w-2 h-2 bg-primary-400/30 rounded-full animate-float-slow" style="animation-delay: 0s; animation-duration: 8s; will-change: transform;" aria-hidden="true"></div>
+      <div class="absolute top-1/3 right-1/4 w-1.5 h-1.5 bg-secondary-400/40 rounded-full animate-float-slow" style="animation-delay: 2s; animation-duration: 10s;" aria-hidden="true"></div>
+      <div class="absolute bottom-1/3 left-1/3 w-2.5 h-2.5 bg-primary-300/25 rounded-full animate-float-slow" style="animation-delay: 4s; animation-duration: 12s;" aria-hidden="true"></div>
+      <div class="absolute top-1/2 right-1/3 w-1 h-1 bg-secondary-300/35 rounded-full animate-float-slow" style="animation-delay: 1s; animation-duration: 9s;" aria-hidden="true"></div>
+      <div class="absolute bottom-1/4 right-1/5 w-2 h-2 bg-primary-500/20 rounded-full animate-float-slow" style="animation-delay: 3s; animation-duration: 11s;" aria-hidden="true"></div>
+      <div class="absolute top-2/3 left-1/5 w-1.5 h-1.5 bg-secondary-500/30 rounded-full animate-float-slow" style="animation-delay: 5s; animation-duration: 13s;" aria-hidden="true"></div>
+      
+      <!-- Medium floating elements -->
+      <div class="absolute top-1/5 right-1/5 w-3 h-3 bg-primary-400/20 rounded-full animate-float-medium" style="animation-delay: 0.5s; animation-duration: 15s;" aria-hidden="true"></div>
+      <div class="absolute bottom-1/5 left-2/5 w-4 h-4 bg-secondary-400/25 rounded-full animate-float-medium" style="animation-delay: 2.5s; animation-duration: 18s;" aria-hidden="true"></div>
+      <div class="absolute top-3/4 right-2/5 w-3.5 h-3.5 bg-primary-300/20 rounded-full animate-float-medium" style="animation-delay: 4.5s; animation-duration: 16s;" aria-hidden="true"></div>
+      
       <!-- KickoffLabs Compliance: Use CSS variable for z-index -->
+      <!-- 30-Year Architect: Z-Pattern Alignment - Left-aligned on desktop for visual anchor -->
       <div class="container-page relative" style="padding: var(--container-padding); z-index: var(--z-content);">
-        <div class="grid lg:grid-cols-2 items-center" style="gap: var(--section-spacing);">
-          <!-- Content Column (Nielsen: Consistency and Standards) -->
+        <div class="grid lg:grid-cols-2 lg:items-start items-center" style="gap: var(--section-spacing);">
+          <!-- Content Column (30-Year Architect: Strategic Z-Pattern Alignment) -->
+          <!-- Nielsen: Consistency and Standards -->
           <div 
-            class="text-center animate-fade-in" 
-            style="display: flex; flex-direction: column; gap: var(--subsection-spacing);"
+            class="text-center lg:text-left animate-fade-in" 
+            style="display: flex; flex-direction: column; gap: var(--subsection-spacing); align-items: center; lg:align-items: flex-start;"
           >
             <!-- Company Logo/Brand (KickoffLabs Compliance: Appropriate size, centered placement) -->
-            <div class="flex justify-center">
+            <div class="flex justify-center lg:justify-start w-full">
               <div class="text-3xl md:text-4xl font-bold text-gradient" role="img" aria-label="Re:MirAI Logo">Re:MirAI</div>
             </div>
             
-            <!-- Main Headline (Webflow Typography: Distinct font design, large, high-contrast) -->
-            <h1 class="text-4xl md:text-6xl lg:text-7xl font-bold text-white leading-tight tracking-tight">
-              Discover Your
-              <span class="text-gradient block shimmer-text">True Self</span>
+            <!-- Main Headline (30-Year Architect: Hook Reversal - Core Value as H1) -->
+            <!-- Strategic Fix: "How your friends actually see you" is the unique hook, not generic "Discover Your True Self" -->
+            <!-- Nielsen: Readability - High contrast, large size -->
+            <!-- Webflow Typography: Distinct font design, large, high-contrast -->
+            <h1 class="text-4xl md:text-6xl lg:text-7xl font-bold text-on-light leading-tight tracking-tight w-full" style="line-height: 1.2;">
+              How Your Friends
+              <span class="text-gradient block shimmer-text">Actually See You</span>
             </h1>
             
-            <!-- Description (Webflow Typography: Appropriate spacing, readable size) -->
+            <!-- Description (30-Year Architect: Solution as Subtitle) -->
+            <!-- Nielsen: Readability - Increased line-height and font size -->
+            <!-- Webflow Typography: Appropriate spacing, readable size -->
             <p 
-              class="text-xl md:text-2xl text-secondary max-w-lg mx-auto leading-relaxed"
+              class="text-lg md:text-xl lg:text-2xl text-on-light max-w-lg lg:max-w-2xl mx-auto lg:mx-0 leading-relaxed w-full"
               role="doc-subtitle"
-              style="line-height: 1.6;"
+              style="line-height: 1.75; font-weight: 400;"
             >
-              AI Persona created from how your friends actually see you.
+              Discover the AI Persona created from their anonymous feedback.
             </p>
             
             <!-- Primary CTA (Nielsen: User Control & Freedom, Consistent Center Alignment) -->
@@ -164,20 +197,23 @@
           style="display: flex; flex-direction: column; gap: var(--subsection-spacing); margin-bottom: calc(var(--section-spacing) * 1.5);"
         >
           <div class="space-y-4">
-            <div class="inline-block px-4 py-2 bg-primary-500/20 rounded-full text-sm text-primary-300 font-medium">
+            <!-- Nielsen: Readability - High contrast badge text -->
+            <div class="inline-block px-4 py-2 bg-primary-500/20 rounded-full text-sm text-on-light font-medium" style="line-height: 1.5;">
               The Mirror of Relationships
             </div>
+            <!-- Nielsen: Readability - High contrast text on light background -->
             <!-- Webflow Typography: Use contrast to create hierarchy - H2 distinct from H1 -->
-            <h2 id="how-it-works-heading" class="text-4xl md:text-6xl font-bold text-white leading-tight tracking-tight">
+            <h2 id="how-it-works-heading" class="text-4xl md:text-6xl font-bold text-on-light leading-tight tracking-tight" style="line-height: 1.2;">
               Stop Guessing.
               <span class="text-gradient block">Start Knowing.</span>
             </h2>
           </div>
           <div style="display: flex; justify-content: center; width: 100%;">
+            <!-- Nielsen: Readability - Increased line-height and font size for better readability -->
             <!-- Webflow Typography: Appropriate spacing for body text -->
-            <p class="text-xl md:text-2xl text-secondary max-w-lg text-center leading-relaxed" style="text-align: center; margin: 0 auto; line-height: 1.6;">
+            <p class="text-lg md:text-xl lg:text-2xl text-on-light max-w-lg text-center leading-relaxed" style="text-align: center; margin: 0 auto; line-height: 1.75; font-weight: 400;">
               While personality tests tell you what <em>you</em> think about yourself, 
-              <strong class="text-white">Re:MirAI reveals how your friends actually see you.</strong>
+              <strong class="text-on-light font-semibold">Re:MirAI reveals how your friends actually see you.</strong>
             </p>
           </div>
           
@@ -224,10 +260,11 @@
               </svg>
               <span>Unlike MBTI, Enneagram, or other self-assessment tools</span>
             </div>
-            <h3 class="text-2xl md:text-3xl font-semibold text-white" style="margin-bottom: var(--element-spacing);">
+            <!-- Nielsen: Readability - High contrast text on light background -->
+            <h3 class="text-2xl md:text-3xl font-semibold text-on-light" style="margin-bottom: var(--element-spacing); line-height: 1.3;">
               Re:MirAI gives you the <span class="text-gradient">truth</span> about yourself
             </h3>
-            <p class="text-lg text-secondary max-w-2xl mx-auto">
+            <p class="text-base md:text-lg text-on-light max-w-2xl mx-auto" style="line-height: 1.75; opacity: 0.9;">
               Based on anonymous insights from people who know you best
             </p>
           </div>
@@ -319,7 +356,7 @@
                   <div class="text-center" style="display: flex; flex-direction: column; gap: var(--element-spacing);">
                     <!-- Step Number -->
                     <div class="relative">
-                      <div class="w-20 h-20 mx-auto bg-gradient-to-br from-purple-500 to-purple-600 rounded-full flex items-center justify-center text-2xl font-bold text-white shadow-xl group-hover:scale-110 transition-transform duration-300">
+                      <div class="w-20 h-20 mx-auto bg-gradient-primary rounded-full flex items-center justify-center text-2xl font-bold text-on-dark shadow-xl group-hover:scale-110 transition-transform duration-300">
                         <!-- KickoffLabs Compliance: Use CSS variable for z-index -->
                         <span class="relative" style="z-index: var(--z-content);">2</span>
                       </div>
@@ -370,7 +407,7 @@
                   <div class="text-center" style="display: flex; flex-direction: column; gap: var(--element-spacing);">
                     <!-- Step Number -->
                     <div class="relative">
-                      <div class="w-20 h-20 mx-auto bg-gradient-to-br from-purple-500 to-purple-600 rounded-full flex items-center justify-center text-2xl font-bold text-white shadow-xl group-hover:scale-110 transition-transform duration-300">
+                      <div class="w-20 h-20 mx-auto bg-gradient-primary rounded-full flex items-center justify-center text-2xl font-bold text-on-dark shadow-xl group-hover:scale-110 transition-transform duration-300">
                         <!-- KickoffLabs Compliance: Use CSS variable for z-index -->
                         <span class="relative" style="z-index: var(--z-content);">3</span>
                       </div>
@@ -442,7 +479,7 @@
                           </svg>
                         </div>
                         <div>
-                          <div class="text-indigo-300 font-medium">Personality Apps</div>
+                          <div class="text-on-light font-medium">Personality Apps</div>
                           <div class="text-sm text-secondary">Generic, not personalized to you</div>
                         </div>
                       </div>
@@ -454,7 +491,7 @@
                           </svg>
                         </div>
                         <div>
-                          <div class="text-indigo-300 font-medium">Asking Friends Directly</div>
+                          <div class="text-on-light font-medium">Asking Friends Directly</div>
                           <div class="text-sm text-secondary">People rarely give honest feedback</div>
                         </div>
                       </div>
@@ -486,7 +523,7 @@
                           </svg>
                         </div>
                         <div>
-                          <div class="text-purple-300 font-medium">AI-Powered Synthesis</div>
+                          <div class="text-on-light font-medium">AI-Powered Synthesis</div>
                           <div class="text-sm text-secondary">Advanced analysis of multiple perspectives</div>
                         </div>
                       </div>
@@ -498,7 +535,7 @@
                           </svg>
                         </div>
                         <div>
-                          <div class="text-indigo-300 font-medium">Interactive AI Persona</div>
+                          <div class="text-on-light font-medium">Interactive AI Persona</div>
                           <div class="text-sm text-secondary">Chat with your digital reflection</div>
                         </div>
                       </div>
@@ -573,7 +610,7 @@
                 
                 <div class="text-center" style="display: flex; flex-direction: column; gap: var(--tight-spacing); align-items: center;">
                   <div class="w-16 h-16 bg-purple-500/10 rounded-2xl flex items-center justify-center">
-                    <svg class="w-8 h-8 text-purple-300" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                    <svg class="w-8 h-8 text-on-light" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
                       <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z"/>
                     </svg>
                   </div>
@@ -584,7 +621,7 @@
                 <div class="text-center" style="display: flex; flex-direction: column; gap: var(--tight-spacing); align-items: center;">
                   <!-- KickoffLabs Compliance: Consolidated pink to purple -->
                   <div class="w-16 h-16 bg-purple-500/10 rounded-2xl flex items-center justify-center">
-                    <svg class="w-8 h-8 text-purple-300" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                    <svg class="w-8 h-8 text-on-light" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
                       <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z"/>
                     </svg>
                   </div>
@@ -601,8 +638,9 @@
           <div class="text-center" style="display: flex; flex-direction: column; gap: var(--subsection-spacing);">
             <!-- Urgency/Scarcity Element -->
             <!-- KickoffLabs Compliance: Replaced green with indigo -->
-            <div class="inline-flex items-center rounded-full text-indigo-300 text-sm font-medium" style="gap: var(--element-spacing); padding: var(--element-spacing) var(--card-spacing); background-color: rgb(99, 102, 241, 0.2); margin: 0 auto;">
-              <div class="w-2 h-2 bg-indigo-400 rounded-full animate-pulse"></div>
+            <!-- Nielsen: Readability - High contrast text -->
+            <div class="inline-flex items-center rounded-full text-on-light text-sm font-medium" style="gap: var(--element-spacing); padding: var(--element-spacing) var(--card-spacing); background-color: rgba(59, 130, 246, 0.2); margin: 0 auto; line-height: 1.5;">
+              <div class="w-2 h-2 bg-primary-400 rounded-full animate-pulse"></div>
               <span>Free during early access • Limited time</span>
             </div>
             
@@ -613,6 +651,7 @@
               </h3>
               
               <div class="flex flex-col sm:flex-row items-center justify-center" style="gap: var(--element-spacing);">
+                <!-- 30-Year Architect: CTA Consistency - Unified Core Action -->
                 <Button 
                   size="lg" 
                   class="text-lg px-12 py-4 bg-gradient-to-r from-indigo-500 to-purple-600 hover:from-indigo-600 hover:to-purple-700 shadow-lg hover:shadow-xl hover:shadow-purple-500/25 transform hover:scale-105 transition-all duration-300" 
@@ -622,7 +661,7 @@
                   <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"/>
                   </svg>
-                  Begin Your Discovery
+                  Create Your Mirror
                 </Button>
                 
                 <!-- Secondary CTA (Prismic: Limited Secondary Options) -->

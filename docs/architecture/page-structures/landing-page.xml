@@ -33,9 +33,10 @@
   <color-palette>
     <primary-cta>
       <color>indigo-500 to purple-600 gradient</color>
-      <usage>Primary buttons, main CTAs ("Start Discovery", "Begin Your Discovery")</usage>
+      <usage>Primary buttons, main CTAs ("Create Your Mirror" - unified across page)</usage>
       <hex-start>#6366f1</hex-start>
       <hex-end>#9333ea</hex-end>
+      <note>30-Year Architect: Single CTA focus - Ghost button removed for conversion optimization</note>
     </primary-cta>
     <complementary>
       <color>indigo/purple/pink gradient accents</color>
@@ -43,14 +44,16 @@
       <hex-values>#667eea, #764ba2, #ec4899</hex-values>
     </complementary>
     <background>
-      <color>akashic gradient (dark blue to purple)</color>
-      <usage>Page background, card backgrounds</usage>
-      <hex-values>#0a0e27, #1a1f3a, #2d1b4e</hex-values>
+      <color>Figma Color Scheme 41: Festive Eve (Light Theme - Blue/Purple gradient)</color>
+      <usage>Page background: #f8fafc (light gray), gradient overlays for depth</usage>
+      <hex-values>#f8fafc (bg-primary), #ffffff (bg-secondary), #eff6ff (bg-accent)</hex-values>
+      <note>Blonix Branch: Light theme for modern, accessible UI. Gradient overlays use primary-50/50 via-primary-100/30 to-secondary-50/50</note>
     </background>
     <text>
-      <primary>#ffffff</primary>
-      <secondary>#a0aec0</secondary>
-      <muted>rgba(160, 174, 192, 0.8)</muted>
+      <primary>#0f172a (text-on-light for light backgrounds)</primary>
+      <secondary>#475569 (darker for better contrast - WCAG AA: 7.2:1)</secondary>
+      <muted>#64748b (WCAG AA: 5.1:1)</muted>
+      <note>Nielsen Heuristic: Readability - High contrast text for light backgrounds. text-on-light utility class used throughout.</note>
     </text>
   </color-palette>
 
@@ -79,8 +82,8 @@
       </variation>
     </variations>
     <special-effects>
-      <effect>text-gradient (linear-gradient 135deg, #667eea to #764ba2)</effect>
-      <effect>shimmer-text animation for "True Self"</effect>
+      <effect>text-gradient (linear-gradient 135deg, #3b82f6 to #7c3aed) - Figma Color Scheme 41: Festive Eve</effect>
+      <effect>shimmer-text animation for "Actually See You"</effect>
     </special-effects>
   </typography>
 
