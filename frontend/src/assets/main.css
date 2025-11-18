@@ -440,6 +440,103 @@ body {
   mix-blend-mode: soft-light;
 }
 
+/* === INTERACTIVE AKASHIC FLOW ANIMATION === */
+/* Cursor-responsive background that represents anonymous feedback data flowing */
+/* Performance: GPU-accelerated transforms only, 60fps target */
+
+/* Interactive Akashic Background Container */
+.interactive-akashic-bg {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  pointer-events: none;
+  z-index: var(--z-decorative);
+  /* CSS custom properties for cursor position (0-1 normalized) */
+  --cursor-x: 0.5;
+  --cursor-y: 0.5;
+  --cursor-proximity: 0.5;
+}
+
+/* Cursor-responsive gradient mesh (Layer 1) */
+.interactive-gradient-mesh {
+  position: absolute;
+  inset: -50%;
+  background: 
+    radial-gradient(circle at calc(var(--cursor-x) * 100%) calc(var(--cursor-y) * 100%), rgba(59, 130, 246, 0.2) 0%, transparent 40%),
+    radial-gradient(circle at calc((1 - var(--cursor-x)) * 100%) calc((1 - var(--cursor-y)) * 100%), rgba(124, 58, 237, 0.2) 0%, transparent 40%),
+    radial-gradient(circle at 50% 50%, rgba(59, 130, 246, 0.1) 0%, transparent 70%);
+  background-size: 200% 200%;
+  /* Smooth easing for cursor following (0.3s transition) */
+  transition: background-position 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  mix-blend-mode: overlay;
+  will-change: background-position;
+}
+
+/* Particle attraction system (Layer 2) */
+.interactive-particle {
+  position: absolute;
+  border-radius: 50%;
+  pointer-events: none;
+  /* Particles move toward cursor based on proximity */
+  /* Movement is relative to center (0.5, 0.5) for performance */
+  transform: translate(
+    calc((var(--cursor-x) - 0.5) * var(--particle-attraction, 50px)),
+    calc((var(--cursor-y) - 0.5) * var(--particle-attraction, 50px))
+  );
+  transition: transform 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+  will-change: transform;
+}
+
+/* Mobile: Reduced particle movement for performance */
+@media (max-width: 1023px) {
+  .interactive-particle {
+    --particle-attraction: 30px;
+    transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+  
+  .interactive-orb {
+    opacity: calc(0.05 + var(--cursor-proximity) * 0.1);
+    transform: scale(calc(1 + var(--cursor-proximity) * 0.1));
+  }
+}
+
+/* Background orb pulse effect (Layer 3) */
+.interactive-orb {
+  position: absolute;
+  border-radius: 50%;
+  pointer-events: none;
+  /* Pulse intensity based on cursor proximity */
+  opacity: calc(0.1 + var(--cursor-proximity) * 0.15);
+  transform: scale(calc(1 + var(--cursor-proximity) * 0.2));
+  transition: opacity 0.4s ease-out, transform 0.4s ease-out;
+  will-change: opacity, transform;
+  filter: blur(40px);
+}
+
+/* Reduced motion support for interactive animations */
+@media (prefers-reduced-motion: reduce) {
+  .interactive-akashic-bg,
+  .interactive-gradient-mesh,
+  .interactive-particle,
+  .interactive-orb {
+    transition: none;
+    animation: none;
+  }
+  
+  .interactive-gradient-mesh {
+    background-position: 50% 50%;
+  }
+  
+  .interactive-particle {
+    transform: none;
+  }
+  
+  .interactive-orb {
+    opacity: 0.1;
+    transform: scale(1);
+  }
+}
+
 @keyframes shimmer {
   0% { background-position: -1000px 0; }
   100% { background-position: 1000px 0; }

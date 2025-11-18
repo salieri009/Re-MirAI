@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <page-structure>
   <metadata>
-    <name>Landing Page</name>
+    <name>Landing Page (Optimized V2)</name>
     <route>/</route>
     <component>LandingView.vue</component>
-    <description>Main entry point for Re:MirAI - showcases value proposition and onboarding flow</description>
+    <description>Optimized for conversion. Focuses on a single funnel: Value Prop -> Trust -> Single CTA. Features Hybrid Z+F Pattern layout with interactive cursor-responsive animations.</description>
   </metadata>
 
   <design-principles>
@@ -33,10 +33,10 @@
   <color-palette>
     <primary-cta>
       <color>indigo-500 to purple-600 gradient</color>
-      <usage>Primary buttons, main CTAs ("Create Your Mirror" - unified across page)</usage>
+      <usage>Primary buttons, all main CTAs (unified)</usage>
       <hex-start>#6366f1</hex-start>
       <hex-end>#9333ea</hex-end>
-      <note>30-Year Architect: Single CTA focus - Ghost button removed for conversion optimization</note>
+      <note>EXPERT NOTE: Ghost button REMOVED from Hero. A single, clear CTA is critical for conversion. (Hick's Law)</note>
     </primary-cta>
     <complementary>
       <color>indigo/purple/pink gradient accents</color>
@@ -83,7 +83,7 @@
     </variations>
     <special-effects>
       <effect>text-gradient (linear-gradient 135deg, #3b82f6 to #7c3aed) - Figma Color Scheme 41: Festive Eve</effect>
-      <effect>shimmer-text animation for "Actually See You"</effect>
+      <effect>Emphasis on "Actually" in headline using text-gradient</effect>
     </special-effects>
   </typography>
 
@@ -108,32 +108,40 @@
       <padding>var(--container-padding)</padding>
       <layout>grid lg:grid-cols-2</layout>
       <gap>var(--section-spacing)</gap>
+      <pattern>Hybrid Z+F Pattern: Z-Pattern on desktop (left-aligned), F-Pattern on mobile (centered)</pattern>
+      <interactive-animations>
+        <layer>Cursor-responsive gradient mesh (follows cursor with 0.3s ease)</layer>
+        <layer>Particle attraction system (6 particles move toward cursor)</layer>
+        <layer>Background orb pulse effects (based on cursor proximity)</layer>
+        <note>All animations use z-index: var(--z-decorative) to stay behind content. Performance: GPU-accelerated transforms only, 60fps target.</note>
+      </interactive-animations>
       
       <column id="content">
-        <alignment>center</alignment>
+        <alignment>center lg:text-left</alignment>
         <spacing>var(--subsection-spacing)</spacing>
         <elements>
-          <element type="logo">Re:MirAI (text-2xl, centered)</element>
+          <element type="logo">Re:MirAI (text-3xl md:text-4xl, centered on mobile, left on desktop)</element>
           <element type="headline">
-            <text>Discover Your True Self</text>
+            <text>How Your Friends <em>Actually</em> See You.</text>
             <size>text-4xl md:text-6xl lg:text-7xl</size>
+            <emphasis>Actually (text-gradient, italic)</emphasis>
             <spacing-bottom>var(--element-spacing)</spacing-bottom>
           </element>
           <element type="description">
-            <text>AI Persona created from how your friends actually see you.</text>
-            <size>text-xl md:text-2xl</size>
+            <text>Discover the AI Persona created from their anonymous feedback.</text>
+            <size>text-lg md:text-xl lg:text-2xl</size>
             <spacing-bottom>var(--element-spacing)</spacing-bottom>
           </element>
           <element type="cta-group">
-            <layout>flex flex-col sm:flex-row justify-center</layout>
+            <layout>flex flex-col sm:flex-row justify-center lg:justify-start</layout>
             <gap>var(--element-spacing)</gap>
             <buttons>
-              <button type="primary" text="Start Discovery" size="lg" />
-              <button type="ghost" text="See How" size="lg" />
+              <button type="primary" text="Create Your Mirror" size="lg" />
             </buttons>
+            <note>Single CTA only - Ghost button removed for conversion optimization</note>
           </element>
           <element type="trust-indicators">
-            <layout>flex items-center justify-center</layout>
+            <layout>flex items-center justify-center lg:justify-start</layout>
             <gap>var(--card-spacing)</gap>
             <items>Free to start, Privacy protected</items>
           </element>
@@ -245,11 +253,22 @@
       <desktop>lg: (1024px+)</desktop>
     </breakpoints>
     <adaptations>
-      <adaptation>Hero section: single column on mobile, two columns on desktop</adaptation>
+      <adaptation>Hero section: F-Pattern (single column, centered) on mobile, Z-Pattern (two columns, left-aligned) on desktop</adaptation>
+      <adaptation>Text alignment: center on mobile, left on desktop (lg:text-left)</adaptation>
+      <adaptation>CTA alignment: center on mobile, left on desktop (lg:justify-start)</adaptation>
+      <adaptation>Interactive animations: Touch-responsive on mobile (reduced intensity), cursor-responsive on desktop</adaptation>
       <adaptation>Process flow: single column on mobile, three columns on desktop</adaptation>
       <adaptation>Font sizes: scale down on mobile (text-4xl → text-6xl → text-7xl)</adaptation>
-      <adaptation>Button layout: column on mobile, row on desktop</adaptation>
     </adaptations>
   </responsive-design>
+  
+  <interactive-features>
+    <feature>
+      <name>Cursor-Responsive Akashic Flow</name>
+      <description>Background animations that respond to mouse cursor or touch position, representing anonymous feedback data flowing through the system</description>
+      <implementation>CSS custom properties (--cursor-x, --cursor-y, --cursor-proximity) updated via requestAnimationFrame-throttled event handlers</implementation>
+      <performance>GPU-accelerated transforms only, 60fps target, prefers-reduced-motion support</performance>
+    </feature>
+  </interactive-features>
 </page-structure>
 

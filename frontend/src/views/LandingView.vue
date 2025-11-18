@@ -1,7 +1,33 @@
 <template>
   <div class="min-h-screen bg-primary">
+    <!-- Global Header -->
+    <section 
+      class="w-full" 
+      style="padding: var(--container-padding) 0;"
+      role="banner"
+      aria-label="Site header"
+    >
+      <div class="container-page">
+        <div class="flex justify-between items-center">
+          <!-- Logo -->
+          <div class="text-2xl font-semibold text-gradient" role="img" aria-label="Re:MirAI Logo">
+            Re:MirAI
+          </div>
+          <!-- Log In Button -->
+          <Button 
+            variant="secondary" 
+            @click="goToLogin"
+            aria-label="Log in to your account"
+          >
+            Log In
+          </Button>
+        </div>
+      </div>
+    </section>
+
     <!-- Hero Section (Nielsen: Aesthetic & Minimalist Design) -->
     <section 
+      ref="heroSectionRef"
       class="relative overflow-hidden min-h-screen flex items-center" 
       role="main"
       aria-label="Welcome to Re:MirAI"
@@ -19,7 +45,63 @@
         <div class="noise-layer" aria-hidden="true"></div>
       </div>
       
-      <!-- Large Background Orbs (Existing) -->
+      <!-- Interactive Akashic Flow Animation (Cursor-Responsive) -->
+      <!-- Core Concept: Represents anonymous feedback data flowing through the system -->
+      <!-- Z-Index: Behind content (var(--z-decorative)) -->
+      <div 
+        ref="interactiveBgRef"
+        class="interactive-akashic-bg" 
+        aria-hidden="true"
+      >
+        <!-- Layer 1: Cursor-responsive gradient mesh -->
+        <div class="interactive-gradient-mesh" aria-hidden="true"></div>
+        
+        <!-- Layer 2: Interactive particles (attracted to cursor) -->
+        <div 
+          class="interactive-particle w-2 h-2 bg-primary-400/30 rounded-full" 
+          style="top: 25%; left: 25%; --particle-attraction: 60px;"
+          aria-hidden="true"
+        ></div>
+        <div 
+          class="interactive-particle w-1.5 h-1.5 bg-secondary-400/40 rounded-full" 
+          style="top: 33%; right: 25%; --particle-attraction: 50px;"
+          aria-hidden="true"
+        ></div>
+        <div 
+          class="interactive-particle w-2.5 h-2.5 bg-primary-300/25 rounded-full" 
+          style="bottom: 33%; left: 33%; --particle-attraction: 70px;"
+          aria-hidden="true"
+        ></div>
+        <div 
+          class="interactive-particle w-1 h-1 bg-secondary-300/35 rounded-full" 
+          style="top: 50%; right: 33%; --particle-attraction: 45px;"
+          aria-hidden="true"
+        ></div>
+        <div 
+          class="interactive-particle w-2 h-2 bg-primary-500/20 rounded-full" 
+          style="bottom: 25%; right: 20%; --particle-attraction: 55px;"
+          aria-hidden="true"
+        ></div>
+        <div 
+          class="interactive-particle w-1.5 h-1.5 bg-secondary-500/30 rounded-full" 
+          style="top: 67%; left: 20%; --particle-attraction: 65px;"
+          aria-hidden="true"
+        ></div>
+        
+        <!-- Layer 3: Interactive background orbs (pulse based on cursor proximity) -->
+        <div 
+          class="interactive-orb w-32 h-32 bg-primary-400/10 rounded-full" 
+          style="top: 20%; left: 10%;"
+          aria-hidden="true"
+        ></div>
+        <div 
+          class="interactive-orb w-48 h-48 bg-secondary-400/10 rounded-full" 
+          style="bottom: 20%; right: 10%;"
+          aria-hidden="true"
+        ></div>
+      </div>
+      
+      <!-- Large Background Orbs (Static fallback) -->
       <div class="absolute top-20 left-10 w-32 h-32 bg-primary-400/10 rounded-full blur-3xl animate-pulse" aria-hidden="true"></div>
       <div class="absolute bottom-20 right-10 w-48 h-48 bg-secondary-400/10 rounded-full blur-3xl animate-pulse" style="animation-delay: 1s;" aria-hidden="true"></div>
       
@@ -45,40 +127,34 @@
           <!-- Content Column (30-Year Architect: Strategic Z-Pattern Alignment) -->
           <!-- Nielsen: Consistency and Standards -->
           <div 
-            class="text-center lg:text-left animate-fade-in" 
-            style="display: flex; flex-direction: column; gap: var(--subsection-spacing); align-items: center; lg:align-items: flex-start;"
+            class="text-center animate-fade-in" 
+            style="display: flex; flex-direction: column; gap: var(--subsection-spacing); align-items: center;"
           >
-            <!-- Company Logo/Brand (KickoffLabs Compliance: Appropriate size, centered placement) -->
-            <div class="flex justify-center lg:justify-start w-full">
-              <div class="text-3xl md:text-4xl font-bold text-gradient" role="img" aria-label="Re:MirAI Logo">Re:MirAI</div>
-            </div>
-            
-            <!-- Main Headline (30-Year Architect: Hook Reversal - Core Value as H1) -->
-            <!-- Strategic Fix: "How your friends actually see you" is the unique hook, not generic "Discover Your True Self" -->
+            <!-- Main Headline -->
             <!-- Nielsen: Readability - High contrast, large size -->
             <!-- Webflow Typography: Distinct font design, large, high-contrast -->
             <h1 class="text-4xl md:text-6xl lg:text-7xl font-bold text-on-light leading-tight tracking-tight w-full" style="line-height: 1.2;">
-              How Your Friends
-              <span class="text-gradient block shimmer-text">Actually See You</span>
+              Stop Guessing. Start Knowing.
             </h1>
             
-            <!-- Description (30-Year Architect: Solution as Subtitle) -->
+            <!-- Description -->
             <!-- Nielsen: Readability - Increased line-height and font size -->
             <!-- Webflow Typography: Appropriate spacing, readable size -->
             <p 
-              class="text-lg md:text-xl lg:text-2xl text-on-light max-w-lg lg:max-w-2xl mx-auto lg:mx-0 leading-relaxed w-full"
+              class="text-xl md:text-2xl text-on-light max-w-lg lg:max-w-2xl mx-auto leading-relaxed w-full"
               role="doc-subtitle"
               style="line-height: 1.75; font-weight: 400;"
             >
-              Discover the AI Persona created from their anonymous feedback.
+              AI Persona created from how your friends <em>*actually*</em> see you. Discover the self you never knew.
             </p>
             
-            <!-- Primary CTA (Nielsen: User Control & Freedom, Consistent Center Alignment) -->
+            <!-- Primary CTA -->
+            <!-- Nielsen: User Control & Freedom - Single clear action path -->
             <div 
               class="flex flex-col sm:flex-row justify-center" 
               style="gap: var(--element-spacing);"
               role="group"
-              aria-label="Get started options"
+              aria-label="Get started"
             >
               <Button 
                 size="lg" 
@@ -86,46 +162,25 @@
                 @click="goToLogin"
                 aria-describedby="start-description"
               >
-                Start Discovery
-              </Button>
-              <Button 
-                variant="ghost" 
-                size="lg" 
-                class="text-lg" 
-                @click="scrollToHowItWorks"
-                aria-describedby="how-it-works-description"
-              >
-                See How
+                Create Your AI Mirror
               </Button>
             </div>
             
             <!-- Screen Reader Descriptions -->
             <div class="sr-only">
               <div id="start-description">Begin creating your AI persona by signing up</div>
-              <div id="how-it-works-description">Learn about the process of creating your AI persona</div>
             </div>
             
-            <!-- Trust Indicators (Nielsen: Help users trust the system, Consistent Center Alignment) -->
+            <!-- Trust Indicators -->
             <div 
               class="flex items-center justify-center text-sm text-muted" 
               style="gap: var(--card-spacing);"
               role="group"
               aria-label="Trust indicators"
             >
-              <div class="flex items-center" style="gap: var(--text-spacing);">
-                <!-- KickoffLabs Compliance: Replaced green with indigo -->
-                <svg class="w-4 h-4 text-indigo-400" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true">
-                  <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"/>
-                </svg>
-                <span>Free to start</span>
-              </div>
-              <div class="flex items-center" style="gap: var(--text-spacing);">
-                <!-- KickoffLabs Compliance: Replaced blue with purple -->
-                <svg class="w-4 h-4 text-purple-400" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true">
-                  <path d="M12 1L3 5v6c0 5.55 3.84 10.74 9 12 5.16-1.26 9-6.45 9-12V5l-9-4z"/>
-                </svg>
-                <span>Privacy protected</span>
-              </div>
+              <span>Free to start</span>
+              <span>|</span>
+              <span>Privacy protected</span>
             </div>
           </div>
           
@@ -198,22 +253,20 @@
         >
           <div class="space-y-4">
             <!-- Nielsen: Readability - High contrast badge text -->
-            <div class="inline-block px-4 py-2 bg-primary-500/20 rounded-full text-sm text-on-light font-medium" style="line-height: 1.5;">
+            <div class="inline-block px-4 py-2 bg-indigo-500/20 rounded-full text-sm text-indigo-300 font-medium" style="line-height: 1.5;">
               The Mirror of Relationships
             </div>
             <!-- Nielsen: Readability - High contrast text on light background -->
             <!-- Webflow Typography: Use contrast to create hierarchy - H2 distinct from H1 -->
             <h2 id="how-it-works-heading" class="text-4xl md:text-6xl font-bold text-on-light leading-tight tracking-tight" style="line-height: 1.2;">
-              Stop Guessing.
-              <span class="text-gradient block">Start Knowing.</span>
+              Discover Your True Self in 3 Steps
             </h2>
           </div>
           <div style="display: flex; justify-content: center; width: 100%;">
             <!-- Nielsen: Readability - Increased line-height and font size for better readability -->
             <!-- Webflow Typography: Appropriate spacing for body text -->
             <p class="text-lg md:text-xl lg:text-2xl text-on-light max-w-lg text-center leading-relaxed" style="text-align: center; margin: 0 auto; line-height: 1.75; font-weight: 400;">
-              While personality tests tell you what <em>you</em> think about yourself, 
-              <strong class="text-on-light font-semibold">Re:MirAI reveals how your friends actually see you.</strong>
+              While personality tests tell you what you think, Re:MirAI reveals how your friends actually see you.
             </p>
           </div>
           
@@ -718,6 +771,7 @@
 </template>
 
 <script setup lang="ts">
+import { ref, onMounted, onUnmounted } from 'vue'
 import { useRouter } from 'vue-router'
 import Button from '@/components/common/Button.vue'
 import IconMirror from '@/components/icons/IconMirror.vue'
@@ -725,6 +779,99 @@ import IconChat from '@/components/icons/IconChat.vue'
 import IconRobot from '@/components/icons/IconRobot.vue'
 
 const router = useRouter()
+
+// Interactive cursor tracking for Akashic Flow animation
+const heroSectionRef = ref<HTMLElement | null>(null)
+const interactiveBgRef = ref<HTMLElement | null>(null)
+const cursorX = ref(0.5) // Normalized 0-1
+const cursorY = ref(0.5)
+const cursorProximity = ref(0.5) // Distance from center (0-1)
+
+let rafId: number | null = null
+let isTracking = false
+
+// Throttled update function using requestAnimationFrame (60fps)
+const updateCursorPosition = () => {
+  if (!interactiveBgRef.value) return
+  
+  // Calculate proximity to center (0 = center, 1 = corner)
+  const centerX = 0.5
+  const centerY = 0.5
+  const distance = Math.sqrt(
+    Math.pow(cursorX.value - centerX, 2) + Math.pow(cursorY.value - centerY, 2)
+  )
+  cursorProximity.value = Math.min(distance * 2, 1) // Normalize to 0-1
+  
+  // Apply CSS custom properties
+  interactiveBgRef.value.style.setProperty('--cursor-x', cursorX.value.toString())
+  interactiveBgRef.value.style.setProperty('--cursor-y', cursorY.value.toString())
+  interactiveBgRef.value.style.setProperty('--cursor-proximity', cursorProximity.value.toString())
+  
+  isTracking = false
+  rafId = null
+}
+
+// Mouse move handler
+const handleMouseMove = (e: MouseEvent) => {
+  if (!heroSectionRef.value || !interactiveBgRef.value) return
+  
+  const rect = heroSectionRef.value.getBoundingClientRect()
+  cursorX.value = Math.max(0, Math.min(1, (e.clientX - rect.left) / rect.width))
+  cursorY.value = Math.max(0, Math.min(1, (e.clientY - rect.top) / rect.height))
+  
+  // Throttle updates using requestAnimationFrame
+  if (!isTracking) {
+    isTracking = true
+    rafId = requestAnimationFrame(updateCursorPosition)
+  }
+}
+
+// Touch move handler for mobile
+const handleTouchMove = (e: TouchEvent) => {
+  if (!heroSectionRef.value || !interactiveBgRef.value) return
+  
+  const touch = e.touches[0]
+  if (!touch) return
+  
+  const rect = heroSectionRef.value.getBoundingClientRect()
+  cursorX.value = Math.max(0, Math.min(1, (touch.clientX - rect.left) / rect.width))
+  cursorY.value = Math.max(0, Math.min(1, (touch.clientY - rect.top) / rect.height))
+  
+  // Throttle updates using requestAnimationFrame
+  if (!isTracking) {
+    isTracking = true
+    rafId = requestAnimationFrame(updateCursorPosition)
+  }
+}
+
+// Reset cursor to center when mouse leaves
+const handleMouseLeave = () => {
+  cursorX.value = 0.5
+  cursorY.value = 0.5
+  cursorProximity.value = 0
+  if (interactiveBgRef.value) {
+    updateCursorPosition()
+  }
+}
+
+onMounted(() => {
+  if (heroSectionRef.value) {
+    heroSectionRef.value.addEventListener('mousemove', handleMouseMove)
+    heroSectionRef.value.addEventListener('touchmove', handleTouchMove, { passive: true })
+    heroSectionRef.value.addEventListener('mouseleave', handleMouseLeave)
+  }
+})
+
+onUnmounted(() => {
+  if (heroSectionRef.value) {
+    heroSectionRef.value.removeEventListener('mousemove', handleMouseMove)
+    heroSectionRef.value.removeEventListener('touchmove', handleTouchMove)
+    heroSectionRef.value.removeEventListener('mouseleave', handleMouseLeave)
+  }
+  if (rafId !== null) {
+    cancelAnimationFrame(rafId)
+  }
+})
 
 const goToLogin = () => {
   router.push('/login')
