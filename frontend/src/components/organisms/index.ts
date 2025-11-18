@@ -21,3 +21,5 @@
  */
 
 export { default as DynamicPersonaCard } from './DynamicPersonaCard.vue'
+export { default as SurveyForm } from './SurveyForm.vue'
+export { default as PersonaStats } from './PersonaStats.vue'
