@@ -1,166 +1,297 @@
-# 🪞 Re:MirAI — Rediscover Yourself Through AI
+# Re:MirAI
 
-[![Status](https://img.shields.io/badge/status-in%20development-blue)](https://github.com)
-[![License](https://img.shields.io/badge/license-MIT-green)](LICENSE)
-[![Node.js](https://img.shields.io/badge/node.js-%3E%3D16-brightgreen)](https://nodejs.org/)
-[![Python](https://img.shields.io/badge/python-%3E%3D3.9-blue)](https://www.python.org/)
-[![Vue.js](https://img.shields.io/badge/vue.js-3-green)](https://vuejs.org/)
-[![TypeScript](https://img.shields.io/badge/typescript-5-blue)](https://www.typescriptlang.org/)
-[![AWS](https://img.shields.io/badge/AWS-Chalice-orange)](https://aws.amazon.com/chalice/)
-[![OpenAI](https://img.shields.io/badge/OpenAI-API-green)](https://openai.com/api/)
+> **"A platform where you discover yourself through the eyes of others"**
 
-## English
-
-Re:MirAI is an AI-driven persona simulation project that explores the boundaries between identity, perception, and self-reflection.
-It allows users to create and interact with AI models of themselves — based not only on how they see themselves, but also on how others perceive them.
-
-By combining emotional, rational, and behavioral "cores," Re:MirAI generates dynamic simulations of human personality.
-Through these AI reflections, users can experience multiple versions of the self — the ideal self, the hidden self, and the collective self shaped by others.
-
-At its core, Re:MirAI asks a simple but profound question:
-
-> "Who am I — and who do others believe I am?"
-
-A mirror, a future, and a dialogue between identities.
-**That is Re:MirAI.**
-
-### Key Features
-- **AI-Powered Personas**: Create your digital reflection based on friends' anonymous feedback
-- **Multi-Faceted Self**: Explore ideal, hidden, and collective versions of yourself
-- **Interactive Chat**: Converse with your AI persona in real-time
-- **Privacy First**: Anonymous feedback collection and encryption
-- **Social Sharing**: Share your persona results virally
-- **Real-time Synthesis**: AI processes feedback instantly into actionable insights
-
-### Tech Stack
-- **Frontend**: Vue 3, TypeScript, Tailwind CSS v4, Pinia, Vite
-- **Backend**: AWS Chalice, Python, PostgreSQL
-- **AI/ML**: OpenAI API (GPT-4), DALL-E 3
-- **Infrastructure**: AWS Lambda, SQS, RDS
+**Project Type:** AI-Powered Personality Discovery Platform  
+**Platform:** Web Application  
+**Architecture:** Full-Stack Modern Web Application
 
 ---
 
-## 한국어
+## 📋 Project Information
 
-Re:MirAI는 정체성, 인식, 그리고 자기 성찰 사이의 경계를 탐구하는 AI 기반 페르소나 시뮬레이션 프로젝트입니다.
-사용자는 자신을 보는 방식뿐만 아니라, 다른 사람들이 자신을 어떻게 인식하는지에 기반하여 자신의 AI 모델을 만들고 상호작용할 수 있습니다.
+Re:MirAI is an innovative AI-powered platform that transforms how people understand themselves through the perspectives of their friends. By collecting anonymous feedback through shareable surveys (called "Rituals"), the platform synthesizes a unique AI persona that reflects how others perceive you—creating an interactive chatbot you can engage with to explore your external personality.
 
-감성, 이성, 행동의 "코어"를 결합함으로써 Re:MirAI는 인간 성격의 동적인 시뮬레이션을 생성합니다.
-이러한 AI 반영을 통해 사용자는 이상적인 자아, 숨겨진 자아, 그리고 타인에 의해 형성된 집단적 자아 등 다양한 버전의 자신을 경험할 수 있습니다.
+## 🚀 Overview
 
-Re:MirAI는 본질적으로 간단하지만 심오한 질문을 던집니다:
+### Core Value Propositions
 
-> "나는 누구이며, 다른 사람들은 나를 누구라고 믿는가?"
+**Self-Discovery Through Social Feedback**
+- Generate personality insights based on collective friend feedback
+- Interact with an AI representation of your public persona
+- Explore the gap between self-perception and external perception
 
-거울, 미래, 그리고 정체성 간의 대화.
-**그것이 바로 Re:MirAI입니다.**
+**Engaging Social Experience**
+- Shareable persona cards optimized for social media
+- Compatibility matching between personas
+- Gamified interaction system with quests and rewards
 
-### 핵심 기능
-- **AI 기반 페르소나**: 친구들의 익명 피드백으로 당신의 디지털 반영을 만들어보세요
-- **다면적 자아**: 이상적인 자아, 숨겨진 자아, 집단적 자아를 탐험하세요
-- **상호작용 채팅**: 실시간으로 AI 페르소나와 대화하세요
-- **개인정보 보호**: 익명 피드백 수집 및 암호화
-- **소셜 공유**: 당신의 페르소나 결과를 바이럴로 공유하세요
-- **실시간 합성**: AI가 피드백을 실시간으로 실행 가능한 인사이트로 처리합니다
+**Privacy-First Design**
+- Friends provide anonymous feedback
+- Control over persona visibility (public/private)
+- No personal data sold or shared with third parties
 
-### 기술 스택
-- **프론트엔드**: Vue 3, TypeScript, Tailwind CSS v4, Pinia, Vite
-- **백엔드**: AWS Chalice, Python, PostgreSQL
-- **AI/ML**: OpenAI API (GPT-4), DALL-E 3
-- **인프라**: AWS Lambda, SQS, RDS
+## ✨ Key Features
 
----
+### 🔮 Ritual System (Survey Generation)
+- Create personalized survey links to share with friends
+- Custom questions designed to capture personality dimensions
+- Anonymous response collection
+- Minimum threshold system (3+ responses for summoning)
 
-## 日本語
+### 🎭 Persona Synthesis
+- AI-powered personality profile generation from survey responses
+- Multiple summoning modes:
+  - **Fated:** Let the AI decide based on responses
+  - **Alchemic:** Filter by desired archetype (Yandere, Kuudere, etc.)
+- Rarity system (SSR, SR, R) reflecting persona uniqueness
+- Practice mode for self-perception comparison
 
-Re:MirAIは、アイデンティティ、知覚、自己反省の境界を探索するAI駆動型のペルソナシミュレーションプロジェクトです。
-ユーザーは、自分自身がどのように見ているかだけでなく、他の人がどのようにあなたを認識しているかに基づいて、自分自身のAIモデルを作成およびインタラクトできます。
+### 💬 AI Chat Interface
+- Real-time conversation with your generated persona
+- Context-aware responses based on personality profile
+- Bond level progression through interaction
+- Chat history preservation
 
-感情的、理性的、行動的な「コア」を組み合わせることにより、Re:MirAIは人間の性格の動的なシミュレーションを生成します。
-これらのAI反映を通じて、ユーザーは、理想的な自己、隠された自己、および他者によって形成された集合的な自己など、自分自身の複数のバージョンを経験できます。
+### 🎨 Persona Cards & Illustrations
+- AI-generated character illustrations representing your persona
+- Detailed stat system (Charisma, Intellect, Kindness, Instability, Spirit)
+- Shareable persona cards for social media
+- Gender toggle feature (future enhancement)
 
-Re:MirAIの本質は、シンプルながら深刻な質問を投げかけています：
+### 👥 Social Features
+- **Compatibility Matching:** Discover chemistry scores with friends' personas
+- **Public Profiles:** Share your persona with the community
+- **Friend Persona Access:** Time-limited rental passes to chat with friends' personas
 
-> 「私は誰であり、他の人は私を誰だと信じているのか？」
+### 🎮 Gamification
+- Quest system with rewards (Memory Crystals)
+- Bond level progression
+- Achievement badges and streaks
+- Leaderboards (future enhancement)
 
-鏡、未来、そしてアイデンティティ間の対話。
-**それがRe:MirAIです。**
+## 🛠️ Tech Stack
 
-### 主な機能
-- **AIペルソナ**: 友人の匿名フィードバックから、あなたのデジタルリフレクションを作成
-- **多面的な自己**: 理想的な自己、隠された自己、集合的な自己を探索
-- **インタラクティブチャット**: リアルタイムであなたのAIペルソナと会話
-- **プライバシー第一**: 匿名フィードバック収集と暗号化
-- **ソーシャルシェアリング**: ペルソナの結果をバイラルで共有
-- **リアルタイム合成**: AIはフィードバックをリアルタイムで実行可能なインサイトに処理
+### Frontend
+- **Framework:** Next.js 14+ (App Router)
+- **Language:** TypeScript
+- **Styling:** CSS Modules with Design Tokens
+- **State Management:** React Context + Hooks
+- **UI Components:** Custom Atomic Design System
+- **Design Philosophy:** Blonix Branch (Light Theme First)
 
-### 技術スタック
-- **フロントエンド**: Vue 3、TypeScript、Tailwind CSS v4、Pinia、Vite
-- **バックエンド**: AWS Chalice、Python、PostgreSQL
-- **AI/ML**: OpenAI API (GPT-4)、DALL-E 3
-- **インフラストラクチャ**: AWS Lambda、SQS、RDS
+### Backend
+- **Framework:** NestJS
+- **Language:** TypeScript
+- **Database:** PostgreSQL
+- **ORM:** TypeORM / Prisma
+- **Authentication:** Google OAuth 2.0 + JWT
+- **API:** RESTful with versioning
 
----
+### AI & Data
+- **LLM:** OpenAI GPT-4 / GPT-3.5-turbo
+- **Image Generation:** DALL-E 3 / Stable Diffusion (future)
+- **Embeddings:** OpenAI Embeddings (for compatibility matching)
 
-## Project Structure
+### Infrastructure
+- **Hosting:** Vercel (Frontend) + Railway/Render (Backend)
+- **Database Hosting:** Supabase / Railway
+- **File Storage:** Cloudinary / AWS S3
+- **Monitoring:** Sentry + LogRocket
 
-```
-ToyProject_2/
-├── frontend/           # Vue 3 + Vite frontend application
-├── backend/            # AWS Chalice Python backend
-├── docs/               # Project documentation
-│   ├── frontend/       # Frontend design system & guidelines
-│   ├── plan/          # Strategic planning documents
-│   └── ...
-└── README.md          # This file
-```
-
-## Getting Started
+## 🏃 Quick Start
 
 ### Prerequisites
-- Node.js >= 16
-- Python >= 3.9
-- AWS CLI configured
-- Git
 
-### Frontend Setup
+- **Node.js:** 18.0.0 or higher
+- **Package Manager:** npm or yarn
+- **Database:** PostgreSQL 14+
+- **API Keys:**
+  - OpenAI API key
+  - Google OAuth credentials
+
+### Installation & Setup
 
 ```bash
+# Clone the repository
+git clone https://github.com/your-org/Re-MirAI.git
+cd Re-MirAI
+
+# Install frontend dependencies
 cd frontend
 npm install
+
+# Install backend dependencies
+cd ../backend
+npm install
+
+# Copy environment files
+cp .env.example .env
+
+# Configure your environment variables
+# Edit .env with your API keys and database credentials
+
+# Run database migrations
+npm run migration:run
+
+# Start development servers
+# Terminal 1 - Frontend
+cd frontend
 npm run dev
-```
 
-Visit `http://localhost:5173/` to view the application.
-
-### Backend Setup
-
-```bash
+# Terminal 2 - Backend
 cd backend
-pip install -r requirements.txt
-chalice local
+npm run start:dev
 ```
 
-Backend server runs on `http://localhost:8000/`.
+Access the application at `http://localhost:3000`
 
-## Documentation
+## 📁 Project Structure
 
-- **Frontend**: See `/docs/frontend/` for design system, component library, and development guides
-- **Backend**: See `/backend/ARCHITECTURE.md` for API endpoints and system design
-- **Planning**: See `/docs/plan/` for strategic documents and design specifications
+```
+Re-MirAI/
+├── frontend/              # Next.js frontend application
+│   ├── app/              # App Router pages
+│   │   ├── (auth)/       # Authentication pages
+│   │   ├── dashboard/    # User dashboard
+│   │   ├── ritual/       # Survey creation & management
+│   │   ├── summoning/    # Persona summoning
+│   │   └── persona/      # Persona interaction
+│   ├── components/       # React components (Atomic Design)
+│   │   ├── atoms/        # Basic building blocks
+│   │   ├── molecules/    # Simple component combinations
+│   │   ├── organisms/    # Complex UI sections
+│   │   ├── templates/    # Page layouts
+│   │   └── pages/        # Complete pages
+│   ├── lib/              # Utilities and hooks
+│   ├── styles/           # Global styles and design tokens
+│   └── public/           # Static assets
+│
+├── backend/              # NestJS backend application
+│   ├── src/
+│   │   ├── modules/      # Feature modules
+│   │   │   ├── auth/     # Authentication & authorization
+│   │   │   ├── users/    # User management
+│   │   │   ├── ritual/   # Survey/ritual system
+│   │   │   ├── persona/  # Persona synthesis & chat
+│   │   │   ├── social/   # Compatibility & profiles
+│   │   │   └── quests/   # Gamification system
+│   │   ├── common/       # Shared utilities
+│   │   ├── config/       # Configuration
+│   │   └── database/     # Database migrations & seeds
+│   └── test/             # Test files
+│
+└── docs/                 # Documentation
+    ├── 01-getting-started/
+    ├── 02-project-overview/
+    ├── 03-architecture/
+    ├── 04-design-system/
+    ├── 05-user-experience/
+    ├── 06-development/
+    ├── 07-deployment/
+    ├── 08-marketing/
+    └── 09-reference/
+```
 
-## Contributing
+## 🎨 Design System
 
-Contributions are welcome! Please follow the coding standards defined in the project documentation.
+Re:MirAI features the **Blonix Branch** design philosophy:
 
-## License
+- **🌟 Light Theme First:** Clean, bright interface optimized for accessibility
+- **🎨 Modern Color Palette:** Fuchsia/Pink primary (#d946ef) with Blue secondary (#3b82f6)
+- **✍️ Typography:** Inter + Poppins for friendly, modern feel
+- **♿ Accessibility:** WCAG 2.1 AA compliant with high contrast
+- **📱 Responsive Design:** Mobile-first approach
+- **🎭 Component-Based:** Atomic Design methodology
 
-This project is licensed under the MIT License - see the LICENSE file for details.
+[View Complete Design System →](docs/04-design-system/README.md)
+
+## 📚 Documentation
+
+### Comprehensive Guides
+
+- **[Getting Started](docs/01-getting-started/README.md)** - Setup and installation
+- **[Project Overview](docs/02-project-overview/README.md)** - Goals, features, roadmap
+- **[Architecture](docs/03-architecture/README.md)** - System design and technical specs
+- **[Design System](docs/04-design-system/README.md)** - UI components and design tokens
+- **[User Experience](docs/05-user-experience/README.md)** - User flows and journeys
+- **[Development Guides](docs/06-development/README.md)** - Frontend and backend development
+- **[Deployment](docs/07-deployment/README.md)** - Deployment procedures
+- **[Marketing](docs/08-marketing/README.md)** - Growth and viral strategies
+
+### Multilingual Documentation
+
+- **[한국어 README](README.ko.md)** - Korean documentation
+- **[English README](README.en.md)** - English documentation
+- **[日本語 README](README.ja.md)** - Japanese documentation
+
+## 🗓️ Development Roadmap
+
+### Phase 1: MVP (Months 1-3)
+
+**Core Features**
+- ✅ User authentication (Google OAuth)
+- ✅ Survey generation and sharing
+- ✅ Basic persona synthesis
+- ✅ AI chat interface
+- 🔄 Landing page and onboarding
+
+**Goals:** Validate core concept, gather initial user feedback
+
+### Phase 2: Enhancement (Months 4-6)
+
+**Social & Visual Features**
+- 📋 AI-generated persona illustrations
+- 📋 Compatibility matching
+- 📋 Public persona profiles
+- 📋 Quest system and gamification
+- 📋 Gender toggle feature
+
+**Goals:** Increase engagement, enable viral sharing
+
+### Phase 3: Scale (Months 7-12)
+
+**Advanced Features**
+- 📋 Premium persona packages
+- 📋 Friend persona rental
+- 📋 Detailed compatibility reports
+- 📋 Group personas
+- 📋 Advanced analytics dashboard
+- 📋 Mobile app (React Native)
+
+**Goals:** Monetization, scalability, market expansion
+
+## 🎯 Project Objectives
+
+1. **Primary Goal:** Create an engaging self-discovery experience through AI-powered social feedback
+2. **Secondary Goals:**
+   - Achieve viral growth through social sharing mechanics
+   - Build a unique platform for AI-driven personality exploration
+   - Establish sustainable monetization through premium features
+
+## 🤝 Contributing
+
+We welcome contributions! Please see our [Contributing Guide](docs/CONTRIBUTING.md) for details on:
+
+- Code style and conventions
+- Development workflow
+- Pull request process
+- Testing requirements
+
+## 📄 License
+
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
+
+## 🆘 Support
+
+- **Documentation:** [docs/README.md](docs/README.md)
+- **Issues:** [GitHub Issues](https://github.com/your-org/Re-MirAI/issues)
+- **Email:** kordalek@naver.com
 
 ---
 
-Made with care by the Re:MirAI Team
+**Maintained by:** Re:MirAI Team  
+**Last Updated:** 2025-11-23  
+**Version:** 1.0.0
 
-[Website](#null) | [Contact](mailto:kordalek@naver.com) | [Twitter](#null) | [YouTube](https://youtu.be/V-PbPYGfWf8)
-
-###special thanks to Blonix 
+**Built with ❤️ for self-discovery and connection**

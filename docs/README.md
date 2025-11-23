@@ -1,163 +1,147 @@
-# Re:MirAI Documentation Index
+# Re:MirAI 기획 문서
 
-> **Central navigation hub for all Re:MirAI project documentation**
+> **Re:MirAI 프로젝트 기획 단계 문서 모음**
 
-**Last Updated:** 2025-11-18  
-**Version:** 1.0.0  
-**Status:** Active
-
----
-
-## 🚀 Quick Start
-
-New to Re:MirAI? Start here:
-
-1. **[Project Overview](../README.md)** - High-level project introduction
-2. **[Design Philosophy](concept/BLONIX_PRIORITY.md)** ⭐ **Start Here** - Core design principles
-3. **[Project Plan](concept/project_plan.md)** - Project goals and roadmap
-4. **[Getting Started Guide](frontend/development_guide.md)** - Development setup
+**최종 업데이트:** 2025-11-23  
+**버전:** 1.0.0  
+**상태:** 기획 단계
 
 ---
 
-## 📚 Documentation Structure
+## 📋 프로젝트 개요
 
-### Design & Architecture
-
-#### Core Design Philosophy
-- **[Blonix Branch Priority](concept/BLONIX_PRIORITY.md)** ⭐ - Top priority design system
-- **[Design System](frontend/design_system.md)** - Complete design token system
-- **[Architecture Overview](concept/design.md)** - System architecture and technical design
-
-#### Compliance & Standards
-- **[KickoffLabs Compliance](architecture/compliance-summary.md)** - Design compliance status
-- **[Color System](architecture/color-palette-audit.md)** - Color palette analysis and usage
-- **[Z-Index System](architecture/z-index-system.md)** - Z-index standardization
-- **[Emoji Removal Audit](architecture/emoji-removal-audit.md)** - UI cleanup documentation
-
-### Development Guides
-
-#### Frontend
-- **[Frontend Development Guide](frontend/development_guide.md)** - Setup and development workflow
-- **[Component Library](frontend/component_library.md)** - Reusable UI components
-- **[Technical Implementation](frontend/technical_implementation.md)** - Implementation details
-- **[User Experience Flows](frontend/user_experience_flows.md)** - UX flow documentation
-- **[User Journey Map](frontend/user_journey_map.md)** - Complete user journey
-- **[Page Concepts](frontend/page_concepts.md)** - Page-level design concepts
-- **[Heuristic Improvements](frontend/HEURISTIC_IMPROVEMENTS.md)** - UX improvements based on Nielsen's heuristics
-
-#### Backend & API
-- **[API Design](plan/api_design.md)** - REST API specifications
-- **[Database Design](plan/database_design.md)** - Database schema and design
-
-### Planning & Strategy
-
-#### Project Planning
-- **[Project Plan](concept/project_plan.md)** - Overall project plan and goals
-- **[Experience Design Document](plan/experience_design_document.md)** - User experience design
-- **[UI/UX Design](plan/ui_ux_design.md)** - UI/UX specifications
-- **[Viral Marketing Strategy](plan/viral_marketing_strategy.md)** - Growth strategy
-- **[Asset Specification](plan/asset_specification.md)** - Design asset requirements
-
-### Page Analysis
-
-Detailed analysis of each page in the application:
-
-- **[Landing Page](architecture/page-analysis/landing-page-analysis.md)** - Main entry point
-- **[Login Page](architecture/page-analysis/login-page-analysis.md)** - Authentication
-- **[Dashboard](architecture/page-analysis/dashboard-page-analysis.md)** - User hub
-- **[Survey Page](architecture/page-analysis/survey-page-analysis.md)** - Feedback collection
-- **[Summoning Page](architecture/page-analysis/summoning-page-analysis.md)** - Persona creation
-- **[Persona Room](architecture/page-analysis/persona-room-page-analysis.md)** - Persona interaction
-- **[Chat Page](architecture/page-analysis/chat-page-analysis.md)** - AI chat interface
-- **[Ritual Hub](architecture/page-analysis/ritual-hub-page-analysis.md)** - Survey management
-- **[Blonix Branch Analysis](architecture/page-analysis/blonix-branch-color-analysis.md)** - Design system comparison
-
-### Page Structures (XML)
-
-Machine-readable page structure documentation for AI systems:
-
-- **[Page Structures README](architecture/page-structures/README.md)** - XML documentation guide
-- All page XML files in `architecture/page-structures/` directory
-
-### Team & Roles
-
-- **[Developer Personas](developer_persona/roles_and_competencies.md)** - Team roles and required skills
+Re:MirAI는 AI 기반 성격 발견 플랫폼으로, 친구들의 익명 피드백을 통해 "다른 사람들이 나를 어떻게 보는가?"라는 질문에 답합니다.
 
 ---
 
-## 🔍 Search by Topic
+## 📚 문서 구조
 
-### Design System
-- [Blonix Priority](concept/BLONIX_PRIORITY.md)
-- [Design System](frontend/design_system.md)
-- [Color Palette](architecture/color-palette-audit.md)
-- [Z-Index System](architecture/z-index-system.md)
+### 프로젝트 핵심 문서
 
-### User Experience
-- [User Journey](frontend/user_journey_map.md)
-- [UX Flows](frontend/user_experience_flows.md)
-- [Page Concepts](frontend/page_concepts.md)
-- [Heuristic Improvements](frontend/HEURISTIC_IMPROVEMENTS.md)
+**[02-project-overview/](02-project-overview/)** - 프로젝트 기획 핵심 문서
 
-### Technical Implementation
-- [Architecture](concept/design.md)
-- [API Design](plan/api_design.md)
-- [Database Design](plan/database_design.md)
-- [Frontend Guide](frontend/development_guide.md)
+- **[README.md](02-project-overview/README.md)** - 프로젝트 개요 네비게이션
+- **[project-goals.md](02-project-overview/project-goals.md)** - 프로젝트 비전, 목표, 타겟 사용자
+- **[core-features.md](02-project-overview/core-features.md)** - 기능 정의서 및 요구사항 명세
+- **[design-philosophy.md](02-project-overview/design-philosophy.md)** - Blonix Branch 디자인 철학
+- **[roadmap.md](02-project-overview/roadmap.md)** - 개발 로드맵 및 마일스톤
 
-### Compliance & Quality
-- [KickoffLabs Compliance](architecture/compliance-summary.md)
-- [Technical Writer Review](TECHNICAL_WRITER_REVIEW.md)
-- [Glossary](GLOSSARY.md)
+### UX 기획 문서
 
----
+**[frontend/](frontend/)** - 사용자 경험 기획
 
-## 📖 Documentation Standards
+- **[user_journey_map.md](frontend/user_journey_map.md)** - 사용자 여정 맵
+- **[user_experience_flows.md](frontend/user_experience_flows.md)** - UX 플로우 다이어그램
+- **[page_concepts.md](frontend/page_concepts.md)** - 페이지별 컨셉 정의
+- **[HEURISTIC_IMPROVEMENTS.md](frontend/HEURISTIC_IMPROVEMENTS.md)** - UX 휴리스틱 개선사항
 
-### Terminology
-- See [Glossary](GLOSSARY.md) for approved terms and definitions
-- Always use "Re:MirAI" (not "Persona AI") for project name
-- Use Blonix Branch terminology in all new documentation
+### 디자인 및 마케팅 기획
 
-### Style Guide
-- Professional but approachable tone
-- Active voice preferred
-- Define acronyms on first use
-- Use consistent heading hierarchy
+**[plan/](plan/)** - 디자인 및 마케팅 전략
 
-### Maintenance
-- Documents should include metadata (version, last updated, status)
-- Cross-reference related documents
-- Keep code examples tested and current
-- Update changelog for significant changes
+- **[ui_ux_design.md](plan/ui_ux_design.md)** - UI/UX 디자인 기획
+- **[experience_design_document.md](plan/experience_design_document.md)** - 경험 디자인 문서
+- **[viral_marketing_strategy.md](plan/viral_marketing_strategy.md)** - 바이럴 마케팅 전략
+- **[asset_specification.md](plan/asset_specification.md)** - 디자인 에셋 사양
 
----
+### UX 분석 문서
 
-## 🆘 Need Help?
+**[architecture/](architecture/)** - UX/UI 전문가 분석
 
-### Finding Information
-1. Check this index first
-2. Use search by topic above
-3. Review [Glossary](GLOSSARY.md) for terminology
-4. Check [Technical Writer Review](TECHNICAL_WRITER_REVIEW.md) for quality standards
+- **[nielsen-heuristics-audit.md](architecture/nielsen-heuristics-audit.md)** - Nielsen 휴리스틱 감사
+- **[ux-ui-expert-analysis.md](architecture/ux-ui-expert-analysis.md)** - UX/UI 전문가 분석
+- **[page-analysis/](architecture/page-analysis/)** - 페이지별 상세 분석 (8개 파일)
 
-### Contributing Documentation
-1. Follow documentation standards
-2. Use [Documentation Checklist](TECHNICAL_WRITER_REVIEW.md#appendix-documentation-checklist-template)
-3. Update this index if adding new documents
-4. Get review from domain expert
+### 팀 구성
+
+**[developer_persona/](developer_persona/)** - 팀 역할 및 역량
+
+- **[roles_and_competencies.md](developer_persona/roles_and_competencies.md)** - 팀 역할 정의 및 필요 역량
+
+### 레거시 기획 문서
+
+**[concept/](concept/)** - 초기 기획 문서 (참고용)
+
+- **[BLONIX_PRIORITY.md](concept/BLONIX_PRIORITY.md)** - Blonix Branch 우선순위 (→ 02-project-overview로 마이그레이션됨)
+- **[project_plan.md](concept/project_plan.md)** - 초기 프로젝트 계획 (→ 02-project-overview로 마이그레이션됨)
+
+### 참고 자료
+
+- **[GLOSSARY.md](GLOSSARY.md)** - 프로젝트 용어 정의
 
 ---
 
-## 📝 Recent Updates
+## 🎯 빠른 네비게이션
 
-- **2025-11-18**: Created documentation index
-- **2025-11-18**: Added Blonix Branch Priority documentation
-- **2025-11-18**: Standardized terminology across all documents
-- **2025-11-18**: Completed Technical Writer Review
+### 역할별 문서
+
+**프로덕트 매니저**
+1. [프로젝트 목표](02-project-overview/project-goals.md) - 비전 및 전략
+2. [핵심 기능](02-project-overview/core-features.md) - 기능 명세
+3. [로드맵](02-project-overview/roadmap.md) - 타임라인 및 마일스톤
+
+**디자이너**
+1. [디자인 철학](02-project-overview/design-philosophy.md) - Blonix Branch 원칙
+2. [UI/UX 디자인](plan/ui_ux_design.md) - 디자인 기획
+3. [사용자 여정](frontend/user_journey_map.md) - 사용자 플로우
+
+**기획자**
+1. [프로젝트 개요](02-project-overview/README.md) - 전체 개요
+2. [핵심 기능](02-project-overview/core-features.md) - 기능 정의
+3. [마케팅 전략](plan/viral_marketing_strategy.md) - 성장 전략
 
 ---
 
-**Maintained by:** Documentation Team  
-**Questions?** Contact: kordalek@naver.com
+## 📊 프로젝트 현황
 
+**현재 단계:** 기획 완료  
+**다음 단계:** 개발 시작 준비  
+**타겟 사용자:** 1,000명 (베타)  
+**핵심 기능:** 80% 정의 완료
+
+---
+
+## 💡 핵심 가치 제안
+
+**사용자를 위한 가치:**
+- 🔍 다른 사람들이 나를 어떻게 보는지 발견
+- 💬 외부 성격을 반영한 AI와 대화
+- 🤝 관계 역학 이해 (호환성 매칭)
+- 🎮 게임화된 자기 발견 경험
+
+**플랫폼 가치:**
+- 🚀 소셜 공유를 통한 바이럴 성장
+- ♻️ 호환성 기능을 통한 네트워크 효과
+- 💰 프리미엄 기능을 통한 수익화
+- 🌟 AI 성격 분석 시장에서의 차별화
+
+---
+
+## 🎨 디자인 원칙
+
+Re:MirAI는 **Blonix Branch** 철학을 따릅니다:
+
+- **라이트 테마 우선** - 접근성, 전문성, 주간 사용 최적화
+- **모던 컬러** - Fuchsia/Pink 주색상, Blue 보조색상
+- **사용자 중심** - 몰입감보다 명확성 우선
+- **접근성** - WCAG 2.1 AA 준수
+- **폭넓은 호소력** - 서브컬처 지식 불필요
+
+자세한 내용: [디자인 철학](02-project-overview/design-philosophy.md)
+
+---
+
+## 📝 문서 관리
+
+**버전 이력:**
+- 1.0.0 (2025-11-23) - 기획 단계 문서 정리 완료
+
+**유지보수:**
+- 월간 메트릭 및 진행상황 리뷰
+- 분기별 로드맵 업데이트
+- 지속적인 기능 명세 업데이트
+
+---
+
+**문의:** kordalek@naver.com  
+**프로젝트 루트:** [README.md](../README.md)
