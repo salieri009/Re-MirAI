@@ -21,53 +21,53 @@ Re:MirAI는 AI 기반 성격 발견 플랫폼으로, 친구들의 익명 피드�
 **[02-project-overview/](02-project-overview/)** - 프로젝트 기획 핵심 문서
 
 - **[README.md](02-project-overview/README.md)** - 프로젝트 개요 네비게이션
-- **[project-goals.md](02-project-overview/project-goals.md)** - 프로젝트 비전, 목표, 타겟 사용자
-- **[core-features.md](02-project-overview/core-features.md)** - 기능 정의서 및 요구사항 명세
-- **[design-philosophy.md](02-project-overview/design-philosophy.md)** - Blonix Branch 디자인 철학
-- **[roadmap.md](02-project-overview/roadmap.md)** - 개발 로드맵 및 마일스톤
+- **[01-Project-Goals.md](02-project-overview/01-Project-Goals.md)** - 프로젝트 비전, 목표, 타겟 사용자
+- **[02-Core-Features.md](02-project-overview/02-Core-Features.md)** - 기능 정의서 및 요구사항 명세
+- **[03-Design-Philosophy.md](02-project-overview/03-Design-Philosophy.md)** - Blonix Branch 디자인 철학
+- **[04-Roadmap.md](02-project-overview/04-Roadmap.md)** - 개발 로드맵 및 마일스톤
 
 ### UX 기획 문서
 
-**[frontend/](frontend/)** - 사용자 경험 기획
+**[04-user-experience/](04-user-experience/)** - 사용자 경험 기획
 
-- **[user_journey_map.md](frontend/user_journey_map.md)** - 사용자 여정 맵
-- **[user_experience_flows.md](frontend/user_experience_flows.md)** - UX 플로우 다이어그램
-- **[page_concepts.md](frontend/page_concepts.md)** - 페이지별 컨셉 정의
-- **[HEURISTIC_IMPROVEMENTS.md](frontend/HEURISTIC_IMPROVEMENTS.md)** - UX 휴리스틱 개선사항
+- **[01-User-Journey-Map.md](04-user-experience/01-User-Journey-Map.md)** - 사용자 여정 맵
+- **[02-User-Experience-Flows.md](04-user-experience/02-User-Experience-Flows.md)** - UX 플로우 다이어그램
+- **[03-Page-Concepts.md](04-user-experience/03-Page-Concepts.md)** - 페이지별 컨셉 정의
+- **[04-Heuristic-Improvements.md](04-user-experience/04-Heuristic-Improvements.md)** - UX 휴리스틱 개선사항
 
 ### 디자인 및 마케팅 기획
 
-**[plan/](plan/)** - 디자인 및 마케팅 전략
+**[03-planning/](03-planning/)** - 디자인 및 마케팅 전략
 
-- **[ui_ux_design.md](plan/ui_ux_design.md)** - UI/UX 디자인 기획
-- **[experience_design_document.md](plan/experience_design_document.md)** - 경험 디자인 문서
-- **[viral_marketing_strategy.md](plan/viral_marketing_strategy.md)** - 바이럴 마케팅 전략
-- **[asset_specification.md](plan/asset_specification.md)** - 디자인 에셋 사양
+- **[01-UI-UX-Design.md](03-planning/01-UI-UX-Design.md)** - UI/UX 디자인 기획
+- **[02-Experience-Design-Document.md](03-planning/02-Experience-Design-Document.md)** - 경험 디자인 문서
+- **[03-Viral-Marketing-Strategy.md](03-planning/03-Viral-Marketing-Strategy.md)** - 바이럴 마케팅 전략
+- **[04-Asset-Specification.md](03-planning/04-Asset-Specification.md)** - 디자인 에셋 사양
 
 ### UX 분석 문서
 
-**[architecture/](architecture/)** - UX/UI 전문가 분석
+**[05-analysis/](05-analysis/)** - UX/UI 전문가 분석
 
-- **[nielsen-heuristics-audit.md](architecture/nielsen-heuristics-audit.md)** - Nielsen 휴리스틱 감사
-- **[ux-ui-expert-analysis.md](architecture/ux-ui-expert-analysis.md)** - UX/UI 전문가 분석
-- **[page-analysis/](architecture/page-analysis/)** - 페이지별 상세 분석 (8개 파일)
+- **[01-Nielsen-Heuristics-Audit.md](05-analysis/01-Nielsen-Heuristics-Audit.md)** - Nielsen 휴리스틱 감사
+- **[02-UX-UI-Expert-Analysis.md](05-analysis/02-UX-UI-Expert-Analysis.md)** - UX/UI 전문가 분석
+- **[page-analysis/](05-analysis/page-analysis/)** - 페이지별 상세 분석 (8개 파일)
 
 ### 팀 구성
 
-**[developer_persona/](developer_persona/)** - 팀 역할 및 역량
+**[06-team/](06-team/)** - 팀 역할 및 역량
 
-- **[roles_and_competencies.md](developer_persona/roles_and_competencies.md)** - 팀 역할 정의 및 필요 역량
+- **[01-Roles-And-Competencies.md](06-team/01-Roles-And-Competencies.md)** - 팀 역할 정의 및 필요 역량
 
 ### 레거시 기획 문서
 
-**[concept/](concept/)** - 초기 기획 문서 (참고용)
+**[01-concept/](01-concept/)** - 초기 기획 문서 (참고용)
 
-- **[BLONIX_PRIORITY.md](concept/BLONIX_PRIORITY.md)** - Blonix Branch 우선순위 (→ 02-project-overview로 마이그레이션됨)
-- **[project_plan.md](concept/project_plan.md)** - 초기 프로젝트 계획 (→ 02-project-overview로 마이그레이션됨)
+- **[01-Blonix-Priority.md](01-concept/01-Blonix-Priority.md)** - Blonix Branch 우선순위
+- **[02-Project-Plan.md](01-concept/02-Project-Plan.md)** - 초기 프로젝트 계획
 
 ### 참고 자료
 
-- **[GLOSSARY.md](GLOSSARY.md)** - 프로젝트 용어 정의
+- **[01-Glossary.md](01-Glossary.md)** - 프로젝트 용어 정의
 
 ---
 
