@@ -1,297 +1,330 @@
 # Re:MirAI
 
+> **"다른 사람의 눈을 통해 자신을 발견하는 플랫폼"**  
 > **"A platform where you discover yourself through the eyes of others"**
 
-**Project Type:** AI-Powered Personality Discovery Platform  
-**Platform:** Web Application  
-**Architecture:** Full-Stack Modern Web Application
+**프로젝트 유형:** AI 기반 성격 발견 플랫폼  
+**플랫폼:** 웹 애플리케이션  
+**현재 단계:** 기획 완료, 개발 준비 중
 
 ---
 
-## 📋 Project Information
+## 📋 프로젝트 정보
 
-Re:MirAI is an innovative AI-powered platform that transforms how people understand themselves through the perspectives of their friends. By collecting anonymous feedback through shareable surveys (called "Rituals"), the platform synthesizes a unique AI persona that reflects how others perceive you—creating an interactive chatbot you can engage with to explore your external personality.
+Re:MirAI는 친구들의 익명 피드백을 통해 "다른 사람들이 나를 어떻게 보는가?"라는 질문에 답하는 혁신적인 AI 기반 플랫폼입니다. 
 
-## 🚀 Overview
+공유 가능한 설문조사("의식(Ritual)")를 통해 익명 피드백을 수집하고, 이를 바탕으로 당신의 외부 성격을 반영하는 고유한 AI 페르소나를 합성합니다. 생성된 AI 챗봇과 대화하며 자신의 외부 성격을 탐구할 수 있습니다.
 
-### Core Value Propositions
+---
 
-**Self-Discovery Through Social Feedback**
-- Generate personality insights based on collective friend feedback
-- Interact with an AI representation of your public persona
-- Explore the gap between self-perception and external perception
+## 🚀 개요
 
-**Engaging Social Experience**
-- Shareable persona cards optimized for social media
-- Compatibility matching between personas
-- Gamified interaction system with quests and rewards
+### 핵심 가치 제안
 
-**Privacy-First Design**
-- Friends provide anonymous feedback
-- Control over persona visibility (public/private)
-- No personal data sold or shared with third parties
+**사회적 피드백을 통한 자기 발견**
+- 친구들의 집단 피드백을 기반으로 한 성격 인사이트 생성
+- 당신의 공개 페르소나를 나타내는 AI와 상호작용
+- 자기 인식과 외부 인식 간의 간극 탐구
 
-## ✨ Key Features
+**매력적인 소셜 경험**
+- 소셜 미디어에 최적화된 공유 가능한 페르소나 카드
+- 페르소나 간 호환성 매칭
+- 퀘스트와 보상이 있는 게임화된 상호작용 시스템
 
-### 🔮 Ritual System (Survey Generation)
-- Create personalized survey links to share with friends
-- Custom questions designed to capture personality dimensions
-- Anonymous response collection
-- Minimum threshold system (3+ responses for summoning)
+**프라이버시 우선 설계**
+- 친구들의 익명 피드백 제공
+- 페르소나 공개 여부 제어 (공개/비공개)
+- 개인 데이터 판매 또는 제3자 공유 없음
 
-### 🎭 Persona Synthesis
-- AI-powered personality profile generation from survey responses
-- Multiple summoning modes:
-  - **Fated:** Let the AI decide based on responses
-  - **Alchemic:** Filter by desired archetype (Yandere, Kuudere, etc.)
-- Rarity system (SSR, SR, R) reflecting persona uniqueness
-- Practice mode for self-perception comparison
+---
 
-### 💬 AI Chat Interface
-- Real-time conversation with your generated persona
-- Context-aware responses based on personality profile
-- Bond level progression through interaction
-- Chat history preservation
+## ✨ 핵심 기능
 
-### 🎨 Persona Cards & Illustrations
-- AI-generated character illustrations representing your persona
-- Detailed stat system (Charisma, Intellect, Kindness, Instability, Spirit)
-- Shareable persona cards for social media
-- Gender toggle feature (future enhancement)
+### 🔮 의식 시스템 (설문 생성)
+- 친구들과 공유할 개인화된 설문 링크 생성
+- 성격 차원을 포착하도록 설계된 맞춤 질문
+- 익명 응답 수집
+- 최소 임계값 시스템 (소환을 위한 3개 이상의 응답)
 
-### 👥 Social Features
-- **Compatibility Matching:** Discover chemistry scores with friends' personas
-- **Public Profiles:** Share your persona with the community
-- **Friend Persona Access:** Time-limited rental passes to chat with friends' personas
+### 🎭 페르소나 합성
+- 설문 응답으로부터 AI 기반 성격 프로필 생성
+- 다중 소환 모드:
+  - **운명형(Fated):** 응답을 기반으로 AI가 결정
+  - **연금술형(Alchemic):** 원하는 원형 필터링 (얀데레, 쿠데레 등)
+- 페르소나 고유성을 반영하는 희귀도 시스템 (SSR, SR, R)
+- 자기 인식 비교를 위한 연습 모드
 
-### 🎮 Gamification
-- Quest system with rewards (Memory Crystals)
-- Bond level progression
-- Achievement badges and streaks
-- Leaderboards (future enhancement)
+### 💬 AI 채팅 인터페이스
+- 생성된 페르소나와의 실시간 대화
+- 성격 프로필 기반 맥락 인식 응답
+- 상호작용을 통한 유대감 레벨 진행
+- 채팅 기록 보존
 
-## 🛠️ Tech Stack
+### 🎨 페르소나 카드 및 일러스트
+- 페르소나를 나타내는 AI 생성 캐릭터 일러스트
+- 상세한 스탯 시스템 (카리스마, 지성, 친절, 불안정성, 정신력)
+- 소셜 미디어용 공유 가능한 페르소나 카드
+- 성별 전환 기능 (향후 개선)
+
+### 👥 소셜 기능
+- **호환성 매칭:** 친구들의 페르소나와의 케미스트리 점수 발견
+- **공개 프로필:** 커뮤니티와 페르소나 공유
+- **친구 페르소나 접근:** 친구 페르소나와 채팅할 수 있는 기간 제한 대여 패스
+
+### 🎮 게임화
+- 보상이 있는 퀘스트 시스템 (기억 크리스탈)
+- 유대감 레벨 진행
+- 업적 배지 및 연속 기록
+- 리더보드 (향후 개선)
+
+---
+
+## 🎯 프로젝트 목표
+
+### 주요 목표
+AI 기반 소셜 피드백을 통한 매력적인 자기 발견 경험 창출
+
+### 부차적 목표
+1. 소셜 공유 메커니즘을 통한 바이럴 성장 달성
+2. AI 기반 성격 탐구를 위한 고유한 플랫폼 구축
+3. 프리미엄 기능을 통한 지속 가능한 수익화 확립
+
+---
+
+## 🎨 디자인 철학
+
+Re:MirAI는 **Blonix Branch** 디자인 철학을 따릅니다:
+
+- **🌟 라이트 테마 우선:** 접근성을 위해 최적화된 깔끔하고 밝은 인터페이스
+- **🎨 모던 컬러 팔레트:** Fuchsia/Pink 주색상 (#d946ef)과 Blue 보조색상 (#3b82f6)
+- **✍️ 타이포그래피:** 친근하고 현대적인 느낌을 위한 Inter + Poppins
+- **♿ 접근성:** 높은 대비의 WCAG 2.1 AA 준수
+- **📱 반응형 디자인:** 모바일 우선 접근 방식
+- **🎭 컴포넌트 기반:** Atomic Design 방법론
+
+[전체 디자인 시스템 보기 →](docs/02-project-overview/design-philosophy.md)
+
+---
+
+## 📚 문서
+
+### 기획 문서
+
+- **[프로젝트 개요](docs/02-project-overview/README.md)** - 목표, 기능, 로드맵
+- **[프로젝트 목표](docs/02-project-overview/project-goals.md)** - 비전, 타겟 사용자, 성공 지표
+- **[핵심 기능](docs/02-project-overview/core-features.md)** - 기능 정의서 및 요구사항 명세
+- **[디자인 철학](docs/02-project-overview/design-philosophy.md)** - Blonix Branch 원칙
+- **[개발 로드맵](docs/02-project-overview/roadmap.md)** - 타임라인 및 마일스톤
+
+### UX 기획
+
+- **[사용자 여정 맵](docs/frontend/user_journey_map.md)** - 사용자 플로우
+- **[UX 플로우](docs/frontend/user_experience_flows.md)** - 상세 UX 다이어그램
+- **[페이지 컨셉](docs/frontend/page_concepts.md)** - 페이지별 설계
+- **[휴리스틱 개선](docs/frontend/HEURISTIC_IMPROVEMENTS.md)** - UX 개선사항
+
+### 디자인 및 마케팅
+
+- **[UI/UX 디자인](docs/plan/ui_ux_design.md)** - 디자인 기획
+- **[경험 디자인](docs/plan/experience_design_document.md)** - 경험 설계 문서
+- **[바이럴 마케팅 전략](docs/plan/viral_marketing_strategy.md)** - 성장 전략
+- **[에셋 사양](docs/plan/asset_specification.md)** - 디자인 에셋 정의
+
+### 참고 자료
+
+- **[용어집](docs/GLOSSARY.md)** - 프로젝트 용어 정의
+- **[팀 역할](docs/developer_persona/roles_and_competencies.md)** - 팀 구성 및 역량
+
+---
+
+## 📁 프로젝트 구조
+
+```
+Re-MirAI/
+├── README.md                          # 프로젝트 개요 (이 파일)
+├── ATOMIC_DESIGN_REFACTORING.md       # Atomic Design 리팩토링 가이드
+├── .gitignore                         # Git 제외 파일
+│
+└── docs/                              # 기획 문서
+    ├── README.md                      # 문서 네비게이션
+    ├── GLOSSARY.md                    # 용어 정의
+    │
+    ├── 02-project-overview/           # 프로젝트 핵심 기획
+    │   ├── README.md                  # 개요 네비게이션
+    │   ├── project-goals.md           # 비전, 목표, 타겟 사용자
+    │   ├── core-features.md           # 기능 정의서
+    │   ├── design-philosophy.md       # Blonix Branch 디자인 철학
+    │   └── roadmap.md                 # 개발 로드맵
+    │
+    ├── concept/                       # 초기 기획 (참고용)
+    │   ├── BLONIX_PRIORITY.md         # 디자인 우선순위
+    │   └── project_plan.md            # 초기 프로젝트 계획
+    │
+    ├── plan/                          # 디자인 및 마케팅 기획
+    │   ├── ui_ux_design.md            # UI/UX 디자인 기획
+    │   ├── experience_design_document.md  # 경험 디자인
+    │   ├── viral_marketing_strategy.md    # 바이럴 마케팅 전략
+    │   └── asset_specification.md     # 디자인 에셋 사양
+    │
+    ├── frontend/                      # UX 기획
+    │   ├── user_journey_map.md        # 사용자 여정 맵
+    │   ├── user_experience_flows.md   # UX 플로우
+    │   ├── page_concepts.md           # 페이지 컨셉
+    │   └── HEURISTIC_IMPROVEMENTS.md  # UX 개선사항
+    │
+    ├── architecture/                  # UX/UI 분석
+    │   ├── nielsen-heuristics-audit.md    # Nielsen 휴리스틱 감사
+    │   ├── ux-ui-expert-analysis.md       # UX/UI 전문가 분석
+    │   └── page-analysis/             # 페이지별 상세 분석
+    │       ├── blonix-branch-color-analysis.md
+    │       ├── chat-page-analysis.md
+    │       ├── dashboard-page-analysis.md
+    │       ├── landing-page-analysis.md
+    │       ├── login-page-analysis.md
+    │       ├── persona-room-page-analysis.md
+    │       ├── ritual-hub-page-analysis.md
+    │       └── summoning-page-analysis.md
+    │
+    └── developer_persona/             # 팀 구성
+        └── roles_and_competencies.md  # 팀 역할 및 필요 역량
+```
+
+
+> **참고:** 이 프로젝트는 현재 기획 단계입니다. `frontend/` 및 `backend/` 디렉토리는 개발 시작 시 생성됩니다.
+
+---
+
+## 🗓️ 개발 로드맵
+
+### Phase 1: MVP (1-3개월)
+
+**핵심 기능**
+- 사용자 인증 (Google OAuth)
+- 설문 생성 및 공유
+- 기본 페르소나 합성
+- AI 채팅 인터페이스
+- 랜딩 페이지 및 온보딩
+
+**목표:** 핵심 컨셉 검증, 초기 사용자 피드백 수집
+
+### Phase 2: 개선 (4-6개월)
+
+**소셜 및 비주얼 기능**
+- AI 생성 페르소나 일러스트
+- 호환성 매칭
+- 공개 페르소나 프로필
+- 퀘스트 시스템 및 게임화
+- 성별 전환 기능
+
+**목표:** 참여도 증가, 바이럴 공유 활성화
+
+### Phase 3: 확장 (7-12개월)
+
+**고급 기능**
+- 프리미엄 페르소나 패키지
+- 친구 페르소나 대여
+- 상세 호환성 리포트
+- 그룹 페르소나
+- 고급 분석 대시보드
+- 모바일 앱 (React Native)
+
+**목표:** 수익화, 확장성, 시장 확대
+
+[전체 로드맵 보기 →](docs/02-project-overview/roadmap.md)
+
+---
+
+## 🛠️ 기술 스택 (계획)
 
 ### Frontend
-- **Framework:** Next.js 14+ (App Router)
-- **Language:** TypeScript
-- **Styling:** CSS Modules with Design Tokens
-- **State Management:** React Context + Hooks
-- **UI Components:** Custom Atomic Design System
-- **Design Philosophy:** Blonix Branch (Light Theme First)
+- **프레임워크:** Next.js 14+ (App Router)
+- **언어:** TypeScript
+- **스타일링:** CSS Modules with Design Tokens
+- **상태 관리:** React Context + Hooks
+- **UI 컴포넌트:** Custom Atomic Design System
 
 ### Backend
-- **Framework:** NestJS
-- **Language:** TypeScript
-- **Database:** PostgreSQL
+- **프레임워크:** NestJS
+- **언어:** TypeScript
+- **데이터베이스:** PostgreSQL
 - **ORM:** TypeORM / Prisma
-- **Authentication:** Google OAuth 2.0 + JWT
+- **인증:** Google OAuth 2.0 + JWT
 - **API:** RESTful with versioning
 
 ### AI & Data
 - **LLM:** OpenAI GPT-4 / GPT-3.5-turbo
-- **Image Generation:** DALL-E 3 / Stable Diffusion (future)
-- **Embeddings:** OpenAI Embeddings (for compatibility matching)
+- **이미지 생성:** DALL-E 3 / Stable Diffusion
+- **임베딩:** OpenAI Embeddings (호환성 매칭용)
 
 ### Infrastructure
-- **Hosting:** Vercel (Frontend) + Railway/Render (Backend)
-- **Database Hosting:** Supabase / Railway
-- **File Storage:** Cloudinary / AWS S3
-- **Monitoring:** Sentry + LogRocket
-
-## 🏃 Quick Start
-
-### Prerequisites
-
-- **Node.js:** 18.0.0 or higher
-- **Package Manager:** npm or yarn
-- **Database:** PostgreSQL 14+
-- **API Keys:**
-  - OpenAI API key
-  - Google OAuth credentials
-
-### Installation & Setup
-
-```bash
-# Clone the repository
-git clone https://github.com/your-org/Re-MirAI.git
-cd Re-MirAI
-
-# Install frontend dependencies
-cd frontend
-npm install
-
-# Install backend dependencies
-cd ../backend
-npm install
-
-# Copy environment files
-cp .env.example .env
-
-# Configure your environment variables
-# Edit .env with your API keys and database credentials
-
-# Run database migrations
-npm run migration:run
-
-# Start development servers
-# Terminal 1 - Frontend
-cd frontend
-npm run dev
-
-# Terminal 2 - Backend
-cd backend
-npm run start:dev
-```
-
-Access the application at `http://localhost:3000`
-
-## 📁 Project Structure
-
-```
-Re-MirAI/
-├── frontend/              # Next.js frontend application
-│   ├── app/              # App Router pages
-│   │   ├── (auth)/       # Authentication pages
-│   │   ├── dashboard/    # User dashboard
-│   │   ├── ritual/       # Survey creation & management
-│   │   ├── summoning/    # Persona summoning
-│   │   └── persona/      # Persona interaction
-│   ├── components/       # React components (Atomic Design)
-│   │   ├── atoms/        # Basic building blocks
-│   │   ├── molecules/    # Simple component combinations
-│   │   ├── organisms/    # Complex UI sections
-│   │   ├── templates/    # Page layouts
-│   │   └── pages/        # Complete pages
-│   ├── lib/              # Utilities and hooks
-│   ├── styles/           # Global styles and design tokens
-│   └── public/           # Static assets
-│
-├── backend/              # NestJS backend application
-│   ├── src/
-│   │   ├── modules/      # Feature modules
-│   │   │   ├── auth/     # Authentication & authorization
-│   │   │   ├── users/    # User management
-│   │   │   ├── ritual/   # Survey/ritual system
-│   │   │   ├── persona/  # Persona synthesis & chat
-│   │   │   ├── social/   # Compatibility & profiles
-│   │   │   └── quests/   # Gamification system
-│   │   ├── common/       # Shared utilities
-│   │   ├── config/       # Configuration
-│   │   └── database/     # Database migrations & seeds
-│   └── test/             # Test files
-│
-└── docs/                 # Documentation
-    ├── 01-getting-started/
-    ├── 02-project-overview/
-    ├── 03-architecture/
-    ├── 04-design-system/
-    ├── 05-user-experience/
-    ├── 06-development/
-    ├── 07-deployment/
-    ├── 08-marketing/
-    └── 09-reference/
-```
-
-## 🎨 Design System
-
-Re:MirAI features the **Blonix Branch** design philosophy:
-
-- **🌟 Light Theme First:** Clean, bright interface optimized for accessibility
-- **🎨 Modern Color Palette:** Fuchsia/Pink primary (#d946ef) with Blue secondary (#3b82f6)
-- **✍️ Typography:** Inter + Poppins for friendly, modern feel
-- **♿ Accessibility:** WCAG 2.1 AA compliant with high contrast
-- **📱 Responsive Design:** Mobile-first approach
-- **🎭 Component-Based:** Atomic Design methodology
-
-[View Complete Design System →](docs/04-design-system/README.md)
-
-## 📚 Documentation
-
-### Comprehensive Guides
-
-- **[Getting Started](docs/01-getting-started/README.md)** - Setup and installation
-- **[Project Overview](docs/02-project-overview/README.md)** - Goals, features, roadmap
-- **[Architecture](docs/03-architecture/README.md)** - System design and technical specs
-- **[Design System](docs/04-design-system/README.md)** - UI components and design tokens
-- **[User Experience](docs/05-user-experience/README.md)** - User flows and journeys
-- **[Development Guides](docs/06-development/README.md)** - Frontend and backend development
-- **[Deployment](docs/07-deployment/README.md)** - Deployment procedures
-- **[Marketing](docs/08-marketing/README.md)** - Growth and viral strategies
-
-### Multilingual Documentation
-
-- **[한국어 README](README.ko.md)** - Korean documentation
-- **[English README](README.en.md)** - English documentation
-- **[日本語 README](README.ja.md)** - Japanese documentation
-
-## 🗓️ Development Roadmap
-
-### Phase 1: MVP (Months 1-3)
-
-**Core Features**
-- ✅ User authentication (Google OAuth)
-- ✅ Survey generation and sharing
-- ✅ Basic persona synthesis
-- ✅ AI chat interface
-- 🔄 Landing page and onboarding
-
-**Goals:** Validate core concept, gather initial user feedback
-
-### Phase 2: Enhancement (Months 4-6)
-
-**Social & Visual Features**
-- 📋 AI-generated persona illustrations
-- 📋 Compatibility matching
-- 📋 Public persona profiles
-- 📋 Quest system and gamification
-- 📋 Gender toggle feature
-
-**Goals:** Increase engagement, enable viral sharing
-
-### Phase 3: Scale (Months 7-12)
-
-**Advanced Features**
-- 📋 Premium persona packages
-- 📋 Friend persona rental
-- 📋 Detailed compatibility reports
-- 📋 Group personas
-- 📋 Advanced analytics dashboard
-- 📋 Mobile app (React Native)
-
-**Goals:** Monetization, scalability, market expansion
-
-## 🎯 Project Objectives
-
-1. **Primary Goal:** Create an engaging self-discovery experience through AI-powered social feedback
-2. **Secondary Goals:**
-   - Achieve viral growth through social sharing mechanics
-   - Build a unique platform for AI-driven personality exploration
-   - Establish sustainable monetization through premium features
-
-## 🤝 Contributing
-
-We welcome contributions! Please see our [Contributing Guide](docs/CONTRIBUTING.md) for details on:
-
-- Code style and conventions
-- Development workflow
-- Pull request process
-- Testing requirements
-
-## 📄 License
-
-This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
-
-## 🆘 Support
-
-- **Documentation:** [docs/README.md](docs/README.md)
-- **Issues:** [GitHub Issues](https://github.com/your-org/Re-MirAI/issues)
-- **Email:** kordalek@naver.com
+- **호스팅:** Vercel (Frontend) + Railway/Render (Backend)
+- **데이터베이스 호스팅:** Supabase / Railway
+- **파일 스토리지:** Cloudinary / AWS S3
+- **모니터링:** Sentry + LogRocket
 
 ---
 
-**Maintained by:** Re:MirAI Team  
-**Last Updated:** 2025-11-23  
-**Version:** 1.0.0
+## 👥 타겟 사용자
 
-**Built with ❤️ for self-discovery and connection**
+### 주요 타겟 (Blonix Branch 우선순위)
+
+**일반 사용자 (모든 연령)**
+- AI 기반 성격 인사이트를 통한 자기 발견 추구
+- 밝고 환영하는 인터페이스 선호
+- 접근성 및 가독성 중시
+- 개인 및 전문적 맥락에서 사용 가능
+
+### 부차적 타겟
+
+**10-20대 청소년 및 청년**
+- 소셜 미디어 활동 활발
+- 성격 트렌드에 관심 (MBTI, 별자리 등)
+- 바이럴 공유 가능한 콘텐츠 선호
+
+**작가, 크리에이터, 롤플레이어**
+- 캐릭터 개발 도구 탐색
+- 성격 탐구에 관심
+- 창작 프로젝트에 활용
+
+---
+
+## 📊 성공 지표
+
+### 사용자 획득
+- **1-3개월:** 1,000명
+- **4-6개월:** 10,000명
+- **7-12개월:** 100,000명
+
+### 참여 지표
+- **의식 완료율:** >60% (3개 이상 응답 설문)
+- **페르소나 소환율:** >80% (의식 완료 사용자)
+- **채팅 참여:** 사용자당 평균 >5개 메시지
+- **재방문율:** 7일 내 >40% 사용자 재방문
+
+### 바이럴 지표
+- **공유율:** >30% 사용자가 페르소나 카드 공유
+- **추천율:** 공유를 통한 신규 사용자 >20%
+- **호환성 확인:** 활성 사용자당 >2회
+
+---
+
+## 📄 라이선스
+
+이 프로젝트는 MIT 라이선스에 따라 라이선스가 부여됩니다. 자세한 내용은 [LICENSE](LICENSE) 파일을 참조하세요.
+
+---
+
+## 🆘 지원
+
+- **문서:** [docs/README.md](docs/README.md)
+- **이슈:** [GitHub Issues](https://github.com/your-org/Re-MirAI/issues)
+- **이메일:** kordalek@naver.com
+
+---
+
+**관리:** Re:MirAI Team  
+**최종 업데이트:** 2025-11-23  
+**버전:** 1.0.0 (기획 단계)  
+**상태:** 기획 완료, 개발 준비 중
+
+**자기 발견과 연결을 위해 ❤️로 기획되었습니다**
