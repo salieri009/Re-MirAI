@@ -12,7 +12,7 @@ audience: product-team, developers, stakeholders
 ## 1. Overview
 
 ### 1.1. Product Vision
-**Re:MirAI** is an AI-powered platform designed to help individuals discover their "external self" through the eyes of others. By collecting anonymous feedback from friends through a "Ritual" (survey), the system synthesizes a unique AI Persona that embodies the user's public image.
+**Re:MirAI** is an AI-powered platform designed to help individuals discover their "external self" through the eyes of others. By collecting anonymous feedback from friends through a "Survey", the system synthesizes a unique AI Persona that embodies the user's public image.
 
 ### 1.2. Problem Statement
 *   **Self-Perception Gap:** Individuals often lack an objective view of how they are perceived by their social circle.
@@ -20,20 +20,20 @@ audience: product-team, developers, stakeholders
 *   **Static Tools:** Existing personality tests are self-reported and lack dynamic, interactive feedback.
 
 ### 1.3. Solution
-A gamified, privacy-first platform where users collect anonymous feedback to "summon" an AI persona. This persona acts as a mirror, allowing users to interact with their public image in a safe, engaging environment.
+A gamified, privacy-first platform where users collect anonymous feedback to "create" an AI persona. This persona acts as a mirror, allowing users to interact with their public image in a safe, engaging environment.
 
 ---
 
 ## 2. Objectives & Success Metrics
 
 ### 2.1. Business Objectives
-*   **Viral Growth:** Leverage the "Ritual" sharing mechanic to drive organic user acquisition.
+*   **Viral Growth:** Leverage the "Survey" sharing mechanic to drive organic user acquisition.
 *   **Engagement:** Create a daily habit loop through Persona chatting and bonding.
 *   **Monetization:** Establish a foundation for premium features (skins, advanced models) in later phases.
 
 ### 2.2. Key Performance Indicators (KPIs)
 *   **Acquisition:** 10,000 Registered Users in Phase 1.
-*   **Activation:** >60% of created Rituals receiving ≥3 responses.
+*   **Activation:** >60% of created Surveys receiving ≥3 responses.
 *   **Retention:** >40% Day-7 Retention Rate.
 *   **Virality:** K-factor > 1.1 (Each user invites >1 friend).
 
@@ -56,14 +56,14 @@ A gamified, privacy-first platform where users collect anonymous feedback to "su
 ## 4. Scope & Features
 
 ### 4.1. Phase 1: MVP (Minimum Viable Product)
-*Focus: Core Loop Validation (Ritual -> Summon -> Chat)*
+*Focus: Core Loop Validation (Survey -> Create Persona -> Chat)*
 
 | Feature ID | Feature Name | Description | Priority |
 | :--- | :--- | :--- | :--- |
 | **FR-01** | **User Auth** | Google OAuth login/signup. | P0 |
-| **FR-02** | **Ritual Creation** | Generate unique, shareable survey links. | P0 |
+| **FR-02** | **Survey Creation** | Generate unique, shareable survey links. | P0 |
 | **FR-03** | **Anonymous Feedback** | Interface for friends to answer questions without login. | P0 |
-| **FR-04** | **Threshold System** | Lock summoning until 3 responses are collected. | P0 |
+| **FR-04** | **Threshold System** | Lock persona creation until 3 responses are collected. | P0 |
 | **FR-05** | **Persona Synthesis** | AI analysis of responses to generate personality prompt. | P0 |
 | **FR-06** | **Chat Interface** | Text-based chat with the generated Persona. | P0 |
 | **FR-07** | **Basic Dashboard** | View progress, access chat, view basic stats. | P1 |
@@ -86,7 +86,7 @@ A gamified, privacy-first platform where users collect anonymous feedback to "su
 
 ## 5. Functional Requirements
 
-### 5.1. The Ritual (Survey)
+### 5.1. The Survey
 *   **Input:** User generates a link.
 *   **Process:** Respondents answer 5-10 psychometric questions (e.g., "What is this person's role in a party?").
 *   **Constraint:** Responses must be encrypted and anonymized. The user **never** sees individual answers.
@@ -111,7 +111,7 @@ A gamified, privacy-first platform where users collect anonymous feedback to "su
 ### 6.1. Performance
 *   **Page Load:** < 1.5s (First Contentful Paint).
 *   **Chat Latency:** < 2s per message.
-*   **Summoning Time:** < 30s for initial generation.
+*   **Persona Creation Time:** < 30s for initial generation.
 
 ### 6.2. Security & Privacy
 *   **Anonymity:** Strict separation of Respondent ID from Response Data in the UI.
