@@ -14,8 +14,8 @@ This document defines the specific UI patterns, layout structures, and component
 ### Structure
 1.  **Hero Section (Attention):**
     *   **Layout:** Split screen (Text Left, Visual Right) or Centered.
-    *   **Components:** `HeroHeadline`, `ValuePropSubtext`, `GoogleLoginButton` (Primary CTA).
-    *   **Visual:** High-quality illustration of a Persona Card.
+    *   **Components:** `HeroHeadline` (Display Font), `ValuePropSubtext`, `GoogleLoginButton` (Fuchsia, Shadow).
+    *   **Visual:** High-quality illustration of a Persona Card (Floating animation).
 2.  **Social Proof (Interest):**
     *   **Layout:** Horizontal scrolling band or grid.
     *   **Components:** `TestimonialCard`, `UserCountBadge`.
@@ -38,12 +38,25 @@ This document defines the specific UI patterns, layout structures, and component
 2.  **Status Overview (Top):**
     *   **Layout:** Full-width banner or large card.
     *   **Components:** `ProgressBar` (Responses: X/3), `StatusMessage` ("Waiting for 1 more...").
-3.  **Action Grid (Center):**
+3.  **Action Grid (Center) - State 1 (Awaiting):**
     *   **Layout:** Responsive Grid (1 col mobile, 2-3 col desktop).
     *   **Components:**
         *   `ShareCard` (Primary): "Copy Link", "Share to Instagram".
         *   `PracticeCard` (Secondary): "Try it yourself".
         *   `QuestCard` (Gamification): "Daily Login: Claim".
+
+4.  **Reveal Modal - State 2 (Ready):**
+    *   **Pattern:** Full-screen Overlay.
+    *   **Components:**
+        *   `SummonTypeSelector`: "Fated" (Free) vs "Alchemic" (Premium/Archetype Select).
+        *   `RevealAnimation`: Lottie/Video.
+
+5.  **Active Persona View - State 3 (Complete):**
+    *   **Layout:** Hero Card (Top) + Action Bar (Sticky Bottom).
+    *   **Components:**
+        *   `PersonaHero`: Large card display.
+        *   `ChatButton` (Fuchsia, Floating): Primary interaction.
+        *   `SocialActions`: Share, Compare.
 
 ---
 
