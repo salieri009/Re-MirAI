@@ -48,7 +48,7 @@ The Blonix Branch represents a fundamental shift from dark, gaming-aesthetic "su
 
 ```css
 --primary-50: #fdf4ff;
---primary-500: #d946ef;   /* Main brand color */
+--primary-500: #d946ef;   /* Main brand color & Primary CTA */
 --primary-700: #a21caf;
 ```
 
@@ -172,6 +172,17 @@ The Blonix Branch represents a fundamental shift from dark, gaming-aesthetic "su
 - Reduces onboarding friction
 - Increases retention and engagement
 - Enables workplace usage
+
+### 6. Content & Copywriting
+
+**"Don't Write Novels":**
+- **Concise:** Cut text down to the essentials. Users scan, they don't read.
+- **Direct:** Use active voice and clear calls to action.
+- **Scannable:** Break long paragraphs into bullet points or short sentences.
+
+**Clear Hierarchy:**
+- Use font size and weight to indicate importance, not just capitalization.
+- Headings should clearly describe the section content.
 
 ---
 

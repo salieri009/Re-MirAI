@@ -36,7 +36,19 @@
 }
 ```
 
----
+```
+ 
+ ### Logo Guidelines
+ 
+ **Transparency:**
+ - Always use PNG or SVG formats with transparent backgrounds.
+ - Avoid white boxes around the logo on colored backgrounds.
+ 
+ **Sizing & Balance:**
+ - **Size:** Large enough to be recognized, but never larger than the primary headline or CTA.
+ - **Balance:** Ensure the logo doesn't overpower the page content. It's a signature, not the headline.
+ 
+ ---
 
 ## Resources
 

@@ -8,9 +8,11 @@ This document refines the UI/UX strategy with a primary focus on creating a fric
 *   **User-Centric:** Prioritizes ease of use, clarity, and professional appeal over immersive gaming aesthetics
 *   **Accessibility:** High contrast (light background `#f8fafc` with dark text `#0f172a`), readable typography (Inter + Poppins), and WCAG-compliant design
 *   **Broad Appeal:** Welcoming to users of all backgrounds, not requiring subculture knowledge
+*   **CTA Strategy:** Primary actions use **Fuchsia (`#d946ef`)** to stand out; Secondary actions use Blue or Outline styles.
 
 **Related Documentation:**
 *   [Design Philosophy](../02-project-overview/03-Design-Philosophy.md) - Core design principles and system.
+*   [Page Architecture](02-Page-Architecture.md) - Detailed page patterns and structure.
 
 ## 1. Core UX Principles
 
@@ -71,7 +73,7 @@ The journey is not linear; it's a cycle.
     1.  **AI-Generated Illustration:** The main visual hook.
     2.  **Persona Title & Rarity:** A catchy title (e.g., "The Group's Sarcastic Strategist") + Rarity Badge (SSR/SR/R).
     3.  **Stats & Traits:** A Radar Chart (Charisma, Intellect, etc.) + 3-4 key trait bullet points.
-    4.  **Subtle Branding:** A small `Re:MirAI` logo, QR Code, and the user's handle.
+    4.  **Subtle Branding:** A small `Re:MirAI` logo (Transparent PNG), QR Code, and the user's handle.
 *   **Functionality:** The "Share" button on this card will trigger a `toBlob()` or similar function to generate a high-resolution PNG, which the user can then immediately save or share via their device's native share sheet.
 
 ### 3.4. Chat Page (`/persona/chat`)
