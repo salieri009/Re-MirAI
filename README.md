@@ -229,6 +229,8 @@ Re:MirAI는 **Blonix Branch** 디자인 철학을 따릅니다:
 ## 🆘 지원
 
 - **문서:** [docs/README.md](docs/README.md)
+- **PRD (기획서):** [docs/01-concept/02-Project-Plan.md](docs/01-concept/02-Project-Plan.md)
+- **기술 명세서:** [docs/03-planning/05-Technical-Specification.md](docs/03-planning/05-Technical-Specification.md)
 - **이슈:** [GitHub Issues](https://github.com/your-org/Re-MirAI/issues)
 - **이메일:** kordalek@naver.com
 

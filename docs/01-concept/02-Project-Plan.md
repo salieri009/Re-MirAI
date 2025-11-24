@@ -1,97 +1,135 @@
 ---
-title: Re:MirAI Project Plan
-description: Project goals, target audience, core features, and roadmap
-version: 1.0.0
-last_updated: 2025-11-18
+title: Re:MirAI Product Requirements Document (PRD)
+description: Comprehensive product requirements, MVP scope, and functional specifications.
+version: 2.0.0
+last_updated: 2025-11-24
 status: active
-audience: all
+audience: product-team, developers, stakeholders
 ---
 
-# Project Plan: Re:MirAI
+# Product Requirements Document: Re:MirAI
 
-## 1. Project Overview
+## 1. Overview
 
-This document outlines the project plan for "Re:MirAI," a web application designed to create a unique AI chatbot persona for a user, based on collective feedback from their friends. The core idea is to answer the question, "How do others see me?" by generating an interactive AI that reflects an "objective" view of the user's personality. 
+### 1.1. Product Vision
+**Re:MirAI** is an AI-powered platform designed to help individuals discover their "external self" through the eyes of others. By collecting anonymous feedback from friends through a "Ritual" (survey), the system synthesizes a unique AI Persona that embodies the user's public image.
 
-**Design Philosophy (Blonix Branch Priority):**
-*   **Light Theme First:** Clean, bright interface optimized for daytime use and accessibility
-*   **Modern Aesthetics:** Fuchsia/Pink primary colors with Blue secondary for a fresh, contemporary feel
-*   **User-Centric:** Prioritizes ease of use, clarity, and professional appeal over immersive gaming aesthetics
-*   **Accessibility:** High contrast, readable typography (Inter + Poppins), and WCAG-compliant design
-*   **Broad Appeal:** Welcoming to users of all backgrounds, not requiring subculture knowledge
+### 1.2. Problem Statement
+*   **Self-Perception Gap:** Individuals often lack an objective view of how they are perceived by their social circle.
+*   **Feedback Friction:** Friends are often hesitant to provide honest, direct feedback due to social awkwardness or fear of offending.
+*   **Static Tools:** Existing personality tests are self-reported and lack dynamic, interactive feedback.
 
-The platform will also include social and entertainment features to drive engagement.
+### 1.3. Solution
+A gamified, privacy-first platform where users collect anonymous feedback to "summon" an AI persona. This persona acts as a mirror, allowing users to interact with their public image in a safe, engaging environment.
 
-## 2. Goals
+---
 
-*   **Primary Goal:** To create an engaging and shareable experience where users can discover and interact with an AI representation of their public persona.
-*   **Secondary Goals:**
-    *   Achieve viral growth through social sharing of personas and compatibility results.
-    *   Establish a platform for unique AI-driven social interactions.
-    *   Explore viable monetization strategies through premium features.
+## 2. Objectives & Success Metrics
 
-## 3. Target Audience (Blonix Branch Priority)
+### 2.1. Business Objectives
+*   **Viral Growth:** Leverage the "Ritual" sharing mechanic to drive organic user acquisition.
+*   **Engagement:** Create a daily habit loop through Persona chatting and bonding.
+*   **Monetization:** Establish a foundation for premium features (skins, advanced models) in later phases.
 
-*   **Primary:** General users (all ages) seeking self-discovery through AI-powered personality insights. The platform prioritizes:
-    *   **Accessibility:** Light theme with high contrast for optimal readability
-    *   **User-friendliness:** Clean, modern interface that doesn't require gaming or subculture knowledge
-    *   **Professional appeal:** Suitable for both personal use and professional self-reflection
-    *   **Broad appeal:** Accessible to users who prefer bright, welcoming interfaces over dark, immersive themes
-*   **Secondary:** 
-    *   Teenagers and young adults (10s-20s) active on social media and interested in personality trends (MBTI, horoscopes, etc.)
-    *   Writers, creators, and role-players looking for tools to build and define characters
+### 2.2. Key Performance Indicators (KPIs)
+*   **Acquisition:** 10,000 Registered Users in Phase 1.
+*   **Activation:** >60% of created Rituals receiving ≥3 responses.
+*   **Retention:** >40% Day-7 Retention Rate.
+*   **Virality:** K-factor > 1.1 (Each user invites >1 friend).
 
-## 4. Core Features
+---
 
-### 4.1. Persona Creation Flow
-1.  **User Account:** Users sign up for an account.
-2.  **Survey Generation:** The user generates a unique survey link. This survey contains questions designed to capture different facets of their personality (e.g., "How do they act in a crisis?", "What's their sense of humor like?").
-3.  **Social Sharing:** The user shares this link with their friends.
-4.  **Feedback Collection:** Friends anonymously fill out the survey.
-5.  **Persona Synthesis:** The system aggregates the survey responses and synthesizes them into a detailed persona profile. This profile will be used as the foundational prompt for the AI model.
-6.  **AI Chatbot Generation:** An AI chatbot is created based on the synthesized persona, with which the user can interact.
+## 3. User Personas
 
-### 4.2. Interaction & Visualization
-*   **Chat Interface:** A dedicated chat screen where the user can talk to their generated AI persona.
-*   **Persona Illustration:** An AI-generated character illustration representing the persona. This could be a simple avatar or a more detailed character portrait.
-*   **Gender Toggle:** A feature to see a gender-swapped version of the persona's illustration and potentially its communication style.
+### 3.1. Primary: The Self-Explorer (Maya)
+*   **Demographics:** 20-30s, Student or Young Professional.
+*   **Motivation:** Genuine curiosity about self-improvement and social perception.
+*   **Behavior:** Values deep insights, reads detailed reports, likely to chat extensively with the Persona.
 
-### 4.3. Social & Gamification
-*   **Persona Compatibility:** Users can see a "compatibility score" between their persona and a friend's persona. This would be presented in an entertaining, shareable format.
-*   **Public/Private Profiles:** Users can choose to keep their persona private or share it with friends on the platform.
+### 3.2. Secondary: The Social Sharer (Alex)
+*   **Demographics:** 15-25s, Social Media Active.
+*   **Motivation:** Content creation, sharing aesthetic results, "flexing" unique Personas.
+*   **Behavior:** Focuses on the visual "Persona Card" and compatibility features.
 
-## 5. Monetization Strategy
+---
 
-The service will be free to use, with revenue generated through premium features:
+## 4. Scope & Features
 
-*   **"Premium Persona" Package:**
-    *   Advanced, more detailed character illustration.
-    *   Access to more sophisticated personality analysis and reports.
-    *   Unlock special interaction modes with the chatbot (e.g., "counselor mode," "debate mode").
-*   **"Friend Persona" Access:** A time-limited pass (e.g., "1-week rental") allowing a user to interact with a friend's public persona chatbot.
-*   **Compatibility Reports:** While a basic score is free, a detailed compatibility report explaining the dynamics between two personas could be a paid feature.
-*   **Ad-Free Experience:** A subscription option to remove in-app advertisements.
+### 4.1. Phase 1: MVP (Minimum Viable Product)
+*Focus: Core Loop Validation (Ritual -> Summon -> Chat)*
 
-## 6. Minimum Viable Product (MVP) Scope
+| Feature ID | Feature Name | Description | Priority |
+| :--- | :--- | :--- | :--- |
+| **FR-01** | **User Auth** | Google OAuth login/signup. | P0 |
+| **FR-02** | **Ritual Creation** | Generate unique, shareable survey links. | P0 |
+| **FR-03** | **Anonymous Feedback** | Interface for friends to answer questions without login. | P0 |
+| **FR-04** | **Threshold System** | Lock summoning until 3 responses are collected. | P0 |
+| **FR-05** | **Persona Synthesis** | AI analysis of responses to generate personality prompt. | P0 |
+| **FR-06** | **Chat Interface** | Text-based chat with the generated Persona. | P0 |
+| **FR-07** | **Basic Dashboard** | View progress, access chat, view basic stats. | P1 |
 
-The goal of the MVP is to validate the core concept with minimal development effort.
+### 4.2. Phase 2: Engagement & Visuals (Post-MVP)
+*Focus: Retention and Virality*
 
-*   **Features:**
-    *   User registration.
-    *   Simple, non-customizable survey generation and sharing.
-    *   Collection of survey responses.
-    *   Basic persona synthesis (e.g., averaging scores, concatenating text responses into a prompt).
-    *   A functional chat interface to talk to the generated persona.
-*   **Omissions for MVP:**
-    *   No AI-generated illustrations.
-    *   No gender toggle.
-    *   No compatibility features.
-    *   No monetization features.
+*   **AI Illustrations:** Generative art for Personas.
+*   **Social Sharing:** Exportable "Persona Cards" for Instagram/Twitter.
+*   **Compatibility Matching:** Compare two Personas for chemistry.
+*   **Bond System:** Unlockable content based on chat frequency.
 
-## 7. Future Enhancements
+### 4.3. Out of Scope (Initial Roadmap)
+*   Native Mobile App (Web-only for MVP).
+*   Voice Interaction.
+*   Real-time Multiplayer Rooms.
+*   Paid Subscriptions.
 
-*   **Relationship Context:** Allow survey-takers to specify their relationship to the user (e.g., family, coworker, close friend). This would allow the creation of context-specific personas (e.g., "How my coworkers see me").
-*   **Advanced Illustration:** Partner with an image generation AI service to create high-quality, customizable character art.
-*   **Group Personas:** Create a "group persona" based on feedback from a whole team or circle of friends.
-*   **Gamified Scenarios:** Place the AI persona in randomly generated scenarios (e.g., "How would your persona handle a sudden project deadline?") and let the user guide the outcome, with a scoring/feedback system.
-*   **Integration with Other Platforms:** Allow exporting personas for use in other applications (e.g., VRChat, character AI platforms).
+---
+
+## 5. Functional Requirements
+
+### 5.1. The Ritual (Survey)
+*   **Input:** User generates a link.
+*   **Process:** Respondents answer 5-10 psychometric questions (e.g., "What is this person's role in a party?").
+*   **Constraint:** Responses must be encrypted and anonymized. The user **never** sees individual answers.
+
+### 5.2. Persona Synthesis Engine
+*   **Input:** Aggregated survey data (Stats: Charisma, Kindness, etc.).
+*   **Process:**
+    1.  Calculate Stat Averages.
+    2.  Determine Archetype (e.g., "The Protector").
+    3.  Generate System Prompt for LLM (e.g., "You are a protective, slightly stern older sibling figure...").
+*   **Output:** A persistent AI character profile.
+
+### 5.3. Chat System
+*   **Model:** OpenAI GPT-4o or GPT-3.5-Turbo.
+*   **Context:** Must retain conversation history (up to N tokens) to maintain illusion of memory.
+*   **Safety:** Moderation layer to prevent generation of harmful or explicit content.
+
+---
+
+## 6. Non-Functional Requirements
+
+### 6.1. Performance
+*   **Page Load:** < 1.5s (First Contentful Paint).
+*   **Chat Latency:** < 2s per message.
+*   **Summoning Time:** < 30s for initial generation.
+
+### 6.2. Security & Privacy
+*   **Anonymity:** Strict separation of Respondent ID from Response Data in the UI.
+*   **Data Protection:** GDPR compliant handling of personal data.
+*   **Auth:** Secure session management via JWT/NextAuth.
+
+### 6.3. Design Philosophy (Blonix Branch)
+*   **Theme:** Light Mode Default (Accessibility First).
+*   **Palette:** Fuchsia (#d946ef) & Blue (#3b82f6).
+*   **Typography:** Inter (UI) + Poppins (Headings).
+
+---
+
+## 7. Risks & Mitigation
+
+| Risk | Impact | Mitigation Strategy |
+| :--- | :--- | :--- |
+| **Low Response Rate** | High | "Nudge" features, pre-written social share text, low friction for respondents (no login). |
+| **Offensive Personas** | High | Strict system prompts, content moderation API, "Regenerate" option. |
+| **API Costs** | Medium | Token usage limits per user, caching, use cheaper models for general chat. |
+| **Privacy Trust** | High | Clear "Anonymous" badging, transparent privacy policy. |

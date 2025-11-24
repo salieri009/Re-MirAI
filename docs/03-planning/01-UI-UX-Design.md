@@ -9,11 +9,14 @@ This document refines the UI/UX strategy with a primary focus on creating a fric
 *   **Accessibility:** High contrast (light background `#f8fafc` with dark text `#0f172a`), readable typography (Inter + Poppins), and WCAG-compliant design
 *   **Broad Appeal:** Welcoming to users of all backgrounds, not requiring subculture knowledge
 
+**Related Documentation:**
+*   [Design Philosophy](../02-project-overview/03-Design-Philosophy.md) - Core design principles and system.
+
 ## 1. Core UX Principles
 
 *   **Frictionless Onboarding:** Eliminate traditional sign-up forms. We will lead with Google Authentication. One click is all it should take to get started.
 *   **Viral Loop by Design:** The entire user journey is a loop. A user shares their result, their friends see it, get intrigued, and start their own journey. Every design decision must serve this loop.
-*   **The "Payoff" is the Product:** The moment a user sees their generated persona is the climax. This "reveal" must be visually stunning, emotionally resonant, and instantly shareable. The shareable image *is* the ad.
+*   **The "Payoff" is the Product:** The moment a user sees their created persona is the climax. This "reveal" must be visually stunning, emotionally resonant, and instantly shareable. The shareable image *is* the ad.
 *   **Mobile-First, Social-First:** Our target audience lives on mobile social media. All shareable content must be optimized for platforms like Instagram Stories, TikTok, and Twitter.
 
 ## 2. The Viral User Flow
@@ -24,7 +27,7 @@ The journey is not linear; it's a cycle.
 2.  **Effortless Onboarding:** On the public persona page, a clear CTA "Find out how your friends see you" leads to a **one-click "Sign in with Google"** prompt. No username/password required.
 3.  **Immediate Engagement (The Ask):** Post-login, the user lands on their dashboard. The primary CTA is clear: **"Create Your Survey Link."** We explain that they need ~3 responses to unlock their own Persona Card.
 4.  **Frictionless Sharing (The Trigger):** Upon survey creation, we provide a "Copy Link" button and direct "Share to..." buttons (Instagram, WhatsApp, etc.) with pre-written, enticing messages.
-5.  **The Reveal (The Payoff):** Once enough responses are in, the dashboard transforms. A "Reveal My Persona" button triggers a short, dramatic animation before presenting the final **Persona Card**.
+5.  **The Reveal (The Payoff):** Once enough responses are in, the dashboard transforms. A "Create Persona" button triggers a short, dramatic animation before presenting the final **Persona Card**.
 6.  **Share & Re-engage:** The Persona Card view has a prominent **"Share Your Card"** button. This generates a clean image of the card, ready for social media. The user can then chat with their persona, creating more shareable moments (e.g., sharing funny chat snippets).
 
 ## 3. Page & Component Redesign
@@ -42,7 +45,7 @@ The journey is not linear; it's a cycle.
     *   **Data:** A live counter: "2 out of 3 responses received..."
     *   **CTA:** "Share this link to get more responses!" with the survey URL and share buttons.
 *   **State 2 (The Reveal):**
-    *   A modal or full-screen takeover for the persona reveal animation.
+    *   A modal or full-screen takeover for the persona creation animation.
     *   Presents the final **Persona Card**.
 
 ### 3.3. The Persona Card (The Viral Asset)

@@ -336,66 +336,27 @@ The Blonix Branch represents a fundamental shift from dark, gaming-aesthetic "su
 
 ---
 
-##Comparison: Blonix vs. Subculture Branch
+## Historical Context: Blonix vs. Subculture Branch
 
-| Aspect | Blonix (✅ Priority) | Subculture (❌ Deprecated) |
+*Note: The "Subculture" branch has been deprecated. The following comparison is preserved for historical context to explain the design decision.*
+
+| Aspect | Blonix (✅ Selected) | Subculture (❌ Deprecated) |
 |--------|---------------------|---------------------------|
 | **Theme** | Light | Dark |
 | **Aesthetic** | Clean, professional | Gaming, immersive |
 | **Colors** | Fuchsia + Blue | Purple + Gold |
-| **Typography** | Inter + Poppins | Cinzel + Inter |
 | **Target** | General users | Anime/gaming enthusiasts |
-| **Use Case** | Workplace-appropriate | Entertainment-focused |
-| **Accessibility** | WCAG AA compliant | Lower contrast |
-| **Appeal** | Broad demographic | Niche audience |
 
 ---
 
-## Design Artifacts
+## Design Resources
 
-### Component Examples
+Detailed design artifacts, component examples, and resource links have been moved to a separate document.
 
-**Button (Blonix):**
-```css
-.button-primary {
-  background: var(--primary-500); /* #d946ef */
-  color: #ffffff;
-  border-radius: 0.5rem;
-  padding: 0.75rem 1.5rem;
-  font-weight: 500;
-  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
-}
+[View Design Resources & Artifacts →](05-Design-Resources.md)
 
-.button-primary:hover {
-  background: var(--primary-700); /* #a21caf */
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-}
-```
-
-**Card (Blonix):**
-```css
-.card {
-  background: #ffffff;
-  border: 1px solid #e2e8f0;
-  border-radius: 0.75rem;
-  padding: 1.5rem;
-  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
-}
-```
-
----
-
-## Resources
-
-**Design Files:**
-- [Figma File](link-to-figma) - Blonix component library
-- [Color Palette](../04-design-system/design-tokens.md) - Complete color system
-- [Typography](../04-design-system/design-tokens.md#typography) - Type specs
-
-**Related Documentation:**
-- [Design System](../04-design-system/README.md)
-- [Component Library](../04-design-system/component-library.md)
-- [Accessibility Guide](../04-design-system/accessibility.md)
+**Practical Application:**
+For details on how these principles apply to the user interface, see the [UI/UX Design Specification](../03-planning/01-UI-UX-Design.md).
 
 ---
 
