@@ -1,8 +1,8 @@
-# UI/UX Design Specification (v2.0 - Blonix Branch Priority)
+# UI/UX Design Specification (v2.0)
 
 This document refines the UI/UX strategy with a primary focus on creating a frictionless, shareable, and inherently viral user experience. The philosophy is simple: **"Show, Don't Tell."** We let users experience the fun of a friend's persona first, which becomes the primary driver for their own participation.
 
-**Design Philosophy (Blonix Branch Priority):**
+**Design Philosophy:**
 *   **Light Theme First:** Clean, bright interface optimized for daytime use and accessibility
 *   **Modern Aesthetics:** Fuchsia/Pink primary colors (`#d946ef`) with Blue secondary (`#3b82f6`) for a fresh, contemporary feel
 *   **User-Centric:** Prioritizes ease of use, clarity, and professional appeal over immersive gaming aesthetics
