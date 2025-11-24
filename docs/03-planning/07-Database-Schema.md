@@ -1,7 +1,7 @@
 # Database Schema Design
 
-**최종 업데이트:** 2025-11-24  
-**버전:** 1.0.0  
+**최종 업데이트:** 2025-11-25  
+**버전:** 1.1.0  
 **상태:** Draft
 
 ---
@@ -32,10 +32,13 @@ erDiagram
     User ||--o{ Survey : creates
     User ||--o{ Persona : owns
     User ||--o{ Quest : has
+    User ||--|| Wallet : has
+    User ||--o{ UserRelation : follows
     Survey ||--o{ Response : receives
     Survey ||--|| Persona : generates
     Persona ||--o{ Message : chats
     Quest ||--|| QuestReward : gives
+    Wallet ||--o{ Transaction : records
     
     User {
         uuid id PK
@@ -48,13 +51,7 @@ erDiagram
         uuid id PK
         uuid userId FK
         string status
-        datetime createdAt
-    }
-    
-    Response {
-        uuid id PK
-        uuid surveyId FK
-        json content
+        datetime expiresAt
         datetime createdAt
     }
     
@@ -64,33 +61,15 @@ erDiagram
         uuid surveyId FK
         string name
         string archetype
-        string rarity
         json stats
-        text systemPrompt
+        json modifiers
         datetime createdAt
     }
     
-    Message {
-        uuid id PK
-        uuid personaId FK
-        string role
-        text content
-        datetime createdAt
-    }
-    
-    Quest {
+    Wallet {
         uuid id PK
         uuid userId FK
-        string type
-        string status
-        datetime completedAt
-    }
-    
-    QuestReward {
-        uuid id PK
-        uuid questId FK
-        int crystals
-        datetime claimedAt
+        int balance
     }
 ```
 
@@ -107,6 +86,9 @@ model User {
   surveys   Survey[]
   personas  Persona[]
   quests    Quest[]
+  wallet    Wallet?
+  following UserRelation[] @relation("following")
+  followers UserRelation[] @relation("followers")
   createdAt DateTime @default(now())
   
   @@index([email])
@@ -125,6 +107,7 @@ model Survey {
   userId      String
   user        User       @relation(fields: [userId], references: [id], onDelete: Cascade)
   status      String     @default("ACTIVE") // "ACTIVE", "COMPLETED"
+  expiresAt   DateTime?
   responses   Response[]
   persona     Persona?
   createdAt   DateTime   @default(now())
@@ -137,9 +120,6 @@ model Survey {
 **인덱스 전략:**
 - `userId`: 사용자의 Survey 목록 조회
 - `status`: 활성 Survey 필터링
-
-**비즈니스 로직:**
-- Survey 삭제 시 관련 Response도 Cascade 삭제 (익명성 보장)
 
 ---
 
@@ -158,14 +138,6 @@ model Response {
 }
 ```
 
-**인덱스 전략:**
-- `surveyId`: Response 조회
-- `[ipHash, surveyId]`: 중복 제출 방지 (24시간 내 동일 IP)
-
-**익명성 보장:**
-- IP는 해시로 저장 (원본 저장 금지)
-- `content`는 JSON으로 저장 (응답자 식별 불가)
-
 ---
 
 ### 3.4. Persona
@@ -180,6 +152,8 @@ model Persona {
   archetype    String
   rarity       String   // "SSR", "SR", "R"
   stats        Json     // { "charisma": 85, ... }
+  modifiers    Json?    // { "archetype": "TSUNDERE" } (Alchemic Mode)
+  greeting     String?
   systemPrompt String   @db.Text
   messages     Message[]
   createdAt    DateTime @default(now())
@@ -188,13 +162,6 @@ model Persona {
   @@index([archetype])
 }
 ```
-
-**인덱스 전략:**
-- `userId`: 사용자의 Persona 목록 조회
-- `archetype`: Archetype별 통계 분석
-
-**제약:**
-- 1 Survey = 1 Persona (`surveyId` UNIQUE)
 
 ---
 
@@ -212,37 +179,64 @@ model Message {
 }
 ```
 
-**인덱스 전략:**
-- `[personaId, createdAt]`: 대화 기록 조회 (시간순 정렬)
+---
 
-**쿼리 최적화:**
-- 최근 10~20개만 조회 (Cursor Pagination)
+### 3.6. Social (UserRelation)
+```prisma
+model UserRelation {
+  id          String   @id @default(uuid())
+  followerId  String
+  follower    User     @relation("following", fields: [followerId], references: [id])
+  followingId String
+  following   User     @relation("followers", fields: [followingId], references: [id])
+  createdAt   DateTime @default(now())
+
+  @@unique([followerId, followingId])
+  @@index([followerId])
+  @@index([followingId])
+}
+```
 
 ---
 
-### 3.6. Quest
+### 3.7. Gamification (Wallet, Quest)
+
 ```prisma
+model Wallet {
+  id           String        @id @default(uuid())
+  userId       String        @unique
+  user         User          @relation(fields: [userId], references: [id])
+  balance      Int           @default(0)
+  transactions Transaction[]
+  updatedAt    DateTime      @updatedAt
+}
+
+model Transaction {
+  id        String   @id @default(uuid())
+  walletId  String
+  wallet    Wallet   @relation(fields: [walletId], references: [id])
+  amount    Int
+  type      String   // "EARN", "SPEND"
+  reason    String   // "QUEST_REWARD", "SHOP_PURCHASE"
+  createdAt DateTime @default(now())
+
+  @@index([walletId])
+}
+
 model Quest {
   id          String   @id @default(uuid())
   userId      String
   user        User     @relation(fields: [userId], references: [id])
   type        String   // "DAILY_LOGIN", "SHARE_CARD"
-  status      String   @default("ACTIVE") // "ACTIVE", "COMPLETED"
+  frequency   String   @default("ONCE") // "ONCE", "DAILY", "WEEKLY"
+  status      String   @default("ACTIVE") // "ACTIVE", "COMPLETED", "CLAIMED"
   reward      QuestReward?
   completedAt DateTime?
   createdAt   DateTime @default(now())
   
   @@index([userId, status])
 }
-```
 
-**인덱스 전략:**
-- `[userId, status]`: 사용자의 활성 Quest 조회
-
----
-
-### 3.7. QuestReward
-```prisma
 model QuestReward {
   id        String   @id @default(uuid())
   questId   String   @unique
@@ -251,9 +245,6 @@ model QuestReward {
   claimedAt DateTime @default(now())
 }
 ```
-
-**ACID 보장:**
-- Quest 완료 + Reward 지급은 트랜잭션으로 처리
 
 ---
 
@@ -272,27 +263,12 @@ npx prisma migrate deploy
 - 각 마이그레이션은 `up.sql` / `down.sql` 포함
 - 프로덕션 배포 전 스테이징 테스트 필수
 
-### 4.3. Seeding
-```typescript
-// prisma/seed.ts
-async function main() {
-  // 기본 Quest 타입 생성
-  // 테스트 User 생성
-}
-```
-
 ---
 
 ## 5. 쿼리 최적화
 
 ### 5.1. N+1 문제 방지
 ```typescript
-// Bad
-const surveys = await prisma.survey.findMany();
-for (const survey of surveys) {
-  const responses = await prisma.response.findMany({ where: { surveyId: survey.id } });
-}
-
 // Good
 const surveys = await prisma.survey.findMany({
   include: { responses: true }
@@ -346,4 +322,3 @@ DATABASE_URL="postgresql://user:pass@host:5432/db?connection_limit=20"
 
 - [Prisma Documentation](https://www.prisma.io/docs)
 - [PostgreSQL Best Practices](https://wiki.postgresql.org/wiki/Don%27t_Do_This)
-- [Database Indexing Explained](https://use-the-index-luke.com/)

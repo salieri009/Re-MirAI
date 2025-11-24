@@ -1,7 +1,7 @@
 # API Specification
 
-**최종 업데이트:** 2025-11-24  
-**버전:** 1.0.0  
+**최종 업데이트:** 2025-11-25  
+**버전:** 1.1.0  
 **상태:** Draft
 
 ---
@@ -16,6 +16,9 @@
 - [F-001: Survey System](../02-project-overview/features/F-001-Survey-System.md)
 - [F-002: Persona Synthesis](../02-project-overview/features/F-002-Persona-Synthesis.md)
 - [F-003: Chat Interface](../02-project-overview/features/F-003-Chat-Interface.md)
+- [F-004: Persona Card](../02-project-overview/features/F-004-Persona-Card.md)
+- [F-005: Social Features](../02-project-overview/features/F-005-Social-Features.md)
+- [F-006: Gamification](../02-project-overview/features/F-006-Gamification.md)
 
 ### 1.3. API 설계 원칙
 | 원칙 | 설명 |
@@ -85,7 +88,7 @@ Authorization: Bearer {accessToken}
 
 ---
 
-## 3. Survey System API
+## 3. Survey System API (F-001)
 
 ### 3.1. 엔드포인트
 
@@ -102,10 +105,11 @@ Authorization: Bearer {accessToken}
 **Response (201 Created):**
 ```json
 {
-  "id": "uuid",
-  "url": "https://remirai.app/s/uuid",
+  "id": "550e8400-e29b-41d4-a716-446655440000",
+  "url": "https://remirai.app/s/550e8400-e29b-41d4-a716-446655440000",
   "status": "ACTIVE",
-  "createdAt": "2025-11-24T12:00:00Z"
+  "createdAt": "2025-11-24T12:00:00Z",
+  "expiresAt": "2025-12-24T12:00:00Z"
 }
 ```
 
@@ -138,10 +142,11 @@ Authorization: Bearer {accessToken}
 **Request Body:**
 ```json
 {
-  "answers": [
-    { "questionId": 1, "value": 4 },
-    { "questionId": 2, "value": "친절하고 배려심이 많음" }
-  ]
+  "answers": {
+    "q1": 4,
+    "q2": 5
+  },
+  "fingerprint": "browser_fingerprint_hash"
 }
 ```
 
@@ -172,53 +177,47 @@ Authorization: Bearer {accessToken}
 
 ---
 
-## 4. Persona API
+## 4. Persona API (F-002)
 
 ### 4.1. 엔드포인트
 
 | Method | Endpoint | 설명 | 인증 |
 | :--- | :--- | :--- | :---: |
-| `POST` | `/v1/personas` | Persona 생성 (Fated/Alchemic) | Yes |
+| `POST` | `/v1/personas/synthesize` | Persona 생성 (Fated/Alchemic) | Yes |
 | `GET` | `/v1/personas` | 내 Persona 목록 | Yes |
 | `GET` | `/v1/personas/:id` | Persona 상세 조회 | Yes |
-| `GET` | `/v1/personas/:id/public` | Public Persona 조회 | No |
 
-#### POST /v1/personas
+#### POST /v1/personas/synthesize
 **설명:** Persona 생성 (FR-002.1~FR-002.4)
 
 **Request Body:**
 ```json
 {
-  "surveyId": "uuid",
-  "mode": "fated",
-  "archetypeFilter": null
+  "surveyId": "550e8400-e29b-41d4-a716-446655440000",
+  "mode": "FATED", // or "ALCHEMIC"
+  "modifiers": {
+    "archetype": "TSUNDERE" // Optional, only for ALCHEMIC
+  }
 }
 ```
 
-**Request Body (Alchemic Mode):**
+**Response (200 OK):**
 ```json
 {
-  "surveyId": "uuid",
-  "mode": "alchemic",
-  "archetypeFilter": "TSUNDERE"
-}
-```
-
-**Response (202 Accepted):**
-```json
-{
-  "jobId": "uuid",
-  "status": "PROCESSING",
-  "estimatedTime": 45
+  "id": "770e8400-e29b-41d4-a716-446655441111",
+  "name": "Luna",
+  "archetype": "The Mystic",
+  "stats": {
+    "charisma": 85,
+    "intellect": 92,
+    "kindness": 70,
+    "energy": 45
+  },
+  "greeting": "Oh, it's you. The stars foretold your arrival."
 }
 ```
 
 **성능 요구사항:** < 60s (NFR-002.1)
-
-**Long Polling 지원:**
-```
-GET /v1/personas/jobs/:jobId
-```
 
 #### GET /v1/personas/:id
 **설명:** Persona 상세 정보
@@ -241,41 +240,38 @@ GET /v1/personas/jobs/:jobId
 
 ---
 
-## 5. Chat API
+## 5. Chat API (F-003)
 
 ### 5.1. 엔드포인트
 
 | Method | Endpoint | 설명 | 인증 |
 | :--- | :--- | :--- | :---: |
-| `POST` | `/v1/chat/messages` | 메시지 전송 | Yes |
-| `GET` | `/v1/chat/:personaId/history` | 대화 기록 조회 | Yes |
+| `WS` | `/socket.io` | 실시간 채팅 (WebSocket) | Yes |
+| `GET` | `/v1/chats/:sessionId/history` | 대화 기록 조회 | Yes |
 
-#### POST /v1/chat/messages
+#### WebSocket Events
 **설명:** Persona와 대화 (FR-003.1~FR-003.3)
 
-**Request Body:**
+**Client -> Server (`chat:message`):**
 ```json
 {
-  "personaId": "uuid",
-  "content": "안녕? 오늘 기분이 어때?"
+  "sessionId": "session-uuid",
+  "content": "Hello, how are you today?"
 }
 ```
 
-**Response (200 OK):**
+**Server -> Client (`chat:response`):**
 ```json
 {
-  "messageId": "uuid",
-  "personaResponse": "안녕! 나는 항상 좋아. 너는 어때?",
-  "sentiment": "positive",
-  "timestamp": "2025-11-24T12:00:00Z"
+  "id": "msg-uuid",
+  "content": "I am doing well, thank you for asking!",
+  "timestamp": "2025-11-24T12:01:00Z"
 }
 ```
 
 **성능 요구사항:** < 3s (NFR-003.1)
 
-**Content Moderation:** 유해 콘텐츠 감지 시 `400 Bad Request`
-
-#### GET /v1/chat/:personaId/history
+#### GET /v1/chats/:sessionId/history
 **Query Parameters:**
 - `limit`: 조회할 메시지 수 (기본: 20, 최대: 100)
 - `before`: Cursor 기반 페이지네이션
@@ -285,27 +281,77 @@ GET /v1/personas/jobs/:jobId
 {
   "messages": [
     {
-      "id": "uuid",
-      "role": "user",
-      "content": "안녕?",
-      "timestamp": "2025-11-24T11:59:00Z"
+      "id": "msg-1",
+      "sender": "USER",
+      "content": "Hi",
+      "createdAt": "..."
     },
     {
-      "id": "uuid",
-      "role": "persona",
-      "content": "안녕!",
-      "timestamp": "2025-11-24T12:00:00Z"
+      "id": "msg-2",
+      "sender": "AI",
+      "content": "Hello!",
+      "createdAt": "..."
     }
-  ],
-  "nextCursor": "cursor_string"
+  ]
 }
 ```
 
 ---
 
-## 6. Gamification API
+## 6. Persona Card API (F-004)
 
 ### 6.1. 엔드포인트
+
+| Method | Endpoint | 설명 | 인증 |
+| :--- | :--- | :--- | :---: |
+| `POST` | `/v1/personas/:id/card` | 카드 이미지 생성 | Yes |
+
+#### POST /v1/personas/:id/card
+**설명:** 공유용 카드 이미지 생성 (FR-004.1)
+
+**Response (200 OK):**
+```json
+{
+  "imageUrl": "https://cdn.remirai.app/cards/persona-123.png",
+  "publicProfileUrl": "https://remirai.app/p/persona-123",
+  "expiresAt": "2025-12-24T12:00:00Z"
+}
+```
+
+**성능 요구사항:** < 2s (NFR-004.1)
+
+---
+
+## 7. Social API (F-005)
+
+### 7.1. 엔드포인트
+
+| Method | Endpoint | 설명 | 인증 |
+| :--- | :--- | :--- | :---: |
+| `GET` | `/v1/social/compatibility` | 페르소나 궁합 확인 | Yes |
+| `GET` | `/v1/social/rooms/:id` | 친구 룸 방문 | Yes |
+
+#### GET /v1/social/compatibility
+**설명:** 두 페르소나 간의 궁합 점수 계산 (FR-005.1)
+
+**Query Params:** `targetPersonaId={uuid}`
+
+**Response (200 OK):**
+```json
+{
+  "score": 85,
+  "label": "Soulmates",
+  "description": "Your high energy complements their calm nature perfectly."
+}
+```
+
+**성능 요구사항:** < 1s (NFR-005.2)
+
+---
+
+## 8. Gamification API (F-006)
+
+### 8.1. 엔드포인트
 
 | Method | Endpoint | 설명 | 인증 |
 | :--- | :--- | :--- | :---: |
@@ -319,9 +365,8 @@ GET /v1/personas/jobs/:jobId
 **Response (200 OK):**
 ```json
 {
-  "reward": {
-    "crystals": 50
-  },
+  "success": true,
+  "reward": 50,
   "newBalance": 150
 }
 ```
@@ -330,9 +375,9 @@ GET /v1/personas/jobs/:jobId
 
 ---
 
-## 7. 에러 처리
+## 9. 에러 처리
 
-### 7.1. 표준 에러 응답
+### 9.1. 표준 에러 응답
 
 **형식:**
 ```json
@@ -340,33 +385,36 @@ GET /v1/personas/jobs/:jobId
   "error": {
     "code": "ERROR_CODE",
     "message": "사용자 친화적 메시지",
-    "details": {
-      "field": "surveyId",
-      "reason": "Survey not found"
-    }
+    "details": { ... }
   }
 }
 ```
 
-### 7.2. HTTP 상태 코드
+### 9.2. 에러 코드 목록
 
-| 코드 | 의미 | 사용 예시 |
-| :--- | :--- | :--- |
-| `200 OK` | 성공 | GET 요청 성공 |
-| `201 Created` | 생성 성공 | POST 성공 |
-| `202 Accepted` | 비동기 작업 수락 | Persona 생성 중 |
-| `400 Bad Request` | 잘못된 요청 | Validation 실패 |
-| `401 Unauthorized` | 인증 실패 | 토큰 없음/만료 |
-| `403 Forbidden` | 권한 없음 | 타인의 Persona 접근 |
-| `404 Not Found` | 리소스 없음 | 존재하지 않는 ID |
-| `429 Too Many Requests` | Rate Limit 초과 | 과도한 요청 |
-| `500 Internal Server Error` | 서버 에러 | 예기치 않은 오류 |
+| 도메인 | 코드 | HTTP | 설명 |
+| :--- | :--- | :--- | :--- |
+| **Survey** | `SURVEY_001` | 404 | Survey not found or expired |
+| | `SURVEY_002` | 403 | Survey access denied |
+| | `SURVEY_003` | 429 | Duplicate submission detected |
+| **Persona** | `PERSONA_001` | 400 | Insufficient survey responses |
+| | `PERSONA_002` | 402 | Premium required for Alchemic Mode |
+| | `PERSONA_003` | 500 | LLM Generation Failed |
+| **Chat** | `CHAT_001` | 403 | User does not own session |
+| | `CHAT_002` | 429 | Rate limit exceeded |
+| | `CHAT_003` | 400 | Safety policy violation |
+| **Card** | `CARD_001` | 404 | Persona not found |
+| **Social** | `SOCIAL_001` | 404 | Target persona not found |
+| | `SOCIAL_002` | 403 | Target profile is private |
+| **Game** | `GAME_001` | 400 | Quest criteria not met |
+| | `GAME_002` | 409 | Reward already claimed |
+| | `GAME_003` | 402 | Insufficient funds |
 
 ---
 
-## 8. Rate Limiting
+## 10. Rate Limiting
 
-### 8.1. 정책
+### 10.1. 정책
 
 | 엔드포인트 | 제한 | 기준 | 복구 시간 |
 | :--- | :--- | :--- | :--- |
@@ -375,7 +423,7 @@ GET /v1/personas/jobs/:jobId
 | `/v1/chat/messages` | 30 req/min | User | 1분 |
 | `/v1/*` (Global) | 100 req/min | User | 1분 |
 
-### 8.2. 응답 헤더
+### 10.2. 응답 헤더
 ```
 X-RateLimit-Limit: 100
 X-RateLimit-Remaining: 45
@@ -384,9 +432,9 @@ X-RateLimit-Reset: 1700000000
 
 ---
 
-## 9. 페이지네이션
+## 11. 페이지네이션
 
-### 9.1. Cursor 기반 (권장)
+### 11.1. Cursor 기반 (권장)
 **Query Parameters:**
 - `limit`: 페이지 크기 (기본: 20, 최대: 100)
 - `cursor`: 다음 페이지 Cursor
@@ -401,12 +449,3 @@ X-RateLimit-Reset: 1700000000
   }
 }
 ```
-
----
-
-## 10. 참고 자료
-
-- [RESTful API Design Best Practices](https://restfulapi.net/)
-- [OAuth 2.0](https://oauth.net/2/)
-- [JWT](https://jwt.io/)
-- [OpenAPI 3.0 Specification](https://swagger.io/specification/)

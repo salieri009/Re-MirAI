@@ -42,6 +42,9 @@ The journey is not linear; it's a cycle.
 
 ## 4. Page & Component Redesign
 
+**Methodology: Atomic Design**
+All components are organized following Atomic Design principles (Atoms, Molecules, Organisms) to ensure consistency and reusability. See individual Feature Implementation Guides for specific component breakdowns.
+
 ### 3.1. Login & Onboarding (Single Entry Point)
 
 *   **Purpose:** Remove all barriers to entry.

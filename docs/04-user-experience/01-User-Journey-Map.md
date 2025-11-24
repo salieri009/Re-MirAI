@@ -24,7 +24,7 @@ Discovery → Exploration → Commitment → Creation → Engagement → Advocac
 ### Timeline: Day 1 (5 minutes)
 
 ### Touchpoints
-- Instagram post with friend's persona card
+- Instagram post with friend's **Persona Card** (F-004)
 - Re:MirAI landing page
 - "How It Works" section
 
@@ -70,13 +70,13 @@ Curiosity (3/10) → Intrigue (6/10) → Wonder (8/10) → Excitement (7/10)
 ### Touchpoints
 - Google OAuth screen
 - Welcome dashboard
-- Ritual creation interface
+- **Survey System** (F-001) creation interface
 - Tutorial tooltips
 
 ### User Actions
 ```mermaid
 graph LR
-    A[Google Login] --> B[Dashboard Tour] --> C[Create Ritual] --> D[Preview Questions] --> E[Generate Link]
+    A[Google Login] --> B[Dashboard Tour] --> C[Create Survey] --> D[Preview Questions] --> E[Generate Link]
 ```
 
 ### Emotional Journey
@@ -157,18 +157,18 @@ Nervousness (6/10) → Vulnerability (4/10) → Hope (7/10) → Anticipation (8/
 ## Phase 4: Creation ✨
 *"The magic is happening!"*
 
-### Timeline: Day 2-5 (Ritual → Summoning)
+### Timeline: Day 2-5 (Survey → Synthesis)
 
 ### Touchpoints
 - Dashboard progress tracking
 - Response notifications
-- Summoning interface
+- **Persona Synthesis** (F-002) interface
 - Persona reveal experience
 
 ### User Actions
 ```mermaid
 graph LR
-    A[Monitor Progress] --> B[Reach 3 Responses] --> C[Summoning Eligible] --> D[Choose Mode] --> E[Watch Animation] --> F[Meet Persona]
+    A[Monitor Progress] --> B[Reach 3 Responses] --> C[Synthesis Eligible] --> D[Choose Mode] --> E[Watch Animation] --> F[Meet Persona]
 ```
 
 ### Emotional Journey
@@ -178,27 +178,27 @@ Anticipation (8/10) → Excitement (9/10) → AWE (10/10) → Connection (9/10) 
 
 ### Thoughts & Feelings
 - **Building Up**: *"Each response makes this more real... almost there!"*
-- **Ready to Summon**: *"Finally! I can't wait to see what emerges"*
-- **Summoning Moment**: *"This is actually incredible... like real magic"*
+- **Ready to Synthesize**: *"Finally! I can't wait to see what emerges"*
+- **Synthesis Moment**: *"This is actually incredible... like real magic"*
 - **First Sight**: *"Wow... that's... that's actually me, but different"*
 - **Stats Discovery**: *"My friends see me as more charismatic than I thought!"*
 
 ### Pain Points
 - ❌ **Waiting Period**: Impatience during response collection
 - ❌ **Mode Confusion**: Uncertainty about Fated vs Alchemic modes
-- ❌ **Loading Anxiety**: Worry during summoning process
+- ❌ **Loading Anxiety**: Worry during synthesis process
 - ❌ **Result Surprise**: Potential disappointment if result doesn't match expectations
 
 ### Delight Moments
 - ✨ **Threshold Moment**: Celebration when enough responses are collected
-- ✨ **Summoning Spectacle**: Visual feast during persona creation
+- ✨ **Synthesis Spectacle**: Visual feast during persona creation
 - ✨ **Perfect Reveal**: The persona feels both accurate and aspirational
 - ✨ **Stat Insights**: Learning surprising things about how friends perceive her
 - ✨ **Rarity Excitement**: Getting SSR rarity feels like winning
 
 ### Design Opportunities
-- **Preparation ritual**: Build up ceremony before summoning
-- **Mode education**: Better explanation of different summoning options
+- **Preparation ritual**: Build up ceremony before synthesis
+- **Mode education**: Better explanation of different synthesis options
 - **Expectation management**: Clear communication about what to expect
 
 ---
@@ -210,15 +210,15 @@ Anticipation (8/10) → Excitement (9/10) → AWE (10/10) → Connection (9/10) 
 
 ### Touchpoints
 - Persona room
-- Chat interface
+- **Chat Interface** (F-003)
 - Bond level progression
-- Quest system
+- **Gamification** (F-006) Quest system
 - Achievement notifications
 
 ### User Actions
 ```mermaid
 graph LR
-    A[Daily Check-ins] --> B[Chat Sessions] --> C[Bond Progression] --> D[Quest Completion] --> E[Feature Discovery]
+    A[Daily Check-ins] --> B[Chat Sessions] --> C[Bond Progression] --> D[Complete Daily Quests] --> E[Claim Rewards]
 ```
 
 ### Emotional Journey
@@ -230,7 +230,7 @@ Connection (9/10) → Comfort (8/10) → Growth (8/10) → Attachment (9/10) →
 - **First Conversations**: *"It's weird how natural this feels... like talking to myself but better"*
 - **Daily Ritual**: *"I actually look forward to checking in with my persona"*
 - **Bond Growth**: *"We're getting closer... I can see the relationship developing"*
-- **Quest Discovery**: *"Oh cool, there are things to unlock! This keeps getting deeper"*
+- **Quest Discovery**: *"Oh cool, I can earn crystals by chatting! This keeps getting deeper"*
 - **Comfort Zone**: *"This has become part of my routine... it's oddly comforting"*
 
 ### Pain Points
@@ -259,15 +259,15 @@ Connection (9/10) → Comfort (8/10) → Growth (8/10) → Attachment (9/10) →
 ### Timeline: Day 15+ (Ongoing)
 
 ### Touchpoints
-- Social sharing features
-- Compatibility checking
+- **Persona Card** (F-004) sharing
+- **Social Features** (F-005) Compatibility Check
 - Public profiles
 - Community features
 
 ### User Actions
 ```mermaid
 graph LR
-    A[Share Persona] --> B[Check Compatibility] --> C[Create Public Profile] --> D[Recommend to Friends] --> E[Community Engagement]
+    A[Share Persona Card] --> B[Check Compatibility] --> C[Visit Friend's Room] --> D[Recommend to Friends] --> E[Community Engagement]
 ```
 
 ### Emotional Journey
@@ -308,13 +308,13 @@ Pride (9/10) → Social Joy (8/10) → Community (7/10) → Evangelism (9/10) �
 
 #### Discovery (Day 1)
 - **Bounce Rate**: < 40% from landing page
-- **CTA Click Rate**: > 15% on "Begin the Ritual"
+- **CTA Click Rate**: > 15% on "Begin the Survey"
 - **Time on Page**: > 2 minutes average
 
 #### Exploration (Day 1-2)
 - **Registration Completion**: > 80% after clicking CTA
-- **Ritual Creation**: > 70% complete ritual setup
-- **Link Sharing**: > 60% share their ritual link
+- **Survey Creation**: > 70% complete survey setup
+- **Link Sharing**: > 60% share their survey link
 
 #### Commitment (Day 2)
 - **Response Collection**: > 40% get at least 1 response
@@ -322,7 +322,7 @@ Pride (9/10) → Social Joy (8/10) → Community (7/10) → Evangelism (9/10) �
 - **Time to Threshold**: Average 3-4 days
 
 #### Creation (Day 2-5)
-- **Summoning Completion**: > 95% complete summoning
+- **Synthesis Completion**: > 95% complete synthesis
 - **Initial Satisfaction**: > 85% positive reaction to persona
 - **Feature Exploration**: > 70% explore persona room
 
@@ -357,7 +357,7 @@ Phase Breakdown:
 1. **Mystical First Impression**: The magical aesthetic must be perfect
 2. **Frictionless Onboarding**: Any barrier kills conversion
 3. **Social Validation**: Friend participation is crucial
-4. **Spectacular Summoning**: The reveal moment defines the experience
+4. **Spectacular Synthesis**: The reveal moment defines the experience
 5. **Consistent Personality**: AI must feel authentic and unique
 6. **Progressive Value**: Each phase must offer new rewards
 
@@ -375,7 +375,7 @@ Phase Breakdown:
 ### Quick Wins (Week 1-2)
 - Add response preview snippets
 - Improve sharing message templates
-- Better mode explanation for summoning
+- Better mode explanation for synthesis
 - Enhanced loading state animations
 
 ### Medium-term Improvements (Month 1-2)

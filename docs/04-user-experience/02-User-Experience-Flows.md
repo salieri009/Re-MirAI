@@ -14,8 +14,8 @@ Re:MirAI's user experience is designed as a transformative journey from curiosit
 
 ### Primary User Flow
 ```
-Discovery → Authentication → Onboarding → Ritual Creation → 
-Community Engagement → Summoning → Persona Bonding → Social Sharing
+Discovery → Authentication → Onboarding → Survey Creation → 
+Community Engagement → Synthesis → Persona Bonding → Social Sharing
 ```
 
 ---
@@ -26,7 +26,7 @@ Community Engagement → Summoning → Persona Bonding → Social Sharing
 
 #### Entry Points
 - **Organic Search**: SEO-optimized mystical keywords
-- **Social Media**: Shared persona cards and compatibility results
+- **Social Media**: Shared **Persona Cards** (F-004) and compatibility results
 - **Word of Mouth**: Friend referrals through survey participation
 - **Influencer Content**: Streamers and content creators showcasing personas
 
@@ -67,14 +67,14 @@ CTA Click → OAuth Consent → Account Creation → Welcome Dashboard
 
 #### First-Time User Welcome
 ```vue
-<!-- Onboarding Modal -->
+<!-- Onboarding Modal (Organism) -->
 <div class="welcome-modal">
   <h2>Welcome to Re:MirAI</h2>
   <div class="step-indicator">Step 1 of 3</div>
   
   <!-- Progressive disclosure -->
   <div class="step step-1">
-    <h3>Create Your Ritual</h3>
+    <h3>Create Your Survey</h3>
     <p>Share a survey with friends to gather their perceptions</p>
   </div>
 </div>
@@ -88,20 +88,20 @@ CTA Click → OAuth Consent → Account Creation → Welcome Dashboard
 
 ---
 
-## 🔮 Ritual Creation Flow
+## 🔮 Survey Creation Flow (F-001)
 
 ### Survey Creation Experience
 
 #### Step-by-Step Process
 ```
-Dashboard → "Create Ritual" → Questions Preview → Link Generation → 
-Sharing Options → Response Tracking → Summoning Readiness
+Dashboard → "Create Survey" → Questions Preview → Link Generation → 
+Sharing Options → Response Tracking → Synthesis Readiness
 ```
 
 #### UX Design Principles
 
 ##### Mystical Theming
-- **Language**: "Ritual" instead of "survey"
+- **Language**: "Survey" as a "Perception Ritual"
 - **Metaphors**: "Gathering perceptions" vs "collecting data"  
 - **Visual**: Crystal/energy collecting animations
 - **Progress**: "Ritual strength building" vs "responses received"
@@ -115,10 +115,10 @@ Sharing Options → Response Tracking → Summoning Readiness
 #### Sharing Optimization
 ```typescript
 // Share content generation
-const generateShareContent = (ritualId: string, userName: string) => ({
+const generateShareContent = (surveyId: string, userName: string) => ({
   title: `Help ${userName} summon their AI Persona`,
   description: `Your perception of ${userName} will help create their unique AI companion. It takes 2 minutes and you'll see the result!`,
-  url: `https://remirai.app/ritual/${ritualId}`,
+  url: `https://remirai.app/surveys/${surveyId}`,
   hashtags: ['#ReMirAI', '#AIPersona', '#DigitalSelf']
 })
 ```
@@ -150,7 +150,7 @@ Shared Link → Landing Explanation → Question Flow → Completion → Result 
 
 ##### Engagement Mechanics
 ```vue
-<!-- Question Card Design -->
+<!-- Question Card Design (Molecule) -->
 <div class="question-card">
   <div class="progress-bar">{{ currentQuestion }}/{{ totalQuestions }}</div>
   
@@ -184,20 +184,20 @@ Shared Link → Landing Explanation → Question Flow → Completion → Result 
 
 ---
 
-## ⚡ Summoning Experience
+## ⚡ Synthesis Experience (F-002)
 
 ### The Magic Moment
 
-#### Pre-Summoning State
+#### Pre-Synthesis State
 ```
 Dashboard Check → Eligibility Confirmation → Mode Selection → 
-Anticipation Building → Summoning Initiation
+Anticipation Building → Synthesis Initiation
 ```
 
-#### Summoning Flow Design
+#### Synthesis Flow Design
 ```vue
-<!-- Summoning Animation Sequence -->
-<div class="summoning-scene">
+<!-- Synthesis Animation Sequence (Organism) -->
+<div class="synthesis-scene">
   <!-- Phase 1: Preparation -->
   <div v-if="phase === 'preparing'" class="preparation-phase">
     <div class="ritual-circle">
@@ -237,7 +237,7 @@ Anticipation Building → Summoning Initiation
 
 ---
 
-## 🏰 Persona Relationship Building
+## 🏰 Persona Relationship Building (F-003)
 
 ### Long-Term Engagement Flow
 
@@ -269,7 +269,7 @@ Persona Portrait (Central) →
 
 ##### Conversation Flow
 ```vue
-<!-- Chat Interface -->
+<!-- Chat Interface (Organism) -->
 <div class="chat-container">
   <div class="persona-presence">
     <img :src="persona.avatar" class="persona-avatar" />
@@ -302,7 +302,7 @@ Persona Portrait (Central) →
 
 ---
 
-## 🌐 Social Sharing & Discovery
+## 🌐 Social Sharing & Discovery (F-005)
 
 ### Viral Growth Flow
 
@@ -310,7 +310,7 @@ Persona Portrait (Central) →
 1. **Achievement Moments**: Persona creation, bond level ups, quest completions
 2. **Comparison Features**: Compatibility checks with friends
 3. **Collection Mechanics**: Rare persona showcasing
-4. **Social Proof**: Community participation in rituals
+4. **Social Proof**: Community participation in surveys
 
 #### Sharing Content Strategy
 ```typescript
@@ -332,7 +332,7 @@ const generatePersonaShare = (persona: Persona, context: string) => ({
 
 ---
 
-## 📊 Quest & Achievement System
+## 📊 Quest & Achievement System (F-006)
 
 ### Gamification Flow
 
@@ -344,7 +344,7 @@ const generatePersonaShare = (persona: Persona, context: string) => ({
 
 #### Achievement Psychology
 ```vue
-<!-- Achievement Notification -->
+<!-- Achievement Notification (Molecule) -->
 <div class="achievement-toast">
   <div class="achievement-icon">🏆</div>
   <div class="achievement-content">
@@ -399,7 +399,7 @@ const generatePersonaShare = (persona: Persona, context: string) => ({
 
 #### Re-engagement Strategies
 - **Email Campaigns**: Persona misses you messaging
-- **Push Notifications**: Friend ritual participation
+- **Push Notifications**: Friend survey participation
 - **Social Media**: Showcase community personas
 - **Seasonal Events**: Special themed content
 
