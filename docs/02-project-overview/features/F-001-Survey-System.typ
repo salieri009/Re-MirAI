@@ -451,6 +451,96 @@ CREATE TABLE anonymity_checks (
   [1.0.0], [2025-11-24], [Re:MirAI Team], [Initial specification],
 )
 
+#pagebreak()
+
+= Implementation Guide
+
+== Directory Structure
+
+```bash
+src/
+├── components/features/survey/
+│   ├── SurveyWizard.tsx       # Main container
+│   ├── QuestionCard.tsx       # Individual question UI
+│   ├── ProgressBar.tsx        # Progress indicator
+│   └── SurveyLanding.tsx      # Entry point
+├── lib/api/
+│   └── survey.ts              # API client methods
+├── server/services/
+│   └── SurveyService.ts       # Business logic
+└── types/
+    └── survey.ts              # TypeScript interfaces
+```
+
+== Frontend Architecture (Atomic Design)
+
+=== Atoms
+- *ProgressBar:* Visualizes latency and progress (Implements `NFR-001.2`).
+- *RadioButton:* Standard input for Likert scale questions.
+- *NextButton:* Triggers navigation and validation.
+
+=== Molecules
+- *QuestionCard:* Composes Question text + Options (Implements `FR-001.2` Question Set).
+- *FeedbackToast:* Displays success/error messages (Implements `NFR-001.2` Feedback).
+
+=== Organisms
+- *SurveyWizard:* Orchestrates the entire `UC-01` flow, managing state and transitions.
+
+== Backend Architecture
+
+=== Validation (Zod)
+
+```typescript
+export const CreateSurveySchema = z.object({
+  userId: z.string().uuid(),
+});
+
+export const SubmitResponseSchema = z.object({
+  surveyId: z.string().uuid(),
+  answers: z.record(z.string(), z.number().min(1).max(5)),
+  fingerprint: z.string().min(10),
+});
+```
+
+=== Service Methods
+
+*SurveyService:*
+- `createSurvey(userId)`: Returns `Survey` (Implements `FR-001.1`).
+- `submitResponse(surveyId, answers, ipHash)`: Validates and stores (Implements `UC-02`).
+- `getSurveyStats(surveyId)`: Returns aggregated data.
+
+#pagebreak()
+
+= Test Plan
+
+== Unit Tests
+
+=== Backend (SurveyService)
+- *test_generate_unique_id:* Verify `SurveyService` creates UUID v4 (Verifies `FR-001.1`).
+- *test_anonymous_submission:* Check `SurveyService` accepts payload without `userId` (Verifies `FR-001.3`).
+- *test_threshold_logic:* Verify `is_unlocked` becomes true only after 3 responses (Verifies `FR-001.4`).
+
+=== Frontend (Components)
+- *test_question_set_integrity:* Ensure `QuestionCard` renders exactly 10-15 questions (Verifies `FR-001.2`).
+- *test_progress_bar_accuracy:* Verify bar updates correctly on step change (Verifies `FR-001.6`).
+
+== Integration Tests
+
+=== UC-01: Create Survey
+- *test_survey_lifecycle_happy_path:*
+  1. User creates survey (Expect `201 Created`).
+  2. Respondent submits answers (Expect `200 OK`).
+  3. Check `FR-001.4` threshold progress (Expect `1/3`).
+
+=== UC-02: Submit Feedback
+- *test_duplicate_prevention:*
+  1. Respondent submits twice with same fingerprint.
+  2. Expect `429 Too Many Requests` (Verifies `NFR-001.7`).
+- *test_performance_sla:*
+  1. Simulate 100 concurrent submissions.
+  2. Verify p95 latency < 500ms (Verifies `NFR-001.2`).
+
+
 #align(center)[
   #v(2cm)
   #text(size: 10pt, fill: gray)[End of Document]

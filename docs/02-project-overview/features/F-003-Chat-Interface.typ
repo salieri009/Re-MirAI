@@ -274,3 +274,85 @@ CREATE TABLE messages (
   [`CHAT_002`], [429], [Rate limit exceeded (too many messages)],
   [`CHAT_003`], [400], [Message content violates safety policy],
 )
+
+#pagebreak()
+
+= Implementation Guide
+
+== Directory Structure
+
+```bash
+src/
+├── components/features/chat/
+│   ├── ChatWindow.tsx         # Main chat container
+│   ├── MessageBubble.tsx      # Individual message
+│   ├── ChatInput.tsx          # Text input area
+│   └── TypingIndicator.tsx    # "Persona is typing..."
+├── lib/socket/
+│   └── chat-socket.ts         # WebSocket client
+└── server/socket/
+    └── chat-handler.ts        # WebSocket event handlers
+```
+
+== Frontend Architecture (Atomic Design)
+
+=== Atoms
+- *Avatar:* Circular user/persona image.
+- *SendIcon:* SVG icon for submit action.
+- *TypingDot:* Animated dot for typing indicator (Implements `FR-003.1`).
+
+=== Molecules
+- *MessageBubble:* Composes Text + Avatar + Timestamp (Renders `FR-003.1` Text).
+- *ChatInput:* Textarea + SendButton (Implements `FR-003.1`).
+
+=== Organisms
+- *ChatWindow:* Manages message list, scrolling, and connection state (Maintains `FR-003.3` Context).
+
+== Backend Architecture
+
+=== RAG Pipeline
+
+1.  *Embed:* Convert user message to vector (OpenAI embedding).
+2.  *Search:* Query `messages` table for similar vectors (cosine similarity).
+3.  *Context:* Append top 3 relevant past messages to System Prompt.
+4.  *Generate:* Call LLM with augmented context.
+
+=== Validation (Zod)
+
+```typescript
+export const ChatMessageSchema = z.object({
+  sessionId: z.string().uuid(),
+  content: z.string().min(1).max(1000),
+});
+```
+
+#pagebreak()
+
+= Test Plan
+
+== Unit Tests
+
+=== Backend (ChatSocket)
+- *test_connection_handling:* Verify socket accepts valid auth token (Verifies `NFR-003.2`).
+- *test_context_window:* Verify last 10 messages are retained in memory (Verifies `FR-003.3`).
+- *test_moderation_filter:* Ensure harmful content is flagged and rejected (Verifies `FR-003.5`).
+
+=== Frontend (Components)
+- *test_typing_indicator:* Verify indicator appears on `chat:typing` event (Verifies `FR-003.1`).
+- *test_auto_scroll:* Verify chat window scrolls to bottom on new message (Verifies `FR-003.1`).
+
+== Integration Tests
+
+=== UC-01: Chat Flow
+- *test_realtime_chat_flow:*
+  1. User sends message "Hello".
+  2. Verify `chat:response` received within 3s (Verifies `NFR-003.1`).
+  3. Verify response style matches Archetype (Verifies `FR-003.2`).
+- *test_bond_level_increase:*
+  1. Send 5 messages.
+  2. Verify `bond_level` increments in database (Verifies `FR-003.4`).
+
+=== UC-02: History
+- *test_history_pagination:*
+  1. Request history with `limit=50`.
+  2. Verify 50 messages returned in correct order (Verifies `UC-02`).

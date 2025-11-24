@@ -203,3 +203,81 @@ The system uses a headless browser approach to ensure pixel-perfect rendering of
   [`CARD_001`], [404], [Persona not found],
   [`CARD_002`], [500], [Image generation service timeout],
 )
+
+#pagebreak()
+
+= Implementation Guide
+
+== Directory Structure
+
+```bash
+src/
+├── components/features/card/
+│   ├── PersonaCard.tsx        # The visual card component
+│   ├── RadarChart.tsx         # Stats visualization
+│   └── ShareButton.tsx        # Share functionality
+├── app/api/og/
+│   └── route.tsx              # Vercel OG Image generation
+```
+
+== Frontend Architecture (Atomic Design)
+
+=== Atoms
+- *StatLabel:* Text component for stats (e.g., "CHA 85").
+- *QRCode:* Generates QR code from profile URL (Implements `FR-004.3`).
+
+=== Molecules
+- *RadarChart:* Visualizes the 4 core stats on a polar grid (Implements `FR-004.2`).
+- *ShareButton:* Handles Web Share API invocation (Implements `UC-02`).
+
+=== Organisms
+- *PersonaCard:* Composes the final shareable image layout (Implements `FR-004.1`).
+
+== Backend Architecture
+
+=== Image Generation (Satori)
+
+We use Vercel's `satori` library to generate images on the fly from JSX, which is faster and cheaper than Puppeteer.
+
+```typescript
+// app/api/card/[id]/route.tsx
+export async function GET(req, { params }) {
+  const persona = await getPersona(params.id);
+  
+  return new ImageResponse(
+    (
+      <div style={{ background: 'linear-gradient(...)', ... }}>
+        <h1>{persona.name}</h1>
+        <RadarChart stats={persona.stats} />
+      </div>
+    ),
+    { width: 1080, height: 1920 }
+  );
+}
+```
+
+#pagebreak()
+
+= Test Plan
+
+== Unit Tests
+
+=== Backend (ImageGenerator)
+- *test_image_layout:* Verify all required elements (Name, Stats, QR) are present in the generated SVG/PNG (Verifies `FR-004.2`).
+- *test_font_loading:* Ensure custom fonts are loaded correctly for consistent branding (Verifies `NFR-004.2`).
+
+=== Frontend (Components)
+- *test_radar_chart_scaling:* Verify chart scales correctly for different stat values (0-100) (Verifies `FR-004.2`).
+
+== Integration Tests
+
+=== UC-01: Generate Card
+- *test_card_generation_performance:*
+  1. Request card generation via API.
+  2. Verify response time < 2s (Verifies `NFR-004.1`).
+  3. Verify Content-Type is `image/png` (Verifies `NFR-004.3`).
+
+=== UC-02: Share
+- *test_qr_code_validity:*
+  1. Scan generated QR code from the image.
+  2. Verify it resolves to the correct Public Profile URL (Verifies `FR-004.3`).

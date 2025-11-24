@@ -223,3 +223,86 @@ Where:
   [`SOCIAL_001`], [404], [Target persona not found],
   [`SOCIAL_002`], [403], [Target profile is private],
 )
+
+#pagebreak()
+
+= Implementation Guide
+
+== Directory Structure
+
+```bash
+src/
+├── components/features/social/
+│   ├── FriendList.tsx         # List of connections
+│   ├── CompatibilityMeter.tsx # Visual match score
+│   └── RoomView.tsx           # Public profile view
+├── server/services/
+│   └── SocialService.ts       # Graph & Logic
+```
+
+== Frontend Architecture (Atomic Design)
+
+=== Atoms
+- *HeartIcon:* Animated icon for likes.
+- *UserAvatar:* Circular profile image.
+
+=== Molecules
+- *FriendRow:* Avatar + Name + Status (Implements `FR-005.4`).
+- *CompatibilityMeter:* Visual gauge for match score (Displays `FR-005.1` Score).
+
+=== Organisms
+- *FriendList:* List of FriendRows with search/filter.
+- *RoomView:* Full-page view of another user's Persona (Implements `UC-02` Visit).
+
+== Backend Architecture
+
+=== Compatibility Logic
+
+```typescript
+function calculateCompatibility(p1: Persona, p2: Persona): number {
+  const diffCharisma = Math.abs(p1.stats.charisma - p2.stats.charisma);
+  const diffIntellect = Math.abs(p1.stats.intellect - p2.stats.intellect);
+  
+  // Simple inverse distance algorithm
+  const rawScore = 100 - ((diffCharisma + diffIntellect) / 2);
+  return Math.max(0, Math.min(100, rawScore));
+}
+```
+
+=== Database Indexing
+
+To ensure fast lookups (NFR-005.3), we must index the `user_relations` table:
+
+```sql
+CREATE INDEX idx_follower ON user_relations(follower_id);
+CREATE INDEX idx_following ON user_relations(following_id);
+```
+
+#pagebreak()
+
+= Test Plan
+
+== Unit Tests
+
+=== Backend (SocialService)
+- *test_compatibility_algorithm:* Verify math for known inputs (e.g., identical stats = 100%) (Verifies `FR-005.1`).
+- *test_relationship_integrity:* Ensure users cannot follow themselves (Verifies `FR-005.4`).
+
+=== Frontend (Components)
+- *test_meter_color_coding:* Verify meter is red/yellow/green based on score threshold (Verifies `FR-005.1`).
+
+== Integration Tests
+
+=== UC-01: Check Compatibility
+- *test_compatibility_check_latency:*
+  1. Request match between two Personas.
+  2. Verify result < 1s (Verifies `NFR-005.2`).
+  3. Verify description matches score range (Verifies `FR-005.2`).
+
+=== UC-02: Visit Room
+- *test_visit_private_room:*
+  1. Attempt to visit private profile.
+  2. Expect `403 Forbidden` (Verifies `NFR-005.1`).
+- *test_visit_public_room:*
+  1. Visit public profile.
+  2. Verify Persona details are visible (Verifies `UC-02`).

@@ -223,3 +223,102 @@ CREATE TABLE quests (
   [`GAME_002`], [409], [Reward already claimed],
   [`GAME_003`], [402], [Insufficient funds (for purchases)],
 )
+
+#pagebreak()
+
+= Implementation Guide
+
+== Directory Structure
+
+```bash
+src/
+├── components/features/gamification/
+│   ├── QuestBoard.tsx         # List of active quests
+│   ├── CurrencyDisplay.tsx    # Crystal balance
+│   └── DailyLoginModal.tsx    # Streak reward UI
+├── server/services/
+│   └── GamificationService.ts # Economy logic
+```
+
+== Frontend Architecture (Atomic Design)
+
+=== Atoms
+- *CrystalIcon:* SVG for currency.
+- *Coin:* Animated coin for rewards.
+
+=== Molecules
+- *QuestItem:* Title + Progress Bar + Reward (Displays `FR-006.1` Progress).
+- *RewardToast:* Popup showing earned items (Implements `NFR-006.2` Feedback).
+
+=== Organisms
+- *QuestBoard:* Tabbed view of Daily/Weekly quests (Manages `UC-01` Claims).
+- *ShopGrid:* Grid of purchasable items (Implements `FR-006.4`).
+
+== Backend Architecture
+
+=== Optimistic UI
+
+When a user claims a reward, the UI should update immediately before the server responds:
+
+```typescript
+const claimReward = (questId) => {
+  // 1. Optimistic update
+  setBalance(prev => prev + reward);
+  setQuests(prev => markComplete(prev, questId));
+  
+  // 2. API Call
+  api.claim(questId).catch(() => {
+    // 3. Rollback on error
+    setBalance(prev => prev - reward);
+    showError("Claim failed");
+  });
+}
+```
+
+=== Transaction Safety
+
+All currency changes MUST be wrapped in a transaction:
+
+```typescript
+await prisma.$transaction(async (tx) => {
+  // 1. Verify quest not claimed
+  const quest = await tx.quest.findUnique(...);
+  if (quest.claimed) throw new Error("Already claimed");
+  
+  // 2. Add transaction record
+  await tx.transaction.create({...});
+  
+  // 3. Update wallet
+  await tx.wallet.update({...});
+});
+```
+
+#pagebreak()
+
+= Test Plan
+
+== Unit Tests
+
+=== Backend (GamificationService)
+- *test_wallet_transaction_atomic:* Verify balance updates are ACID compliant (Verifies `NFR-006.1`).
+- *test_streak_calculation:* Verify consecutive logins increment streak correctly (Verifies `FR-006.3`).
+- *test_quest_criteria_check:* Verify quest completion logic (Verifies `FR-006.1`).
+
+=== Frontend (Components)
+- *test_optimistic_update:* Verify UI updates immediately on claim (Verifies `NFR-006.2`).
+
+== Integration Tests
+
+=== UC-01: Complete Quest
+- *test_quest_completion_flow:*
+  1. Complete action (e.g., Chat).
+  2. Verify Quest marked complete & Currency added (Verifies `FR-006.1`).
+  3. Verify transaction log created (Verifies `NFR-006.1`).
+
+=== UC-02: Spend Currency
+- *test_shop_purchase_insufficient_funds:*
+  1. Attempt purchase with low balance.
+  2. Expect `402 Payment Required` (Verifies `FR-006.2`).
+- *test_shop_purchase_success:*
+  1. Purchase item with sufficient funds.
+  2. Verify balance deducted and item unlocked (Verifies `FR-006.4`).

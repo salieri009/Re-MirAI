@@ -269,3 +269,89 @@ CREATE TABLE persona_traits (
   [`PERSONA_002`], [402], [Premium required for Alchemic Mode],
   [`PERSONA_003`], [500], [LLM Generation Failed (Retryable)],
 )
+
+#pagebreak()
+
+= Implementation Guide
+
+== Directory Structure
+
+```bash
+src/
+├── components/features/persona/
+│   ├── PersonaGenerator.tsx   # Loading/Generation UI
+│   ├── PersonaReveal.tsx      # Animation for reveal
+│   └── ArchetypeSelector.tsx  # For Alchemic Mode
+├── lib/ai/
+│   ├── prompts.ts             # System prompt templates
+│   └── llm-client.ts          # OpenAI/Anthropic wrapper
+└── server/services/
+    └── PersonaService.ts      # Core synthesis logic
+```
+
+== Frontend Architecture (Atomic Design)
+
+=== Molecules
+- *ArchetypeCard:* Displays Archetype name and description (Implements `FR-002.3`).
+- *TraitBadge:* Visualizes specific personality traits.
+
+=== Organisms
+- *PersonaGenerator:* Orchestrates the analysis and synthesis process (Executes `FR-002.2` LLM Analysis).
+- *AlchemicControls:* UI for selecting modifiers in Premium mode (Implements `FR-002.5`).
+
+== Backend Architecture
+
+=== Validation (Zod)
+
+```typescript
+export const SynthesizePersonaSchema = z.object({
+  surveyId: z.string().uuid(),
+  mode: z.enum(['FATED', 'ALCHEMIC']),
+  modifiers: z.object({
+    archetype: z.string().optional(),
+  }).optional(),
+});
+```
+
+=== LLM Prompt Engineering
+
+*System Prompt Template:*
+```text
+You are an expert psychologist and character writer.
+Analyze the following survey data:
+{{survey_data}}
+
+Output a JSON object with:
+- Archetype (Choose from: [List])
+- Stats (Charisma, Intellect, etc.)
+- Name
+- Backstory
+- Speaking Style
+```
+
+#pagebreak()
+
+= Test Plan
+
+== Unit Tests
+
+=== Backend (PersonaService)
+- *test_aggregation_logic:* Verify stats are calculated correctly from survey answers (Verifies `FR-002.1`).
+- *test_prompt_builder:* Ensure system prompt includes all required traits and context (Verifies `FR-002.4`).
+- *test_archetype_assignment:* Verify valid archetype is returned from LLM response (Verifies `FR-002.3`).
+
+== Integration Tests
+
+=== UC-01: Fated Mode Generation
+- *test_fated_mode_generation:*
+  1. Trigger synthesis with valid survey.
+  2. Verify latency is under 60s (Verifies `NFR-002.1`).
+  3. Verify output contains valid Archetype (Verifies `FR-002.3`).
+
+=== UC-02: Alchemic Mode
+- *test_alchemic_mode_access:*
+  1. Non-premium user attempts Alchemic Mode.
+  2. Expect `402 Payment Required` (Verifies `FR-002.5`).
+- *test_modifier_application:*
+  1. Premium user selects "Tsundere" archetype.
+  2. Verify generated Persona has "Tsundere" archetype (Verifies `FR-002.5`).
