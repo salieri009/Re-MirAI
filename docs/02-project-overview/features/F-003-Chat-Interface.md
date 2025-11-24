@@ -4,14 +4,14 @@
 **Priority:** P0 (MVP)
 
 ## 1. Overview
-The AI Chat Interface is the primary engagement layer where users interact with their summoned Persona. It provides a real-time conversational experience that reflects the synthesized personality, maintaining context and emotional continuity.
+The AI Chat Interface is the primary engagement layer where users interact with their created Persona. It provides a real-time conversational experience that reflects the synthesized personality, maintaining context and emotional continuity.
 
 ## 2. Use Cases
 
 ### UC-01: Chat with Persona
 **Actor:** User  
 **Description:** User sends a text message to their Persona and receives a reply.  
-**Pre-conditions:** User has a summoned Persona.  
+**Pre-conditions:** User has a created Persona.  
 **Post-conditions:** Message is saved; Bond Level progress increases.
 
 ### UC-02: View Chat History

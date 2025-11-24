@@ -4,7 +4,7 @@ This document provides a concise index of the Re:MirAI core features. Detailed s
 
 ## Feature Index
 
-- [F-001: Survey System](features/F-001-Ritual-System.md)
+- [F-001: Survey System](features/F-001-Survey-System.md)
 - [F-002: Persona Synthesis](features/F-002-Persona-Synthesis.md)
 - [F-003: AI Chat Interface](features/F-003-Chat-Interface.md)
 - [F-004: Persona Card](features/F-004-Persona-Card.md)

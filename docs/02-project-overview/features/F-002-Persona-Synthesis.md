@@ -8,16 +8,16 @@ Persona Synthesis is the AI-driven process that transforms aggregated survey res
 
 ## 2. Use Cases
 
-### UC-01: Summon Persona (Fated Mode)
+### UC-01: Create Persona (Fated Mode)
 **Actor:** User  
 **Description:** User triggers the synthesis process using the default "Fated" mode.  
-**Pre-conditions:** Ritual has ≥3 responses.  
+**Pre-conditions:** Survey has ≥3 responses.  
 **Post-conditions:** A new Persona is created with an AI-determined archetype.
 
-### UC-02: Summon Persona (Alchemic Mode)
+### UC-02: Create Persona (Alchemic Mode)
 **Actor:** User (Premium)  
 **Description:** User triggers synthesis while applying a specific Archetype Filter (e.g., "Tsundere").  
-**Pre-conditions:** Ritual has ≥3 responses; User has Premium/Items.  
+**Pre-conditions:** Survey has ≥3 responses; User has Premium/Items.  
 **Post-conditions:** A new Persona is created with the selected archetype.
 
 ## 3. Functional Requirements (FR)

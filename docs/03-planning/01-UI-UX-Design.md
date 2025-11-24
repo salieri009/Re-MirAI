@@ -30,7 +30,15 @@ The journey is not linear; it's a cycle.
 5.  **The Reveal (The Payoff):** Once enough responses are in, the dashboard transforms. A "Create Persona" button triggers a short, dramatic animation before presenting the final **Persona Card**.
 6.  **Share & Re-engage:** The Persona Card view has a prominent **"Share Your Card"** button. This generates a clean image of the card, ready for social media. The user can then chat with their persona, creating more shareable moments (e.g., sharing funny chat snippets).
 
-## 3. Page & Component Redesign
+## 3. Global Navigation & Header
+
+*   **Sticky Header:** Always visible.
+*   **Left:** `Re:MirAI` Logo (Home).
+*   **Right:**
+    *   **Currency Widget:** "Memory Crystals" balance (if Gamification active).
+    *   **User Menu:** Profile, Settings, Sign Out.
+
+## 4. Page & Component Redesign
 
 ### 3.1. Login & Onboarding (Single Entry Point)
 
@@ -44,9 +52,16 @@ The journey is not linear; it's a cycle.
     *   **Visual:** A blurred or "generating" placeholder for the Persona Card.
     *   **Data:** A live counter: "2 out of 3 responses received..."
     *   **CTA:** "Share this link to get more responses!" with the survey URL and share buttons.
+    *   **Alternative:** "Practice Mode" button to answer questions yourself (for immediate Proto-Persona generation).
 *   **State 2 (The Reveal):**
+    *   **Options:** "Fated Summon" (Default) or "Alchemic Summon" (Select Archetype - Premium).
     *   A modal or full-screen takeover for the persona creation animation.
     *   Presents the final **Persona Card**.
+*   **State 3 (Active Persona - Post-Reveal):**
+    *   **Main View:** The Persona Card is prominently displayed.
+    *   **Primary Action:** "Chat with [Persona Name]" button.
+    *   **Gamification:** Small widget showing "Bond Level" or "Daily Quests" to encourage return visits.
+    *   **Social:** "Share Card" and "Check Compatibility" buttons.
 
 ### 3.3. The Persona Card (The Viral Asset)
 
@@ -54,9 +69,9 @@ The journey is not linear; it's a cycle.
 *   **Purpose:** To be the core viral mechanism. It must be beautiful, personal, and intriguing.
 *   **Components (within the generated image):**
     1.  **AI-Generated Illustration:** The main visual hook.
-    2.  **Persona Title:** A catchy title, e.g., "The Group's Sarcastic Strategist."
-    3.  **Key Traits:** 3-4 bullet points derived from survey results (e.g., "Humor: Witty & Dry", "Crisis Mode: Surprisingly Calm", "Social Battery: Needs 2-3 business days to recharge").
-    4.  **Subtle Branding:** A small `Re:MirAI` logo and the user's handle.
+    2.  **Persona Title & Rarity:** A catchy title (e.g., "The Group's Sarcastic Strategist") + Rarity Badge (SSR/SR/R).
+    3.  **Stats & Traits:** A Radar Chart (Charisma, Intellect, etc.) + 3-4 key trait bullet points.
+    4.  **Subtle Branding:** A small `Re:MirAI` logo, QR Code, and the user's handle.
 *   **Functionality:** The "Share" button on this card will trigger a `toBlob()` or similar function to generate a high-resolution PNG, which the user can then immediately save or share via their device's native share sheet.
 
 ### 3.4. Chat Page (`/persona/chat`)
