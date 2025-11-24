@@ -1,244 +1,158 @@
 # Re:MirAI
 
-> **"다른 사람의 눈을 통해 자신을 발견하는 플랫폼"**  
+> **"다른 사람의 눈을 통해 자신을 발견하는 플랫폼"**
 > **"A platform where you discover yourself through the eyes of others"**
 
-**프로젝트 유형:** AI 기반 성격 발견 플랫폼  
-**플랫폼:** 웹 애플리케이션  
-**현재 단계:** 기획 완료, 개발 준비 중
+**Project Type:** AI-Powered Personality Discovery Platform
+**Status:** In Development (Phase 1: MVP)
 
 ---
 
-## 📋 프로젝트 정보
+## Quick Start
 
-Re:MirAI는 친구들의 익명 피드백을 통해 "다른 사람들이 나를 어떻게 보는가?"라는 질문에 답하는 혁신적인 AI 기반 플랫폼입니다. 
+### Prerequisites
+- Node.js 18+
+- PostgreSQL 15+
+- OpenAI API Key
 
-공유 가능한 설문조사("의식(Ritual)")를 통해 익명 피드백을 수집하고, 이를 바탕으로 당신의 외부 성격을 반영하는 고유한 AI 페르소나를 합성합니다. 생성된 AI 챗봇과 대화하며 자신의 외부 성격을 탐구할 수 있습니다.
+### Installation
 
----
+```bash
+# Clone the repository
+git clone https://github.com/salieri009/Re-MirAI.git
+cd Re-MirAI
 
-## 🚀 개요
+# Install dependencies (Frontend)
+cd frontend
+npm install
 
-### 핵심 가치 제안
+# Install dependencies (Backend)
+cd ../backend
+npm install
+```
 
-**사회적 피드백을 통한 자기 발견**
-- 친구들의 집단 피드백을 기반으로 한 성격 인사이트 생성
-- 당신의 공개 페르소나를 나타내는 AI와 상호작용
-- 자기 인식과 외부 인식 간의 간극 탐구
+### Running Locally
 
-**매력적인 소셜 경험**
-- 소셜 미디어에 최적화된 공유 가능한 페르소나 카드
-- 페르소나 간 호환성 매칭
-- 퀘스트와 보상이 있는 게임화된 상호작용 시스템
+```bash
+# Start Backend (NestJS)
+cd backend
+npm run start:dev
+# Server running at http://localhost:3000
 
-**프라이버시 우선 설계**
-- 친구들의 익명 피드백 제공
-- 페르소나 공개 여부 제어 (공개/비공개)
-- 개인 데이터 판매 또는 제3자 공유 없음
-
----
-
-## ✨ 핵심 기능
-
-### 🔮 의식 시스템 (설문 생성)
-- 친구들과 공유할 개인화된 설문 링크 생성
-- 성격 차원을 포착하도록 설계된 맞춤 질문
-- 익명 응답 수집
-- 최소 임계값 시스템 (소환을 위한 3개 이상의 응답)
-
-### 🎭 페르소나 합성
-- 설문 응답으로부터 AI 기반 성격 프로필 생성
-- 다중 소환 모드:
-  - **운명형(Fated):** 응답을 기반으로 AI가 결정
-  - **연금술형(Alchemic):** 원하는 원형 필터링 (얀데레, 쿠데레 등)
-- 페르소나 고유성을 반영하는 희귀도 시스템 (SSR, SR, R)
-- 자기 인식 비교를 위한 연습 모드
-
-### 💬 AI 채팅 인터페이스
-- 생성된 페르소나와의 실시간 대화
-- 성격 프로필 기반 맥락 인식 응답
-- 상호작용을 통한 유대감 레벨 진행
-- 채팅 기록 보존
-
-### 🎨 페르소나 카드 및 일러스트
-- 페르소나를 나타내는 AI 생성 캐릭터 일러스트
-- 상세한 스탯 시스템 (카리스마, 지성, 친절, 불안정성, 정신력)
-- 소셜 미디어용 공유 가능한 페르소나 카드
-- 성별 전환 기능 (향후 개선)
-
-### 👥 소셜 기능
-- **호환성 매칭:** 친구들의 페르소나와의 케미스트리 점수 발견
-- **공개 프로필:** 커뮤니티와 페르소나 공유
-- **친구 페르소나 접근:** 친구 페르소나와 채팅할 수 있는 기간 제한 대여 패스
-
-### 🎮 게임화
-- 보상이 있는 퀘스트 시스템 (기억 크리스탈)
-- 유대감 레벨 진행
-- 업적 배지 및 연속 기록
-- 리더보드 (향후 개선)
+# Start Frontend (Next.js)
+cd frontend
+npm run dev
+# Client running at http://localhost:3000
+```
 
 ---
 
-## 🎯 프로젝트 목표
+## Architecture
 
-### 주요 목표
-AI 기반 소셜 피드백을 통한 매력적인 자기 발견 경험 창출
+### High-Level Diagram
 
-### 부차적 목표
-1. 소셜 공유 메커니즘을 통한 바이럴 성장 달성
-2. AI 기반 성격 탐구를 위한 고유한 플랫폼 구축
-3. 프리미엄 기능을 통한 지속 가능한 수익화 확립
+```mermaid
+graph TD
+    Client[Client (Next.js)] -->|HTTPS| API[API Gateway (NestJS)]
+    API -->|Auth| Auth[Google OAuth]
+    API -->|Read/Write| DB[(PostgreSQL)]
+    API -->|Generate| AI[OpenAI API]
+```
 
----
+### Core Components
 
-## 🎨 디자인 철학
+#### Frontend (Next.js)
+- **App Router:** Server Components for performance.
+- **Design System:** Custom "Blonix" system (Light theme, Fuchsia/Pink).
+- **State Management:** React Context + Hooks.
 
-Re:MirAI는 **Blonix Branch** 디자인 철학을 따릅니다:
-
-- **🌟 라이트 테마 우선:** 접근성을 위해 최적화된 깔끔하고 밝은 인터페이스
-- **🎨 모던 컬러 팔레트:** Fuchsia/Pink 주색상 (#d946ef)과 Blue 보조색상 (#3b82f6)
-- **✍️ 타이포그래피:** 친근하고 현대적인 느낌을 위한 Inter + Poppins
-- **♿ 접근성:** 높은 대비의 WCAG 2.1 AA 준수
-- **📱 반응형 디자인:** 모바일 우선 접근 방식
-- **🎭 컴포넌트 기반:** Atomic Design 방법론
-
-[전체 디자인 시스템 보기 →](docs/02-project-overview/design-philosophy.md)
-
----
-
-## 🗓️ 개발 로드맵
-
-### Phase 1: MVP (1-3개월)
-
-**핵심 기능**
-- 사용자 인증 (Google OAuth)
-- 설문 생성 및 공유
-- 기본 페르소나 합성
-- AI 채팅 인터페이스
-- 랜딩 페이지 및 온보딩
-
-**목표:** 핵심 컨셉 검증, 초기 사용자 피드백 수집
-
-### Phase 2: 개선 (4-6개월)
-
-**소셜 및 비주얼 기능**
-- AI 생성 페르소나 일러스트
-- 호환성 매칭
-- 공개 페르소나 프로필
-- 퀘스트 시스템 및 게임화
-- 성별 전환 기능
-
-**목표:** 참여도 증가, 바이럴 공유 활성화
-
-### Phase 3: 확장 (7-12개월)
-
-**고급 기능**
-- 프리미엄 페르소나 패키지
-- 친구 페르소나 대여
-- 상세 호환성 리포트
-- 그룹 페르소나
-- 고급 분석 대시보드
-- 모바일 앱 (React Native)
-
-**목표:** 수익화, 확장성, 시장 확대
-
-[전체 로드맵 보기 →](docs/02-project-overview/roadmap.md)
+#### Backend (NestJS)
+- **API:** RESTful endpoints for Surveys, Personas, and Chat.
+- **Database:** Prisma ORM with PostgreSQL.
+- **AI Service:** Integration with OpenAI GPT-4 for persona synthesis.
 
 ---
 
-## 🛠️ 기술 스택 (계획)
+## Project Structure
+
+```
+Re-MirAI/
+├── frontend/          # Next.js Application
+│   ├── src/
+│   │   ├── app/       # App Router Pages
+│   │   ├── components/# Reusable UI Components
+│   │   └── lib/       # Utilities & API Clients
+├── backend/           # NestJS API Server
+│   ├── src/
+│   │   ├── modules/   # Feature Modules (Auth, Survey, Persona)
+│   │   └── prisma/    # Database Schema
+├── docs/              # Project Documentation
+│   ├── 01-concept/    # PRD & Concepts
+│   ├── 02-project-overview/ # Features & Roadmap
+│   └── 03-planning/   # Technical Specs & UI/UX
+└── README.md          # This file
+```
+
+---
+
+## Key Features
+
+### Survey System (F-001)
+- Create personalized "Survey" links.
+- Collect anonymous feedback from friends.
+- Real-time response tracking.
+
+### Persona Synthesis (F-002)
+- Transform feedback into a unique AI Persona.
+- "Fated" (Automatic) or "Alchemic" (Guided) creation modes.
+- Generates distinct personality traits and archetypes.
+
+### AI Chat Interface (F-003)
+- Chat with your synthesized persona.
+- Context-aware responses based on survey data.
+- Deepen the bond through interaction.
+
+### Persona Card (F-004)
+- Beautiful, shareable summary of your persona.
+- Includes AI-generated illustration and key stats.
+- Optimized for social media sharing.
+
+---
+
+## Tech Stack
 
 ### Frontend
-- **프레임워크:** Next.js 14+ (App Router)
-- **언어:** TypeScript
-- **스타일링:** CSS Modules with Design Tokens
-- **상태 관리:** React Context + Hooks
-- **UI 컴포넌트:** Custom Atomic Design System
+- **Framework:** Next.js 14+
+- **Language:** TypeScript
+- **Styling:** CSS Modules (Blonix Design System)
 
 ### Backend
-- **프레임워크:** NestJS
-- **언어:** TypeScript
-- **데이터베이스:** PostgreSQL
-- **ORM:** TypeORM / Prisma
-- **인증:** Google OAuth 2.0 + JWT
-- **API:** RESTful with versioning
+- **Framework:** NestJS
+- **Database:** PostgreSQL
+- **ORM:** Prisma
 
-### AI & Data
-- **LLM:** OpenAI GPT-4 / GPT-3.5-turbo
-- **이미지 생성:** DALL-E 3 / Stable Diffusion
-- **임베딩:** OpenAI Embeddings (호환성 매칭용)
-
-### Infrastructure
-- **호스팅:** Vercel (Frontend) + Railway/Render (Backend)
-- **데이터베이스 호스팅:** Supabase / Railway
-- **파일 스토리지:** Cloudinary / AWS S3
-- **모니터링:** Sentry + LogRocket
+### AI & Cloud
+- **LLM:** OpenAI GPT-4 / GPT-3.5
+- **Image Gen:** DALL-E 3 (Planned)
+- **Hosting:** Vercel (Frontend), Railway (Backend)
 
 ---
 
-## 👥 타겟 사용자
+## Documentation
 
-### 주요 타겟 (Blonix Branch 우선순위)
+All detailed documentation is located in the `docs/` directory.
 
-**일반 사용자 (모든 연령)**
-- AI 기반 성격 인사이트를 통한 자기 발견 추구
-- 밝고 환영하는 인터페이스 선호
-- 접근성 및 가독성 중시
-- 개인 및 전문적 맥락에서 사용 가능
-
-### 부차적 타겟
-
-**10-20대 청소년 및 청년**
-- 소셜 미디어 활동 활발
-- 성격 트렌드에 관심 (MBTI, 별자리 등)
-- 바이럴 공유 가능한 콘텐츠 선호
-
-**작가, 크리에이터, 롤플레이어**
-- 캐릭터 개발 도구 탐색
-- 성격 탐구에 관심
-- 창작 프로젝트에 활용
+- **Product Requirements:** [PRD (Project Plan)](docs/01-concept/02-Project-Plan.md)
+- **Technical Spec:** [Technical Specification](docs/03-planning/05-Technical-Specification.md)
+- **Design System:** [Design Philosophy](docs/02-project-overview/03-Design-Philosophy.md)
+- **Roadmap:** [Development Roadmap](docs/02-project-overview/04-Roadmap.md)
+- **Feature Specs:** [Core Features Index](docs/02-project-overview/02-Core-Features.md)
 
 ---
 
-## 📊 성공 지표
+## Team & License
 
-### 사용자 획득
-- **1-3개월:** 1,000명
-- **4-6개월:** 10,000명
-- **7-12개월:** 100,000명
+**Re:MirAI Team**
+- **Contact:** kordalek@naver.com
 
-### 참여 지표
-- **의식 완료율:** >60% (3개 이상 응답 설문)
-- **페르소나 소환율:** >80% (의식 완료 사용자)
-- **채팅 참여:** 사용자당 평균 >5개 메시지
-- **재방문율:** 7일 내 >40% 사용자 재방문
-
-### 바이럴 지표
-- **공유율:** >30% 사용자가 페르소나 카드 공유
-- **추천율:** 공유를 통한 신규 사용자 >20%
-- **호환성 확인:** 활성 사용자당 >2회
-
----
-
-## 📄 라이선스
-
-이 프로젝트는 MIT 라이선스에 따라 라이선스가 부여됩니다. 자세한 내용은 [LICENSE](LICENSE) 파일을 참조하세요.
-
----
-
-## 🆘 지원
-
-- **문서:** [docs/README.md](docs/README.md)
-- **PRD (기획서):** [docs/01-concept/02-Project-Plan.md](docs/01-concept/02-Project-Plan.md)
-- **기술 명세서:** [docs/03-planning/05-Technical-Specification.md](docs/03-planning/05-Technical-Specification.md)
-- **이슈:** [GitHub Issues](https://github.com/your-org/Re-MirAI/issues)
-- **이메일:** kordalek@naver.com
-
----
-
-**관리:** Re:MirAI Team  
-**최종 업데이트:** 2025-11-23  
-**버전:** 1.0.0 (기획 단계)  
-**상태:** 기획 완료, 개발 준비 중
-
-**자기 발견과 연결을 위해 ❤️로 기획되었습니다**
+This project is licensed under the MIT License. See [LICENSE](LICENSE) for details.
