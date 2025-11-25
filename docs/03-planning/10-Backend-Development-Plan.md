@@ -230,6 +230,36 @@ backend/
 
 ---
 
+## Backend-Frontend Coordination
+
+**Important:** Backend must deliver working APIs 1 week before frontend integration.
+
+### Timeline Coordination with Frontend
+
+| Week | Backend Deliverable | Frontend Consumes | Why 1 Week Lead? |
+|------|---------------------|-------------------|------------------|
+| Week 1 | Auth APIs (Google OAuth, JWT) | Week 2: Login page | Frontend needs auth before any protected routes |
+| Week 2-3 | Survey CRUD + Response APIs | Week 3-4: Survey UI | Frontend needs endpoints to build forms |
+| Week 4 | Persona synthesis API | Week 5: Persona reveal | Frontend needs working AI before building reveal animation |
+| Week 5 | WebSocket chat | Week 6: Chat UI | Frontend needs real-time connection before chat interface |
+| Week 6 | Card generation API | Week 7: Sharing features | Frontend needs image URLs for share functionality |
+| Week 7-8 | Social + Quest APIs | Week 7-8: Social UI | Concurrent development, daily integration testing |
+
+**Buffer:** 1-week lead gives frontend time to integrate without blocking on API delays.
+
+**Communication Channels:**
+- **Daily standups:** Sync on API readiness and integration blockers
+- **API changelog:** Document all endpoint changes in Slack #api-changes
+- **Integration tests:** Run end-to-end tests before marking APIs "ready"
+
+**API Readiness Checklist:**
+- [ ] Endpoint implemented and tested
+- [ ] API Specification updated
+- [ ] Postman collection updated
+- [ ] Frontend team notified in standup
+
+---
+
 ## 3. Development Phases
 
 ### Overview: 8-Week Timeline
@@ -237,6 +267,8 @@ backend/
 ```
 Week 1: Foundation → Week 2-3: Survey → Week 4: AI → Week 5: Chat → Week 6-8: Social
 ```
+
+**Note:** All APIs must be delivered 1 week before frontend integration (see coordination table above)
 
 ---
 
@@ -338,14 +370,48 @@ export class AuthService {
 
   async login(user: any) {
     const payload = { sub: user.id, email: user.email };
+    
+    // Generate access token (1 hour expiry)
+    const accessToken = this.jwtService.sign(payload, {
+      expiresIn: '1h'
+    });
+    
+    // Generate refresh token (7 days expiry)
+    const refreshToken = this.jwtService.sign(payload, {
+      secret: process.env.JWT_REFRESH_SECRET,
+      expiresIn: '7d'
+    });
+    
     return {
-      access_token: this.jwtService.sign(payload),
+      access_token: accessToken,
+      refresh_token: refreshToken,
+      expires_in: 3600, // 1 hour in seconds
       user: {
         id: user.id,
         email: user.email,
         name: user.name,
       }
     };
+  }
+  
+  async refreshAccessToken(refreshToken: string) {
+    try {
+      const payload = this.jwtService.verify(refreshToken, {
+        secret: process.env.JWT_REFRESH_SECRET
+      });
+      
+      const user = await this.prisma.user.findUnique({
+        where: { id: payload.sub }
+      });
+      
+      if (!user) {
+        throw new UnauthorizedException('User not found');
+      }
+      
+      return this.login(user);
+    } catch (error) {
+      throw new UnauthorizedException('Invalid refresh token');
+    }
   }
 }
 ```
@@ -610,25 +676,51 @@ export class LLMService {
     });
   }
 
-  // FR-002.2: Analyze text responses
+  // FR-002.2: Analyze text responses WITH RETRY LOGIC
   async synthesizePersona(surveyData: any) {
     const prompt = this.buildSynthesisPrompt(surveyData);
 
-    const completion = await this promise.race([
-      this.openai.chat.completions.create({
-        model: 'gpt-4',
-        messages: [
-          { role: 'system', content: 'You are an expert psychologist and character writer.' },
-          { role: 'user', content: prompt }
-        ],
-        response_format: { type: 'json_object' },
-        temperature: 0.7
-      }),
-      // NFR-002.1: 60-second timeout
-      this.timeout(60000)
-    ]);
+    // Retry with exponential backoff for reliability
+    return await this.retryWithBackoff(async () => {
+      const completion = await Promise.race([
+        this.openai.chat.completions.create({
+          model: 'gpt-4',
+          messages: [
+            { role: 'system', content: 'You are an expert psychologist and character writer.' },
+            { role: 'user', content: prompt }
+          ],
+          response_format: { type: 'json_object' },
+          temperature: 0.7
+        }),
+        // NFR-002.1: 60-second timeout
+        this.timeout(60000)
+      ]);
 
-    return JSON.parse(completion.choices[0].message.content);
+      return JSON.parse(completion.choices[0].message.content);
+    }, 3); // Max 3 retries
+  }
+
+  // Exponential backoff retry utility
+  private async retryWithBackoff<T>(
+    fn: () => Promise<T>,
+    maxRetries = 3,
+    baseDelay = 1000
+  ): Promise<T> {
+    for (let i = 0; i < maxRetries; i++) {
+      try {
+        return await fn();
+      } catch (error) {
+        if (i === maxRetries - 1) {
+          // Last attempt failed
+          throw new Error(`LLM synthesis failed after ${maxRetries} attempts: ${error.message}`);
+        }
+        
+        // Wait before retry (exponential backoff: 1s, 2s, 4s)
+        const delay = baseDelay * Math.pow(2, i);
+        console.log(`LLM attempt ${i + 1} failed, retrying in ${delay}ms...`);
+        await new Promise(resolve => setTimeout(resolve, delay));
+      }
+    }
   }
 
   private buildSynthesisPrompt(data: any): string {
@@ -763,9 +855,16 @@ export class ChatGateway implements OnGatewayConnection, OnGatewayDisconnect {
   constructor(private chatService: ChatService) {}
 
   async handleConnection(client: Socket) {
-    // Authenticate socket connection
-    const user = await this.validateToken(client.handshake.auth.token);
-    client.data.user = user;
+    try {
+      // Authenticate socket connection
+      const user = await this.validateToken(client.handshake.auth.token);
+      client.data.user = user;
+      console.log(`Client connected: ${client.id}, User: ${user.email}`);
+    } catch (error) {
+      console.error(`Auth failed for client ${client.id}:`, error.message);
+      client.disconnect(); // Force disconnect on auth failure
+      return;
+    }
   }
 
   handleDisconnect(client: Socket) {
@@ -906,19 +1005,162 @@ export class ChatService {
 ```typescript
 // modules/persona/card/card.service.ts
 import { Injectable } from '@nestjs/common';
-import sharp from 'sharp';
+import satori from 'satori';
+import { Resvg } from '@resvg/resvg-js';
+import QRCode from 'qrcode';
+import { readFile } from 'fs/promises';
 
 @Injectable()
 export class CardService {
-  async generateCard(personaId: string) {
+  constructor(private prisma: PrismaService) {}
+
+  async generateCard(personaId: string, theme: string = 'default') {
     const persona = await this.prisma.persona.findUnique({
-      where: { id: personaId }
+      where: { id: personaId },
+      include: { user: true }
     });
 
-    // Generate 1080x1080 image (FR-004.1)
-    const cardImage = await this.renderCard(persona);
+    // FR-004.1: Generate 1080x1080 image
+    const cardImage = await this.renderCard(persona, theme);
 
-    // Save to storage
+    // Save to S3 or CDN
+    const url = await this.uploadToStorage(cardImage, personaId);
+
+    return { url, size: '1080x1080' };
+  }
+
+  private async renderCard(persona: any, theme: string): Promise<Buffer> {
+    // FR-004.2: Generate QR code
+    const qrDataUrl = await QRCode.toDataURL(
+      `${process.env.FRONTEND_URL}/p/${persona.id}`,
+      { errorCorrectionLevel: 'H', width: 200 }
+    );
+
+    // Load font
+    const fontData = await readFile('./assets/fonts/Inter-Bold.ttf');
+
+    // FR-004.2: Render card with Satori
+    const svg = await satori(
+      {
+        type: 'div',
+        props: {
+          style: {
+            width: '1080px',
+            height: '1080px',
+            display: 'flex',
+            flexDirection: 'column',
+            background: this.getThemeGradient(theme),
+            padding: '60px',
+            fontFamily: 'Inter',
+            color: '#ffffff'
+          },
+          children: [
+            // Persona Name
+            {
+              type: 'h1',
+              props: {
+                style: { fontSize: '72px', marginBottom: '20px' },
+                children: persona.name
+              }
+            },
+            // Archetype
+            {
+              type: 'p',
+              props: {
+                style: { fontSize: '32px', opacity: 0.9, marginBottom: '40px' },
+                children: persona.archetype
+              }
+            },
+            // Stats Radar Chart (simplified as bars for Satori)
+            {
+              type: 'div',
+              props: {
+                style: { display: 'flex', flexDirection: 'column', gap: '16px', marginBottom: '40px' },
+                children: this.renderStats(persona.stats)
+              }
+            },
+            // QR Code
+            {
+              type: 'img',
+              props: {
+                src: qrDataUrl,
+                style: { width: '200px', height: '200px', marginTop: 'auto' }
+              }
+            }
+          ]
+        }
+      },
+      {
+        width: 1080,
+        height: 1080,
+        fonts: [{
+          name: 'Inter',
+          data: fontData,
+          weight: 700,
+          style: 'normal'
+        }]
+      }
+    );
+
+    // Convert SVG to PNG using Resvg
+    const resvg = new Resvg(svg);
+    const pngData = resvg.render();
+    return pngData.asPng();
+  }
+
+  private getThemeGradient(theme: string): string {
+    const themes = {
+      default: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
+      dark: 'linear-gradient(135deg, #1e1e1e 0%, #000000 100%)',
+      neon: 'linear-gradient(135deg, #f093fb 0%, #f5576c 100%)',
+      pastel: 'linear-gradient(135deg, #a8edea 0%, #fed6e3 100%)'
+    };
+    return themes[theme] || themes.default;
+  }
+
+  private renderStats(stats: any) {
+    const statNames = ['Charisma', 'Intellect', 'Kindness', 'Energy'];
+    const statKeys = ['charisma', 'intellect', 'kindness', 'energy'];
+    
+    return statKeys.map((key, i) => ({
+      type: 'div',
+      props: {
+        style: { display: 'flex', alignItems: 'center', gap: '16px' },
+        children: [
+          { type: 'span', props: { style: { width: '120px' }, children: statNames[i] } },
+          {
+            type: 'div',
+            props: {
+              style: {
+                width: `${stats[key] * 6}px`,
+                height: '24px',
+                background: '#ffffff',
+                borderRadius: '12px'
+              }
+            }
+          },
+          { type: 'span', props: { children: stats[key] } }
+        ]
+      }
+    }));
+  }
+
+  private async uploadToStorage(imageBuffer: Buffer, personaId: string): Promise<string> {
+    // Upload to S3 or equivalent
+    const key = `cards/${personaId}.png`;
+    // AWS S3 upload logic here
+    return `${process.env.CDN_URL}/${key}`;
+  }
+}
+```
+
+**Dependencies to install:**
+```bash
+npm install satori @resvg/resvg-js qrcode
+npm install -D @types/qrcode
+```
+
+**Week 6 Deliverables:**
     const url = await this.uploadToS3(cardImage);
 
     return { url };
@@ -927,65 +1169,6 @@ export class CardService {
   private async renderCard(persona: any): Promise<Buffer> {
     // Using sharp or Satori for image generation
     // Include: Name, Archetype, Stats radar chart, QR code
-    // Implementation details...
-  }
-}
-```
-
-#### Week 7: Compatibility System (F-005)
-
-```typescript
-// modules/social/compatibility.service.ts
-import { Injectable } from '@nestjs/common';
-
-@Injectable()
-export class CompatibilityService {
-  // FR-005.1: Calculate compatibility score
-  async calculateCompatibility(persona1Id: string, persona2Id: string) {
-    const p1 = await this.prisma.persona.findUnique({ where: { id: persona1Id } });
-    const p2 = await this.prisma.persona.findUnique({ where: { id: persona2Id } });
-
-    // Calculate stat alignment
-    const statScore = this.calculateStatAlignment(p1, p2);
-
-    // Calculate archetype interaction
-    const archetypeScore = this.getArchetypeInteraction(p1.archetype, p2.archetype);
-
-    const totalScore = Math.round((statScore + archetypeScore) / 2);
-
-    // FR-005.2: Generate relationship description
-    const description = this.generateDescription(totalScore, p1.archetype, p2.archetype);
-
-    return {
-      score: totalScore,
-      description
-    };
-  }
-
-  private calculateStatAlignment(p1: any, p2: any): number {
-    // Calculate similarity/complementarity of stats
-    // Implementation...
-    return 75;
-  }
-
-  private getArchetypeInteraction(a1: string, a2: string): number {
-    // Predefined compatibility matrix
-    const matrix = {
-      'Yandere-Kuudere': 85,
-      'Tsundere-Genki': 70,
-      // ... more combinations
-    };
-    return matrix[`${a1}-${a2}`] || 50;
-  }
-}
-```
-
-#### Week 8: Quest System (F-006)
-
-```typescript
-// modules/gamification/quest.service.ts
-import { Injectable } from '@nestjs/common';
-
 @Injectable()
 export class QuestService {
   // FR-006.1: Track quest progress

@@ -370,18 +370,6 @@ Authorization: Bearer {accessToken}
   "newBalance": 150
 }
 ```
-
-**보안:** ACID 트랜잭션 필수 (NFR-006.1)
-
----
-
-## 9. 에러 처리
-
-### 9.1. 표준 에러 응답
-
-**형식:**
-```json
-{
   "error": {
     "code": "ERROR_CODE",
     "message": "사용자 친화적 메시지",

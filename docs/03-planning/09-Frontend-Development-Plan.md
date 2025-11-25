@@ -159,24 +159,6 @@ frontend/
 
 ### Why This Structure?
 
-- **Atomic Design:** Reusable components reduce code duplication
-- **Clear separation:** Easy to find and update specific parts
-- **Scalable:** New features fit naturally into existing structure
-
----
-
-## 3. Development Phases
-
-### Overview: 8-Week Timeline
-
-```
-Week 1-2: Foundation → Week 3-4: Core Features → Week 5-6: AI Features → Week 7-8: Social
-```
-
----
-
-### Phase 1: Foundation Setup (Week 1-2)
-
 **Goal:** Set up project infrastructure and authentication
 
 #### Week 1: Project Initialization
@@ -387,7 +369,154 @@ async function sharePersonaCard(personaId: string) {
 - FR-004.2: Include name, archetype, stats, QR code
 - NFR-004.1: Generation under 2 seconds
 
-#### Week 8: Quest System
+---
+
+#### Week 7: Social Features (F-005)
+
+**What we're building:** Compatibility matching and social graph
+
+**Aligns with Feature F-005:**
+- FR-005.1: Calculate compatibility score
+- FR-005.2: Relationship description
+- FR-005.3: Visit friend's room
+- FR-005.4: Social graph (follow/followers)
+
+##### Component: CompatibilityBadge (Molecule)
+
+**Purpose:** Display compatibility score between two personas
+
+```typescript
+// components/molecules/CompatibilityBadge.tsx
+interface CompatibilityBadgeProps {
+  score: number; // 0-100
+  description: string;
+}
+
+export function CompatibilityBadge({ score, description }: CompatibilityBadgeProps) {
+  const getColor = (score: number) => {
+    if (score >= 80) return 'bg-green-500';
+    if (score >= 60) return 'bg-blue-500';
+    if (score >= 40) return 'bg-yellow-500';
+    return 'bg-red-500';
+  };
+
+  return (
+    <div className="compatibility-badge">
+      <div className={`score-circle ${getColor(score)}`}>
+        {score}%
+      </div>
+      <p className="description">{description}</p>
+    </div>
+  );
+}
+```
+
+**CSS (Vanilla with design tokens):**
+```css
+.compatibility-badge {
+  display: flex;
+  align-items: center;
+  gap: var(--space-md);
+  padding: var(--space-md);
+  background: var(--color-surface);
+  border-radius: var(--radius-lg);
+}
+
+.score-circle {
+  width: 64px;
+  height: 64px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: var(--font-size-xl);
+  font-weight: bold;
+  color: white;
+}
+
+.description {
+  flex: 1;
+  font-size: var(--font-size-sm);
+  color: var(--color-text-secondary);
+}
+```
+
+##### Component: FollowButton (Atom)
+
+**Purpose:** Follow/unfollow users
+
+```typescript
+// components/atoms/FollowButton.tsx
+interface FollowButtonProps {
+  userId: string;
+  isFollowing: boolean;
+  onToggle: () => Promise<void>;
+}
+
+export function FollowButton({ userId, isFollowing, onToggle }: FollowButtonProps) {
+  const [loading, setLoading] = useState(false);
+
+  const handleClick = async () => {
+    setLoading(true);
+    try {
+      await onToggle();
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  return (
+    <button
+      onClick={handleClick}
+      disabled={loading}
+      className={`follow-button ${isFollowing ? 'following' : 'not-following'}`}
+    >
+      {loading ? 'Loading...' : isFollowing ? 'Following' : 'Follow'}
+    </button>
+  );
+}
+```
+
+##### Page: RoomVisit (/users/[id]/room)
+
+**Purpose:** Visit a friend's room (FR-005.3)
+
+```typescript
+// app/users/[id]/room/page.tsx
+export default async function RoomVisitPage({ params }: { params: { id: string } }) {
+  const roomData = await fetch(`${API_URL}/v1/users/${params.id}/room`);
+  
+  if (!roomData.canVisit) {
+    return <div>This room is private</div>;
+  }
+
+  return (
+    <div className="room-visit">
+      <h1>{roomData.persona.name}'s Room</h1>
+      <PersonaCard persona={roomData.persona} readOnly />
+      <div className="room-actions">
+        <CompatibilityBadge 
+          score={roomData.compatibility.score}
+          description={roomData.compatibility.description}
+        />
+        <FollowButton userId={params.id} />
+      </div>
+    </div>
+  );
+}
+```
+
+**Implementation checklist:**
+1. Create CompatibilityBadge molecule
+2. Create FollowButton atom
+3. Build RoomVisit page
+4. Add Privacy settings (PUBLIC/FRIENDS_ONLY/PRIVATE)
+5. Integrate compatibility API
+6. Test social graph features
+
+---
+
+#### Week 8: Quest System (F-006)
 
 **What we're building:** Gamification to increase engagement
 
@@ -397,10 +526,246 @@ async function sharePersonaCard(personaId: string) {
 - "Share Your Persona" - 75 Memory Crystals
 - "Chat 10 Times" - 50 Memory Crystals
 
-**Components:**
-- `QuestBoard` (Organism) - Quest list display
-- `QuestCard` (Molecule) - Individual quest with progress
-- `RewardToast` (Molecule) - Completion notification
+**Aligns with Feature F-006:**
+- FR-006.1: Track quest progress
+- FR-006.2: Award currency (Memory Crystals)
+- FR-006.3: Daily login rewards
+- FR-006.4: Leaderboards
+
+##### Component: QuestCard (Molecule)
+
+**Purpose:** Display individual quest with progress
+
+```typescript
+// components/molecules/QuestCard.tsx
+interface QuestCardProps {
+  quest: {
+    id: string;
+    name: string;
+    description: string;
+    progress: number;
+    requirement: number;
+    reward: number;
+    status: 'ACTIVE' | 'COMPLETED' | 'CLAIMED';
+  };
+  onClaim: (questId: string) => Promise<void>;
+}
+
+export function QuestCard({ quest, onClaim }: QuestCardProps) {
+  const progress Percentage = (quest.progress / quest.requirement) * 100;
+  const canClaim = quest.progress >= quest.requirement && quest.status === 'COMPLETED';
+
+  return (
+    <div className="quest-card">
+      <div className="quest-header">
+        <h3>{quest.name}</h3>
+        <span className="reward">{quest.reward} 💎</span>
+      </div>
+      <p className="description">{quest.description}</p>
+      
+      {/* Progress Bar */}
+      <div className="progress-container">
+        <div 
+          className="progress-bar" 
+          style={{ width: `${progressPercentage}%` }}
+        />
+        <span className="progress-text">
+          {quest.progress} / {quest.requirement}
+        </span>
+      </div>
+
+      {/* Claim Button */}
+      {canClaim && (
+        <button 
+          className="claim-button"
+          onClick={() => onClaim(quest.id)}
+        >
+          Claim Reward
+        </button>
+      )}
+    </div>
+  );
+}
+```
+
+**CSS:**
+```css
+.quest-card {
+  padding: var(--space-lg);
+  background: var(--color-surface);
+  border-radius: var(--radius-lg);
+  border: 2px solid var(--color-border);
+}
+
+.quest-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: var(--space-sm);
+}
+
+.reward {
+  font-size: var(--font-size-lg);
+  font-weight: bold;
+  color: var(--color-primary);
+}
+
+.progress-container {
+  position: relative;
+  height: 24px;
+  background: var(--color-bg-secondary);
+  border-radius: var(--radius-md);
+  overflow: hidden;
+  margin: var(--space-md) 0;
+}
+
+.progress-bar {
+  position: absolute;
+  height: 100%;
+  background: linear-gradient(90deg, var(--color-primary), var(--color-secondary));
+  transition: width 0.3s ease;
+}
+
+.progress-text {
+  position: absolute;
+  width: 100%;
+  text-align: center;
+  line-height: 24px;
+  font-weight: bold;
+  color: var(--color-text);
+  mix-blend-mode: difference;
+}
+
+.claim-button {
+  width: 100%;
+  padding: var(--space-sm);
+  background: var(--color-primary);
+  color: white;
+  border: none;
+  border-radius: var(--radius-md);
+  font-weight: bold;
+  cursor: pointer;
+  transition: transform 0.2s;
+}
+
+.claim-button:hover {
+  transform: scale(1.02);
+}
+```
+
+##### Component:QuestBoard (Organism)
+
+**Purpose:** Display all active quests
+
+```typescript
+// components/organisms/QuestBoard.tsx
+export function QuestBoard() {
+  const { data: quests, isLoading } = useQuery({
+    queryKey: ['quests', 'active'],
+    queryFn: () => fetch('/api/v1/quests/active').then(r => r.json())
+  });
+
+  const claimMutation = useMutation({
+    mutationFn: (questId: string) => 
+      fetch(`/api/v1/quests/${questId}/claim`, { method: 'POST' }),
+    onSuccess: () => {
+      toast.success('Reward claimed! 💎');
+      queryClient.invalidateQueries(['quests']);
+      queryClient.invalidateQueries(['wallet']);
+    }
+  });
+
+  if (isLoading) return <LoadingSpinner />;
+
+  return (
+    <div className="quest-board">
+      <h2>Active Quests</h2>
+      <div className="quest-list">
+        {quests.map(quest => (
+          <QuestCard 
+            key={quest.id}
+            quest={quest}
+            onClaim={claimMutation.mutate}
+          />
+        ))}
+      </div>
+    </div>
+  );
+}
+```
+
+##### Component: WalletDisplay (Molecule)
+
+**Purpose:** Show current Memory Crystal balance
+
+```typescript
+// components/molecules/WalletDisplay.tsx
+export function WalletDisplay() {
+  const { data: wallet } = useQuery({
+    queryKey: ['wallet'],
+    queryFn: () => fetch('/api/v1/wallet').then(r => r.json())
+  });
+
+  return (
+    <div className="wallet-display">
+      <span className="label">Memory Crystals</span>
+      <span className="balance">{wallet?.balance || 0} 💎</span>
+    </div>
+  );
+}
+```
+
+##### Component: RewardToast (Molecule)
+
+**Purpose:** Animated notification for quest completion
+
+```typescript
+// components/molecules/RewardToast.tsx
+export function RewardToast({ amount }: { amount: number }) {
+  return (
+    <div className="reward-toast">
+      <span className="icon">✨</span>
+      <span className="message">+{amount} Crystals!</span>
+    </div>
+  );
+}
+```
+
+**CSS with animation:**
+```css
+.reward-toast {
+  display: flex;
+  align-items: center;
+  gap: var(--space-sm);
+  padding: var(--space-md);
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: white;
+  border-radius: var(--radius-lg);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  animation: slideIn 0.3s ease-out;
+}
+
+@keyframes slideIn {
+  from {
+    transform: translateY(-100%);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+.reward-toast .icon {
+  font-size: 24px;
+  animation: pulse 0.5s ease-in-out infinite;
+}
+
+@keyframes pulse {
+  0%, 100% { transform: scale(1); }
+  50% { transform: scale(1.2); }
+}
+```
 
 **Implementation checklist:**
 1. Create quest tracking system
@@ -500,15 +865,17 @@ lib/api/
 // lib/api/client.ts
 import axios from 'axios';
 import { useAuthStore } from '@/stores/authStore';
+import { toast } from 'sonner'; // or your toast library
 
 const apiClient = axios.create({
   baseURL: process.env.NEXT_PUBLIC_API_URL,
   headers: {
     'Content-Type': 'application/json'
-  }
+  },
+  timeout: 30000 // 30 second timeout
 });
 
-// Automatically add auth token to requests
+// Request interceptor: Add auth token
 apiClient.interceptors.request.use((config) => {
   const token = useAuthStore.getState().token;
   if (token) {
@@ -517,15 +884,76 @@ apiClient.interceptors.request.use((config) => {
   return config;
 });
 
-// Handle common errors
+// Response interceptor: Comprehensive error handling
 apiClient.interceptors.response.use(
   (response) => response,
-  (error) => {
-    if (error.response?.status === 401) {
-      // Token expired - redirect to login
-      useAuthStore.getState().logout();
-      window.location.href = '/login';
+  async (error) => {
+    // Network error (no response)
+    if (!error.response) {
+      toast.error('Network connection lost. Please check your internet.');
+      return Promise.reject(error);
     }
+
+    const { status, data } = error.response;
+
+    switch (status) {
+      case 401:
+        // Unauthorized - try refresh token
+        const refreshToken = useAuthStore.getState().refreshToken;
+        
+        if (refreshToken && !error.config._retry) {
+          error.config._retry = true;
+          
+          try {
+            // Attempt to refresh access token
+            const response = await axios.post(
+              `${process.env.NEXT_PUBLIC_API_URL}/v1/auth/refresh`,
+              { refresh_token: refreshToken }
+            );
+            
+            const { access_token } = response.data;
+            useAuthStore.getState().setToken(access_token);
+            
+            // Retry original request with new token
+            error.config.headers.Authorization = `Bearer ${access_token}`;
+            return apiClient(error.config);
+          } catch (refreshError) {
+            // Refresh failed - logout user
+            useAuthStore.getState().logout();
+            window.location.href = '/login';
+          }
+        } else {
+          // No refresh token - logout
+          useAuthStore.getState().logout();
+          window.location.href = '/login';
+        }
+        break;
+
+      case 403:
+        toast.error('Access denied.');
+        break;
+
+      case 404:
+        toast.error('Resource not found.');
+        break;
+
+      case 429:
+        toast.error('Too many requests. Please wait.');
+        break;
+
+      case 500:
+        toast.error('Server error. Our team has been notified.');
+        console.error('500 Error:', data);
+        break;
+
+      case 503:
+        toast.error('Service temporarily unavailable.');
+        break;
+
+      default:
+        toast.error(data?.message || 'An unexpected error occurred.');
+    }
+
     return Promise.reject(error);
   }
 );
@@ -563,21 +991,61 @@ export const surveyApi = {
 };
 ```
 
-**Example: Chat API (F-003)**
+**Example: Chat API with WebSocket (F-003)**
 ```typescript
 // lib/api/chat.ts
 import apiClient from './client';
-import { io } from 'socket.io-client';
+import { io, Socket } from 'socket.io-client';
+import { useAuthStore } from '@/stores/authStore';
+import { toast } from 'sonner';
 
-// FR-003.1: Real-time chat interface
-export function connectChat(personaId: string) {
+// FR-003.1: Real-time chat with auto-reconnection
+export function connectChat(personaId: string): Socket {
   const socket = io(process.env.NEXT_PUBLIC_API_URL, {
     auth: {
       token: useAuthStore.getState().token
-    }
+    },
+    // AUTO-RECONNECTION CONFIG
+    reconnection: true,           // Enable auto-reconnection
+    reconnectionDelay: 1000,      // Start with 1s delay
+    reconnectionDelayMax: 5000,   // Max 5s between retries
+    reconnectionAttempts: 5,      // Try 5 times before giving up
+    timeout: 10000                // 10s connection timeout
   });
 
-  socket.emit('join', { personaId });
+  socket.on('connect', () => {
+    console.log('✅ Connected to chat');
+    socket.emit('join', { personaId });
+  });
+
+  socket.on('disconnect', (reason) => {
+    console.log('❌ Disconnected:', reason);
+    
+    if (reason === 'io server disconnect') {
+      // Server forced disconnect - manual reconnection with fresh auth
+      const newToken = useAuthStore.getState().token;
+      socket.auth = { token: newToken };
+      socket.connect();
+    }
+    // Otherwise, auto-reconnect handles it
+  });
+
+  socket.on('connect_error', (error) => {
+    console.error('Connection error:', error.message);
+    toast.error('Chat connection lost. Reconnecting...');
+  });
+
+  socket.on('reconnect', (attemptNumber) => {
+    console.log(`✅ Reconnected after ${attemptNumber} attempts`);
+    toast.success('Chat reconnected');
+    socket.emit('join', { personaId }); // Re-join room
+  });
+
+  socket.on('reconnect_failed', () => {
+    console.error('❌ Reconnection failed after all attempts');
+    toast.error('Could not reconnect to chat. Please refresh.');
+  });
+
   return socket;
 }
 

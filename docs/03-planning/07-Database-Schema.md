@@ -69,18 +69,6 @@ erDiagram
     Wallet {
         uuid id PK
         uuid userId FK
-        int balance
-    }
-```
-
----
-
-## 3. Prisma Schema
-
-### 3.1. User
-```prisma
-model User {
-  id        String   @id @default(uuid())
   email     String   @unique
   name      String?
   surveys   Survey[]
@@ -100,7 +88,27 @@ model User {
 
 ---
 
-### 3.2. Survey
+### 3.2. Question (Survey Questions)
+```prisma
+model Question {
+  id       String @id @default(uuid())
+  text     String @db.Text
+  type     String // "likert", "text", "choice"
+  order    Int
+  category String // "charisma", "intellect", "kindness", "energy"
+  options  Json?  // For choice type questions
+  
+  @@index([order])
+}
+```
+
+**설명:** Survey의 질문 정의 (고정된 10-15개 질문)  
+**인덱스 전략:**
+- `order`: 질문 순서대로 조회
+
+---
+
+### 3.3. Survey
 ```prisma
 model Survey {
   id          String     @id @default(uuid())
@@ -151,17 +159,24 @@ model Persona {
   name         String
   archetype    String
   rarity       String   // "SSR", "SR", "R"
+  cardTheme    String   @default("default") // "default", "dark", "neon", "pastel" (F-004.3)
   stats        Json     // { "charisma": 85, ... }
   modifiers    Json?    // { "archetype": "TSUNDERE" } (Alchemic Mode)
   greeting     String?
   systemPrompt String   @db.Text
+  bondLevel    Int      @default(0) // F-003.4: Track bond level
   messages     Message[]
   createdAt    DateTime @default(now())
   
   @@index([userId])
   @@index([archetype])
+  @@index([bondLevel]) // For leaderboards
 }
 ```
+
+**변경사항:**
+- `cardTheme` 필드 추가 (F-004.3: Multiple visual themes)
+- `bondLevel` 필드 추가 (F-003.4: Track bond level)
 
 ---
 
@@ -245,6 +260,64 @@ model QuestReward {
   claimedAt DateTime @default(now())
 }
 ```
+
+---
+
+### 3.8. Quest Definition & Daily Login
+```prisma
+model QuestDefinition {
+  id          String @id @default(uuid())
+  name        String
+  description String @db.Text
+  type        String // "CREATE_SURVEY", "RECEIVE_RESPONSES", "CHAT_TURNS", "SHARE_CARD"
+  requirement Int    // e.g., 5 for "receive 5 responses"
+  reward      Int    // Memory Crystals
+  priority    String @default("P1") // "P0", "P1", "P2"
+  isActive    Boolean @default(true)
+  
+  @@index([isActive, priority])
+}
+
+model DailyLoginStreak {
+  id        String   @id @default(uuid())
+  userId    String
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  loginDate DateTime @db.Date
+  streak    Int      @default(1)
+  rewarded  Boolean  @default(false)
+  
+  @@unique([userId, loginDate])
+  @@index([userId, loginDate])
+}
+```
+
+**설명:**
+- `QuestDefinition`: 퀘스트 템플릿 정의 (서버에서 관리)
+- `DailyLoginStreak`: 일일 로그인 추적 및 연속 로그인 보상
+
+---
+
+### 3.9. Social Features
+```prisma
+model CompatibilityCache {
+  id           String   @id @default(uuid())
+  persona1Id   String
+  persona2Id   String
+  score        Int      // 0-100
+  description  String   @db.Text
+  calculatedAt DateTime @default(now())
+  
+  @@unique([persona1Id, persona2Id])
+  @@index([persona1Id])
+  @@index([persona2Id])
+}
+```
+
+**설명:** 페르소나 간 호환성 점수 캐시 (계산 비용 절약)
+
+**인덱스 전략:**
+- Unique constraint on persona pair (양방향 중복 방지)
+- Individual persona indexes for quick lookups
 
 ---
 
