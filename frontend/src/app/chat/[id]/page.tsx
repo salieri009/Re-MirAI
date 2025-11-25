@@ -8,18 +8,18 @@ import { personaApi } from '@/lib/api/persona';
 import { Button } from '@/components/atoms/Button';
 import { Input } from '@/components/atoms/Input';
 import { TypingIndicator } from '@/components/molecules/TypingIndicator';
-import { ShareableSnippet } from '@/components/molecules/ShareableSnippet';
+import { BondLevelIndicator } from '@/components/molecules/BondLevelIndicator';
+import { ChatMessage } from '@/components/organisms/ChatMessage';
 import { ShareOptions } from '@/components/molecules/ShareOptions';
 import { TopicSuggestion } from '@/components/molecules/TopicSuggestion';
-import { ReactionButton } from '@/components/molecules/ReactionButton';
-import { ChatMessage } from '@/lib/mock-data/chat';
+import { ChatMessage as ChatMessageType } from '@/lib/mock-data/chat';
 import styles from './page.module.css';
 
 export default function ChatPage({ params }: { params: Promise<{ id: string }> }) {
   const { id } = use(params);
   const router = useRouter();
   const [message, setMessage] = useState('');
-  const [messages, setMessages] = useState<ChatMessage[]>([]);
+  const [messages, setMessages] = useState<ChatMessageType[]>([]);
   const [isSending, setIsSending] = useState(false);
   const [recentTopics, setRecentTopics] = useState<string[]>([]);
   const [shareBlob, setShareBlob] = useState<Blob | null>(null);
@@ -69,7 +69,7 @@ export default function ChatPage({ params }: { params: Promise<{ id: string }> }
   const handleSend = async () => {
     if (!message.trim() || isSending) return;
 
-    const userMessage: ChatMessage = {
+    const userMessage: ChatMessageType = {
       id: `msg-${Date.now()}`,
       sender: 'USER',
       content: message,
@@ -165,14 +165,17 @@ export default function ChatPage({ params }: { params: Promise<{ id: string }> }
   return (
     <div className={styles.chat}>
       <div className={styles.chatHeader}>
-        <div>
-          <p className={styles.personaName}>{persona?.name ?? 'Your Persona'}</p>
-          <div className={styles.statusRow}>
-            <span
-              className={`${styles.statusDot} ${isSending ? styles.statusTyping : styles.statusOnline}`}
-            />
-            <span className={styles.statusText}>{connectionStatus}</span>
+        <div className={styles.headerInfo}>
+          <div className={styles.personaInfo}>
+            <p className={styles.personaName}>{persona?.name ?? 'Your Persona'}</p>
+            <div className={styles.statusRow}>
+              <span
+                className={`${styles.statusDot} ${isSending ? styles.statusTyping : styles.statusOnline}`}
+              />
+              <span className={styles.statusText}>{connectionStatus}</span>
+            </div>
           </div>
+          <BondLevelIndicator level={3} progress={65} />
         </div>
         <div className={styles.headerActions}>
           <Button
@@ -192,33 +195,19 @@ export default function ChatPage({ params }: { params: Promise<{ id: string }> }
 
       <div className={styles.messages}>
         {messages.map((msg) => (
-          <div
+          <ChatMessage
             key={msg.id}
-            className={`${styles.message} ${styles[msg.sender.toLowerCase()]}`}
-          >
-            <div className={styles.content}>{msg.content}</div>
-            <div className={styles.messageFooter}>
-              <div className={styles.timestamp}>
-                {new Date(msg.createdAt).toLocaleTimeString()}
-              </div>
-              <ReactionButton
-                messageId={msg.id}
-                reactions={messageReactions[msg.id]}
-                onReact={handleReact}
-              />
-              {msg.sender === 'AI' && persona && (
-                <ShareableSnippet
-                  message={{ ...msg, sender: 'PERSONA' as const }}
-                  persona={persona}
-                  onShare={handleShare}
-                />
-              )}
-            </div>
-          </div>
+            message={msg}
+            persona={persona}
+            bondLevel={3} // Mock level for now
+            onReact={handleReact}
+            onShare={handleShare}
+            reactions={messageReactions[msg.id]}
+          />
         ))}
         {isSending && (
-          <div className={`${styles.message} ${styles.persona}`}>
-            <TypingIndicator 
+          <div className={styles.typingContainer}>
+            <TypingIndicator
               personaName={persona?.name || 'AI'}
               estimatedTime={3}
             />

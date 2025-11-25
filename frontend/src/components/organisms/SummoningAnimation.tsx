@@ -3,6 +3,7 @@
 import { useEffect, useMemo, useRef, useState } from 'react';
 import type { CSSProperties } from 'react';
 import { useReducedMotion } from '@/hooks/useAccessibility';
+import { MagicCircle } from './MagicCircle';
 import styles from './SummoningAnimation.module.css';
 
 interface Persona {
@@ -103,7 +104,7 @@ export function SummoningAnimation({
 
       {stage === 'processing' && (
         <div className={`${styles.stage} ${styles.stageProcessing}`}>
-          <div className={styles.magicCircle} />
+          <MagicCircle />
           <h2 className={styles.title}>Weaving your reflection...</h2>
         </div>
       )}

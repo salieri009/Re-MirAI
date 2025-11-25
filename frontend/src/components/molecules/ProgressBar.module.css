@@ -35,6 +35,9 @@
   mix-blend-mode: difference;
 }
 
-
-
-
+.timeEstimate {
+  font-size: var(--font-size-xs);
+  color: var(--color-text-secondary);
+  text-align: center;
+  margin-top: var(--space-xs);
+}

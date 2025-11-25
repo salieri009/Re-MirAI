@@ -17,6 +17,8 @@ interface SurveyLinkCardProps {
 export function SurveyLinkCard({ link, onCopy, shareCount, lastShared }: SurveyLinkCardProps) {
   const [copied, setCopied] = useState(false);
   const [showShareOptions, setShowShareOptions] = useState(false);
+  const [showQR, setShowQR] = useState(false);
+  const [qrCodeUrl, setQrCodeUrl] = useState<string | null>(null);
   const cardRef = useRef<HTMLDivElement>(null);
   const prefersReducedMotion = useReducedMotion();
 
@@ -39,6 +41,37 @@ export function SurveyLinkCard({ link, onCopy, shareCount, lastShared }: SurveyL
     setCopied(true);
     setTimeout(() => setCopied(false), 2000);
     onCopy?.();
+
+    // Copy animation
+    if (!prefersReducedMotion && cardRef.current) {
+      gsap.fromTo(
+        cardRef.current,
+        { scale: 1 },
+        {
+          scale: 1.02,
+          duration: 0.2,
+          yoyo: true,
+          repeat: 1,
+          ease: 'power2.inOut'
+        }
+      );
+    }
+  };
+
+  const generateQRCode = () => {
+    // Using QR Server API for simplicity
+    const qrUrl = `https://api.qrserver.com/v1/create-qr-code/?size=300x300&data=${encodeURIComponent(link)}`;
+    setQrCodeUrl(qrUrl);
+    setShowQR(true);
+  };
+
+  const downloadQRCode = () => {
+    if (qrCodeUrl) {
+      const a = document.createElement('a');
+      a.href = qrCodeUrl;
+      a.download = 'remirai-survey-qr.png';
+      a.click();
+    }
   };
 
   const handleShare = (platform: string) => {
@@ -49,7 +82,7 @@ export function SurveyLinkCard({ link, onCopy, shareCount, lastShared }: SurveyL
     };
 
     const message = messages[platform] || link;
-    
+
     if (platform === 'whatsapp') {
       window.open(`https://wa.me/?text=${encodeURIComponent(message)}`, '_blank');
     } else if (platform === 'twitter') {
@@ -94,12 +127,17 @@ export function SurveyLinkCard({ link, onCopy, shareCount, lastShared }: SurveyL
         >
           {showShareOptions ? 'Hide Share Options' : '📤 Share to Social Media'}
         </Button>
+        <Button
+          variant="secondary"
+          onClick={generateQRCode}
+        >
+          📱 Generate QR Code
+        </Button>
       </div>
 
       <div
-        className={`${styles.shareSection} ${
-          showShareOptions ? styles.shareSectionVisible : ''
-        }`}
+        className={`${styles.shareSection} ${showShareOptions ? styles.shareSectionVisible : ''
+          }`}
         aria-hidden={!showShareOptions}
       >
         {showShareOptions && (
@@ -111,10 +149,18 @@ export function SurveyLinkCard({ link, onCopy, shareCount, lastShared }: SurveyL
         )}
       </div>
 
+      {showQR && qrCodeUrl && (
+        <div className={styles.qrSection}>
+          <img src={qrCodeUrl} alt="QR Code for survey" className={styles.qrImage} />
+          <Button variant="ghost" size="sm" onClick={downloadQRCode}>
+            💾 Download QR Code
+          </Button>
+        </div>
+      )}
+
       {lastShared && (
-        <p className={styles.lastShared}>Last shared: {lastShared}</p>
+        <p className={styles.lastShared}>Last shared: {new Date(lastShared).toLocaleString()}</p>
       )}
     </div>
   );
 }
-
