@@ -104,7 +104,7 @@ As a senior UX/UI designer, we design each page to emphasize its unique purpose 
 - **Visual Pattern:** Message-focused, minimal chrome, conversational flow  
 
 ### 5. [Persona Room Page](./05-Persona-Room-Page-Enhancement.md)
-- **Route:** `/room/:personaId`  
+- **Route:** `/p/:id`  
 - **Purpose:** **SHOWCASE + ENGAGE** - Display persona and encourage interaction  
 - **Intent:** Highlight persona details and provide quest engagement  
 - **Unique Experience:** Profile gallery with gamification elements  
@@ -113,7 +113,7 @@ As a senior UX/UI designer, we design each page to emphasize its unique purpose 
 - **Visual Pattern:** Gallery-style, stat-heavy, achievement-oriented  
 
 ### 6. [Ritual Hub Page](./06-Ritual-Hub-Page-Enhancement.md)
-- **Route:** `/ritual`  
+- **Route:** `/dashboard/ritual`  
 - **Purpose:** **MANAGE + SHARE** - Track survey and distribute link  
 - **Intent:** Make link sharing effortless and progress visible  
 - **Unique Experience:** Live progress tracking with shareable link prominence  
@@ -122,7 +122,13 @@ As a senior UX/UI designer, we design each page to emphasize its unique purpose 
 - **Visual Pattern:** Progress-centric, share-focused, live updates  
 
 ### 7. [Summoning Page](./07-Summoning-Page-Enhancement.md)
-- **Route:** `/summon`  
+- **Route:** `/dashboard/synthesize`  
+### 9. [Small Switch Palette Plan](./09-Color-Palette-Plan.md)
+- **Scope:** Design Tokens / All Pages  
+- **Purpose:** Align every enhancement with the requested `#d946ef / #e6ebf8 / #697fac` palette  
+- **Intent:** Provide a phased rollout strategy covering tokens, components, and per-page adoption  
+- **Unique Experience:** Unified brand feel without sacrificing readability or accessibility  
+
 - **Purpose:** **DELIGHT + REVEAL** - Create magical persona reveal moment  
 - **Intent:** Deliver climactic "wow" moment of persona creation  
 - **Unique Experience:** Cinematic animation sequence with dramatic reveal  
