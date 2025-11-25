@@ -1,7 +1,7 @@
 # Dashboard Page Enhancement Plan
 
-**Version:** 1.0.0  
-**Last Updated:** 2025-11-25  
+**Version:** 1.0.1  
+**Last Updated:** 2025-01-27  
 **Status:** Active  
 **Route:** `/dashboard`  
 **Component:** `DashboardPage` (Page level)
@@ -29,6 +29,96 @@ State-driven UI that completely transforms based on user progress—each state t
 - **vs. Landing:** Not selling/converting—user already committed
 - **vs. Chat:** Not entertaining—focused on status & action
 - **vs. Persona Room:** Not showcasing—showing journey state
+
+---
+
+## Purpose-Driven UX Design
+
+### Visual Hierarchy for Status & Guidance
+
+**Primary Focus (Z-Index 50):**
+- **Status Card** - Current state dominates viewport
+- **Primary Action Button** - Next step clearly visible
+- **Progress Indicator** - Visual progress (when applicable)
+
+**Secondary Focus (Z-Index 30):**
+- **Header** - Welcome message with persona name (if active)
+- **Survey Link Card** - Share functionality (when collecting)
+- **Persona Card** - Preview (when active)
+
+**Tertiary Focus (Z-Index 10):**
+- **Quest Cards** - Secondary actions (below primary)
+- **Navigation** - Logout, settings (top right)
+
+### Micro-Interactions That Reinforce Purpose
+
+**1. State Transitions (Status Clarity)**
+- **Purpose:** Show progress through journey
+- **Interaction:** Smooth fade between states
+- **Feedback:** Card transforms based on state
+- **Emotion:** Control → Progress
+
+**2. Progress Bar Animation (Progress Visibility)**
+- **Purpose:** Make progress tangible and motivating
+- **Interaction:** Bar fills with shimmer effect
+- **Feedback:** Percentage updates, visual fill
+- **Emotion:** Progress → Anticipation
+
+**3. Action Button States (Guidance)**
+- **Purpose:** Make next step obvious and inviting
+- **Interaction:** Button pulses when ready, glows when critical
+- **Feedback:** Hover lift, click confirmation
+- **Emotion:** Anticipation → Action
+
+**4. Survey Link Sharing (Frictionless)**
+- **Purpose:** Make sharing effortless
+- **Interaction:** One-click copy, share modal opens
+- **Feedback:** Copy confirmation, share options visible
+- **Emotion:** Pride → Sharing
+
+### Emotional Resonance Strategy
+
+**Control Phase (Empty State):**
+- **Visual:** Centered card with numbered steps
+- **Copy:** "Your Journey Begins" + clear steps
+- **Action:** User knows exactly what to do first
+
+**Progress Phase (Collecting State):**
+- **Visual:** Progress bar with shimmer, response count
+- **Copy:** "X of Y responses received" + encouragement
+- **Action:** User sees progress, motivated to share
+
+**Anticipation Phase (Ready State):**
+- **Visual:** Glowing button, 100% progress
+- **Copy:** "SUMMON READY" + excitement
+- **Action:** User ready to create persona
+
+**Action Phase (Active State):**
+- **Visual:** Persona card prominent, chat button
+- **Copy:** "Persona Active" + persona name
+- **Action:** User engages with persona
+
+### Visual Patterns for Status & Guidance
+
+**Layout Strategy:**
+- **State-Driven:** UI completely transforms per state
+- **Card-Based:** Information grouped in clear cards
+- **Action-Oriented:** Primary action always visible
+- **Progressive Disclosure:** Details revealed as needed
+
+**Color Strategy:**
+- **State Colors:** 
+  - Empty: Neutral (gray)
+  - Collecting: Blue (calming progress)
+  - Ready: Fuchsia (excitement)
+  - Active: Primary (engagement)
+- **Status Indicators:** Color-coded borders, badges
+
+**Animation Strategy:**
+- **State Transitions:** 0.4s fade between states
+- **Progress Animations:** Smooth fill, shimmer effects
+- **Button Animations:** Pulse for ready, glow for critical
+- **Reduced Motion:** Static states available
 
 ---
 

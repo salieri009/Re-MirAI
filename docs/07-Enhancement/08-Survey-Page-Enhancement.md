@@ -1,7 +1,7 @@
 # Survey Page Enhancement Plan
 
-**Version:** 1.0.0  
-**Last Updated:** 2025-11-25  
+**Version:** 1.0.1  
+**Last Updated:** 2025-01-27  
 **Status:** Active  
 **Route:** `/s/:id`  
 **Component:** `SurveyPage` (Page level)
@@ -33,12 +33,101 @@ Minimal, trust-focused form with clear progress and strong privacy messaging—o
 **Design Constraint (F-001 Survey System):**  
 Enhances existing anonymous survey feature—NO new functionality, pure UX improvement.
 
-**Feature Requirements (Direct Quotes from F-001):**
-> **FR-001.1:** "Users can create a perception ritual (survey) to collect anonymous feedback"
-> **FR-001.2:** "Survey contains 10 pre-defined questions about personality perception"
-> **FR-001.3:** "Each question uses a 1-5 Likert scale"
-> **FR-001.4:** "Survey link is shareable and requires no login"
+**Feature Requirements (Direct Quotes from F-001):**  
+> **FR-001.1:** "Users can create a perception ritual (survey) to collect anonymous feedback"  
+> **FR-001.2:** "Survey contains 10 pre-defined questions about personality perception"  
+> **FR-001.3:** "Each question uses a 1-5 Likert scale"  
+> **FR-001.4:** "Survey link is shareable and requires no login"  
 > **FR-001.5:** "Responses are collected anonymously"
+
+---
+
+## Purpose-Driven UX Design
+
+### Visual Hierarchy for Collection & Trust
+
+**Primary Focus (Z-Index 50):**
+- **Current Question** - Large, clear, single focus
+- **Answer Options** - Likert scale buttons, easy selection
+- **Privacy Notice** - Prominent, always visible
+
+**Secondary Focus (Z-Index 30):**
+- **Progress Indicator** - Shows completion status
+- **Navigation** - Next/Previous buttons
+- **Question Counter** - "Question X of 10"
+
+**Tertiary Focus (Z-Index 10):**
+- **Trust Signals** - Security badges, encryption icons
+- **Help Text** - Optional guidance
+- **Completion Message** - Thank you message
+
+### Micro-Interactions That Reinforce Purpose
+
+**1. Question Transitions (Flow)**
+- **Purpose:** Maintain focus, show progress
+- **Interaction:** Smooth slide between questions
+- **Feedback:** Progress bar updates, counter increments
+- **Emotion:** Uncertainty → Focus
+
+**2. Answer Selection (Clarity)**
+- **Purpose:** Make selection obvious and satisfying
+- **Interaction:** Button highlights on selection
+- **Feedback:** Clear visual state, smooth transition
+- **Emotion:** Focus → Confidence
+
+**3. Progress Bar (Motivation)**
+- **Purpose:** Show completion progress
+- **Interaction:** Bar fills as questions complete
+- **Feedback:** Percentage updates, visual fill
+- **Emotion:** Focus → Satisfaction
+
+**4. Privacy Badge (Trust)**
+- **Purpose:** Reinforce anonymity assurance
+- **Interaction:** Always visible, subtle animation
+- **Feedback:** Icons pulse gently, trust signals clear
+- **Emotion:** Uncertainty → Trust
+
+### Emotional Resonance Strategy
+
+**Uncertainty Phase (0-10s):**
+- **Visual:** Privacy notice prominent, first question visible
+- **Copy:** "100% Anonymous" + question text
+- **Action:** User reads privacy notice, sees first question
+
+**Trust Phase (10-30s):**
+- **Visual:** Trust signals visible, smooth question flow
+- **Copy:** Security badges, encryption indicators
+- **Action:** User answers first few questions, trust builds
+
+**Focus Phase (30s-2min):**
+- **Visual:** Progress bar visible, questions flow smoothly
+- **Copy:** Clear question text, simple answer options
+- **Action:** User focuses on answering, maintains flow
+
+**Satisfaction Phase (2min+):**
+- **Visual:** Progress bar near completion, final questions
+- **Copy:** "Almost done!" encouragement
+- **Action:** User completes survey, feels accomplished
+
+### Visual Patterns for Collection & Trust
+
+**Layout Strategy:**
+- **Wizard-Style:** One question at a time, focused
+- **Privacy-Prominent:** Privacy notice always visible
+- **Progress-Visible:** Progress bar and counter clear
+- **Minimal Distractions:** No ads, clean interface
+
+**Color Strategy:**
+- **Privacy Badge:** Green (trust, security)
+- **Progress Bar:** Blue (calming, trustworthy)
+- **Selected Answer:** Primary color (fuchsia)
+- **Background:** Light, neutral (non-distracting)
+
+**Animation Strategy:**
+- **Question Transitions:** 0.3s slide animation
+- **Answer Selection:** 0.2s highlight animation
+- **Progress Fill:** Smooth, continuous update
+- **Reduced Motion:** Static transitions available
 
 ---
 

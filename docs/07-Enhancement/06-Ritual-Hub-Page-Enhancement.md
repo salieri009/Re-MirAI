@@ -1,9 +1,128 @@
 # Ritual Hub Page Enhancement Plan
 
-**Version:** 1.0.0  
-**Last Updated:** 2025-11-25  
+**Version:** 1.0.1  
+**Last Updated:** 2025-01-27  
 **Status:** Active  
 **Route:** `/ritual`  
+**Component:** `RitualHubPage` (Page level)
+
+---
+
+## Executive Summary
+
+The Ritual Hub Page is Re:MirAI's **survey management center**—where users track progress and distribute survey links effortlessly.
+
+### Page Purpose: **MANAGE + SHARE**
+
+**Core Intent:** Users come here to:
+1. **MANAGE:** Track survey progress and response collection
+2. **SHARE:** Distribute survey link through multiple channels
+
+**Unique Experience:**  
+Live progress tracking with shareable link prominence—making link sharing effortless and progress visible.
+
+**Emotional Journey:** Anticipation → Pride → Sharing → Completion
+
+**Primary Goal:** Share survey link, monitor responses, complete ritual
+
+**How This Differs From Other Pages:**
+- **vs. Dashboard:** Not informing—managing and sharing
+- **vs. Survey Page:** Not responding—distributing
+- **vs. Chat:** Not connecting—tracking progress
+
+---
+
+## Purpose-Driven UX Design
+
+### Visual Hierarchy for Management & Sharing
+
+**Primary Focus (Z-Index 50):**
+- **Survey Link Card** - Prominent, always visible
+- **Share Buttons** - Multiple platform options, one-click sharing
+- **Progress Indicator** - Visual progress bar with count
+
+**Secondary Focus (Z-Index 30):**
+- **Response Counter** - Live updates, encouraging messages
+- **Time Tracking** - "Created X hours ago", "X responses in last hour"
+- **Completion Status** - "Ready to summon" indicator
+
+**Tertiary Focus (Z-Index 10):**
+- **Analytics** - Response quality, completion rate
+- **Reminder Options** - Send reminders, extend deadline
+- **Practice Summon** - Optional preview feature
+
+### Micro-Interactions That Reinforce Purpose
+
+**1. Real-Time Updates (Progress Visibility)**
+- **Purpose:** Show progress as it happens
+- **Interaction:** Response count updates live, progress bar animates
+- **Feedback:** Subtle notification when new response arrives
+- **Emotion:** Anticipation → Pride
+
+**2. One-Click Sharing (Frictionless)**
+- **Purpose:** Make sharing effortless
+- **Interaction:** Click platform icon, share modal opens
+- **Feedback:** Pre-written message, copy confirmation
+- **Emotion:** Pride → Sharing
+
+**3. Progress Bar Animation (Motivation)**
+- **Purpose:** Make progress tangible and motivating
+- **Interaction:** Bar fills smoothly, shimmer effect
+- **Feedback:** Percentage updates, milestone celebrations
+- **Emotion:** Anticipation → Progress
+
+**4. Link Copy Confirmation (Trust)**
+- **Purpose:** Confirm successful copy action
+- **Interaction:** Click copy, button changes to "Copied!"
+- **Feedback:** Brief animation, checkmark icon
+- **Emotion:** Confidence → Action
+
+### Emotional Resonance Strategy
+
+**Anticipation Phase (Survey Created):**
+- **Visual:** Progress bar at 0%, link prominent
+- **Copy:** "Share your ritual link to collect echoes"
+- **Action:** User shares link with friends
+
+**Pride Phase (Responses Arriving):**
+- **Visual:** Progress bar filling, counter updating
+- **Copy:** "X responses received!" + encouragement
+- **Action:** User sees progress, feels motivated
+
+**Sharing Phase (Active Distribution):**
+- **Visual:** Share buttons prominent, link easy to copy
+- **Copy:** Pre-written messages for each platform
+- **Action:** User shares across multiple channels
+
+**Completion Phase (Ready to Summon):**
+- **Visual:** 100% progress, glowing "Ready" indicator
+- **Copy:** "All echoes collected! Ready to summon"
+- **Action:** User proceeds to summoning page
+
+### Visual Patterns for Management & Sharing
+
+**Layout Strategy:**
+- **Progress-Centric:** Progress bar and counter prominent
+- **Share-Focused:** Link and share options always accessible
+- **Live Updates:** Real-time response count visible
+- **Action-Oriented:** Primary actions (Share, Copy) prominent
+
+**Color Strategy:**
+- **Progress Bar:** Blue (calming, trustworthy)
+- **Share Buttons:** Platform brand colors (recognizable)
+- **Completion State:** Fuchsia (excitement, ready)
+- **Live Updates:** Green accents (positive, active)
+
+**Animation Strategy:**
+- **Progress Fill:** Smooth animation, shimmer effect
+- **Counter Updates:** Number counting animation
+- **Share Confirmation:** Brief success animation
+- **Reduced Motion:** Static progress indicators available
+
+---
+
+## Current State Analysis
+
 ### Strengths
 - Clear progress visualization
 - Easy link sharing

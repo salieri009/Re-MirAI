@@ -1,7 +1,7 @@
 # Landing Page Enhancement Plan
 
-**Version:** 1.0.0  
-**Last Updated:** 2025-11-25  
+**Version:** 1.0.1  
+**Last Updated:** 2025-01-27  
 **Status:** Active  
 **Route:** `/`  
 **Component:** `LandingPage` (Page level)
@@ -11,6 +11,106 @@
 ## Executive Summary
 
 The Landing Page is Re:MirAI's primary entry point. This enhancement plan focuses on creating an **interactive Hero section** that embodies the project's core concept ("Who do others believe I am?") while maintaining strict compliance with Nielsen's Heuristics and Blonix Branch design principles.
+
+### Page Purpose: **CONVERT**
+
+**Core Intent:** Transform curiosity into commitment—intrigue visitors and drive sign-ups.
+
+**Unique Experience:** Interactive mirror animation reveals persona concept before signup, creating immediate value demonstration.
+
+**Emotional Journey:** Curiosity → Intrigue → Wonder → Commitment
+
+**Primary Goal:** Click "Summon Your Reflection" (CTA)
+
+**How This Differs From Other Pages:**
+- **vs. Login:** Not enabling—converting visitors to users
+- **vs. Dashboard:** Not informing—selling the concept
+- **vs. Chat:** Not connecting—introducing the idea
+
+---
+
+## Purpose-Driven UX Design
+
+### Visual Hierarchy for Conversion
+
+**Primary Focus (Z-Index 50):**
+- **Interactive Mirror** - Central hero element that demands attention
+- **CTA Button** - Glowing, pulsing "Summon Your Reflection" button
+- **Trust Signals** - Subtle but visible (100% Anonymous, Free Forever)
+
+**Secondary Focus (Z-Index 30):**
+- **Headline** - "Who do others believe I am?" - Large, gradient text
+- **Subtext** - "Discover your reflection through AI" - Supporting context
+
+**Tertiary Focus (Z-Index 10):**
+- **How It Works** - Scroll-triggered section with animated steps
+- **Social Proof** - Trust badges and testimonials (if applicable)
+
+### Micro-Interactions That Reinforce Purpose
+
+**1. Mirror Hover State (Curiosity)**
+- **Purpose:** Invite exploration without commitment
+- **Interaction:** Gentle lift (translateY: -4px), glow intensifies
+- **Feedback:** Ripple effect appears, text changes to "Who am I?"
+- **Emotion:** Curiosity → Intrigue
+
+**2. Mirror Click State (Engagement)**
+- **Purpose:** Demonstrate value through preview
+- **Interaction:** Mirror shatters, persona preview reveals
+- **Feedback:** Particle effects, smooth reveal animation
+- **Emotion:** Intrigue → Wonder
+
+**3. CTA Button (Commitment)**
+- **Purpose:** Convert wonder into action
+- **Interaction:** Continuous glow pulse, hover scale
+- **Feedback:** Button brightens on hover, smooth navigation
+- **Emotion:** Wonder → Commitment
+
+**4. Scroll-Triggered Animations (Trust Building)**
+- **Purpose:** Maintain engagement as user scrolls
+- **Interaction:** Steps animate in sequence on scroll
+- **Feedback:** Each step fades in with slight delay
+- **Emotion:** Sustained interest → Confidence
+
+### Emotional Resonance Strategy
+
+**Curiosity Phase (0-2s):**
+- **Visual:** Floating particles, gentle mirror pulse
+- **Copy:** "Who do others believe I am?"
+- **Action:** User notices mirror, hovers
+
+**Intrigue Phase (2-5s):**
+- **Visual:** Mirror responds to hover, ripple effects
+- **Copy:** "Who am I?" appears in mirror
+- **Action:** User clicks mirror
+
+**Wonder Phase (5-8s):**
+- **Visual:** Persona preview reveals, magical animation
+- **Copy:** "This could be you" with persona stats
+- **Action:** User sees value, CTA becomes prominent
+
+**Commitment Phase (8s+):**
+- **Visual:** CTA glows, trust signals visible
+- **Copy:** "Summon Your Reflection"
+- **Action:** User clicks CTA, navigates to login
+
+### Visual Patterns for Conversion
+
+**Layout Strategy:**
+- **Hero-Dominant:** 80% viewport height for hero section
+- **Minimal Text:** Headline + subtext only (no walls of text)
+- **Single CTA:** One primary action button
+- **Progressive Disclosure:** "How It Works" below fold
+
+**Color Strategy:**
+- **Primary (Fuchsia):** CTA button, mirror glow, accents
+- **Gradient Background:** Creates depth and magic
+- **High Contrast:** Text readable on gradient background
+
+**Animation Strategy:**
+- **Purposeful Motion:** Every animation serves conversion goal
+- **Smooth Transitions:** 0.3-0.6s ease-in-out for interactions
+- **Reduced Motion Support:** Respects user preferences
 
 ---
 

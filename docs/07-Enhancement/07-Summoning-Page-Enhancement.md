@@ -1,7 +1,7 @@
 # Summoning Page Enhancement Plan
 
-**Version:** 1.0.0  
-**Last Updated:** 2025-11-25  
+**Version:** 1.0.1  
+**Last Updated:** 2025-01-27  
 **Status:** Active  
 **Route:** `/summon`  
 **Component:** `SummoningPage` (Page level)
@@ -31,6 +31,99 @@ Full-screen theatrical animation sequence—the only page that takes complete co
 - **vs. Landing:** Not promising—delivering
 
 **Design Constraint (F-002):** This enhances existing Auto/Alchemic Mode selection and persona reveal—NO new features, pure presentation improvement.
+
+---
+
+## Purpose-Driven UX Design
+
+### Visual Hierarchy for Delight & Reveal
+
+**Primary Focus (Z-Index 50):**
+- **Persona Reveal** - Full-screen persona card at climax
+- **Animation Sequence** - Multi-stage cinematic experience
+- **Share Button** - Prominent after reveal
+
+**Secondary Focus (Z-Index 30):**
+- **Stage Text** - "Gathering Echoes...", "Weaving reflection..."
+- **Particle Effects** - Magical atmosphere elements
+- **Skip Button** - Subtle, non-intrusive (respects user preference)
+
+**Tertiary Focus (Z-Index 10):**
+- **Background Effects** - Gradient shifts, ambient lighting
+- **Loading Indicators** - Subtle progress (if needed)
+
+### Micro-Interactions That Reinforce Purpose
+
+**1. Stage Transitions (Anticipation)**
+- **Purpose:** Build excitement through progression
+- **Interaction:** Smooth fade between stages
+- **Feedback:** Text changes, visual effects intensify
+- **Emotion:** Anticipation → Excitement
+
+**2. Particle Effects (Magic)**
+- **Purpose:** Create magical, shareable atmosphere
+- **Interaction:** Particles float, respond to stage
+- **Feedback:** Intensity increases with progression
+- **Emotion:** Excitement → Awe
+
+**3. Persona Reveal (Climax)**
+- **Purpose:** Deliver the "wow" moment
+- **Interaction:** Persona card scales up, glows
+- **Feedback:** Dramatic entrance, celebration effects
+- **Emotion:** Awe → Joy
+
+**4. Share Prompt (Viral)**
+- **Purpose:** Enable immediate sharing of moment
+- **Interaction:** Share button appears after reveal
+- **Feedback:** Smooth entrance, platform options
+- **Emotion:** Joy → Pride → Sharing
+
+### Emotional Resonance Strategy
+
+**Anticipation Phase (0-2s):**
+- **Visual:** Dark screen, floating particles
+- **Copy:** "Gathering your Echoes..."
+- **Action:** User waits, anticipation builds
+
+**Excitement Phase (2-4s):**
+- **Visual:** Magic circle appears, rotates
+- **Copy:** "Weaving your reflection..."
+- **Action:** User sees progress, excitement grows
+
+**Awe Phase (4-7s):**
+- **Visual:** Persona silhouette emerges, scales up
+- **Copy:** "Manifesting your essence..."
+- **Action:** User sees persona forming, awe builds
+
+**Joy Phase (7-10s):**
+- **Visual:** Full persona card revealed, glowing
+- **Copy:** "PERSONA REVEALED"
+- **Action:** User celebrates, feels joy
+
+**Pride Phase (10s+):**
+- **Visual:** Share options appear, persona details visible
+- **Copy:** "Share your persona" + details
+- **Action:** User shares, feels proud
+
+### Visual Patterns for Delight & Reveal
+
+**Layout Strategy:**
+- **Full-Screen:** Complete viewport control, no distractions
+- **Theatrical:** Cinematic aspect ratio, dramatic staging
+- **Animation-Heavy:** Every element animated purposefully
+- **Skip Option:** Respects user preference (reduced motion)
+
+**Color Strategy:**
+- **Dark Background:** Creates dramatic contrast
+- **Magical Accents:** Fuchsia, purple, blue gradients
+- **Persona Card:** Bright, vibrant, celebratory
+- **Particle Effects:** Warm glows, magical colors
+
+**Animation Strategy:**
+- **Multi-Stage:** 4 distinct stages, smooth transitions
+- **Duration:** 10 seconds total (can be skipped)
+- **Easing:** Dramatic curves (ease-out, bounce)
+- **Reduced Motion:** Static reveal available
 
 ---
 

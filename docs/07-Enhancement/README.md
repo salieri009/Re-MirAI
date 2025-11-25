@@ -1,7 +1,7 @@
 # Page Enhancement Plans
 
-**Version:** 1.0.0  
-**Last Updated:** 2025-11-25  
+**Version:** 1.0.1  
+**Last Updated:** 2025-01-27  
 **Status:** Active  
 **Owner:** Design & Development Team
 
@@ -13,6 +13,41 @@ This directory contains detailed enhancement plans for each page in Re:MirAI. Ea
 
 **Design Philosophy:**  
 Every page clearly communicates its core intent (inform, guide, convert, entertain) through purpose-driven visual hierarchy, contextual feedback, and role-specific micro-interactions.
+
+**Purpose-Driven UX Framework:**
+
+As a senior UX/UI designer, we design each page to emphasize its unique purpose and enhance the user experience aligned with that purpose:
+
+### Core Principles
+
+1. **Define Core Purpose** - Each page serves a specific role:
+   - **Onboarding** → Guide users step by step with clarity and delight
+   - **Product Discovery** → Highlight visuals, comparisons, and intuitive filtering
+   - **Conversion** → Reduce friction, emphasize trust signals, and clear calls-to-action
+   - **Support** → Prioritize accessibility, empathy, and quick resolution paths
+
+2. **Tailor UX Experience** - Reinforce purpose through:
+   - **Visual Hierarchy** - Layout directs attention to primary goal
+   - **Interaction Design** - Micro-interactions support the page's role
+   - **Emotional Resonance** - Design evokes appropriate emotions for the journey stage
+   - **Contextual Feedback** - Real-time responses reinforce user actions
+
+3. **Visual & Layout Strategy**:
+   - **Purpose-Immediate Clarity** - Intent is clear within 2 seconds
+   - **Distinct Immersion** - Each page feels unique while maintaining consistency
+   - **Progressive Disclosure** - Information revealed as needed, not all at once
+   - **Focused Actions** - Single primary action per screen (Nielsen's Heuristic #8)
+
+4. **Micro-Interactions & Feedback**:
+   - **Contextual Animations** - Reinforce page purpose (e.g., celebration on success, gentle guidance on errors)
+   - **State Transitions** - Smooth, purposeful animations that guide attention
+   - **Real-time Updates** - Live feedback for actions (typing indicators, progress bars)
+   - **Delightful Moments** - Unexpected but appropriate micro-delights
+
+5. **Balance Clarity & Emotion**:
+   - **Instant Understanding** - Users know what to do without thinking
+   - **Emotional Engagement** - Design creates connection and investment
+   - **Purposeful Delight** - Delight serves the page's goal, not decoration
 
 **Enhancement Principles:**
 1. **Purpose Clarity** - Users instantly understand the page's goal (<2 seconds)
@@ -98,6 +133,73 @@ Every page clearly communicates its core intent (inform, guide, convert, enterta
 ### 8. [Survey Page](./08-Survey-Page-Enhancement.md)
 - **Route:** `/s/:id`  
 - **Purpose:** **COLLECT** - Gather anonymous feedback effortlessly
+- **Intent:** Make feedback submission frictionless and trustworthy
+- **Unique Experience:** Privacy-first design with step-by-step guidance
+- **Emotion:** Skepticism → Trust → Completion → Satisfaction
+- **Primary Goal:** Complete survey submission
+- **Visual Pattern:** Wizard-style, privacy-prominent, progress-visible
+
+---
+
+## Purpose-Driven Design Implementation
+
+### How Each Page Achieves Purpose-Driven UX
+
+#### Landing Page (CONVERT)
+- **Visual Strategy:** Hero-dominant layout with interactive mirror
+- **Micro-Interactions:** Hover effects on mirror, reveal animation on click
+- **Trust Signals:** Social proof, clear value proposition
+- **Conversion Friction:** Single CTA, minimal form fields
+- **Emotional Arc:** Curiosity → Wonder → Commitment
+
+#### Login Page (ENABLE)
+- **Visual Strategy:** Centered card, minimal distractions
+- **Micro-Interactions:** Loading states with rotating messages, error recovery
+- **Trust Signals:** Security badges, clear privacy messaging
+- **Friction Reduction:** Single-click OAuth, no password required
+- **Emotional Arc:** Uncertainty → Clarity → Trust → Action
+
+#### Dashboard (INFORM + GUIDE)
+- **Visual Strategy:** State-driven UI, card-based layout
+- **Micro-Interactions:** Progress animations, state transitions
+- **Information Hierarchy:** Status first, actions second, details third
+- **Guidance:** Clear next steps, contextual help
+- **Emotional Arc:** Control → Progress → Anticipation
+
+#### Chat Page (ENTERTAIN + CONNECT)
+- **Visual Strategy:** Message-focused, minimal chrome
+- **Micro-Interactions:** Typing indicators, message animations, bond tracking
+- **Intimacy Building:** Personalization, memory references, emotional responses
+- **Engagement:** Shareable snippets, conversation depth
+- **Emotional Arc:** Curiosity → Engagement → Intimacy → Connection
+
+#### Persona Room (SHOWCASE + ENGAGE)
+- **Visual Strategy:** Gallery-style, stat-heavy display
+- **Micro-Interactions:** Card hover effects, stat animations, quest completions
+- **Showcase Elements:** High-quality visuals, detailed stats, achievements
+- **Gamification:** Quest system, progress tracking, rewards
+- **Emotional Arc:** Pride → Exploration → Achievement
+
+#### Ritual Hub (MANAGE + SHARE)
+- **Visual Strategy:** Progress-centric, share-focused layout
+- **Micro-Interactions:** Live progress updates, share button animations
+- **Frictionless Sharing:** One-click copy, pre-written messages, platform selection
+- **Progress Visibility:** Real-time response count, visual progress bars
+- **Emotional Arc:** Anticipation → Pride → Sharing
+
+#### Summoning Page (DELIGHT + REVEAL)
+- **Visual Strategy:** Full-screen, animation-heavy, theatrical
+- **Micro-Interactions:** Multi-stage animation sequence, particle effects
+- **Climactic Moment:** Dramatic reveal, shareable result
+- **Skip Option:** Respects user preference (reduced motion)
+- **Emotional Arc:** Anticipation → Excitement → Awe → Joy
+
+#### Survey Page (COLLECT)
+- **Visual Strategy:** Wizard-style, privacy-prominent
+- **Micro-Interactions:** Step transitions, progress indicators, completion animations
+- **Trust Building:** Privacy notices, anonymity assurance, clear purpose
+- **Friction Reduction:** One question at a time, clear navigation
+- **Emotional Arc:** Skepticism → Trust → Completion → Satisfaction
 
 ---
 
