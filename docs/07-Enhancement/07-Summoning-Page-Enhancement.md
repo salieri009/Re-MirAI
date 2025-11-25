@@ -8,6 +8,20 @@
 
 ---
 
+## Design Philosophy
+
+**Objective:** Design a multi-page interface where each page emphasizes its unique purpose and enhances the user experience aligned with that purpose.
+
+**Core Principles:**
+- **Core Purpose:** **Delight & Reveal** (The climax).
+- **Tailored UX:** Maximize delight through cinematic visuals; remove all friction and distractions.
+- **Visual Hierarchy:** Full-screen focus; the animation is the only content.
+- **Immersive Consistency:** The culmination of all previous "magical" hints; the highest fidelity experience.
+- **Micro-Interactions:** Particle effects and light interactions make the wait (loading) feel like part of the show.
+- **Emotional Resonance:** Evoke **Awe** and **Joy** to create a memorable peak moment.
+
+---
+
 ## Executive Summary
 
 The Summoning Page is Re:MirAI's **climactic moment**—the dramatic reveal where collected Echoes transform into a living AI persona.
@@ -246,13 +260,22 @@ Full-screen theatrical animation sequence—the only page that takes complete co
 
 ---
 
-## Enhancement Goals
+## Enhancement Goals & Mitigation Strategies
 
-### Primary Goals
-1. **Magical Experience** - Stunning reveal animation
-2. **Progress Visibility** - Clear creation progress
-3. **Error Recovery** - Robust error handling
-4. **Accessibility** - Full WCAG 2.1 AA compliance
+### 1. Cinematic Reveal (Mitigates: Anticlimactic)
+Create a theatrical, full-screen animation sequence that builds anticipation and delivers a "wow" moment upon reveal.
+
+### 2. Process Visualization (Mitigates: Opaque Process)
+Visually demonstrate how the collected "Echoes" merge and transform to create the Persona, connecting input to output.
+
+### 3. Narrative Connection (Mitigates: Missing Narrative)
+Use text and visuals during the sequence to reinforce the story: "Your friends' perceptions are taking shape..."
+
+### 4. Graceful Recovery (Mitigates: Dead Ends)
+Design narrative-driven error states that guide users back to safety without breaking the immersion.
+
+### 5. Accessible Magic (Mitigates: Accessibility Gaps)
+Provide alternative descriptions and reduced-motion options so the reveal is enjoyable for everyone.
 
 ### Success Metrics
 - **Creation Success Rate:** >95%

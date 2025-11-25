@@ -8,6 +8,20 @@
 
 ---
 
+## Design Philosophy
+
+**Objective:** Design a multi-page interface where each page emphasizes its unique purpose and enhances the user experience aligned with that purpose.
+
+**Core Principles:**
+- **Core Purpose:** **Manage & Share** (The gathering place).
+- **Tailored UX:** Reduce friction for sharing; provide clear, encouraging feedback on progress.
+- **Visual Hierarchy:** Progress status is the headline; sharing tools are the primary action.
+- **Immersive Consistency:** Frame "data collection" as "gathering echoes" to maintain the magical tone.
+- **Micro-Interactions:** "Copied!" tooltips, real-time counter updates, and progress bar fills provide instant gratification.
+- **Emotional Resonance:** Evoke **Anticipation** and **Gratitude** for friends' contributions.
+
+---
+
 ## Executive Summary
 
 The Ritual Hub Page is Re:MirAI's **survey management center**—where users track progress and distribute survey links effortlessly.
@@ -138,13 +152,22 @@ Live progress tracking with shareable link prominence—making link sharing effo
 
 ---
 
-## Enhancement Goals
+## Enhancement Goals & Mitigation Strategies
 
-### Primary Goals
-1. **Frictionless Sharing** - Multiple share channels with pre-written messages
-2. **Real-time Updates** - Live response count updates
-3. **Progress Motivation** - Visual progress and encouragement
-4. **Accessibility** - Full WCAG 2.1 AA compliance
+### 1. Ritual Visualization (Mitigates: Data vs. Ritual)
+Replace standard data tables with "Gathering Echoes" metaphors (e.g., filling a vessel) to maintain the magical theme.
+
+### 2. Real-time Feedback (Mitigates: Passive Waiting)
+Implement live updates for new responses, providing immediate gratification and a sense of activity.
+
+### 3. Frictionless Sharing (Mitigates: High Friction Sharing)
+Streamline the sharing process with one-click copy, QR codes, and pre-written social posts to encourage distribution.
+
+### 4. Insight Visualization (Mitigates: Lack of Insight)
+Provide visual cues about the *quality* or *type* of feedback received (without breaking anonymity) to satisfy curiosity.
+
+### 5. Accessible Management (Mitigates: Accessibility Gaps)
+Ensure the hub's management tools are fully compliant with accessibility standards.
 
 ### Success Metrics
 - **Survey Creation Rate:** >95%

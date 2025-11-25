@@ -8,6 +8,20 @@
 
 ---
 
+## Design Philosophy
+
+**Objective:** Design a multi-page interface where each page emphasizes its unique purpose and enhances the user experience aligned with that purpose.
+
+**Core Principles:**
+- **Core Purpose:** **Collect & Trust** (The contribution).
+- **Tailored UX:** Prioritize ease of use and clarity; emphasize anonymity to build trust.
+- **Visual Hierarchy:** Question focus is central; progress and privacy indicators are always visible but secondary.
+- **Immersive Consistency:** A calm, reflective environment that feels distinct from the "gamified" app but part of the same universe.
+- **Micro-Interactions:** Smooth transitions and clear selection states make the task feel effortless.
+- **Emotional Resonance:** Evoke **Trust** and **Focus** to encourage honest and thoughtful responses.
+
+---
+
 ## Executive Summary
 
 The Survey Page is Re:MirAI's **anonymous feedback collection portal**—where friends provide honest perceptions to create an AI persona.
@@ -283,13 +297,22 @@ Select answer → Auto-enable "Next"
 
 ---
 
-## Enhancement Goals
+## Enhancement Goals & Mitigation Strategies
 
-### Primary Goals
-1. **Complete Anonymity** - Reinforce privacy protection
-2. **Ease of Use** - Smooth question flow
-3. **Progress Clarity** - Clear completion status
-4. **Accessibility** - Full WCAG 2.1 AA compliance
+### 1. Warm Aesthetic (Mitigates: Clinical Design)
+Use soft colors, friendly typography, and "magical" accents to make the survey feel like a helping hand, not a test.
+
+### 2. Engaging Flow (Mitigates: Tedium)
+Break the survey into digestible chunks with smooth transitions and progress milestones to reduce fatigue.
+
+### 3. Visible Trust (Mitigates: Trust Gaps)
+Place privacy badges and anonymity assurances prominently to build trust and encourage honest feedback.
+
+### 4. Flexible Navigation (Mitigates: Rigid Flow)
+Allow respondents to review and edit previous answers, reducing anxiety and abandonment.
+
+### 5. Accessible Feedback (Mitigates: Accessibility Gaps)
+Ensure all form controls are semantic and keyboard-navigable for a fully inclusive experience.
 
 ### Success Metrics
 - **Completion Rate:** >70%

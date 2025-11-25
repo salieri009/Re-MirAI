@@ -1,8 +1,11 @@
 'use client';
 
 import { useState, useEffect, useRef } from 'react';
-import { motion, useAnimation } from 'framer-motion';
+import gsap from 'gsap';
 import { Button } from '@/components/atoms/Button';
+import { conversionInteractions, delightInteractions } from '@/lib/micro-interactions';
+import { useReducedMotion } from '@/hooks/useAccessibility';
+import { tokens } from '@/design-tokens';
 import styles from './InteractiveHero.module.css';
 
 interface InteractiveHeroProps {
@@ -13,32 +16,77 @@ interface InteractiveHeroProps {
 export function InteractiveHero({ onStartDiscovery, onSkipAnimation }: InteractiveHeroProps) {
   const [stage, setStage] = useState<'idle' | 'hover' | 'active' | 'reveal'>('idle');
   const [isHovering, setIsHovering] = useState(false);
+
   const mirrorRef = useRef<HTMLDivElement>(null);
-  const controls = useAnimation();
+  const ctaRef = useRef<HTMLButtonElement>(null);
+  const canvasRef = useRef<HTMLCanvasElement>(null);
+  const particleCleanup = useRef<(() => void) | null>(null);
 
+  const reducedMotion = useReducedMotion();
+
+  // Initialize particle system
   useEffect(() => {
-    if (stage === 'active') {
-      controls.start({
-        scale: [1, 1.1, 0.9, 1],
-        rotate: [0, 5, -5, 0],
-        transition: { duration: 0.3 }
-      });
-    }
-  }, [stage, controls]);
+    if (!canvasRef.current || reducedMotion) return;
 
-  const handleMirrorClick = () => {
-    setStage('active');
-    
-    // Trigger reveal animation
-    setTimeout(() => {
-      setStage('reveal');
-    }, 500);
-  };
+    const canvas = canvasRef.current;
+    const ctx = canvas.getContext('2d');
+    if (!ctx) return;
+
+    // Set canvas size
+    canvas.width = canvas.offsetWidth;
+    canvas.height = canvas.offsetHeight;
+
+    // Create particle system
+    const cleanup = delightInteractions.particleSystem(canvas, ctx, {
+      count: 30,
+      color: tokens.emotions.curiosity.primary,
+      speed: 0.5,
+    });
+
+    particleCleanup.current = cleanup;
+
+    return () => {
+      if (particleCleanup.current) {
+        particleCleanup.current();
+      }
+    };
+  }, [reducedMotion]);
+
+  // Initial entrance animation
+  useEffect(() => {
+    if (reducedMotion) return;
+
+    gsap.from(`.${styles.content}`, {
+      opacity: 0,
+      y: 20,
+      duration: 0.6,
+      ease: 'power2.out',
+    });
+
+    gsap.from(`.${styles.headline}`, {
+      opacity: 0,
+      y: 30,
+      duration: 0.8,
+      delay: 0.2,
+      ease: 'power2.out',
+    });
+
+    gsap.from(`.${styles.subtext}`, {
+      opacity: 0,
+      y: 20,
+      duration: 0.6,
+      delay: 0.4,
+      ease: 'power2.out',
+    });
+  }, [reducedMotion]);
 
   const handleMirrorHover = () => {
     setIsHovering(true);
     if (stage === 'idle') {
       setStage('hover');
+      if (!reducedMotion && mirrorRef.current) {
+        conversionInteractions.mirrorHover(mirrorRef.current);
+      }
     }
   };
 
@@ -49,15 +97,32 @@ export function InteractiveHero({ onStartDiscovery, onSkipAnimation }: Interacti
     }
   };
 
+  const handleMirrorClick = async () => {
+    if (stage === 'active' || stage === 'reveal') return;
+
+    setStage('active');
+
+    if (!reducedMotion && mirrorRef.current) {
+      // Trigger mirror shatter animation
+      await conversionInteractions.mirrorShatter(mirrorRef.current);
+    }
+
+    setStage('reveal');
+  };
+
+  const handleCTAHover = () => {
+    if (!reducedMotion && ctaRef.current) {
+      conversionInteractions.ctaPulse(ctaRef.current);
+    }
+  };
+
   return (
     <section className={styles.hero}>
+      {/* Particle background canvas */}
+      <canvas ref={canvasRef} className={styles.particleCanvas} />
+
       <div className={styles.container}>
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.6, ease: [0.4, 0, 0.2, 1] }}
-          className={styles.content}
-        >
+        <div className={styles.content}>
           <h1 className={styles.headline}>
             Who do others believe I am?
           </h1>
@@ -66,52 +131,40 @@ export function InteractiveHero({ onStartDiscovery, onSkipAnimation }: Interacti
           </p>
 
           <div className={styles.mirrorContainer}>
-            <motion.div
+            <div
               ref={mirrorRef}
               className={`${styles.mirror} ${styles[stage]}`}
               onMouseEnter={handleMirrorHover}
               onMouseLeave={handleMirrorLeave}
               onClick={handleMirrorClick}
-              animate={controls}
-              whileHover={{ scale: 1.02 }}
-              whileTap={{ scale: 0.98 }}
+              role="button"
+              tabIndex={0}
+              aria-label="Interactive mirror - click to reveal your persona"
+              onKeyDown={(e) => {
+                if (e.key === 'Enter' || e.key === ' ') {
+                  e.preventDefault();
+                  handleMirrorClick();
+                }
+              }}
             >
               <div className={styles.mirrorGlass}>
                 {stage === 'idle' && (
-                  <motion.div
-                    initial={{ opacity: 0 }}
-                    animate={{ opacity: 1 }}
-                    className={styles.mirrorText}
-                  >
+                  <div className={styles.mirrorText}>
                     🪞
-                  </motion.div>
+                  </div>
                 )}
                 {stage === 'hover' && (
-                  <motion.div
-                    initial={{ opacity: 0, scale: 0.8 }}
-                    animate={{ opacity: 1, scale: 1 }}
-                    className={styles.mirrorText}
-                  >
+                  <div className={styles.mirrorText}>
                     Who am I?
-                  </motion.div>
+                  </div>
                 )}
                 {stage === 'active' && (
-                  <motion.div
-                    initial={{ opacity: 0 }}
-                    animate={{ opacity: 1 }}
-                    exit={{ opacity: 0 }}
-                    className={styles.mirrorText}
-                  >
+                  <div className={styles.mirrorText}>
                     ✨
-                  </motion.div>
+                  </div>
                 )}
                 {stage === 'reveal' && (
-                  <motion.div
-                    initial={{ opacity: 0, scale: 0.8, y: 20 }}
-                    animate={{ opacity: 1, scale: 1, y: 0 }}
-                    transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
-                    className={styles.personaPreview}
-                  >
+                  <div className={styles.personaPreview}>
                     <div className={styles.personaCard}>
                       <div className={styles.personaName}>The Mystic</div>
                       <div className={styles.personaBadge}>SSR ★★★</div>
@@ -121,38 +174,31 @@ export function InteractiveHero({ onStartDiscovery, onSkipAnimation }: Interacti
                       </div>
                       <p className={styles.previewText}>This could be you</p>
                     </div>
-                  </motion.div>
+                  </div>
                 )}
               </div>
-            </motion.div>
 
-            {isHovering && stage === 'hover' && (
-              <motion.div
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
-                className={styles.ripple}
-              />
-            )}
+              {/* Mirror fragments for shatter effect */}
+              <div className={styles.mirrorFragments}>
+                {Array.from({ length: 8 }).map((_, i) => (
+                  <div key={i} className={`${styles.fragment} fragment-${i}`} />
+                ))}
+              </div>
+            </div>
           </div>
 
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ 
-              opacity: stage === 'reveal' ? 1 : 0.7,
-              y: 0 
-            }}
-            transition={{ delay: stage === 'reveal' ? 0.5 : 0, duration: 0.6 }}
-            className={styles.ctaContainer}
-          >
+          <div className={styles.ctaContainer}>
             <Button
+              ref={ctaRef}
               variant="primary"
               size="lg"
               onClick={onStartDiscovery}
-              className={styles.ctaButton}
+              onMouseEnter={handleCTAHover}
+              className={`${styles.ctaButton} ${stage === 'reveal' ? styles.glowing : ''}`}
             >
               ✨ Summon Your Reflection ✨
             </Button>
-          </motion.div>
+          </div>
 
           {onSkipAnimation && stage !== 'idle' && (
             <button
@@ -163,9 +209,8 @@ export function InteractiveHero({ onStartDiscovery, onSkipAnimation }: Interacti
               Skip
             </button>
           )}
-        </motion.div>
+        </div>
       </div>
     </section>
   );
 }
-

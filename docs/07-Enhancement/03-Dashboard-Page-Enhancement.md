@@ -8,6 +8,20 @@
 
 ---
 
+## Design Philosophy
+
+**Objective:** Design a multi-page interface where each page emphasizes its unique purpose and enhances the user experience aligned with that purpose.
+
+**Core Principles:**
+- **Core Purpose:** **Inform & Guide** (The Hero's Journey map).
+- **Tailored UX:** Provide clarity on current status and clear calls-to-action for the next step; reduce cognitive load.
+- **Visual Hierarchy:** Status/Progress is paramount; next action is the most prominent interactive element.
+- **Immersive Consistency:** Use magical metaphors (Echoes, Crystals) for data to keep the user in the narrative.
+- **Micro-Interactions:** Use pulsing animations to guide attention to the next required action.
+- **Emotional Resonance:** Evoke **Motivation** and **Clarity** to encourage continued progress.
+
+---
+
 ## Executive Summary
 
 The Dashboard is Re:MirAI's **command center**—where users instantly understand their journey status and know exactly what to do next.
@@ -265,13 +279,22 @@ State-driven UI that completely transforms based on user progress—each state t
 
 ---
 
-## Enhancement Goals
+## Enhancement Goals & Mitigation Strategies
 
-### Primary Goals
-1. **State Visibility** - Instant status recognition (<1 second)
-2. **Real-time Updates** - Live progress tracking
-3. **Error Recovery** - Clear error handling and retry
-4. **Accessibility** - Full WCAG 2.1 AA compliance
+### 1. Narrative UI (Mitigates: Utilitarian UI)
+Transform the dashboard into a "Hero's Journey" map, using visuals to tell the story of the user's progress.
+
+### 2. Dynamic Status (Mitigates: Static Status)
+Animate "Echoes" and "Crystals" counters to make them feel like living, magical resources rather than static data.
+
+### 3. Celebratory Transitions (Mitigates: Disconnected States)
+Use rich animations to celebrate state changes (e.g., leveling up, completing a collection), creating emotional peaks.
+
+### 4. Visual Urgency (Mitigates: Low Urgency)
+Use pulsing effects and high-contrast visual hierarchy to guide users instinctively to the next critical action.
+
+### 5. Inclusive Navigation (Mitigates: Accessibility Gaps)
+Implement robust keyboard navigation and ARIA labels to ensure the dashboard is usable by all.
 
 ### Success Metrics
 - **Status Recognition Time:** <1 second

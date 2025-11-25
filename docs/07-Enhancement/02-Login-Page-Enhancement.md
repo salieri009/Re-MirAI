@@ -8,9 +8,29 @@
 
 ---
 
+## Design Philosophy
+
+**Objective:** Design a multi-page interface where each page emphasizes its unique purpose and enhances the user experience aligned with that purpose.
+
+**Core Principles:**
+- **Core Purpose:** **Onboarding & Trust** (Frictionless entry).
+- **Tailored UX:** Guide users step by step with clarity and delight; emphasize trust signals to reduce authentication anxiety.
+- **Visual Hierarchy:** Centralized, focused layout with no distractions; clear primary action (Sign In).
+- **Immersive Consistency:** Maintain the magical atmosphere (muted) to prevent a jarring transition from the landing page.
+- **Micro-Interactions:** Provide immediate, reassuring feedback (glows, loading states) for every interaction.
+- **Emotional Resonance:** Evoke **Safety** and **Anticipation** to make entry feel like an invitation, not a gate.
+
+---
+
 ## Executive Summary
 
 The Login Page is the authentication gateway to Re:MirAI. This enhancement plan focuses on **frictionless authentication** while building **emotional trust** through visual feedback, micro-interactions, and clear communication at every step of the auth journey.
+
+### Page Purpose: **ONBOARDING + TRUST**
+
+**Core Intent:** Users come here to:
+1. **ACCESS:** Enter the platform with minimal friction.
+2. **TRUST:** Feel secure and guided through the authentication process.
 
 ### Page Purpose: **ENABLE**
 
@@ -155,13 +175,19 @@ The Login Page is the authentication gateway to Re:MirAI. This enhancement plan 
 
 ---
 
-## Enhancement Goals
+## Enhancement Goals & Mitigation Strategies
 
-### Primary Goals
-1. **Friction Reduction** - Minimize steps to authentication
-2. **Error Recovery** - Clear, actionable error messages
-3. **Accessibility** - Full WCAG 2.1 AA compliance
-4. **User Guidance** - Helpful tooltips and instructions
+### 1. Visual Continuity (Mitigates: Atmosphere Break)
+Maintain the "magical" aesthetic (muted gradients, particles) from the landing page to prevent the "utilitarian" drop-off.
+
+### 2. Frictionless Entry (Mitigates: High Friction)
+Prioritize a single-click OAuth flow with clear, inviting micro-interactions to make entry feel effortless.
+
+### 3. Magical Feedback (Mitigates: Generic Feedback & Invisible Status)
+Replace generic errors and invisible loading states with custom, thematic animations and clear, helpful messages.
+
+### 4. Inclusive Access (Mitigates: Accessibility Gaps)
+Ensure full WCAG 2.1 AA compliance (keyboard nav, screen readers) so the magic is accessible to everyone.
 
 ### Success Metrics
 - **Login Success Rate:** >95%

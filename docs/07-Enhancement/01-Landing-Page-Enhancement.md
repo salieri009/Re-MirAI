@@ -8,9 +8,29 @@
 
 ---
 
+## Design Philosophy
+
+**Objective:** Design a multi-page interface where each page emphasizes its unique purpose and enhances the user experience aligned with that purpose.
+
+**Core Principles:**
+- **Core Purpose:** **Discovery & Conversion** (Transform curiosity into commitment).
+- **Tailored UX:** Highlight visuals and interactive storytelling (Discovery) while reducing friction and emphasizing trust signals (Conversion).
+- **Visual Hierarchy:** Hero section dominates to capture attention immediately; clear path to CTA.
+- **Immersive Consistency:** Establish the "magical" brand atmosphere that persists throughout the journey.
+- **Micro-Interactions:** Use hover effects and scroll triggers to reward curiosity and maintain engagement.
+- **Emotional Resonance:** Evoke **Curiosity** and **Wonder** to drive the desire to sign up.
+
+---
+
 ## Executive Summary
 
 The Landing Page is Re:MirAI's primary entry point. This enhancement plan focuses on creating an **interactive Hero section** that embodies the project's core concept ("Who do others believe I am?") while maintaining strict compliance with Nielsen's Heuristics and Blonix Branch design principles.
+
+### Page Purpose: **DISCOVERY + CONVERSION**
+
+**Core Intent:** Users land here to:
+1. **DISCOVER:** Understand the "Mirror" concept through interactive storytelling.
+2. **CONVERT:** Feel intrigued enough to start their journey immediately.
 
 ### Page Purpose: **CONVERT**
 
@@ -130,13 +150,19 @@ The Landing Page is Re:MirAI's primary entry point. This enhancement plan focuse
 
 ---
 
-## Enhancement Goals
+## Enhancement Goals & Mitigation Strategies
 
-### Primary Goals
-1. **Interactive Hero** - Create an engaging, concept-aligned interactive experience
-2. **Immediate Engagement** - Allow users to experience the concept before signup
-3. **Visual Storytelling** - Use animation and interaction to tell the Re:MirAI story
-4. **Conversion Optimization** - Increase signup rate through better engagement
+### 1. Interactive Hero (Mitigates: Static Hero)
+Create an engaging "Mirror" experience where users interact with their reflection, transforming a static header into a concept demo.
+
+### 2. Immersive Atmosphere (Mitigates: Low Immersion)
+Implement particle systems, scroll animations, and depth effects to establish the "magical" brand feel immediately.
+
+### 3. Immediate Value (Mitigates: Delayed Value)
+Allow users to see a "Persona Preview" or "Reflection" before signing up, demonstrating the core value upfront.
+
+### 4. Active Engagement (Mitigates: Passive Experience)
+Replace passive reading with active exploration (hover effects, tilt cards) to trigger curiosity and wonder.
 
 ### Success Metrics
 - **Engagement Time:** Increase average time on page by 40%

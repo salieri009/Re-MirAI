@@ -1,0 +1,293 @@
+/**
+ * Global Styles
+ * CSS custom properties and base styles
+ */
+
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Poppins:wght@400;500;600;700;800&display=swap');
+
+/* CSS Custom Properties (Design Tokens) */
+:root {
+    /* Emotional Colors - Curiosity & Wonder */
+    --color-curiosity-primary: #d946ef;
+    --color-curiosity-secondary: #f093fb;
+    --color-curiosity-accent: #8b5cf6;
+
+    /* Emotional Colors - Trust & Clarity */
+    --color-trust-primary: #3b82f6;
+    --color-trust-secondary: #60a5fa;
+    --color-trust-accent: #10b981;
+
+    /* Emotional Colors - Progress & Motivation */
+    --color-progress-collecting: #3b82f6;
+    --color-progress-ready: #d946ef;
+    --color-progress-success: #10b981;
+    --color-progress-warning: #f59e0b;
+
+    /* Emotional Colors - Connection */
+    --color-connection-user: #d946ef;
+    --color-connection-ai: #f1f5f9;
+    --color-connection-bond: #f59e0b;
+
+    /* Emotional Colors - Delight */
+    --color-delight-dark: #1e1b4b;
+    --color-delight-magical: #d946ef;
+    --color-delight-celebration: #f59e0b;
+
+    /* Surfaces */
+    --surface-light: #f8fafc;
+    --surface-card: rgba(255, 255, 255, 0.95);
+    --surface-glass: rgba(255, 255, 255, 0.1);
+    --surface-dark: #0f172a;
+    --surface-overlay: rgba(0, 0, 0, 0.5);
+
+    /* Typography */
+    --font-display: 'Poppins', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+    --font-body: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+
+    /* Spacing (4px grid) */
+    --space-xs: 4px;
+    --space-sm: 8px;
+    --space-md: 16px;
+    --space-lg: 24px;
+    --space-xl: 32px;
+    --space-2xl: 48px;
+    --space-3xl: 64px;
+
+    /* Z-Index Hierarchy */
+    --z-background: 0;
+    --z-tertiary: 10;
+    --z-secondary: 30;
+    --z-primary: 50;
+    --z-overlay: 100;
+    --z-notification: 200;
+
+    /* Animation Durations */
+    --duration-instant: 100ms;
+    --duration-fast: 200ms;
+    --duration-normal: 300ms;
+    --duration-slow: 600ms;
+    --duration-epic: 1200ms;
+
+    /* Easing Functions */
+    --easing-calm: cubic-bezier(0.4, 0, 0.2, 1);
+    --easing-bounce: cubic-bezier(0.68, -0.55, 0.265, 1.55);
+    --easing-elastic: cubic-bezier(0.68, -0.55, 0.265, 2);
+    --easing-smooth: cubic-bezier(0.25, 0.1, 0.25, 1);
+
+    /* Border Radius */
+    --radius-sm: 4px;
+    --radius-md: 8px;
+    --radius-lg: 12px;
+    --radius-xl: 16px;
+    --radius-2xl: 24px;
+    --radius-full: 9999px;
+
+    /* Shadows */
+    --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+    --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+    --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+    --shadow-xl: 0 20px 25px -5px rgba(0, 0, 0, 0.1);
+    --shadow-glow: 0 0 30px rgba(217, 70, 239, 0.4);
+    --shadow-glow-blue: 0 0 20px rgba(59, 130, 246, 0.3);
+    --shadow-glow-green: 0 0 20px rgba(16, 185, 129, 0.3);
+}
+
+/* Base Reset & Typography */
+*,
+*::before,
+*::after {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+html {
+    font-size: 16px;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+}
+
+body {
+    font-family: var(--font-body);
+    line-height: 1.6;
+    color: #1e293b;
+    background-color: var(--surface-light);
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+    font-family: var(--font-display);
+    font-weight: 600;
+    line-height: 1.2;
+}
+
+/* Utility Classes for Purpose-Driven UX */
+
+/* Z-Index Utilities */
+.z-background {
+    z-index: var(--z-background);
+}
+
+.z-tertiary {
+    z-index: var(--z-tertiary);
+}
+
+.z-secondary {
+    z-index: var(--z-secondary);
+}
+
+.z-primary {
+    z-index: var(--z-primary);
+}
+
+.z-overlay {
+    z-index: var(--z-overlay);
+}
+
+/* Emotional State Classes */
+.emotional-curiosity {
+    background: linear-gradient(135deg, var(--color-curiosity-primary), var(--color-curiosity-secondary));
+}
+
+.emotional-trust {
+    background: linear-gradient(135deg, var(--color-trust-primary), var(--color-trust-secondary));
+}
+
+.emotional-progress {
+    background: linear-gradient(90deg, var(--color-progress-collecting), var(--color-progress-ready));
+}
+
+/* Glassmorphism Effect */
+.glass {
+    background: var(--surface-glass);
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+/* Card Component Base */
+.card {
+    background: var(--surface-card);
+    border-radius: var(--radius-lg);
+    box-shadow: var(--shadow-md);
+    padding: var(--space-lg);
+    transition: transform var(--duration-normal) var(--easing-calm),
+        box-shadow var(--duration-normal) var(--easing-calm);
+}
+
+.card:hover {
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-lg);
+}
+
+/* Button Base Styles */
+.btn {
+    font-family: var(--font-display);
+    font-weight: 600;
+    padding: var(--space-md) var(--space-xl);
+    border-radius: var(--radius-md);
+    border: none;
+    cursor: pointer;
+    transition: all var(--duration-fast) var(--easing-calm);
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: var(--space-sm);
+}
+
+.btn-primary {
+    background: linear-gradient(135deg, var(--color-curiosity-primary), var(--color-curiosity-secondary));
+    color: white;
+}
+
+.btn-primary:hover {
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-glow);
+}
+
+.btn-primary:active {
+    transform: translateY(0) scale(0.98);
+}
+
+/* Animation Utilities */
+.animate-fade-in {
+    animation: fadeIn var(--duration-normal) var(--easing-calm);
+}
+
+.animate-slide-up {
+    animation: slideUp var(--duration-normal) var(--easing-smooth);
+}
+
+.animate-bounce {
+    animation: bounce var(--duration-slow) var(--easing-bounce);
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+    }
+
+    to {
+        opacity: 1;
+    }
+}
+
+@keyframes slideUp {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@keyframes bounce {
+
+    0%,
+    100% {
+        transform: translateY(0);
+    }
+
+    50% {
+        transform: translateY(-10px);
+    }
+}
+
+/* Accessibility */
+@media (prefers-reduced-motion: reduce) {
+
+    *,
+    *::before,
+    *::after {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+    }
+}
+
+/* Focus States */
+*:focus {
+    outline: 2px solid var(--color-curiosity-primary);
+    outline-offset: 2px;
+}
+
+*:focus:not(:focus-visible) {
+    outline: none;
+}
+
+/* High Contrast Mode */
+@media (prefers-contrast: high) {
+    .card {
+        border: 2px solid currentColor;
+    }
+
+    .btn {
+        border: 2px solid currentColor;
+    }
+}
