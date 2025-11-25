@@ -152,31 +152,6 @@ export function useAccessibility() {
 export function SkipToContent({ targetId }: { targetId: string }) {
     const [isFocused, setIsFocused] = useState(false);
 
-    const hiddenStyles: CSSProperties = {
-        position: 'absolute',
-        left: '-10000px',
-        top: 'auto',
-        width: '1px',
-        height: '1px',
-        overflow: 'hidden',
-    };
-
-    const visibleStyles: CSSProperties = {
-        position: 'fixed',
-        top: '0',
-        left: '0',
-        width: 'auto',
-        height: 'auto',
-        overflow: 'visible',
-        zIndex: 9999,
-        padding: '0.75rem 1.5rem',
-        background: '#000',
-        color: '#fff',
-        fontWeight: 600,
-        borderBottomRightRadius: '0.5rem',
-        boxShadow: '0 8px 24px rgba(0, 0, 0, 0.2)',
-    };
-
     const handleClick = (event: MouseEvent<HTMLAnchorElement>) => {
         event.preventDefault();
         const target = document.getElementById(targetId);
@@ -190,7 +165,7 @@ export function SkipToContent({ targetId }: { targetId: string }) {
             onClick={handleClick}
             onFocus={() => setIsFocused(true)}
             onBlur={() => setIsFocused(false)}
-            style={isFocused ? visibleStyles : hiddenStyles}
+            className={isFocused ? 'skip-link-visible' : 'skip-link-hidden'}
         >
             Skip to main content
         </a>

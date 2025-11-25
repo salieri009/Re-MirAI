@@ -1,6 +1,7 @@
 'use client';
 
 import { useEffect, useMemo, useRef } from 'react';
+import gsap from 'gsap';
 import { Button } from '@/components/atoms/Button';
 import { PersonaCard } from '@/components/molecules/PersonaCard';
 import { QuestCard } from '@/components/molecules/QuestCard';
@@ -159,14 +160,18 @@ export function DashboardStateView({
           <span className={styles.badge}>Need {responsesNeeded || 0} more</span>
         </div>
 
-        <div className={styles.progressTrack} aria-label="Survey progress">
+        <div 
+          className={styles.progressTrack} 
+          role="progressbar"
+          aria-label={`Survey progress: ${progressPercentage}%`}
+          aria-valuenow={progressPercentage}
+          aria-valuemin={0}
+          aria-valuemax={100}
+        >
           <div
             ref={progressFillRef}
             className={styles.progressFill}
-            style={{ width: `${progressPercentage}%` }}
-            aria-valuenow={progressPercentage}
-            aria-valuemin={0}
-            aria-valuemax={100}
+            style={{ '--progress-width': `${progressPercentage}%` } as React.CSSProperties}
           />
         </div>
 

@@ -94,7 +94,7 @@ export function SummoningAnimation({
                     '--dy': `${particle.dy}px`,
                     '--delay': `${particle.delay}s`,
                     '--duration': `${particle.duration}s`,
-                  } as CSSProperties
+                  } as React.CSSProperties
                 }
               />
             ))}

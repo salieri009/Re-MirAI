@@ -138,6 +138,7 @@
   border-radius: inherit;
   background: var(--gradient-primary-to-accent);
   transition: width 0.4s ease;
+  width: var(--progress-width, 0%);
 }
 
 .helperText {

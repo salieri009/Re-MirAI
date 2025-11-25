@@ -135,19 +135,17 @@ export function SurveyLinkCard({ link, onCopy, shareCount, lastShared }: SurveyL
         </Button>
       </div>
 
-      <div
-        className={`${styles.shareSection} ${showShareOptions ? styles.shareSectionVisible : ''
-          }`}
-        aria-hidden={!showShareOptions}
-      >
-        {showShareOptions && (
+      {showShareOptions && (
+        <div
+          className={`${styles.shareSection} ${styles.shareSectionVisible}`}
+        >
           <ShareOptions
             platforms={['whatsapp', 'instagram', 'twitter', 'copy']}
             onShare={handleShare}
             link={link}
           />
-        )}
-      </div>
+        </div>
+      )}
 
       {showQR && qrCodeUrl && (
         <div className={styles.qrSection}>

@@ -101,6 +101,10 @@
   opacity: 0.3;
   animation: particleFloat var(--duration, 2s) ease-in-out infinite;
   animation-delay: var(--delay, 0s);
+  --dx: 0px;
+  --dy: 0px;
+  --delay: 0s;
+  --duration: 2s;
 }
 
 @keyframes particleFloat {
