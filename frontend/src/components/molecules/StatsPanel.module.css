@@ -26,8 +26,10 @@
 }
 
 .value {
+  font-family: var(--font-tech, 'Space Mono', monospace); /* Accent (The Tech) */
   font-size: var(--font-size-2xl);
   font-weight: var(--font-weight-semibold);
+  letter-spacing: 0.05em;
 }
 
 .unit {
@@ -37,7 +39,7 @@
 
 .track {
   width: 100%;
-  height: 6px;
+  height: 8px; /* 4px grid */
   border-radius: var(--radius-full);
   background: rgba(255, 255, 255, 0.08);
 }

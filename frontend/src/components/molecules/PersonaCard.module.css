@@ -64,7 +64,7 @@
 
 .statBar {
   flex: 1;
-  height: 6px;
+  height: 8px; /* 4px grid */
   background: rgba(255, 255, 255, 0.1);
   border-radius: var(--radius-full);
   overflow: hidden;
@@ -78,11 +78,13 @@
 }
 
 .statValue {
-  width: 30px;
+  width: 32px; /* 4px grid */
   text-align: right;
+  font-family: var(--font-tech, 'Space Mono', monospace); /* Accent (The Tech) */
   font-size: var(--font-size-sm);
   font-weight: var(--font-weight-bold);
   color: var(--color-text);
+  letter-spacing: 0.05em;
 }
 
 .greeting {

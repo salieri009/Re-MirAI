@@ -107,14 +107,18 @@
 }
 
 .counter {
+  font-family: var(--font-tech, 'Space Mono', monospace); /* Accent (The Tech) */
   font-size: var(--font-size-3xl);
   font-weight: var(--font-weight-bold);
+  letter-spacing: 0.05em;
 }
 
 .threshold {
+  font-family: var(--font-tech, 'Space Mono', monospace); /* Accent (The Tech) */
   font-size: var(--font-size-base);
   color: var(--color-text-secondary);
   margin-left: var(--space-xs);
+  letter-spacing: 0.05em;
 }
 
 .badge {

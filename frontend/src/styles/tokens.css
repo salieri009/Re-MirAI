@@ -13,14 +13,14 @@
   --color-secondary-dark: var(--color-accent-dark);
   --color-secondary-light: var(--color-accent-light);
   
-  /* Background & Surface Colors */
-  --color-bg-primary: #ffffff;
-  --color-bg-secondary: #e6ebf8;
-  --color-bg-tertiary: #dbe3f5;
+  /* Background & Surface Colors - Primary Color Based */
+  --color-bg-primary: #f3e8ff; /* Primary color light wash - Main background */
+  --color-bg-secondary: #f3e8ff; /* Primary color light wash */
+  --color-bg-tertiary: #e9d5ff; /* Primary color lighter wash */
   
-  --color-surface: #ffffff;
-  --color-surface-elevated: #fbf7ff;
-  --color-surface-alt: #e6ebf8;
+  --color-surface: #f3e8ff; /* Primary color light wash */
+  --color-surface-elevated: rgba(255, 255, 255, 0.95); /* White cards on primary wash */
+  --color-surface-alt: #f3e8ff; /* Primary color light wash */
   
   /* Text Colors */
   --color-text: #0f172a;
@@ -57,7 +57,7 @@
   --font-size-lg: 1.125rem;   /* 18px */
   --font-size-xl: 1.25rem;   /* 20px */
   --font-size-2xl: 1.5rem;    /* 24px */
-  --font-size-3xl: 1.875rem;  /* 30px */
+  --font-size-3xl: 2rem;      /* 32px - aligned to 4px grid */
   --font-size-4xl: 2.25rem;   /* 36px */
   --font-size-5xl: 3rem;      /* 48px */
   
@@ -77,11 +77,11 @@
   --radius-xl: 1rem;      /* 16px */
   --radius-full: 9999px;
   
-  /* Shadows */
-  --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
-  --shadow-md: 0 4px 6px -1px rgba(15, 23, 42, 0.08), 0 2px 4px -1px rgba(15, 23, 42, 0.06);
-  --shadow-lg: 0 10px 20px -5px rgba(15, 23, 42, 0.15);
-  --shadow-xl: 0 20px 35px -8px rgba(15, 23, 42, 0.2);
+  /* Shadows - All offsets are multiples of 4px */
+  --shadow-sm: 0 4px 4px 0 rgba(0, 0, 0, 0.05);
+  --shadow-md: 0 4px 8px -4px rgba(15, 23, 42, 0.08), 0 4px 4px -4px rgba(15, 23, 42, 0.06);
+  --shadow-lg: 0 8px 16px -4px rgba(15, 23, 42, 0.15);
+  --shadow-xl: 0 20px 32px -8px rgba(15, 23, 42, 0.2);
   --shadow-glow-primary: 0 0 32px rgba(217, 70, 239, 0.4);
   --shadow-glow-accent: 0 0 28px rgba(105, 127, 172, 0.45);
   --shadow-glow-dual: 0 0 36px rgba(217, 70, 239, 0.3), 0 0 52px rgba(105, 127, 172, 0.35);

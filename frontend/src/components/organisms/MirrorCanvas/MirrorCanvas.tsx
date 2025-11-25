@@ -32,20 +32,23 @@ export function MirrorCanvas({ variant = 'background', intensity = 1 }: MirrorCa
         resizeCanvas();
         window.addEventListener('resize', resizeCanvas);
 
-        // Create particle system based on variant
+        // Create enhanced graphic particle system based on variant
         if (variant === 'background') {
             cleanupRef.current = delightInteractions.particleSystem(canvas, ctx, {
-                count: 30 * intensity,
+                count: 40 * intensity,
                 color: tokens.palette.primary,
                 speed: 0.5 * intensity,
+                connectDistance: 120,
+                showConnections: true,
             });
         } else {
-            // Mirror specific effects (ripples, etc.) could go here
-            // For now, we'll use a subtle particle effect for the mirror too
+            // Mirror specific effects with connections
             cleanupRef.current = delightInteractions.particleSystem(canvas, ctx, {
-                count: 15 * intensity,
+                count: 20 * intensity,
                 color: tokens.palette.accent,
                 speed: 0.8 * intensity,
+                connectDistance: 80,
+                showConnections: true,
             });
         }
 

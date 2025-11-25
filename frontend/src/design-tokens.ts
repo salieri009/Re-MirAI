@@ -11,13 +11,13 @@
  */
 
 const SMALL_SWITCH_PALETTE = {
-    primary: '#d946ef',
-    primaryLight: '#f5c6ff',
-    primaryDark: '#b51eca',
+    primary: '#a855f7', // More muted purple (was #d946ef)
+    primaryLight: '#c084fc', // Softer light purple
+    primaryDark: '#7e22ce', // Deeper purple
     canvas: '#e6ebf8',
-    accent: '#697fac',
-    accentLight: '#90a1c8',
-    accentDark: '#4b5d80',
+    accent: '#64748b', // More muted slate (was #697fac)
+    accentLight: '#94a3b8', // Softer accent
+    accentDark: '#475569', // Deeper accent
     textAnchor: '#334155', // New accessible text color
 } as const;
 
@@ -76,9 +76,9 @@ export const tokens = {
      * Backgrounds and containers
      */
     surface: {
-        light: SMALL_SWITCH_PALETTE.canvas,
+        light: '#f3e8ff',                    // Primary color light wash - Main background
         card: 'rgba(255, 255, 255, 0.95)',   // Semi-transparent white
-        alt: SMALL_SWITCH_PALETTE.canvas,
+        alt: '#f3e8ff',                      // Primary color light wash
         glass: 'rgba(255, 255, 255, 0.1)',   // Glassmorphism
         dark: '#0f172a',                     // Slate 900
         overlay: 'rgba(0, 0, 0, 0.5)',       // Modal overlay
@@ -91,6 +91,7 @@ export const tokens = {
     fonts: {
         display: "'Poppins', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif",
         body: "'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif",
+        tech: "'Space Mono', 'Courier New', monospace", // Accent (The Tech) - For data, stats, echoes
         mono: "'Fira Code', 'Courier New', monospace",
     },
 
@@ -105,7 +106,7 @@ export const tokens = {
         lg: '1.125rem',   // 18px
         xl: '1.25rem',    // 20px
         '2xl': '1.5rem',  // 24px
-        '3xl': '1.875rem', // 30px
+        '3xl': '2rem',    // 32px (changed from 30px for 4px grid alignment)
         '4xl': '2.25rem', // 36px
         '5xl': '3rem',    // 48px
     },
@@ -196,16 +197,17 @@ export const tokens = {
      * Creates visual hierarchy through elevation
      */
     shadow: {
-        sm: '0 1px 2px 0 rgba(0, 0, 0, 0.05)',
-        md: '0 4px 6px -1px rgba(15, 23, 42, 0.08), 0 2px 4px -1px rgba(15, 23, 42, 0.06)',
-        lg: '0 10px 20px -5px rgba(15, 23, 42, 0.15)',
-        xl: '0 20px 35px -8px rgba(15, 23, 42, 0.2)',
-        '2xl': '0 25px 50px -12px rgba(15, 23, 42, 0.25)',
+        // All shadow offsets are multiples of 4px (4px baseline grid)
+        sm: '0 4px 4px 0 rgba(0, 0, 0, 0.05)',
+        md: '0 4px 8px -4px rgba(15, 23, 42, 0.08), 0 4px 4px -4px rgba(15, 23, 42, 0.06)',
+        lg: '0 8px 16px -4px rgba(15, 23, 42, 0.15)',
+        xl: '0 20px 24px -4px rgba(15, 23, 42, 0.2)',
+        '2xl': '0 24px 48px -8px rgba(15, 23, 42, 0.25)',
 
-        // Emotional shadows
-        glowPrimary: `0 0 32px rgba(217, 70, 239, 0.4)`,
-        glowAccent: `0 0 28px rgba(105, 127, 172, 0.45)`,
-        glowDual: `0 0 36px rgba(217, 70, 239, 0.3), 0 0 52px rgba(105, 127, 172, 0.35)`,
+        // Emotional shadows (blur radius can be any value, but offsets must be 4px multiples)
+        glowPrimary: `0 0 32px rgba(168, 85, 247, 0.25)`,
+        glowAccent: `0 0 28px rgba(100, 116, 139, 0.3)`,
+        glowDual: `0 0 36px rgba(168, 85, 247, 0.2), 0 0 52px rgba(100, 116, 139, 0.25)`,
         glowSuccess: '0 0 20px rgba(16, 185, 129, 0.3)',
     },
 

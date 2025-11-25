@@ -4,6 +4,67 @@
   flex-direction: column;
 }
 
+/* Minimal Header per KickoffLabs Requirement #9 */
+.header {
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  background: rgba(243, 232, 255, 0.95); /* Primary color light wash with transparency */
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+  padding: var(--space-md) 0;
+}
+
+.headerContainer {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 var(--space-lg);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.logo {
+  font-family: var(--font-display);
+  font-size: var(--font-size-xl);
+  font-weight: var(--font-weight-bold);
+  color: var(--color-text);
+  text-decoration: none;
+  transition: opacity 0.2s ease;
+}
+
+.logo:hover {
+  opacity: 0.8;
+}
+
+.loginLink {
+  font-size: var(--font-size-base);
+  color: var(--color-text);
+  text-decoration: none;
+  padding: var(--space-sm) var(--space-md);
+  border-radius: var(--radius-md);
+  transition: background-color 0.2s ease;
+}
+
+.loginLink:hover {
+  background-color: rgba(0, 0, 0, 0.05);
+}
+
+@media (max-width: 768px) {
+  .header {
+    padding: var(--space-sm) 0;
+  }
+
+  .headerContainer {
+    padding: 0 var(--space-md);
+  }
+
+  .logo {
+    font-size: var(--font-size-lg);
+  }
+}
+
 .hero {
   flex: 1;
   display: flex;

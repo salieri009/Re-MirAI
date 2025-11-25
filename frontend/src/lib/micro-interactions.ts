@@ -347,67 +347,170 @@ export const connectionInteractions = {
  */
 export const delightInteractions = {
     /**
-     * Particle System - Create Magical Atmosphere
+     * Graphic Particle System - Enhanced with connections and gradients
      * Emotion: Anticipation → Awe
+     * Features: Particle connections, gradient effects, interactive mouse response
      */
     particleSystem: (
         canvas: HTMLCanvasElement,
         ctx: CanvasRenderingContext2D,
-        options: { count?: number; color?: string; speed?: number } = {}
+        options: { 
+            count?: number; 
+            color?: string; 
+            speed?: number;
+            connectDistance?: number;
+            showConnections?: boolean;
+        } = {}
     ) => {
         if (!ctx) return () => { };
 
-        const { count = 50, color = '#ffffff', speed = 1 } = options;
+        const { 
+            count = 50, 
+            color = '#ffffff', 
+            speed = 1,
+            connectDistance = 100,
+            showConnections = true
+        } = options;
 
-        const particles: Array<{
+        interface Particle {
             x: number;
             y: number;
             vx: number;
             vy: number;
             radius: number;
             alpha: number;
-        }> = [];
+            baseAlpha: number;
+        }
 
-        // Generate particles
+        const particles: Particle[] = [];
+
+        // Generate particles with varied properties
         for (let i = 0; i < count; i++) {
+            const baseAlpha = 0.3 + Math.random() * 0.4;
             particles.push({
                 x: Math.random() * canvas.width,
                 y: Math.random() * canvas.height,
-                vx: (Math.random() - 0.5) * speed,
-                vy: (Math.random() - 0.5) * speed,
-                radius: Math.random() * 3 + 1,
-                alpha: Math.random(),
+                vx: (Math.random() - 0.5) * speed * 2,
+                vy: (Math.random() - 0.5) * speed * 2,
+                radius: 1 + Math.random() * 2,
+                alpha: baseAlpha,
+                baseAlpha,
             });
         }
+
+        // Mouse/touch tracking for interactive effects
+        let mouseX = canvas.width / 2;
+        let mouseY = canvas.height / 2;
+        let isMouseActive = false;
+
+        const handleMouseMove = (e: MouseEvent) => {
+            const rect = canvas.getBoundingClientRect();
+            mouseX = e.clientX - rect.left;
+            mouseY = e.clientY - rect.top;
+            isMouseActive = true;
+        };
+
+        const handleMouseLeave = () => {
+            isMouseActive = false;
+        };
+
+        canvas.addEventListener('mousemove', handleMouseMove);
+        canvas.addEventListener('mouseleave', handleMouseLeave);
 
         let animationId: number;
 
         function animate() {
             ctx.clearRect(0, 0, canvas.width, canvas.height);
 
-            particles.forEach(p => {
+            // Update and draw particles
+            particles.forEach((p) => {
                 p.x += p.vx;
                 p.y += p.vy;
 
-                // Wrap around
+                // Wrap around edges
                 if (p.x < 0) p.x = canvas.width;
                 if (p.x > canvas.width) p.x = 0;
                 if (p.y < 0) p.y = canvas.height;
                 if (p.y > canvas.height) p.y = 0;
 
+                // Interactive response to mouse
+                if (isMouseActive) {
+                    const dx = mouseX - p.x;
+                    const dy = mouseY - p.y;
+                    const distance = Math.sqrt(dx * dx + dy * dy);
+                    const maxDistance = 150;
+                    
+                    if (distance < maxDistance) {
+                        const force = (maxDistance - distance) / maxDistance;
+                        p.vx += (dx / distance) * force * 0.1;
+                        p.vy += (dy / distance) * force * 0.1;
+                        p.alpha = Math.min(1, p.baseAlpha + force * 0.3);
+                    } else {
+                        p.alpha = p.baseAlpha;
+                    }
+                } else {
+                    p.alpha = p.baseAlpha;
+                }
+
+                // Draw particle with gradient
+                const gradient = ctx.createRadialGradient(p.x, p.y, 0, p.x, p.y, p.radius * 2);
+                // Handle both hex and rgb colors
+                let transparentColor = color;
+                if (color.startsWith('#')) {
+                    // Convert hex to rgba
+                    const hex = color.replace('#', '');
+                    const r = parseInt(hex.substr(0, 2), 16);
+                    const g = parseInt(hex.substr(2, 2), 16);
+                    const b = parseInt(hex.substr(4, 2), 16);
+                    transparentColor = `rgba(${r}, ${g}, ${b}, 0)`;
+                } else if (color.includes('rgb')) {
+                    transparentColor = color.replace(')', ', 0)').replace('rgb', 'rgba');
+                }
+                gradient.addColorStop(0, color);
+                gradient.addColorStop(1, transparentColor);
+                
                 ctx.beginPath();
                 ctx.arc(p.x, p.y, p.radius, 0, Math.PI * 2);
-                ctx.fillStyle = color;
+                ctx.fillStyle = gradient;
                 ctx.globalAlpha = p.alpha;
                 ctx.fill();
             });
+
+            // Draw connections between nearby particles
+            if (showConnections) {
+                ctx.strokeStyle = color;
+                ctx.lineWidth = 0.5;
+                
+                for (let i = 0; i < particles.length; i++) {
+                    for (let j = i + 1; j < particles.length; j++) {
+                        const p1 = particles[i];
+                        const p2 = particles[j];
+                        const dx = p2.x - p1.x;
+                        const dy = p2.y - p1.y;
+                        const distance = Math.sqrt(dx * dx + dy * dy);
+
+                        if (distance < connectDistance) {
+                            const opacity = (1 - distance / connectDistance) * 0.2;
+                            ctx.globalAlpha = opacity;
+                            ctx.beginPath();
+                            ctx.moveTo(p1.x, p1.y);
+                            ctx.lineTo(p2.x, p2.y);
+                            ctx.stroke();
+                        }
+                    }
+                }
+            }
 
             animationId = requestAnimationFrame(animate);
         }
 
         animate();
 
-        return () => cancelAnimationFrame(animationId);
+        return () => {
+            cancelAnimationFrame(animationId);
+            canvas.removeEventListener('mousemove', handleMouseMove);
+            canvas.removeEventListener('mouseleave', handleMouseLeave);
+        };
     },
 
     /**

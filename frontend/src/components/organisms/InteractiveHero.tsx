@@ -155,10 +155,10 @@ export function InteractiveHero({ onStartDiscovery, onSkipAnimation }: Interacti
             {liveMessage}
           </div>
           <h1 className={styles.headline}>
-            Who do others believe I am?
+            Discover How Your Friends Actually See You
           </h1>
           <p className={styles.subtext}>
-            Discover your reflection through AI
+            Tap the mirror. An AI persona blooms from anonymous echoes. Short flow, instant anime vibe.
           </p>
 
           <div className={styles.mirrorContainer}>
@@ -223,8 +223,11 @@ export function InteractiveHero({ onStartDiscovery, onSkipAnimation }: Interacti
               onMouseEnter={handleCTAHover}
               className={`${styles.ctaButton} ${stage === 'reveal' ? styles.glowing : ''}`}
             >
-              ✨ Summon Your Reflection ✨
+              Create Your AI Mirror (Free)
             </Button>
+            <p className={styles.trustText}>
+              Free start • Anonymous • No card
+            </p>
           </div>
 
           {onSkipAnimation && stage !== 'idle' && (

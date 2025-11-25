@@ -26,20 +26,20 @@ interface Step {
 const steps: Step[] = [
     {
         number: 1,
-        title: 'Create Your Mirror Survey',
-        description: 'Spin up a perception ritual in one tap—no coding or forms required.',
+        title: 'Launch the Link',
+        description: 'One tap. Your ritual survey is live.',
         icon: '🔗',
     },
     {
         number: 2,
-        title: 'Invite Anonymous Echoes',
-        description: 'Share the link anywhere. Friends answer privately in under 2 minutes.',
+        title: 'Collect Echoes',
+        description: 'Friends drop anonymous notes in under 2 min.',
         icon: '🗳️',
     },
     {
         number: 3,
-        title: 'Summon Your Persona',
-        description: 'AI fuses every echo into a living persona you can chat with.',
+        title: 'Summon the Persona',
+        description: 'AI weaves the echoes into an anime twin.',
         icon: '✨',
     },
 ];
@@ -47,17 +47,17 @@ const steps: Step[] = [
 const trustBadges = [
     {
         title: 'Privacy First',
-        description: 'Responses are anonymous—only you see the results.',
+        description: 'Only you see the echoes.',
         icon: '🛡️'
     },
     {
         title: '1-Minute Setup',
-        description: 'Create, copy, and share a ritual link in sixty seconds.',
+        description: 'Link, copy, share. Done.',
         icon: '⚡'
     },
     {
         title: 'Guided Journey',
-        description: 'Dashboard shows exactly how many echoes you still need.',
+        description: 'Dashboard tracks the summon bar.',
         icon: '🧭'
     }
 ];
@@ -94,10 +94,10 @@ export function FeatureShowcase() {
     return (
         <section ref={sectionRef} className={styles.showcase}>
             <div className={styles.container}>
-                <p className={styles.kicker}>How the Ritual Works</p>
-                <h2 className={styles.heading}>Collect echoes. Reveal who your friends believe you are.</h2>
+                <p className={styles.kicker}>How It Works</p>
+                <h2 className={styles.heading}>3 Steps. Zero Filler.</h2>
                 <p className={styles.subheading}>
-                    Every page reinforces trust, clarity, and magic—from anonymous surveys to cinematic summoning.
+                    Short flow built for anime-style reveals. Tap, collect, summon.
                 </p>
 
                 <div className={styles.steps}>
@@ -115,8 +115,8 @@ export function FeatureShowcase() {
 
                 <div className={styles.trustSection}>
                     <div className={styles.trustHeader}>
-                        <h3>Built for trust & speed</h3>
-                        <p>Designed with Nielsen’s heuristics and WCAG-first patterns.</p>
+                        <h3>Fast. Private. Otaku-friendly.</h3>
+                        <p>Clear UX, short copy, WCAG-safe.</p>
                     </div>
                     <div className={styles.trustGrid}>
                         {trustBadges.map((badge) => (
@@ -133,10 +133,7 @@ export function FeatureShowcase() {
 
                 <div className={styles.ctaRow}>
                     <Button variant="primary" size="lg" onClick={() => router.push('/login')}>
-                        Start Collecting Echoes
-                    </Button>
-                    <Button variant="ghost" size="sm" onClick={() => router.push('/docs')}>
-                        See the full journey
+                        Create Your AI Mirror (Free)
                     </Button>
                 </div>
             </div>

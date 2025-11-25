@@ -47,7 +47,7 @@
   font-weight: var(--font-weight-bold);
   margin-bottom: var(--space-md);
   line-height: var(--line-height-tight);
-  text-shadow: 0 2px 20px rgba(0, 0, 0, 0.3);
+  text-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
   background: linear-gradient(135deg, #ffffff 0%, var(--color-primary) 100%);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
@@ -80,8 +80,8 @@
 
 .skeleton {
   position: absolute;
-  width: 420px;
-  height: 420px;
+  width: 424px; /* 4px grid: 424 = 106 × 4 */
+  height: 424px;
   border-radius: var(--radius-xl);
   background: var(--gradient-accent-wash);
   box-shadow: var(--shadow-glow-accent);
@@ -109,7 +109,7 @@
 }
 
 .mirror {
-  width: 400px;
+  width: 400px; /* 4px grid: 400 = 100 × 4 */
   height: 400px;
   position: relative;
   cursor: pointer;
@@ -118,33 +118,33 @@
 }
 
 .mirror.idle {
-  box-shadow: 0 0 40px rgba(217, 70, 239, 0.2);
+  box-shadow: 0 0 40px rgba(168, 85, 247, 0.15);
   animation: gentlePulse 4s ease-in-out infinite;
 }
 
 .mirror.hover {
-  box-shadow: 0 0 60px rgba(217, 70, 239, 0.4), 0 8px 32px rgba(0, 0, 0, 0.15);
+  box-shadow: 0 0 60px rgba(168, 85, 247, 0.25), 0 8px 32px rgba(0, 0, 0, 0.15);
   transform: translateY(-4px);
 }
 
 .mirror.active {
-  box-shadow: 0 0 80px rgba(217, 70, 239, 0.6), inset 0 0 60px rgba(255, 255, 255, 0.1);
+  box-shadow: 0 0 80px rgba(168, 85, 247, 0.35), inset 0 0 60px rgba(255, 255, 255, 0.1);
 }
 
 .mirror.reveal {
-  box-shadow: 0 0 100px rgba(217, 70, 239, 0.8);
+  box-shadow: 0 0 100px rgba(168, 85, 247, 0.4);
 }
 
 @keyframes gentlePulse {
 
   0%,
   100% {
-    box-shadow: 0 0 40px rgba(217, 70, 239, 0.2);
+    box-shadow: 0 0 40px rgba(168, 85, 247, 0.15);
     transform: scale(1);
   }
 
   50% {
-    box-shadow: 0 0 60px rgba(217, 70, 239, 0.3);
+    box-shadow: 0 0 60px rgba(168, 85, 247, 0.2);
     transform: scale(1.01);
   }
 }
@@ -188,7 +188,7 @@
 .mirrorText {
   font-size: var(--font-size-4xl);
   font-weight: var(--font-weight-bold);
-  text-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
+  text-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
   z-index: var(--z-tertiary);
 }
 
@@ -248,7 +248,7 @@
   width: 100%;
   height: 100%;
   border-radius: 50%;
-  background: radial-gradient(circle, rgba(217, 70, 239, 0.3) 0%, transparent 70%);
+  background: radial-gradient(circle, rgba(168, 85, 247, 0.2) 0%, transparent 70%);
   animation: rippleEffect 2s ease-out infinite;
 }
 
@@ -266,6 +266,18 @@
 
 .ctaContainer {
   margin-top: var(--space-3xl);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--space-md);
+}
+
+.trustText {
+  font-size: var(--font-size-sm);
+  color: var(--color-surface-alt);
+  opacity: 0.9;
+  text-align: center;
+  margin-top: var(--space-sm);
 }
 
 .ctaButton {
@@ -310,8 +322,8 @@
 }
 
 .skipButton:focus-visible {
-  outline: 2px solid var(--color-curiosity-primary);
-  outline-offset: 2px;
+  outline: 4px solid var(--color-curiosity-primary);
+  outline-offset: 4px;
 }
 
 /* Accessibility: Reduced Motion */
@@ -341,12 +353,12 @@
 
   .mirror {
     width: 100%;
-    max-width: 350px;
-    height: 350px;
+    max-width: 352px; /* 4px grid: 352 = 88 × 4 */
+    height: 352px;
   }
 
   .mirrorContainer {
-    min-height: 350px;
+    min-height: 352px;
   }
 
   .ctaButton {
@@ -357,12 +369,12 @@
 
 @media (max-width: 480px) {
   .mirror {
-    max-width: 280px;
+    max-width: 280px; /* 4px grid: 280 = 70 × 4 */
     height: 280px;
   }
 
   .mirrorContainer {
-    min-height: 280px;
+    min-height: 280px; /* 4px grid: 280 = 70 × 4 */
   }
 
   .headline {
