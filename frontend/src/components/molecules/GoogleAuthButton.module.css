@@ -3,6 +3,121 @@
   flex-direction: column;
   align-items: center;
   gap: var(--space-md);
+  width: 100%;
+}
+
+.button {
+  min-width: 280px;
+  width: 100%;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.button:hover:not(:disabled) {
+  transform: translateY(-4px);
+  box-shadow:
+    0 0 0 3px rgba(105, 127, 172, 0.12),
+    0 12px 24px rgba(15, 23, 42, 0.15);
+}
+
+.buttonContent {
+  display: flex;
+  align-items: center;
+  gap: var(--space-sm);
+}
+
+.googleIcon {
+  font-size: var(--font-size-xl);
+  transition: transform 0.3s;
+}
+
+.button:hover:not(:disabled) .googleIcon {
+  transform: rotate(2deg) scale(1.05);
+}
+
+.loadingState,
+.successState {
+  display: flex;
+  align-items: center;
+  gap: var(--space-sm);
+}
+
+.spinner {
+  width: 20px;
+  height: 20px;
+  border: 2px solid rgba(255, 255, 255, 0.3);
+  border-top-color: white;
+  border-radius: 50%;
+  animation: spin 0.8s linear infinite;
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.statusText {
+  font-size: var(--font-size-sm);
+  color: var(--color-accent);
+  text-align: center;
+  animation: fadeInOut 2s ease-in-out infinite;
+}
+
+@keyframes fadeInOut {
+  0%, 100% {
+    opacity: 0.7;
+  }
+
+  50% {
+    opacity: 1;
+  }
+}
+
+.errorCallout {
+  width: 100%;
+  background: rgba(254, 242, 242, 0.95);
+  border-radius: var(--radius-md);
+  padding: var(--space-sm) var(--space-md);
+  font-size: var(--font-size-sm);
+  color: var(--color-error);
+  text-align: center;
+  border: 1px solid rgba(239, 68, 68, 0.2);
+}
+
+.retryButton {
+  margin-top: var(--space-xs);
+  background: transparent;
+  border: none;
+  color: var(--color-accent);
+  font-weight: var(--font-weight-semibold);
+  cursor: pointer;
+  text-decoration: underline;
+}
+
+.retryButton:hover {
+  color: var(--color-accent-dark);
+}
+
+.idle .buttonContent {
+  opacity: 1;
+}
+
+.loading .buttonContent {
+  opacity: 0.5;
+}
+
+.success {
+  box-shadow: 0 0 0 3px rgba(16, 185, 129, 0.2);
+}
+
+.error .buttonContent {
+  opacity: 0.4;
+}
+.container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--space-md);
 }
 
 .button {

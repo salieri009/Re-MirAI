@@ -4,17 +4,29 @@
   justify-content: center;
   font-weight: var(--font-weight-medium);
   border-radius: var(--radius-full);
+  border: 1px solid transparent;
 }
 
 /* Variants */
 .default {
-  background-color: var(--color-bg-tertiary);
-  color: var(--color-text);
+  background-color: var(--color-surface-alt);
+  color: var(--color-text-secondary);
 }
 
 .primary {
   background-color: var(--color-primary);
   color: var(--color-text-inverse);
+}
+
+.accent {
+  background-color: var(--color-accent);
+  color: var(--color-text-inverse);
+}
+
+.outline {
+  background-color: transparent;
+  border-color: var(--color-accent);
+  color: var(--color-accent);
 }
 
 .success {

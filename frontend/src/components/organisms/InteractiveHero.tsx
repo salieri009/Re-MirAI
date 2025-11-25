@@ -1,11 +1,13 @@
 'use client';
 
-import { useState, useEffect, useRef } from 'react';
+import { useState, useEffect, useRef, useMemo } from 'react';
 import gsap from 'gsap';
 import { Button } from '@/components/atoms/Button';
 import { conversionInteractions, delightInteractions } from '@/lib/micro-interactions';
 import { useAnnouncement, useReducedMotion } from '@/hooks/useAccessibility';
 import { tokens } from '@/design-tokens';
+import { trackEvent } from '@/lib/analytics';
+import { PersonaPreview } from './PersonaPreview';
 import styles from './InteractiveHero.module.css';
 
 interface InteractiveHeroProps {
@@ -15,6 +17,8 @@ interface InteractiveHeroProps {
 
 export function InteractiveHero({ onStartDiscovery, onSkipAnimation }: InteractiveHeroProps) {
   const [stage, setStage] = useState<'idle' | 'hover' | 'active' | 'reveal'>('idle');
+  const [isHeroReady, setHeroReady] = useState(false);
+  const [liveMessage, setLiveMessage] = useState('Preparing interactive mirror experience.');
 
   const mirrorRef = useRef<HTMLDivElement>(null);
   const ctaRef = useRef<HTMLButtonElement>(null);
@@ -24,9 +28,14 @@ export function InteractiveHero({ onStartDiscovery, onSkipAnimation }: Interacti
   const reducedMotion = useReducedMotion();
   const announce = useAnnouncement();
 
+  useEffect(() => {
+    const timer = setTimeout(() => setHeroReady(true), reducedMotion ? 150 : 400);
+    return () => clearTimeout(timer);
+  }, [reducedMotion]);
+
   // Initialize particle system
   useEffect(() => {
-    if (!canvasRef.current || reducedMotion) return;
+    if (!canvasRef.current || reducedMotion || !isHeroReady) return;
 
     const canvas = canvasRef.current;
     const ctx = canvas.getContext('2d');
@@ -39,7 +48,7 @@ export function InteractiveHero({ onStartDiscovery, onSkipAnimation }: Interacti
     // Create particle system
     const cleanup = delightInteractions.particleSystem(canvas, ctx, {
       count: 30,
-      color: tokens.emotions.curiosity.primary,
+        color: tokens.palette.primary,
       speed: 0.5,
     });
 
@@ -50,31 +59,32 @@ export function InteractiveHero({ onStartDiscovery, onSkipAnimation }: Interacti
         particleCleanup.current();
       }
     };
-  }, [reducedMotion]);
+  }, [isHeroReady, reducedMotion]);
 
   // Announce stage transitions for screen reader users
-  useEffect(() => {
-    const stageMessages: Record<typeof stage, { message: string; priority?: 'polite' | 'assertive' }> = {
-      idle: {
-        message: 'Interactive mirror ready. Hover or focus to explore.',
-      },
-      hover: {
-        message: 'Mirror reacting to your presence. Click to reveal your persona.',
-      },
-      active: {
-        message: 'Summoning your reflection. Please wait.',
-        priority: 'assertive',
-      },
-      reveal: {
-        message: 'Persona preview unlocked. Use the Summon Your Reflection button to continue.',
-      },
-    };
+  const stageMessages = useMemo<Record<typeof stage, { message: string; priority?: 'polite' | 'assertive' }>>(() => ({
+    idle: {
+      message: 'Interactive mirror ready. Hover or focus to explore.',
+    },
+    hover: {
+      message: 'Mirror reacting to your presence. Click to reveal your persona.',
+    },
+    active: {
+      message: 'Summoning your reflection. Please wait.',
+      priority: 'assertive',
+    },
+    reveal: {
+      message: 'Persona preview unlocked. Use the Summon Your Reflection button to continue.',
+    },
+  }), []);
 
+  useEffect(() => {
     const { message, priority } = stageMessages[stage];
+    setLiveMessage(message);
     if (message) {
       announce(message, priority);
     }
-  }, [announce, stage]);
+  }, [announce, stage, stageMessages]);
 
   // Initial entrance animation
   useEffect(() => {
@@ -107,6 +117,7 @@ export function InteractiveHero({ onStartDiscovery, onSkipAnimation }: Interacti
   const handleMirrorHover = () => {
     if (stage === 'idle') {
       setStage('hover');
+      trackEvent('hero.mirror.hover');
       if (!reducedMotion && mirrorRef.current) {
         conversionInteractions.mirrorHover(mirrorRef.current);
       }
@@ -116,13 +127,15 @@ export function InteractiveHero({ onStartDiscovery, onSkipAnimation }: Interacti
   const handleMirrorLeave = () => {
     if (stage === 'hover') {
       setStage('idle');
+      trackEvent('hero.mirror.leave');
     }
   };
 
   const handleMirrorClick = async () => {
-    if (stage === 'active' || stage === 'reveal') return;
+    if (stage === 'active' || stage === 'reveal' || !isHeroReady) return;
 
     setStage('active');
+    trackEvent('hero.mirror.break');
 
     if (!reducedMotion && mirrorRef.current) {
       // Trigger mirror shatter animation
@@ -138,6 +151,11 @@ export function InteractiveHero({ onStartDiscovery, onSkipAnimation }: Interacti
     }
   };
 
+  const handleStartDiscovery = () => {
+    trackEvent('hero.cta.startDiscovery', { stage });
+    onStartDiscovery();
+  };
+
   return (
     <section className={styles.hero}>
       {/* Particle background canvas */}
@@ -145,6 +163,9 @@ export function InteractiveHero({ onStartDiscovery, onSkipAnimation }: Interacti
 
       <div className={styles.container}>
         <div className={styles.content}>
+          <div className={styles.heroAnnouncement} role="status" aria-live="polite">
+            {liveMessage}
+          </div>
           <h1 className={styles.headline}>
             Who do others believe I am?
           </h1>
@@ -153,58 +174,53 @@ export function InteractiveHero({ onStartDiscovery, onSkipAnimation }: Interacti
           </p>
 
           <div className={styles.mirrorContainer}>
-            <div
-              ref={mirrorRef}
-              className={`${styles.mirror} ${styles[stage]}`}
-              onMouseEnter={handleMirrorHover}
-              onMouseLeave={handleMirrorLeave}
-              onClick={handleMirrorClick}
-              role="button"
-              tabIndex={0}
-              aria-label="Interactive mirror - click to reveal your persona"
-              onKeyDown={(e) => {
-                if (e.key === 'Enter' || e.key === ' ') {
-                  e.preventDefault();
-                  handleMirrorClick();
-                }
-              }}
-            >
-              <div className={styles.mirrorGlass}>
-                {stage === 'idle' && (
-                  <div className={styles.mirrorText}>
-                    🪞
-                  </div>
-                )}
-                {stage === 'hover' && (
-                  <div className={styles.mirrorText}>
-                    Who am I?
-                  </div>
-                )}
-                {stage === 'active' && (
-                  <div className={styles.mirrorText}>
-                    ✨
-                  </div>
-                )}
-                {stage === 'reveal' && (
-                  <div className={styles.personaPreview}>
-                    <div className={styles.personaCard}>
-                      <div className={styles.personaName}>The Mystic</div>
-                      <div className={styles.personaBadge}>SSR ★★★</div>
-                      <div className={styles.personaStats}>
-                        <div className={styles.stat}>Charisma: ████</div>
-                        <div className={styles.stat}>Intellect: ████</div>
-                      </div>
-                      <p className={styles.previewText}>This could be you</p>
-                    </div>
-                  </div>
-                )}
+            {!isHeroReady && (
+              <div className={styles.skeleton} aria-hidden="true">
+                <div className={styles.skeletonGlow} />
               </div>
+            )}
+            <div className={styles.mirrorShell}>
+              <div
+                ref={mirrorRef}
+                className={`${styles.mirror} ${styles[stage]}`}
+                onMouseEnter={handleMirrorHover}
+                onMouseLeave={handleMirrorLeave}
+                onClick={handleMirrorClick}
+                role="button"
+                tabIndex={0}
+                aria-label="Interactive mirror - click to reveal your persona"
+                onKeyDown={(e) => {
+                  if (e.key === 'Enter' || e.key === ' ') {
+                    e.preventDefault();
+                    handleMirrorClick();
+                  }
+                }}
+              >
+                <div className={styles.mirrorGlass}>
+                  {stage === 'idle' && (
+                    <div className={styles.mirrorText}>
+                      🪞
+                    </div>
+                  )}
+                  {stage === 'hover' && (
+                    <div className={styles.mirrorText}>
+                      Who am I?
+                    </div>
+                  )}
+                  {stage === 'active' && (
+                    <div className={styles.mirrorText}>
+                      ✨
+                    </div>
+                  )}
+                  <PersonaPreview isVisible={stage === 'reveal'} />
+                </div>
 
-              {/* Mirror fragments for shatter effect */}
-              <div className={styles.mirrorFragments}>
-                {Array.from({ length: 8 }).map((_, i) => (
-                  <div key={i} className={`${styles.fragment} fragment-${i}`} />
-                ))}
+                {/* Mirror fragments for shatter effect */}
+                <div className={styles.mirrorFragments}>
+                  {Array.from({ length: 8 }).map((_, i) => (
+                    <div key={i} className={`${styles.fragment} fragment-${i}`} />
+                  ))}
+                </div>
               </div>
             </div>
           </div>
@@ -214,7 +230,7 @@ export function InteractiveHero({ onStartDiscovery, onSkipAnimation }: Interacti
               ref={ctaRef}
               variant="primary"
               size="lg"
-              onClick={onStartDiscovery}
+              onClick={handleStartDiscovery}
               onMouseEnter={handleCTAHover}
               className={`${styles.ctaButton} ${stage === 'reveal' ? styles.glowing : ''}`}
             >

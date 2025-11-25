@@ -1,9 +1,10 @@
 'use client';
 
-import { useState, useEffect, useRef } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import gsap from 'gsap';
 import { authApi } from '@/lib/api/auth';
+import { trackEvent } from '@/lib/analytics';
 import { useAuthStore } from '@/stores/authStore';
 import { GoogleAuthButton } from '@/components/molecules/GoogleAuthButton';
 import { TrustBadge } from '@/components/molecules/TrustBadge';
@@ -11,6 +12,8 @@ import { Button } from '@/components/atoms/Button';
 import { trustInteractions } from '@/lib/micro-interactions';
 import { useReducedMotion, useAnnouncement } from '@/hooks/useAccessibility';
 import styles from './page.module.css';
+
+type AuthState = 'idle' | 'loading' | 'success' | 'error';
 
 const TRUST_BADGES = [
   {
@@ -33,7 +36,7 @@ const TRUST_BADGES = [
 export default function LoginPage() {
   const router = useRouter();
   const { login } = useAuthStore();
-  const [isLoading, setIsLoading] = useState(false);
+  const [authState, setAuthState] = useState<AuthState>('idle');
   const [statusMessage, setStatusMessage] = useState('Connecting to Google...');
   const [error, setError] = useState<string | null>(null);
 
@@ -105,14 +108,13 @@ export default function LoginPage() {
 
   // Loading state carousel
   useEffect(() => {
-    if (isLoading) {
+    if (authState === 'loading') {
       const messages = [
         'Connecting to Google...',
         'Verifying your account...',
         'Almost there...',
       ];
 
-      let index = 0;
       const cleanup = trustInteractions.loadingStates(
         setStatusMessage,
         messages,
@@ -121,29 +123,39 @@ export default function LoginPage() {
 
       return cleanup;
     }
-  }, [isLoading]);
+  }, [authState]);
 
   const handleGoogleAuth = async () => {
-    setIsLoading(true);
+    if (authState === 'loading') return;
+
+    setAuthState('loading');
     setError(null);
+    trackEvent('auth.start', { provider: 'google' });
     announce('Authenticating with Google', 'polite');
 
     try {
       const response = await authApi.googleLogin('mock-id-token');
       login(response.accessToken, response.refreshToken, response.user);
-      announce('Login successful!', 'polite');
-      router.push('/dashboard');
+      setStatusMessage('Welcome back. Redirecting to your dashboard...');
+      setAuthState('success');
+      announce('Login successful! Redirecting…', 'polite');
+      trackEvent('auth.success', { provider: 'google' });
+      setTimeout(() => router.push('/dashboard'), 1200);
     } catch (err: any) {
       console.error('Login failed:', err);
       const errorMsg = err.message || 'Login failed. Please try again.';
       setError(errorMsg);
+      setStatusMessage('We hit a snag. Try again.');
+      setAuthState('error');
       announce(errorMsg, 'assertive');
-      setIsLoading(false);
+      trackEvent('auth.error', { provider: 'google', message: errorMsg });
     }
   };
 
   const handleRetry = () => {
     setError(null);
+    setAuthState('idle');
+    setStatusMessage('Connecting to Google...');
     handleGoogleAuth();
   };
 
@@ -161,34 +173,32 @@ export default function LoginPage() {
         <div className={styles.content}>
           <GoogleAuthButton
             onAuth={handleGoogleAuth}
-            loading={isLoading}
-            disabled={isLoading}
+            onRetry={handleRetry}
+            state={authState}
             statusMessage={statusMessage}
+            errorMessage={error}
           />
+
+          <p className={styles.privacyPromise}>
+            We only use your email to save your progress. No data is sold.
+          </p>
 
           <p className={styles.helpText}>
             Quick, secure, simple
           </p>
-
-          {error && (
-            <div className={styles.error}>
-              <p className={styles.errorMessage}>{error}</p>
-              <Button variant="ghost" size="sm" onClick={handleRetry}>
-                Try Again
-              </Button>
-            </div>
-          )}
         </div>
 
         {/* Trust Badges */}
-        <div className={styles.trustBadges}>
+        <div className={styles.trustBadges} role="list">
           {TRUST_BADGES.map((badge) => (
-            <TrustBadge
-              key={badge.label}
-              icon={badge.icon}
-              label={badge.label}
-              description={badge.description}
-            />
+            <div key={badge.label} role="listitem">
+              <TrustBadge
+                icon={badge.icon}
+                label={badge.label}
+                description={badge.description}
+                aria-label={`${badge.label} — ${badge.description}`}
+              />
+            </div>
           ))}
         </div>
 

@@ -3,7 +3,7 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 50%, #d946ef 100%);
+  background: var(--gradient-primary-to-accent);
   background-size: 200% 200%;
   animation: gradientShift 15s ease infinite;
   position: relative;
@@ -19,6 +19,23 @@
 
   50% {
     background-position: 100% 50%;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .hero {
+    animation: none;
+    background-position: 0% 50%;
+  }
+  
+  .mirror {
+    transition: none;
+    transform: none !important;
+  }
+  
+  .ctaButton {
+    animation: none !important;
+    transition: none !important;
   }
 }
 
@@ -43,6 +60,17 @@
 .content {
   text-align: center;
   color: var(--color-text-inverse);
+  position: relative;
+}
+
+.heroAnnouncement {
+  position: absolute;
+  top: -9999px;
+  left: -9999px;
+  height: 1px;
+  width: 1px;
+  overflow: hidden;
+  clip: rect(1px, 1px, 1px, 1px);
 }
 
 .headline {
@@ -52,7 +80,7 @@
   margin-bottom: var(--space-md);
   line-height: var(--line-height-tight);
   text-shadow: 0 2px 20px rgba(0, 0, 0, 0.3);
-  background: linear-gradient(135deg, #ffffff 0%, #f093fb 100%);
+  background: linear-gradient(135deg, #ffffff 0%, var(--color-primary) 100%);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
@@ -62,6 +90,7 @@
   font-size: var(--font-size-lg);
   margin-bottom: var(--space-3xl);
   opacity: 0.9;
+  color: var(--color-surface-alt);
 }
 
 .mirrorContainer {
@@ -73,12 +102,52 @@
   min-height: 400px;
 }
 
+.mirrorShell {
+  position: relative;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.skeleton {
+  position: absolute;
+  width: 420px;
+  height: 420px;
+  border-radius: var(--radius-xl);
+  background: var(--gradient-accent-wash);
+  box-shadow: var(--shadow-glow-accent);
+  overflow: hidden;
+}
+
+.skeletonGlow {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    90deg,
+    transparent 0%,
+    rgba(255, 255, 255, 0.5) 50%,
+    transparent 100%
+  );
+  animation: shimmer 1.6s infinite;
+}
+
+@keyframes shimmer {
+  0% {
+    transform: translateX(-100%);
+  }
+
+  100% {
+    transform: translateX(100%);
+  }
+}
+
 .mirror {
   width: 400px;
   height: 400px;
   position: relative;
   cursor: pointer;
-  transition: all 0.6s var(--ease-calm);
+  transition: all 0.6s var(--transition-base);
   z-index: var(--z-primary);
 }
 
@@ -117,11 +186,11 @@
 .mirrorGlass {
   width: 100%;
   height: 100%;
-  background: rgba(255, 255, 255, 0.1);
-  backdrop-filter: blur(20px);
+  background: rgba(255, 255, 255, 0.08);
   -webkit-backdrop-filter: blur(20px);
+  backdrop-filter: blur(20px);
   border-radius: var(--radius-xl);
-  border: 2px solid rgba(255, 255, 255, 0.2);
+  border: 2px solid rgba(255, 255, 255, 0.15);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -142,9 +211,10 @@
 
 .fragment {
   position: absolute;
-  background: rgba(255, 255, 255, 0.3);
-  backdrop-filter: blur(10px);
-  border: 1px solid rgba(255, 255, 255, 0.4);
+  background: rgba(255, 255, 255, 0.1);
+  -webkit-backdrop-filter: blur(20px);
+  backdrop-filter: blur(20px);
+  border: 1px solid rgba(255, 255, 255, 0.2);
   opacity: 0;
   pointer-events: none;
 }
@@ -170,7 +240,7 @@
   color: var(--color-text);
   padding: var(--space-xl);
   border-radius: var(--radius-lg);
-  box-shadow: var(--shadow-emotional-delight);
+  box-shadow: var(--shadow-glow-dual);
   text-align: center;
   min-width: 300px;
 }
@@ -179,7 +249,7 @@
   font-family: var(--font-display);
   font-size: var(--font-size-3xl);
   font-weight: var(--font-weight-bold);
-  color: var(--color-curiosity-primary);
+  color: var(--color-primary);
   margin-bottom: var(--space-sm);
 }
 
@@ -240,17 +310,18 @@
 
 .ctaButton.glowing {
   animation: pulseGlow 2s ease-in-out infinite;
+  box-shadow: var(--shadow-glow-primary);
 }
 
 @keyframes pulseGlow {
 
   0%,
   100% {
-    box-shadow: 0 0 20px var(--color-curiosity-primary), 0 0 40px var(--color-curiosity-primary);
+    box-shadow: var(--shadow-glow-primary);
   }
 
   50% {
-    box-shadow: 0 0 40px var(--color-curiosity-primary), 0 0 80px var(--color-curiosity-accent);
+    box-shadow: var(--shadow-glow-dual);
   }
 }
 

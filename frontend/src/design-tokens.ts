@@ -10,7 +10,18 @@
  * - Awe & Joy (Summoning)
  */
 
+const SMALL_SWITCH_PALETTE = {
+    primary: '#d946ef',
+    primaryLight: '#f5c6ff',
+    primaryDark: '#b51eca',
+    canvas: '#e6ebf8',
+    accent: '#697fac',
+    accentLight: '#90a1c8',
+    accentDark: '#4b5d80',
+} as const;
+
 export const tokens = {
+    palette: SMALL_SWITCH_PALETTE,
     /**
      * Emotional Color Mappings
      * Colors evoke specific emotions aligned with page purposes
@@ -18,29 +29,29 @@ export const tokens = {
     emotions: {
         // Curiosity & Wonder (Landing Page)
         curiosity: {
-            primary: '#d946ef',    // Fuchsia - Intriguing, magical
-            secondary: '#f093fb',  // Pink - Warm, inviting
-            accent: '#8b5cf6',     // Purple - Mysterious, deep
+            primary: SMALL_SWITCH_PALETTE.primary,
+            secondary: SMALL_SWITCH_PALETTE.canvas,
+            accent: SMALL_SWITCH_PALETTE.accent,
         },
 
         // Trust & Clarity (Login, Survey)
         trust: {
-            primary: '#3b82f6',    // Blue - Trustworthy, calm
-            secondary: '#60a5fa',  // Light Blue - Clear, open
-            accent: '#10b981',     // Green - Safe, secure
+            primary: SMALL_SWITCH_PALETTE.accent,
+            secondary: SMALL_SWITCH_PALETTE.accentLight,
+            accent: SMALL_SWITCH_PALETTE.canvas,
         },
 
         // Progress & Motivation (Dashboard, Ritual Hub)
         progress: {
-            collecting: '#3b82f6', // Blue - Calming progress
-            ready: '#d946ef',      // Fuchsia - Excitement, ready
+            collecting: SMALL_SWITCH_PALETTE.accent,
+            ready: SMALL_SWITCH_PALETTE.primary,
             success: '#10b981',    // Green - Achievement
             warning: '#f59e0b',    // Amber - Attention needed
         },
 
         // Intimacy & Connection (Chat, Persona Room)
         connection: {
-            user: '#d946ef',       // Warm fuchsia - Personal warmth
+            user: SMALL_SWITCH_PALETTE.primary,
             ai: '#f1f5f9',         // Soft neutral - Gentle presence
             bond: '#f59e0b',       // Gold - Precious connection
             heartLv1: '#e5e7eb',   // Gray - New bond
@@ -51,9 +62,9 @@ export const tokens = {
         // Awe & Joy (Summoning)
         delight: {
             dark: '#1e1b4b',       // Deep indigo - Dramatic backdrop
-            magical: '#d946ef',    // Fuchsia - Magical energy
+            magical: SMALL_SWITCH_PALETTE.primary,
             celebration: '#f59e0b', // Gold - Joy, achievement
-            particle: '#a78bfa',   // Light purple - Ethereal particles
+            particle: SMALL_SWITCH_PALETTE.accentLight,
         },
     },
 
@@ -62,8 +73,9 @@ export const tokens = {
      * Backgrounds and containers
      */
     surface: {
-        light: '#f8fafc',                    // Slate 50
+        light: SMALL_SWITCH_PALETTE.canvas,
         card: 'rgba(255, 255, 255, 0.95)',   // Semi-transparent white
+        alt: SMALL_SWITCH_PALETTE.canvas,
         glass: 'rgba(255, 255, 255, 0.1)',   // Glassmorphism
         dark: '#0f172a',                     // Slate 900
         overlay: 'rgba(0, 0, 0, 0.5)',       // Modal overlay
@@ -182,15 +194,16 @@ export const tokens = {
      */
     shadow: {
         sm: '0 1px 2px 0 rgba(0, 0, 0, 0.05)',
-        md: '0 4px 6px -1px rgba(0, 0, 0, 0.1)',
-        lg: '0 10px 15px -3px rgba(0, 0, 0, 0.1)',
-        xl: '0 20px 25px -5px rgba(0, 0, 0, 0.1)',
-        '2xl': '0 25px 50px -12px rgba(0, 0, 0, 0.25)',
+        md: '0 4px 6px -1px rgba(15, 23, 42, 0.08), 0 2px 4px -1px rgba(15, 23, 42, 0.06)',
+        lg: '0 10px 20px -5px rgba(15, 23, 42, 0.15)',
+        xl: '0 20px 35px -8px rgba(15, 23, 42, 0.2)',
+        '2xl': '0 25px 50px -12px rgba(15, 23, 42, 0.25)',
 
         // Emotional shadows
-        glow: '0 0 30px rgba(217, 70, 239, 0.4)',      // Magical glow
-        glowBlue: '0 0 20px rgba(59, 130, 246, 0.3)',  // Trust glow
-        glowGreen: '0 0 20px rgba(16, 185, 129, 0.3)', // Success glow
+        glowPrimary: `0 0 32px rgba(217, 70, 239, 0.4)`,
+        glowAccent: `0 0 28px rgba(105, 127, 172, 0.45)`,
+        glowDual: `0 0 36px rgba(217, 70, 239, 0.3), 0 0 52px rgba(105, 127, 172, 0.35)`,
+        glowSuccess: '0 0 20px rgba(16, 185, 129, 0.3)',
     },
 
     /**
@@ -204,6 +217,17 @@ export const tokens = {
         xl: '1280px',
         '2xl': '1536px',
     },
+    },
+
+    /**
+     * Gradients
+     * Shared hero/card backgrounds
+     */
+    gradients: {
+        primaryToCanvas: `linear-gradient(135deg, ${SMALL_SWITCH_PALETTE.primary} 0%, ${SMALL_SWITCH_PALETTE.canvas} 100%)`,
+        primaryToAccent: `linear-gradient(135deg, ${SMALL_SWITCH_PALETTE.primary} 0%, ${SMALL_SWITCH_PALETTE.accent} 100%)`,
+        accentWash: `linear-gradient(145deg, rgba(233, 239, 252, 0.9), rgba(105, 127, 172, 0.15))`,
+    },
 } as const;
 
 /**
@@ -213,6 +237,15 @@ export const tokens = {
 export function generateCSSVariables(): string {
     return `
     :root {
+      /* Palette */
+      --palette-primary: ${tokens.palette.primary};
+      --palette-primary-light: ${tokens.palette.primaryLight};
+      --palette-primary-dark: ${tokens.palette.primaryDark};
+      --palette-canvas: ${tokens.palette.canvas};
+      --palette-accent: ${tokens.palette.accent};
+      --palette-accent-light: ${tokens.palette.accentLight};
+      --palette-accent-dark: ${tokens.palette.accentDark};
+
       /* Emotional Colors */
       --color-curiosity-primary: ${tokens.emotions.curiosity.primary};
       --color-curiosity-secondary: ${tokens.emotions.curiosity.secondary};
@@ -237,6 +270,7 @@ export function generateCSSVariables(): string {
       /* Surfaces */
       --surface-light: ${tokens.surface.light};
       --surface-card: ${tokens.surface.card};
+      --surface-alt: ${tokens.surface.alt};
       --surface-dark: ${tokens.surface.dark};
       
       /* Typography */
@@ -264,7 +298,15 @@ export function generateCSSVariables(): string {
       /* Shadows */
       --shadow-md: ${tokens.shadow.md};
       --shadow-lg: ${tokens.shadow.lg};
-      --shadow-glow: ${tokens.shadow.glow};
+      --shadow-glow-primary: ${tokens.shadow.glowPrimary};
+      --shadow-glow-accent: ${tokens.shadow.glowAccent};
+      --shadow-glow-dual: ${tokens.shadow.glowDual};
+      --shadow-glow-success: ${tokens.shadow.glowSuccess};
+
+      /* Gradients */
+      --gradient-primary-to-canvas: ${tokens.gradients.primaryToCanvas};
+      --gradient-primary-to-accent: ${tokens.gradients.primaryToAccent};
+      --gradient-accent-wash: ${tokens.gradients.accentWash};
     }
   `;
 }

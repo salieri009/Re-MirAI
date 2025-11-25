@@ -5,6 +5,7 @@
 
 import { useEffect, useState, useCallback } from 'react';
 import type { CSSProperties, MouseEvent, RefObject } from 'react';
+import { tokens } from '@/design-tokens';
 
 export function useReducedMotion(): boolean {
     const [prefersReduced, setPrefersReduced] = useState(false);
@@ -143,6 +144,8 @@ export function useAccessibility() {
         highContrast,
         shouldAnimate: !reducedMotion,
         shouldUseHighContrast: highContrast,
+        accentColor: tokens.palette.accent,
+        accentColorLight: tokens.palette.accentLight,
     };
 }
 
