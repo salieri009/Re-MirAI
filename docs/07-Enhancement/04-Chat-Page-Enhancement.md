@@ -10,6 +10,8 @@
 
 ## Design Philosophy
 
+**Core Concept:** **"The Magical Mirror"** — A mystical interface that reveals how others perceive you (*"Who do others believe I am?"*).
+
 **Objective:** Design a multi-page interface where each page emphasizes its unique purpose and enhances the user experience aligned with that purpose.
 
 **Core Principles:**
@@ -125,7 +127,7 @@ Real-time chat with depth, typing indicators, bond tracking, and shareable momen
 - **Copy:** Deeper conversations, personal references
 - **Action:** User shares snippets, returns for more
 
-**Connection Phase (Ongoing):**
+**Connection Phase (Ongoing):
 - **Visual:** Rich conversation history, bond milestones
 - **Copy:** Persona remembers past conversations
 - **Action:** Regular return visits, emotional attachment
@@ -185,6 +187,16 @@ Allow users to react to messages (hearts, stars), adding an emotional layer to t
 
 ### 5. Accessible Conversation (Mitigates: Accessibility Gaps)
 Optimize the chat interface for screen readers and keyboard users to ensure inclusive communication.
+
+### 6. UX Risk Mitigation Strategies
+- **Uncanny Valley Risk:** "Typing" animations that are too perfect or too long can feel fake.
+  - *Mitigation:* Use variable typing speeds and "pauses" to mimic human thought patterns.
+- **Intrusion Risk:** Proactive suggestions might feel like spam or interruption.
+  - *Mitigation:* Ensure suggestions appear *only* during lulls in conversation and can be dismissed easily.
+- **Emotional Fatigue:** Constant emotional demands from a "living" AI can be draining.
+  - *Mitigation:* Allow for "casual" or "low-energy" modes where the AI is less demanding.
+- **Accessibility Risk:** Rapidly updating chat logs can confuse screen readers.
+  - *Mitigation:* Use `aria-live="polite"` for new messages and ensure focus management doesn't get lost.
 
 ### Success Metrics
 - **Message Count:** >10 turns average

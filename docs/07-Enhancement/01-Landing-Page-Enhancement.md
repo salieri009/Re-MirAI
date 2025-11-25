@@ -10,6 +10,8 @@
 
 ## Design Philosophy
 
+**Core Concept:** **"The Magical Mirror"** — A mystical interface that reveals how others perceive you (*"Who do others believe I am?"*).
+
 **Objective:** Design a multi-page interface where each page emphasizes its unique purpose and enhances the user experience aligned with that purpose.
 
 **Core Principles:**
@@ -186,6 +188,24 @@ Replace passive reading with active exploration (hover effects, tilt cards) to t
 - **Scroll Depth:** 80% of users reach "How It Works" section
 - **CTA Click Rate:** Increase from baseline by 25%
 - **Bounce Rate:** Reduce by 20%
+
+---
+
+## UX Risk Mitigation Strategies
+
+### 1. Motion Sensitivity (Accessibility)
+**Risk:** Heavy particle effects and scroll-jacking can cause motion sickness.
+**Mitigation:**
+- **Respect `prefers-reduced-motion`:** Automatically disable particles and parallax if system setting is on.
+- **Static Fallback:** Provide a high-quality static image version of the Hero that still conveys the "Mirror" concept without movement.
+
+### 2. Performance Degradation (Technical)
+**Risk:** WebGL/Canvas effects may lag on low-end mobile devices.
+**Mitigation:**
+- **Performance Tiers:** Detect device capability (FPS check) on load.
+  - **High:** Full particles + 3D tilt.
+  - **Low:** Static background + simple CSS fade.
+- **Battery Saver:** Disable loop animations when device is in low-power mode.
 
 ---
 

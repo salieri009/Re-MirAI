@@ -10,6 +10,8 @@
 
 ## Design Philosophy
 
+**Core Concept:** **"The Magical Mirror"** — A mystical interface that reveals how others perceive you (*"Who do others believe I am?"*).
+
 **Objective:** Design a multi-page interface where each page emphasizes its unique purpose and enhances the user experience aligned with that purpose.
 
 **Core Principles:**
@@ -185,6 +187,16 @@ Provide visual cues about the *quality* or *type* of feedback received (without 
 
 ### 5. Accessible Management (Mitigates: Accessibility Gaps)
 Ensure the hub's management tools are fully compliant with accessibility standards.
+
+### 6. UX Risk Mitigation Strategies
+- **Privacy Anxiety:** Users might fear that sharing a link exposes their personal data.
+  - *Mitigation:* Clearly label the link as "Anonymous" and show a preview of what the recipient will see (e.g., "They will only see the questions, not your profile").
+- **Waiting Anxiety:** "Real-time" updates might create pressure to watch the screen constantly.
+  - *Mitigation:* Use "calm" notifications (e.g., a gentle pulse) rather than urgent alerts. Allow users to turn off real-time updates.
+- **Social Pressure:** The "Sharing" focus might make introverted users feel uncomfortable.
+  - *Mitigation:* Frame sharing as "Gathering Echoes" (a personal ritual) rather than "Social Networking". Emphasize that even 1-2 responses are valuable.
+- **Accessibility Risk:** Dynamic updates (new echoes arriving) might not be announced to screen readers.
+  - *Mitigation:* Use `aria-live` regions to politely announce new responses without interrupting the user's current task.
 
 ### Success Metrics
 - **Survey Creation Rate:** >95%

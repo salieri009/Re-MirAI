@@ -10,6 +10,8 @@
 
 ## Design Philosophy
 
+**Core Concept:** **"The Magical Mirror"** — A mystical interface that reveals how others perceive you (*"Who do others believe I am?"*).
+
 **Objective:** Design a multi-page interface where each page emphasizes its unique purpose and enhances the user experience aligned with that purpose.
 
 **Core Principles:**
@@ -330,6 +332,16 @@ Allow respondents to review and edit previous answers, reducing anxiety and aban
 
 ### 5. Accessible Feedback (Mitigates: Accessibility Gaps)
 Ensure all form controls are semantic and keyboard-navigable for a fully inclusive experience.
+
+### 6. UX Risk Mitigation Strategies
+- **Form over Function:** "Magical" styling might make the form hard to read or use.
+  - *Mitigation:* Prioritize standard usability heuristics (clear labels, distinct input fields) over decorative elements. Use "magic" for the *frame*, not the *inputs*.
+- **Motion Sickness:** Transition animations between questions might trigger vestibular issues.
+  - *Mitigation:* Respect `prefers-reduced-motion` by replacing slides/zooms with simple fades or instant cuts.
+- **Completion Anxiety:** A "long" magical journey might feel endless.
+  - *Mitigation:* Always show a clear progress indicator (e.g., "Step 3 of 5") so users know exactly how much is left.
+- **Accessibility Risk:** Custom "magical" inputs (e.g., sliders, star ratings) might be inaccessible.
+  - *Mitigation:* Ensure all custom inputs have standard HTML fallbacks or full ARIA support (e.g., keyboard arrows for sliders).
 
 ### Success Metrics
 - **Completion Rate:** >70%

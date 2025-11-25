@@ -10,6 +10,8 @@
 
 ## Design Philosophy
 
+**Core Concept:** **"The Magical Mirror"** — A mystical interface that reveals how others perceive you (*"Who do others believe I am?"*).
+
 **Objective:** Design a multi-page interface where each page emphasizes its unique purpose and enhances the user experience aligned with that purpose.
 
 **Core Principles:**
@@ -184,6 +186,16 @@ Introduce "Quests" and "Daily Rituals" to provide clear reasons for users to ret
 
 ### 5. Accessible Interaction (Mitigates: Accessibility Gaps)
 Ensure all interactive elements (cards, quests) are fully accessible via keyboard and assistive technologies.
+
+### 6. UX Risk Mitigation Strategies
+- **Gamification Fatigue:** "Quests" might feel like a chore or "work" rather than fun.
+  - *Mitigation:* Ensure quests are optional and "passive" progress is still possible. Avoid "punishing" users for missing a day.
+- **Visual Clutter:** A "dynamic" room might become too busy or distracting.
+  - *Mitigation:* Provide a "Focus Mode" or "Clean View" that hides UI elements and simplifies the background.
+- **Performance Risk:** Complex room animations might drain battery on mobile devices.
+  - *Mitigation:* Implement a "Low Power Mode" that disables heavy animations and particle effects.
+- **Cognitive Overload:** Too many stats and traits can be overwhelming.
+  - *Mitigation:* Use "Progressive Disclosure" – show high-level stats first, and let users drill down for details if they want.
 
 ### Success Metrics
 - **Share Rate:** >40% share persona card

@@ -10,6 +10,8 @@
 
 ## Design Philosophy
 
+**Core Concept:** **"The Magical Mirror"** — A mystical interface that reveals how others perceive you (*"Who do others believe I am?"*).
+
 **Objective:** Design a multi-page interface where each page emphasizes its unique purpose and enhances the user experience aligned with that purpose.
 
 **Core Principles:**
@@ -299,6 +301,22 @@ Provide alternative descriptions and reduced-motion options so the reveal is enj
 - **Time to Complete:** <2 minutes average
 - **User Satisfaction:** >4.5/5
 - **Error Recovery Rate:** >85%
+
+---
+
+## UX Risk Mitigation Strategies
+
+### 1. User Control (Frustration)
+**Risk:** Forced 10-second animations can be frustrating for repeat users.
+**Mitigation:**
+- **Skip Button:** A clearly visible "Skip Animation" button (fades in after 1s) allows users to jump straight to the result.
+- **Tap-to-Advance:** Allow users to tap the screen to speed up the sequence.
+
+### 2. Seizure Triggers (Accessibility)
+**Risk:** Flashing lights or rapid color changes in the "Magic Circle" animation.
+**Mitigation:**
+- **Photosensitivity Check:** Avoid flashing frequencies between 2-55Hz.
+- **Safe Mode:** Default animation uses slow fades instead of strobes.
 
 ---
 

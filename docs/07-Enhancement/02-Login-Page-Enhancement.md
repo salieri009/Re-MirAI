@@ -10,6 +10,8 @@
 
 ## Design Philosophy
 
+**Core Concept:** **"The Magical Mirror"** — A mystical interface that reveals how others perceive you (*"Who do others believe I am?"*).
+
 **Objective:** Design a multi-page interface where each page emphasizes its unique purpose and enhances the user experience aligned with that purpose.
 
 **Core Principles:**
@@ -198,13 +200,17 @@ The Login Page is the authentication gateway to Re:MirAI. This enhancement plan 
 Maintain the "magical" aesthetic (muted gradients, particles) from the landing page to prevent the "utilitarian" drop-off.
 
 ### 2. Frictionless Entry (Mitigates: High Friction)
-Prioritize a single-click OAuth flow with clear, inviting micro-interactions to make entry feel effortless.
+Simplify the login process to a single, clear action while keeping the "magical" context (e.g., "Unlock the Mirror" instead of "Login").
 
-### 3. Magical Feedback (Mitigates: Generic Feedback & Invisible Status)
-Replace generic errors and invisible loading states with custom, thematic animations and clear, helpful messages.
-
-### 4. Inclusive Access (Mitigates: Accessibility Gaps)
-Ensure full WCAG 2.1 AA compliance (keyboard nav, screen readers) so the magic is accessible to everyone.
+### 3. UX Risk Mitigation Strategies
+- **Frustration Risk:** "Magical" animations might delay users who just want to log in quickly.
+  - *Mitigation:* Ensure animations are non-blocking or have a "Skip" option. The login button should be interactive immediately.
+- **Confusion Risk:** Abstract metaphors (e.g., "Unlock the Mirror") might obscure the actual action (Logging in).
+  - *Mitigation:* Keep standard labels (e.g., "Sign in with Google") clear, using the metaphor as a *wrapper* or headline, not a replacement.
+- **Privacy Anxiety:** Users might hesitate to link their Google account to a "mysterious" app.
+  - *Mitigation:* Display a clear, concise privacy promise near the login button (e.g., "We only use your email to save your progress. No data is sold.").
+- **Accessibility Risk:** Low-contrast magical text might be unreadable.
+  - *Mitigation:* Ensure all functional text meets WCAG AA contrast ratios, even within the "magical" aesthetic.
 
 ### Success Metrics
 - **Login Success Rate:** >95%

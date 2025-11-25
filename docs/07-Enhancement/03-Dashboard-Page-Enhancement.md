@@ -10,6 +10,8 @@
 
 ## Design Philosophy
 
+**Core Concept:** **"The Magical Mirror"** — A mystical interface that reveals how others perceive you (*"Who do others believe I am?"*).
+
 **Objective:** Design a multi-page interface where each page emphasizes its unique purpose and enhances the user experience aligned with that purpose.
 
 **Core Principles:**
@@ -201,7 +203,7 @@ State-driven UI that completely transforms based on user progress—each state t
 │   │ 🔮  Echoes Collected           │         │
 │   │  ─────────────────────   │         │
 │   │  ██████████░░░░░ 67% (2/3) │ ← Shimmer│
-│   │  ↑ Animated fill             │         │
+│   │  ↑ Animated fill             │         |
 │   │                              │         │
 │   │  "One more Echo needed..."    │ ← Fade  │
 │   │  ↑ Gentle fade in/out         │         │
@@ -318,6 +320,23 @@ Implement robust keyboard navigation and ARIA labels to ensure the dashboard is 
 - **Action Clarity:** >90% users understand next step
 - **Error Recovery Rate:** >85%
 - **Accessibility Score:** 100% WCAG AA
+
+---
+
+## UX Risk Mitigation Strategies
+
+### 1. Metaphor Ambiguity (Cognitive Load)
+**Risk:** Users may not understand what "Echoes" or "Crystals" actually represent functionally.
+**Mitigation:**
+- **Contextual Tooltips:** Hovering over "Echoes" shows "Survey Responses collected".
+- **Onboarding Coach Marks:** First-time visit highlights key metrics with plain-language explanations.
+- **Legend/Key:** A subtle "Guide" icon that explains the dashboard symbols.
+
+### 2. Visual Overload (Clarity)
+**Risk:** Too many "magical" glowing elements can distract from the primary action.
+**Mitigation:**
+- **Focus Mode:** Only the *next immediate action* pulses; secondary elements remain static.
+- **Visual Hierarchy:** Ensure text contrast is high (WCAG AA) even on "magical" backgrounds.
 
 ---
 
