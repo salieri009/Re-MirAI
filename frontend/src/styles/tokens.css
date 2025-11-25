@@ -24,7 +24,7 @@
   
   /* Text Colors */
   --color-text: #0f172a;
-  --color-text-secondary: #697fac;
+  --color-text-secondary: #334155; /* Updated for readability (was #697fac) */
   --color-text-tertiary: #a5b4d6;
   --color-text-inverse: #ffffff;
   

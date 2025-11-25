@@ -18,6 +18,7 @@ const SMALL_SWITCH_PALETTE = {
     accent: '#697fac',
     accentLight: '#90a1c8',
     accentDark: '#4b5d80',
+    textAnchor: '#334155', // New accessible text color
 } as const;
 
 export const tokens = {
@@ -32,6 +33,7 @@ export const tokens = {
             primary: SMALL_SWITCH_PALETTE.primary,
             secondary: SMALL_SWITCH_PALETTE.canvas,
             accent: SMALL_SWITCH_PALETTE.accent,
+            text: SMALL_SWITCH_PALETTE.textAnchor,
         },
 
         // Trust & Clarity (Login, Survey)
@@ -39,6 +41,7 @@ export const tokens = {
             primary: SMALL_SWITCH_PALETTE.accent,
             secondary: SMALL_SWITCH_PALETTE.accentLight,
             accent: SMALL_SWITCH_PALETTE.canvas,
+            text: SMALL_SWITCH_PALETTE.textAnchor,
         },
 
         // Progress & Motivation (Dashboard, Ritual Hub)
@@ -216,7 +219,6 @@ export const tokens = {
         lg: '1024px',
         xl: '1280px',
         '2xl': '1536px',
-    },
     },
 
     /**
