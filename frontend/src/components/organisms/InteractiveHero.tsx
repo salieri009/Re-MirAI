@@ -4,7 +4,7 @@ import { useState, useEffect, useRef } from 'react';
 import gsap from 'gsap';
 import { Button } from '@/components/atoms/Button';
 import { conversionInteractions, delightInteractions } from '@/lib/micro-interactions';
-import { useReducedMotion } from '@/hooks/useAccessibility';
+import { useAnnouncement, useReducedMotion } from '@/hooks/useAccessibility';
 import { tokens } from '@/design-tokens';
 import styles from './InteractiveHero.module.css';
 
@@ -15,7 +15,6 @@ interface InteractiveHeroProps {
 
 export function InteractiveHero({ onStartDiscovery, onSkipAnimation }: InteractiveHeroProps) {
   const [stage, setStage] = useState<'idle' | 'hover' | 'active' | 'reveal'>('idle');
-  const [isHovering, setIsHovering] = useState(false);
 
   const mirrorRef = useRef<HTMLDivElement>(null);
   const ctaRef = useRef<HTMLButtonElement>(null);
@@ -23,6 +22,7 @@ export function InteractiveHero({ onStartDiscovery, onSkipAnimation }: Interacti
   const particleCleanup = useRef<(() => void) | null>(null);
 
   const reducedMotion = useReducedMotion();
+  const announce = useAnnouncement();
 
   // Initialize particle system
   useEffect(() => {
@@ -51,6 +51,30 @@ export function InteractiveHero({ onStartDiscovery, onSkipAnimation }: Interacti
       }
     };
   }, [reducedMotion]);
+
+  // Announce stage transitions for screen reader users
+  useEffect(() => {
+    const stageMessages: Record<typeof stage, { message: string; priority?: 'polite' | 'assertive' }> = {
+      idle: {
+        message: 'Interactive mirror ready. Hover or focus to explore.',
+      },
+      hover: {
+        message: 'Mirror reacting to your presence. Click to reveal your persona.',
+      },
+      active: {
+        message: 'Summoning your reflection. Please wait.',
+        priority: 'assertive',
+      },
+      reveal: {
+        message: 'Persona preview unlocked. Use the Summon Your Reflection button to continue.',
+      },
+    };
+
+    const { message, priority } = stageMessages[stage];
+    if (message) {
+      announce(message, priority);
+    }
+  }, [announce, stage]);
 
   // Initial entrance animation
   useEffect(() => {
@@ -81,7 +105,6 @@ export function InteractiveHero({ onStartDiscovery, onSkipAnimation }: Interacti
   }, [reducedMotion]);
 
   const handleMirrorHover = () => {
-    setIsHovering(true);
     if (stage === 'idle') {
       setStage('hover');
       if (!reducedMotion && mirrorRef.current) {
@@ -91,7 +114,6 @@ export function InteractiveHero({ onStartDiscovery, onSkipAnimation }: Interacti
   };
 
   const handleMirrorLeave = () => {
-    setIsHovering(false);
     if (stage === 'hover') {
       setStage('idle');
     }

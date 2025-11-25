@@ -7,12 +7,8 @@ import { useAuthStore } from '@/stores/authStore';
 import { surveyApi } from '@/lib/api/survey';
 import { personaApi } from '@/lib/api/persona';
 import { questApi } from '@/lib/api/quest';
-import { ProgressBar } from '@/components/molecules/ProgressBar';
-import { PersonaCard } from '@/components/molecules/PersonaCard';
-import { QuestCard } from '@/components/molecules/QuestCard';
-import { StatusCard } from '@/components/molecules/StatusCard';
-import { SurveyLinkCard } from '@/components/molecules/SurveyLinkCard';
 import { Button } from '@/components/atoms/Button';
+import { DashboardStateView, DashboardState } from '@/components/organisms/DashboardStateView';
 import { SurveyStatus } from '@/lib/mock-data/surveys';
 import { Persona } from '@/lib/mock-data/personas';
 import styles from './page.module.css';
@@ -67,8 +63,6 @@ export default function DashboardPage() {
     enabled: isAuthenticated
   });
 
-  const [surveyLink, setSurveyLink] = useState<string | null>(null);
-
   const handleCreateSurvey = async () => {
     try {
       const survey = await surveyApi.create();
@@ -90,132 +84,57 @@ export default function DashboardPage() {
     }
   };
 
+  const handleViewPersona = () => {
+    if (persona) {
+      router.push(`/p/${persona.id}`);
+    }
+  };
+
+  const handleClaimQuest = async (questId: string) => {
+    await questApi.claim(questId);
+    window.location.reload();
+  };
+
+  const dashboardState: DashboardState = (() => {
+    if (persona) return 'active';
+    if (surveyStatus?.canCreatePersona) return 'ready';
+    if (surveyStatus && surveyStatus.responsesCount > 0) return 'collecting';
+    return 'empty';
+  })();
+
+  const headerTitle =
+    dashboardState === 'active' && persona
+      ? `Welcome back. ${persona.name} awaits... ✨`
+      : dashboardState === 'ready'
+      ? 'The time has come ✨🌟'
+      : dashboardState === 'collecting'
+      ? 'Welcome back ✨'
+      : 'Welcome, Seeker ✨';
+
   if (!isAuthenticated) {
     return null;
   }
 
-  // State 1: Awaiting Responses
-  if (surveyStatus && !surveyStatus.canCreatePersona && !persona) {
-    const progressPercentage = Math.round(
-      (surveyStatus.responsesCount / surveyStatus.threshold) * 100
-    );
-    
-    return (
-      <div className={styles.dashboard}>
-        <header className={styles.header}>
-          <h1>Welcome back ✨</h1>
-          <Button variant="ghost" onClick={logout}>Logout</Button>
-        </header>
-
-        <StatusCard
-          status="collecting"
-          progress={{
-            current: surveyStatus.responsesCount,
-            target: surveyStatus.threshold,
-            percentage: progressPercentage
-          }}
-          message={
-            surveyStatus.responsesCount < surveyStatus.threshold
-              ? `One more Echo needed...`
-              : undefined
-          }
-        />
-
-        {surveyUrl && (
-          <SurveyLinkCard
-            link={surveyUrl}
-            shareCount={0}
-            lastShared={undefined}
-          />
-        )}
-
-        {!surveyUrl && (
-          <div className={styles.actions}>
-            <Button variant="primary" onClick={handleCreateSurvey}>
-              Create Survey Link
-            </Button>
-          </div>
-        )}
-
-        {quests && quests.length > 0 && (
-          <div className={styles.quests}>
-            <h2>Active Quests</h2>
-            <div className={styles.questList}>
-              {quests.map((quest) => (
-                <QuestCard
-                  key={quest.id}
-                  quest={quest}
-                  onClaim={async (id) => {
-                    await questApi.claim(id);
-                    window.location.reload();
-                  }}
-                />
-              ))}
-            </div>
-          </div>
-        )}
-      </div>
-    );
-  }
-
-  // State 2: Ready for Synthesis
-  if (surveyStatus && surveyStatus.canCreatePersona && !persona) {
-    return (
-      <div className={styles.dashboard}>
-        <header className={styles.header}>
-          <h1>The time has come ✨🌟</h1>
-          <Button variant="ghost" onClick={logout}>Logout</Button>
-        </header>
-
-        <StatusCard
-          status="ready"
-          progress={{
-            current: surveyStatus.responsesCount,
-            target: surveyStatus.threshold,
-            percentage: 100
-          }}
-          onAction={handleCreatePersona}
-          actionLabel="SUMMON PERSONA NOW!"
-        />
-      </div>
-    );
-  }
-
-  // State 3: Active Persona
-  if (persona) {
-    return (
-      <div className={styles.dashboard}>
-        <header className={styles.header}>
-          <h1>Welcome back. {persona.name} awaits... ✨</h1>
-          <Button variant="ghost" onClick={logout}>Logout</Button>
-        </header>
-
-        <StatusCard
-          status="active"
-          onAction={handleChat}
-          actionLabel={`💬 Chat with ${persona.name}`}
-        />
-
-        <div className={styles.personaSection}>
-          <PersonaCard persona={persona} />
-        </div>
-      </div>
-    );
-  }
-
-  // Empty State
   return (
     <div className={styles.dashboard}>
       <header className={styles.header}>
-        <h1>Welcome, Seeker ✨</h1>
-        <Button variant="ghost" onClick={logout}>Logout</Button>
+        <h1>{headerTitle}</h1>
+        <Button variant="ghost" onClick={logout}>
+          Logout
+        </Button>
       </header>
 
-      <StatusCard
-        status="empty"
-        onAction={handleCreateSurvey}
-        actionLabel="🌟 Create First Survey"
-        message="1. Create Survey | 2. Share with friends | 3. Collect 3 Echoes | 4. Summon your Persona"
+      <DashboardStateView
+        state={dashboardState}
+        surveyStatus={surveyStatus}
+        persona={persona}
+        surveyUrl={surveyUrl}
+        quests={quests ?? null}
+        onCreateSurvey={handleCreateSurvey}
+        onSummon={handleCreatePersona}
+        onChat={handleChat}
+        onViewPersona={handleViewPersona}
+        onClaimQuest={handleClaimQuest}
       />
     </div>
   );

@@ -1,23 +1,70 @@
 .container {
   min-height: 100vh;
-  padding: var(--space-xl);
-  background-color: var(--color-bg-secondary);
+  padding: var(--space-2xl) var(--space-xl);
+  background: var(--color-bg-secondary);
   display: flex;
-  align-items: center;
   justify-content: center;
 }
 
-.content {
-  max-width: 600px;
-  width: 100%;
+.room {
+  width: min(1100px, 100%);
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-xl);
 }
 
-.actions {
+.heroSection {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+  gap: var(--space-xl);
+  align-items: center;
+}
+
+.heroActions {
   display: flex;
   flex-direction: column;
   gap: var(--space-md);
-  margin-top: var(--space-xl);
 }
 
+.section {
+  background: rgba(255, 255, 255, 0.04);
+  border-radius: var(--radius-xl);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  padding: var(--space-xl);
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-md);
+}
 
+.sectionHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  gap: var(--space-md);
+  flex-wrap: wrap;
+}
 
+.sectionSubtitle {
+  color: var(--color-text-secondary);
+  font-size: var(--font-size-sm);
+}
+
+.questGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  gap: var(--space-md);
+}
+
+@media (max-width: 768px) {
+  .container {
+    padding: var(--space-xl) var(--space-md);
+  }
+
+  .heroSection {
+    grid-template-columns: 1fr;
+  }
+
+  .heroActions {
+    flex-direction: column;
+  }
+}

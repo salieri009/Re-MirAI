@@ -1,7 +1,9 @@
 'use client';
 
-import { motion } from 'framer-motion';
+import { useEffect, useRef } from 'react';
+import gsap from 'gsap';
 import { Button } from '@/components/atoms/Button';
+import { useReducedMotion } from '@/hooks/useAccessibility';
 import styles from './GoogleAuthButton.module.css';
 
 interface GoogleAuthButtonProps {
@@ -11,19 +13,27 @@ interface GoogleAuthButtonProps {
   statusMessage?: string;
 }
 
-export function GoogleAuthButton({ 
-  onAuth, 
-  loading = false, 
+export function GoogleAuthButton({
+  onAuth,
+  loading = false,
   disabled = false,
-  statusMessage 
+  statusMessage,
 }: GoogleAuthButtonProps) {
+  const containerRef = useRef<HTMLDivElement>(null);
+  const reducedMotion = useReducedMotion();
+
+  useEffect(() => {
+    if (!containerRef.current || reducedMotion) return;
+
+    gsap.fromTo(
+      containerRef.current,
+      { opacity: 0, y: 20 },
+      { opacity: 1, y: 0, duration: 0.6, ease: 'power2.out' }
+    );
+  }, [reducedMotion]);
+
   return (
-    <motion.div
-      initial={{ opacity: 0, y: 20 }}
-      animate={{ opacity: 1, y: 0 }}
-      transition={{ duration: 0.6, ease: [0.4, 0, 0.2, 1] }}
-      className={styles.container}
-    >
+    <div ref={containerRef} className={styles.container}>
       <Button
         variant="primary"
         size="lg"
@@ -50,7 +60,7 @@ export function GoogleAuthButton({
           {statusMessage}
         </p>
       )}
-    </motion.div>
+    </div>
   );
 }
 

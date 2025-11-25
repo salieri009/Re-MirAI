@@ -1,13 +1,34 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { useRouter } from 'next/navigation';
-import { motion } from 'framer-motion';
+import gsap from 'gsap';
 import { authApi } from '@/lib/api/auth';
 import { useAuthStore } from '@/stores/authStore';
 import { GoogleAuthButton } from '@/components/molecules/GoogleAuthButton';
+import { TrustBadge } from '@/components/molecules/TrustBadge';
 import { Button } from '@/components/atoms/Button';
+import { trustInteractions } from '@/lib/micro-interactions';
+import { useReducedMotion, useAnnouncement } from '@/hooks/useAccessibility';
 import styles from './page.module.css';
+
+const TRUST_BADGES = [
+  {
+    icon: '🔐',
+    label: 'Secure OAuth',
+    description: 'Google-verified authentication',
+  },
+  {
+    icon: '🔒',
+    label: 'Privacy First',
+    description: '100% anonymous responses',
+  },
+  {
+    icon: '⚡',
+    label: 'No Password',
+    description: 'One-click access',
+  },
+];
 
 export default function LoginPage() {
   const router = useRouter();
@@ -16,35 +37,107 @@ export default function LoginPage() {
   const [statusMessage, setStatusMessage] = useState('Connecting to Google...');
   const [error, setError] = useState<string | null>(null);
 
+  const cardRef = useRef<HTMLDivElement>(null);
+  const canvasRef = useRef<HTMLCanvasElement>(null);
+
+  const reducedMotion = useReducedMotion();
+  const announce = useAnnouncement();
+
+  // Particle background effect
+  useEffect(() => {
+    if (!canvasRef.current || reducedMotion) return;
+
+    const canvas = canvasRef.current;
+    const ctx = canvas.getContext('2d');
+    if (!ctx) return;
+
+    canvas.width = canvas.offsetWidth;
+    canvas.height = canvas.offsetHeight;
+
+    // Simple ambient particles
+    const particles: { x: number; y: number; vx: number; vy: number }[] = [];
+    for (let i = 0; i < 20; i++) {
+      particles.push({
+        x: Math.random() * canvas.width,
+        y: Math.random() * canvas.height,
+        vx: (Math.random() - 0.5) * 0.5,
+        vy: (Math.random() - 0.5) * 0.5,
+      });
+    }
+
+    let animationId: number;
+    const animate = () => {
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+      ctx.fillStyle = 'rgba(217, 70, 239, 0.1)';
+
+      particles.forEach(p => {
+        p.x += p.vx;
+        p.y += p.vy;
+
+        if (p.x < 0 || p.x > canvas.width) p.vx *= -1;
+        if (p.y < 0 || p.y > canvas.height) p.vy *= -1;
+
+        ctx.beginPath();
+        ctx.arc(p.x, p.y, 2, 0, Math.PI * 2);
+        ctx.fill();
+      });
+
+      animationId = requestAnimationFrame(animate);
+    };
+
+    animate();
+
+    return () => cancelAnimationFrame(animationId);
+  }, [reducedMotion]);
+
+  // Initial entrance animation
+  useEffect(() => {
+    if (!reducedMotion && cardRef.current) {
+      gsap.from(cardRef.current, {
+        opacity: 0,
+        y: 20,
+        scale: 0.95,
+        duration: 0.6,
+        ease: 'power2.out',
+      });
+    }
+  }, [reducedMotion]);
+
+  // Loading state carousel
   useEffect(() => {
     if (isLoading) {
       const messages = [
         'Connecting to Google...',
         'Verifying your account...',
-        'Almost there...'
+        'Almost there...',
       ];
-      
+
       let index = 0;
-      const interval = setInterval(() => {
-        index = (index + 1) % messages.length;
-        setStatusMessage(messages[index]);
-      }, 2000);
-      
-      return () => clearInterval(interval);
+      const cleanup = trustInteractions.loadingStates(
+        setStatusMessage,
+        messages,
+        2000
+      );
+
+      return cleanup;
     }
   }, [isLoading]);
 
   const handleGoogleAuth = async () => {
     setIsLoading(true);
     setError(null);
-    
+    announce('Authenticating with Google', 'polite');
+
     try {
       const response = await authApi.googleLogin('mock-id-token');
       login(response.accessToken, response.refreshToken, response.user);
+      announce('Login successful!', 'polite');
       router.push('/dashboard');
     } catch (err: any) {
       console.error('Login failed:', err);
-      setError(err.message || '로그인에 실패했습니다. 다시 시도해주세요.');
+      const errorMsg = err.message || 'Login failed. Please try again.';
+      setError(errorMsg);
+      announce(errorMsg, 'assertive');
       setIsLoading(false);
     }
   };
@@ -56,12 +149,10 @@ export default function LoginPage() {
 
   return (
     <main className={styles.main}>
-      <motion.div
-        initial={{ opacity: 0, y: 20, scale: 0.95 }}
-        animate={{ opacity: 1, y: 0, scale: 1 }}
-        transition={{ duration: 0.6, ease: [0.4, 0, 0.2, 1] }}
-        className={styles.card}
-      >
+      {/* Particle background canvas */}
+      <canvas ref={canvasRef} className={styles.particleCanvas} />
+
+      <div ref={cardRef} className={styles.card}>
         <div className={styles.header}>
           <h1 className={styles.title}>✨ Re:MirAI</h1>
           <h2 className={styles.subtitle}>Ready to discover your reflection?</h2>
@@ -74,23 +165,31 @@ export default function LoginPage() {
             disabled={isLoading}
             statusMessage={statusMessage}
           />
-          
+
           <p className={styles.helpText}>
             Quick, secure, simple
           </p>
 
           {error && (
-            <motion.div
-              initial={{ opacity: 0, y: -10 }}
-              animate={{ opacity: 1, y: 0 }}
-              className={styles.error}
-            >
+            <div className={styles.error}>
               <p className={styles.errorMessage}>{error}</p>
               <Button variant="ghost" size="sm" onClick={handleRetry}>
                 Try Again
               </Button>
-            </motion.div>
+            </div>
           )}
+        </div>
+
+        {/* Trust Badges */}
+        <div className={styles.trustBadges}>
+          {TRUST_BADGES.map((badge) => (
+            <TrustBadge
+              key={badge.label}
+              icon={badge.icon}
+              label={badge.label}
+              description={badge.description}
+            />
+          ))}
         </div>
 
         <div className={styles.footer}>
@@ -103,8 +202,7 @@ export default function LoginPage() {
             ← Back to home
           </Button>
         </div>
-      </motion.div>
+      </div>
     </main>
   );
 }
-
