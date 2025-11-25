@@ -272,30 +272,56 @@ Full-screen theatrical animation sequence—the only page that takes complete co
 - Clear next actions
 
 ### Weaknesses
-- **Anticlimactic:** The reveal lacks the theatrical weight deserving of the user's effort.
-- **Opaque Process:** "Summoning" feels like a loading spinner, not a magical creation.
-- **Missing Narrative:** Fails to visually connect the collected "Echoes" to the final "Persona".
-- **Dead Ends:** No clear emotional path if the summoning encounters an error.
-- **Accessibility Gaps:** The animation sequence is not accessible to all users.
+- **Anticlimactic:** The reveal lacks the theatrical weight deserving of the user's effort. It's just a fade-in.
+- **Opaque Process:** "Summoning" feels like a loading spinner, not a magical creation. The user doesn't see *how* their data is being used.
+- **Missing Narrative:** Fails to visually connect the collected "Echoes" to the final "Persona". The link between "Survey Responses" and "Persona Traits" is invisible.
+- **Dead Ends:** No clear emotional path if the summoning encounters an error. "Error 500" kills the mood instantly.
+- **Accessibility Gaps:** The animation sequence is not accessible to all users. Flashing lights and rapid motion can be harmful.
+
+---
+
+## Detailed UX/UI Weakness Analysis
+
+| Weakness | UX Impact | UI Manifestation |
+|----------|-----------|------------------|
+| **Anticlimactic** | Disappointment; "Is that it?" | Simple CSS fade-in. No sound. No particle explosion. |
+| **Opaque Process** | Low trust; feels random. | Standard circular loader. "Processing..." text. |
+| **Missing Narrative** | Disconnect between input and output. | Echoes disappear, Persona appears. No "Alchemy" visualization. |
+| **Dead Ends** | Frustration; abandonment. | Generic error modal. No "Retry Ritual" option. |
 
 ---
 
 ## Enhancement Goals & Mitigation Strategies
 
 ### 1. Cinematic Reveal (Mitigates: Anticlimactic)
-Create a theatrical, full-screen animation sequence that builds anticipation and delivers a "wow" moment upon reveal.
+**Goal:** Create a "Wow" moment.
+**Strategy:**
+- **Sequence Orchestration:** Use `framer-motion` to orchestrate a multi-stage reveal: Gathering → Concentrating → Exploding → Revealing.
+- **Audio Cues:** Trigger a "crescendo" sound effect (using `useSound` hook) that peaks at the moment of reveal.
 
 ### 2. Process Visualization (Mitigates: Opaque Process)
-Visually demonstrate how the collected "Echoes" merge and transform to create the Persona, connecting input to output.
+**Goal:** Show the "Magic" of creation.
+**Strategy:**
+- **Alchemy Animation:** Visualize the "Echoes" (survey responses) flying into the center and merging.
+- **Trait Extraction:** Briefly flash keywords ("Kindness", "Leadership") as they are "extracted" from the echoes.
 
 ### 3. Narrative Connection (Mitigates: Missing Narrative)
-Use text and visuals during the sequence to reinforce the story: "Your friends' perceptions are taking shape..."
+**Goal:** Connect input to output.
+**Strategy:**
+- **Text Narrative:** Display dynamic text during the loading sequence: "Weaving the threads of perception...", "Crystallizing the truth...".
+- **Visual Continuity:** Use the same color palette for the "Echoes" as the final "Persona" to show they are made of the same substance.
 
 ### 4. Graceful Recovery (Mitigates: Dead Ends)
-Design narrative-driven error states that guide users back to safety without breaking the immersion.
+**Goal:** Maintain immersion even in failure.
+**Strategy:**
+- **Thematic Errors:** "The energies were too chaotic. Let us try again."
+- **Auto-Retry:** Implement an automatic retry with a "Stabilizing..." animation before showing an error.
 
 ### 5. Accessible Magic (Mitigates: Accessibility Gaps)
-Provide alternative descriptions and reduced-motion options so the reveal is enjoyable for everyone.
+**Goal:** Safe and inclusive reveal.
+**Strategy:**
+- **Reduced Motion:** Provide a "Skip Animation" button that instantly shows the result.
+- **Photosensitivity:** Avoid rapid flashing (strobe effects) in the particle system.
 
 ### Success Metrics
 - **Creation Success Rate:** >95%

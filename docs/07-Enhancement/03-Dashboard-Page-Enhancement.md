@@ -291,30 +291,56 @@ State-driven UI that completely transforms based on user progress—each state t
 - Minimal design
 
 ### Weaknesses
-- **Utilitarian UI:** Fails to visually represent the "Hero's Journey" narrative.
-- **Static Status:** "Echoes" and "Crystals" feel like static numbers, not magical resources.
-- **Disconnected States:** Transition between "Collecting" and "Ready" lacks celebration.
-- **Low Urgency:** No visual cues to prompt the next specific action.
-- **Accessibility Gaps:** Navigation is not optimized for keyboard/screen readers.
+- **Utilitarian UI:** Fails to visually represent the "Hero's Journey" narrative. The interface looks like a standard admin panel rather than a magical gateway.
+- **Static Status:** "Echoes" and "Crystals" feel like static numbers, not magical resources. There is no visual feedback when these values change.
+- **Disconnected States:** Transition between "Collecting" and "Ready" lacks celebration. The user achieves a milestone but the UI just quietly switches state.
+- **Low Urgency:** No visual cues to prompt the next specific action. The "Next Step" blends in with other UI elements.
+- **Accessibility Gaps:** Navigation is not optimized for keyboard/screen readers. Dynamic state changes are not announced.
+
+---
+
+## Detailed UX/UI Weakness Analysis
+
+| Weakness | UX Impact | UI Manifestation |
+|----------|-----------|------------------|
+| **Utilitarian UI** | Breaks immersion; feels like "work" instead of a "journey". | Flat cards, standard Bootstrap-like grid, lack of thematic textures or depth. |
+| **Static Status** | Reduces motivation; progress feels abstract. | "Echoes: 3/5" is just text. No filling bar, no particle effects on increment. |
+| **Disconnected States** | Missed emotional peak; user doesn't feel "accomplished". | State change is an instant re-render. No transition animation or "Level Up" overlay. |
+| **Low Urgency** | Cognitive load increases; user has to "find" the next step. | Primary CTA has same visual weight as secondary buttons. No pulsing or guiding motion. |
 
 ---
 
 ## Enhancement Goals & Mitigation Strategies
 
 ### 1. Narrative UI (Mitigates: Utilitarian UI)
-Transform the dashboard into a "Hero's Journey" map, using visuals to tell the story of the user's progress.
+**Goal:** Transform the dashboard into a "Hero's Journey" map.
+**Strategy:**
+- **Visual Storytelling:** Use the "Small Switch Palette" to create depth. Use darker tones for "Empty" states and vibrant, glowing tones for "Ready" states.
+- **Thematic Assets:** Replace standard icons with "Magical" iconography (Crystals, Scrolls) defined in the design system.
 
 ### 2. Dynamic Status (Mitigates: Static Status)
-Animate "Echoes" and "Crystals" counters to make them feel like living, magical resources rather than static data.
+**Goal:** Make resources feel alive and valuable.
+**Strategy:**
+- **Animated Counters:** Use `micro-interactions.ts` to animate number increments (count-up effect).
+- **Resource Glow:** Implement a subtle "pulse" animation on the Echo counter when a new survey response is received (detected via polling or websocket).
 
 ### 3. Celebratory Transitions (Mitigates: Disconnected States)
-Use rich animations to celebrate state changes (e.g., leveling up, completing a collection), creating emotional peaks.
+**Goal:** Create emotional peaks at milestones.
+**Strategy:**
+- **State Morphing:** Animate the transition between dashboard states (e.g., "Collecting" card dissolving into a glowing "Summon Ready" card).
+- **Confetti/Particles:** Trigger a particle explosion (using `particleSystem`) when the "Ready" state is reached.
 
 ### 4. Visual Urgency (Mitigates: Low Urgency)
-Use pulsing effects and high-contrast visual hierarchy to guide users instinctively to the next critical action.
+**Goal:** Guide users instinctively to the next action.
+**Strategy:**
+- **Action Pulse:** Apply `guidanceInteractions.actionPulse` to the primary CTA (e.g., "Summon Persona").
+- **Focus Mode:** Dim secondary elements slightly when a critical action is pending, creating a "spotlight" effect on the CTA.
 
 ### 5. Inclusive Navigation (Mitigates: Accessibility Gaps)
-Implement robust keyboard navigation and ARIA labels to ensure the dashboard is usable by all.
+**Goal:** Ensure the dashboard is usable by all.
+**Strategy:**
+- **Live Regions:** Wrap the status card in `aria-live="polite"` so state changes are announced.
+- **Focus Management:** Automatically move focus to the Primary CTA when the state changes to "Ready".
 
 ### Success Metrics
 - **Status Recognition Time:** <1 second

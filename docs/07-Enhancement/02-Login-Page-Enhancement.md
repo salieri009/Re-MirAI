@@ -187,23 +187,58 @@ The Login Page is the authentication gateway to Re:MirAI. This enhancement plan 
 - Error handling present
 
 ### Weaknesses
-- **Atmosphere Break:** Visual transition from Landing Page is abrupt and utilitarian.
-- **High Friction:** Lack of "magical" feedback makes authentication feel like a chore.
-- **Generic Feedback:** Error messages break the immersion and trust.
-- **Invisible Status:** No visual cues for loading/processing states.
+- **Atmosphere Break:** Visual transition from Landing Page is abrupt and utilitarian. The user falls from a "Magical World" into a "Standard Form".
+- **High Friction:** Lack of "magical" feedback makes authentication feel like a chore. It feels like a gatekeeper rather than a welcome mat.
+- **Generic Feedback:** Error messages break the immersion and trust. "Error 500" is jarring in a mystical context.
+- **Invisible Status:** No visual cues for loading/processing states. Users stare at a frozen screen while OAuth redirects.
 - **Accessibility Gaps:** Missing keyboard support and screen reader optimization.
+
+---
+
+## Detailed UX/UI Weakness Analysis
+
+| Weakness | UX Impact | UI Manifestation |
+|----------|-----------|------------------|
+| **Atmosphere Break** | Breaks immersion; increases abandonment. | White background, standard system fonts, sharp corners. |
+| **High Friction** | Increases cognitive load; feels "corporate". | "Sign In" button looks like a tax form. No welcoming copy. |
+| **Generic Feedback** | Destroys trust; feels broken. | Red system text for errors. No "Try again" guidance. |
+| **Invisible Status** | Creates anxiety ("Did it work?"). | Button stays static after click. No spinner or progress bar. |
 
 ---
 
 ## Enhancement Goals & Mitigation Strategies
 
 ### 1. Visual Continuity (Mitigates: Atmosphere Break)
-Maintain the "magical" aesthetic (muted gradients, particles) from the landing page to prevent the "utilitarian" drop-off.
+**Goal:** Maintain the "magical" aesthetic.
+**Strategy:**
+- **Shared Background:** Use the same "Small Switch Palette" gradients and particle effects as the Landing Page.
+- **Transition Animation:** Animate the transition from Landing to Login as a "Portal Opening" effect (using `framer-motion` layout transitions).
 
 ### 2. Frictionless Entry (Mitigates: High Friction)
-Simplify the login process to a single, clear action while keeping the "magical" context (e.g., "Unlock the Mirror" instead of "Login").
+**Goal:** Make login feel like "Unlocking".
+**Strategy:**
+- **Thematic Copy:** Change "Login" to "Unlock Your Mirror" (with "Sign in with Google" as the subtext for clarity).
+- **Button Styling:** Style the OAuth button as a "Key" or "Sigil" that glows on hover.
 
-### 3. UX Risk Mitigation Strategies
+### 3. Immersive Feedback (Mitigates: Generic Feedback)
+**Goal:** Handle errors gracefully and thematically.
+**Strategy:**
+- **Thematic Errors:** "The mists obscure the path (Network Error)" instead of "Connection Failed".
+- **Gentle Guidance:** Provide clear "Retry" actions with a comforting tone.
+
+### 4. Visible Status (Mitigates: Invisible Status)
+**Goal:** Reassure the user during the OAuth handshake.
+**Strategy:**
+- **Loading State:** Replace the button with a pulsing "Attuning..." animation during the redirect.
+- **Progress Indicators:** Show a subtle progress bar for the redirect process.
+
+### 5. Accessible Entry (Mitigates: Accessibility Gaps)
+**Goal:** Ensure everyone can enter.
+**Strategy:**
+- **Focus States:** High-contrast focus rings for keyboard navigation.
+- **Screen Reader Announcements:** Announce "Redirecting to Google..." explicitly.
+
+### 6. UX Risk Mitigation Strategies
 - **Frustration Risk:** "Magical" animations might delay users who just want to log in quickly.
   - *Mitigation:* Ensure animations are non-blocking or have a "Skip" option. The login button should be interactive immediately.
 - **Confusion Risk:** Abstract metaphors (e.g., "Unlock the Mirror") might obscure the actual action (Logging in).

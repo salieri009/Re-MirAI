@@ -309,30 +309,56 @@ Select answer → Auto-enable "Next"
 - Thank you page
 
 ### Weaknesses
-- **Clinical Design:** Visuals feel like a standard form, lacking the "Re:MirAI" warmth.
-- **Tedium:** Linear flow without milestones makes the survey feel longer than it is.
-- **Trust Gaps:** Anonymity assurances are not visually prominent enough.
-- **Rigid Flow:** Inability to skip or review questions increases drop-off.
+- **Clinical Design:** Visuals feel like a standard form, lacking the "Re:MirAI" warmth. It feels like a tax audit, not a helpful gesture.
+- **Tedium:** Linear flow without milestones makes the survey feel longer than it is. Users get bored and drop off.
+- **Trust Gaps:** Anonymity assurances are not visually prominent enough. Respondents fear their honest feedback will be traced back to them.
+- **Rigid Flow:** Inability to skip or review questions increases drop-off. One difficult question can block the entire process.
 - **Accessibility Gaps:** Form controls are not optimized for all users.
+
+---
+
+## Detailed UX/UI Weakness Analysis
+
+| Weakness | UX Impact | UI Manifestation |
+|----------|-----------|------------------|
+| **Clinical Design** | Reduces emotional investment; feels cold. | White background, standard radio buttons, Arial font. |
+| **Tedium** | Increases abandonment rate. | Endless scroll or generic "Next" buttons. No "Milestone" celebrations. |
+| **Trust Gaps** | Lowers data quality (users lie to be nice). | Tiny "Privacy Policy" link in footer. No "Anonymous" badge near submit. |
+| **Rigid Flow** | Frustration; loss of control. | No "Back" button. No "Skip" option for optional questions. |
 
 ---
 
 ## Enhancement Goals & Mitigation Strategies
 
 ### 1. Warm Aesthetic (Mitigates: Clinical Design)
-Use soft colors, friendly typography, and "magical" accents to make the survey feel like a helping hand, not a test.
+**Goal:** Make the survey feel like a conversation.
+**Strategy:**
+- **Conversational UI:** Style questions as "Chat Bubbles" or "Cards" rather than form fields.
+- **Soft Palette:** Use the "Small Switch Palette" (warm greys, soft blues) to create a calming atmosphere.
 
 ### 2. Engaging Flow (Mitigates: Tedium)
-Break the survey into digestible chunks with smooth transitions and progress milestones to reduce fatigue.
+**Goal:** Reduce fatigue.
+**Strategy:**
+- **One-per-Screen:** Show one question at a time with a smooth slide transition (using `framer-motion`).
+- **Micro-Rewards:** Trigger a subtle "Sparkle" animation when an answer is selected.
 
 ### 3. Visible Trust (Mitigates: Trust Gaps)
-Place privacy badges and anonymity assurances prominently to build trust and encourage honest feedback.
+**Goal:** Encourage honesty.
+**Strategy:**
+- **Privacy Shield:** Display a "Shield" icon with "100% Anonymous" text constantly in the header.
+- **Reassurance Copy:** Add micro-copy under sensitive questions: "Your friend will not see who wrote this."
 
 ### 4. Flexible Navigation (Mitigates: Rigid Flow)
-Allow respondents to review and edit previous answers, reducing anxiety and abandonment.
+**Goal:** Empower the respondent.
+**Strategy:**
+- **Review Mode:** Allow users to jump back to previous questions via a progress bar.
+- **Soft Skip:** Clearly label optional questions with a "Skip for now" button.
 
 ### 5. Accessible Feedback (Mitigates: Accessibility Gaps)
-Ensure all form controls are semantic and keyboard-navigable for a fully inclusive experience.
+**Goal:** Inclusive participation.
+**Strategy:**
+- **Large Hit Areas:** Ensure radio buttons and checkboxes have large (44px+) touch targets.
+- **Keyboard Support:** Allow selection via Arrow Keys and confirmation via Enter.
 
 ### 6. UX Risk Mitigation Strategies
 - **Form over Function:** "Magical" styling might make the form hard to read or use.

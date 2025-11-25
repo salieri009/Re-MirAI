@@ -163,30 +163,56 @@ Profile gallery with gamification elements—stats, quests, achievements, and vi
 - Status monitoring
 
 ### Weaknesses
-- **Static Environment:** The room does not evolve or react to the Persona's growth.
-- **Invisible Bond:** No visual representation of the deepening relationship (Bond Level).
-- **Hidden Value:** Persona stats and unique traits are buried or missing.
-- **Low Retention:** Lack of "Quests" or "Daily Rituals" to encourage return visits.
-- **Accessibility Gaps:** Interactive elements are not fully accessible.
+- **Static Environment:** The room does not evolve or react to the Persona's growth. It feels like a static profile page rather than a "living space".
+- **Invisible Bond:** No visual representation of the deepening relationship (Bond Level). The user has no visual feedback on their relationship progress.
+- **Hidden Value:** Persona stats and unique traits are buried or missing. The "Why" of the persona (their unique personality) is not celebrated.
+- **Low Retention:** Lack of "Quests" or "Daily Rituals" to encourage return visits. Once created, there is little reason to come back daily.
+- **Accessibility Gaps:** Interactive elements are not fully accessible. Screen readers miss the context of the "Room" metaphor.
+
+---
+
+## Detailed UX/UI Weakness Analysis
+
+| Weakness | UX Impact | UI Manifestation |
+|----------|-----------|------------------|
+| **Static Environment** | Reduces immersion; persona feels like a file, not a being. | Background is static. No ambient motion. Persona avatar is a static image. |
+| **Invisible Bond** | Missed gamification opportunity; reduces motivation. | Bond Level is a small text label. No visual indicator of "closeness" or "warmth". |
+| **Hidden Value** | Users undervalue the AI's complexity. | Traits are listed in a small text block. No visual hierarchy for "Dominant Traits". |
+| **Low Retention** | High churn risk; user engagement drops after creation. | No "Daily" section. No "New Quest" indicators. |
 
 ---
 
 ## Enhancement Goals & Mitigation Strategies
 
 ### 1. Dynamic Environment (Mitigates: Static Environment)
-Make the room evolve visually based on the Persona's growth and Bond Level, creating a sense of life and progress.
+**Goal:** Create a "living space" that evolves.
+**Strategy:**
+- **Ambient Animation:** Use `micro-interactions.ts` to add subtle background movement (floating particles, shifting light) that reacts to mouse movement.
+- **Bond-Based Theming:** Change the room's lighting/color palette (using the "Small Switch Palette") as the Bond Level increases (e.g., Cool Blue → Warm Gold).
 
 ### 2. Visible Bond (Mitigates: Invisible Bond)
-Visualize the relationship depth with animated progress bars or growing elements (e.g., a blooming flower).
+**Goal:** Visualize the relationship depth.
+**Strategy:**
+- **Bond Meter:** Implement a prominent, animated progress bar for the Bond Level.
+- **Visual Metaphor:** Add a "Heart" or "Crystal" element that grows or glows brighter as the bond deepens.
 
 ### 3. Value Showcase (Mitigates: Hidden Value)
-Bring stats, traits, and achievements to the forefront with interactive cards to highlight the Persona's uniqueness.
+**Goal:** Celebrate the Persona's uniqueness.
+**Strategy:**
+- **Trait Cards:** Turn text traits into interactive "Tarot Cards" that flip to reveal details.
+- **Stat Visualization:** Use radar charts or animated bars to display personality stats (Openness, Conscientiousness, etc.).
 
 ### 4. Retention Loops (Mitigates: Low Retention)
-Introduce "Quests" and "Daily Rituals" to provide clear reasons for users to return and engage daily.
+**Goal:** Encourage daily return visits.
+**Strategy:**
+- **Daily Quests:** Display 3 rotating "Daily Rituals" (e.g., "Chat for 5 mins", "Share a memory") with clear rewards.
+- **Notification Badges:** Add a "New" badge to the Quest tab when daily quests reset.
 
 ### 5. Accessible Interaction (Mitigates: Accessibility Gaps)
-Ensure all interactive elements (cards, quests) are fully accessible via keyboard and assistive technologies.
+**Goal:** Ensure the "Room" is navigable by all.
+**Strategy:**
+- **Semantic Structure:** Use proper `<article>` and `<section>` tags for the room's areas.
+- **Descriptive Alt Text:** Ensure the dynamic environment description ("A warm, glowing room with floating dust motes") is available to screen readers.
 
 ### 6. UX Risk Mitigation Strategies
 - **Gamification Fatigue:** "Quests" might feel like a chore or "work" rather than fun.

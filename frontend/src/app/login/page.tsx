@@ -9,6 +9,7 @@ import { useAuthStore } from '@/stores/authStore';
 import { GoogleAuthButton } from '@/components/molecules/GoogleAuthButton';
 import { TrustBadge } from '@/components/molecules/TrustBadge';
 import { Button } from '@/components/atoms/Button';
+import { MirrorCanvas } from '@/components/organisms/MirrorCanvas/MirrorCanvas';
 import { trustInteractions } from '@/lib/micro-interactions';
 import { useReducedMotion, useAnnouncement } from '@/hooks/useAccessibility';
 import styles from './page.module.css';
@@ -41,57 +42,9 @@ export default function LoginPage() {
   const [error, setError] = useState<string | null>(null);
 
   const cardRef = useRef<HTMLDivElement>(null);
-  const canvasRef = useRef<HTMLCanvasElement>(null);
 
   const reducedMotion = useReducedMotion();
   const announce = useAnnouncement();
-
-  // Particle background effect
-  useEffect(() => {
-    if (!canvasRef.current || reducedMotion) return;
-
-    const canvas = canvasRef.current;
-    const ctx = canvas.getContext('2d');
-    if (!ctx) return;
-
-    canvas.width = canvas.offsetWidth;
-    canvas.height = canvas.offsetHeight;
-
-    // Simple ambient particles
-    const particles: { x: number; y: number; vx: number; vy: number }[] = [];
-    for (let i = 0; i < 20; i++) {
-      particles.push({
-        x: Math.random() * canvas.width,
-        y: Math.random() * canvas.height,
-        vx: (Math.random() - 0.5) * 0.5,
-        vy: (Math.random() - 0.5) * 0.5,
-      });
-    }
-
-    let animationId: number;
-    const animate = () => {
-      ctx.clearRect(0, 0, canvas.width, canvas.height);
-      ctx.fillStyle = 'rgba(217, 70, 239, 0.1)';
-
-      particles.forEach(p => {
-        p.x += p.vx;
-        p.y += p.vy;
-
-        if (p.x < 0 || p.x > canvas.width) p.vx *= -1;
-        if (p.y < 0 || p.y > canvas.height) p.vy *= -1;
-
-        ctx.beginPath();
-        ctx.arc(p.x, p.y, 2, 0, Math.PI * 2);
-        ctx.fill();
-      });
-
-      animationId = requestAnimationFrame(animate);
-    };
-
-    animate();
-
-    return () => cancelAnimationFrame(animationId);
-  }, [reducedMotion]);
 
   // Initial entrance animation
   useEffect(() => {
@@ -162,7 +115,7 @@ export default function LoginPage() {
   return (
     <main className={styles.main}>
       {/* Particle background canvas */}
-      <canvas ref={canvasRef} className={styles.particleCanvas} />
+      <MirrorCanvas variant="background" intensity={0.5} />
 
       <div ref={cardRef} className={styles.card}>
         <div className={styles.header}>

@@ -25,7 +25,7 @@ export const conversionInteractions = {
     mirrorHover: (element: HTMLElement) => {
         gsap.to(element, {
             y: -4,
-            boxShadow: tokens.shadow.glow,
+            boxShadow: tokens.shadow.glowPrimary,
             duration: tokens.duration.normal / 1000,
             ease: tokens.easing.calm,
         });
@@ -91,7 +91,7 @@ export const conversionInteractions = {
      */
     ctaPulse: (button: HTMLElement) => {
         gsap.to(button, {
-            boxShadow: tokens.shadow.glow,
+            boxShadow: tokens.shadow.glowPrimary,
             scale: 1.02,
             duration: 1,
             repeat: -1,
@@ -111,21 +111,26 @@ export const trustInteractions = {
      * Emotion: Uncertainty → Trust
      */
     loadingStates: (
-        element: HTMLElement,
+        elementOrSetState: HTMLElement | ((msg: string) => void),
         messages: string[],
         interval: number = 2000
     ): (() => void) => {
         let index = 0;
         const timer = setInterval(() => {
-            gsap.to(element, {
-                opacity: 0,
-                duration: 0.2,
-                onComplete: () => {
-                    element.textContent = messages[index % messages.length];
-                    gsap.to(element, { opacity: 1, duration: 0.2 });
-                    index++;
-                },
-            });
+            if (typeof elementOrSetState === 'function') {
+                elementOrSetState(messages[index % messages.length]);
+                index++;
+            } else {
+                gsap.to(elementOrSetState, {
+                    opacity: 0,
+                    duration: 0.2,
+                    onComplete: () => {
+                        elementOrSetState.textContent = messages[index % messages.length];
+                        gsap.to(elementOrSetState, { opacity: 1, duration: 0.2 });
+                        index++;
+                    },
+                });
+            }
         }, interval);
 
         // Return cleanup function
@@ -152,7 +157,7 @@ export const trustInteractions = {
      */
     buttonGlow: (button: HTMLElement) => {
         gsap.to(button, {
-            boxShadow: tokens.shadow.glowBlue,
+            boxShadow: tokens.shadow.glowPrimary, // Changed from glowBlue which doesn't exist
             scale: 1.02,
             duration: tokens.duration.fast / 1000,
             ease: tokens.easing.calm,
@@ -320,6 +325,20 @@ export const connectionInteractions = {
             }
         );
     },
+
+    /**
+     * Topic Suggestion Glow - Proactive Engagement
+     */
+    topicGlow: (element: HTMLElement) => {
+        gsap.to(element, {
+            boxShadow: tokens.shadow.glowPrimary,
+            scale: 1.02,
+            duration: 0.4,
+            yoyo: true,
+            repeat: 1,
+            ease: tokens.easing.smooth,
+        });
+    },
 };
 
 /**
@@ -331,9 +350,14 @@ export const delightInteractions = {
      * Particle System - Create Magical Atmosphere
      * Emotion: Anticipation → Awe
      */
-    particleSystem: (canvas: HTMLCanvasElement) => {
-        const ctx = canvas.getContext('2d');
+    particleSystem: (
+        canvas: HTMLCanvasElement,
+        ctx: CanvasRenderingContext2D,
+        options: { count?: number; color?: string; speed?: number } = {}
+    ) => {
         if (!ctx) return () => { };
+
+        const { count = 50, color = '#ffffff', speed = 1 } = options;
 
         const particles: Array<{
             x: number;
@@ -345,44 +369,45 @@ export const delightInteractions = {
         }> = [];
 
         // Generate particles
-        for (let i = 0; i < 50; i++) {
+        for (let i = 0; i < count; i++) {
             particles.push({
                 x: Math.random() * canvas.width,
                 y: Math.random() * canvas.height,
-                vx: (Math.random() - 0.5) * 2,
-                vy: (Math.random() - 0.5) * 2,
+                vx: (Math.random() - 0.5) * speed,
+                vy: (Math.random() - 0.5) * speed,
                 radius: Math.random() * 3 + 1,
                 alpha: Math.random(),
             });
         }
 
+        let animationId: number;
+
         function animate() {
-            ctx!.clearRect(0, 0, canvas.width, canvas.height);
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
 
             particles.forEach(p => {
-                // Update position
                 p.x += p.vx;
                 p.y += p.vy;
 
-                // Wrap around edges
+                // Wrap around
                 if (p.x < 0) p.x = canvas.width;
                 if (p.x > canvas.width) p.x = 0;
                 if (p.y < 0) p.y = canvas.height;
                 if (p.y > canvas.height) p.y = 0;
 
-                // Draw particle
-                ctx!.fillStyle = `rgba(167, 139, 250, ${p.alpha})`;
-                ctx!.beginPath();
-                ctx!.arc(p.x, p.y, p.radius, 0, Math.PI * 2);
-                ctx!.fill();
+                ctx.beginPath();
+                ctx.arc(p.x, p.y, p.radius, 0, Math.PI * 2);
+                ctx.fillStyle = color;
+                ctx.globalAlpha = p.alpha;
+                ctx.fill();
             });
 
-            requestAnimationFrame(animate);
+            animationId = requestAnimationFrame(animate);
         }
 
         animate();
 
-        return () => { }; // Cleanup function
+        return () => cancelAnimationFrame(animationId);
     },
 
     /**
@@ -415,7 +440,7 @@ export const delightInteractions = {
             ease: tokens.easing.elastic,
         })
             .to(card, {
-                boxShadow: tokens.shadow.glow,
+                boxShadow: tokens.shadow.glowPrimary,
                 duration: 0.5,
             });
 

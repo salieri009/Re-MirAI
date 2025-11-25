@@ -44,7 +44,7 @@ Every enhancement document in `@07-Enhancement` must reference this palette when
 
 | Page | Palette Application | Notes |
 |------|---------------------|-------|
-| Landing (`01-Landing-Page-Enhancement.md`) | Hero background gradient `#d946ef → #e6ebf8`, mirror glass highlights use `#697fac`. | Maintain CTA glow intensity; update Feature Showcase cards to the mist background. |
+| Landing (`01-Landing-Page-Enhancement.md`) | **Discovery:** Hero gradient `#d946ef` → `#e6ebf8`. Mirror highlights `#697fac` (Curiosity). **Conversion:** CTA `#d946ef` with intense glow. | **Contrast Rule:** Hero text is White (`#fff`) on Primary; Feature text is Anchor (`#334155`) on Mist. |
 | Login (`02-Login-Page-Enhancement.md`) | Auth card outline + trust badges use `#697fac`; canvas wash `#e6ebf8`. | **CRITICAL:** Badge text must use `#334155` to pass AA contrast. |
 | Dashboard (`03-Dashboard-Page-Enhancement.md`) | State cards adopt `#e6ebf8` surfaces with primary CTA + accent typography. | `actionPulse` uses accent glow to avoid overstimulating users already seeing primary in hero. |
 | Chat (`04-Chat-Page-Enhancement.md`) | Message bubbles remain neutral; headers + reaction pills use accent; share modals adopt mist background. | Typing indicator dots tint from accent → primary. |

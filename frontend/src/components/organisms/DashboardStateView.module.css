@@ -13,8 +13,8 @@
 .card {
   padding: var(--space-xl);
   border-radius: var(--radius-xl);
-  background: rgba(255, 255, 255, 0.04);
-  border: 1px solid rgba(255, 255, 255, 0.08);
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
   box-shadow: var(--shadow-lg);
 }
 
@@ -30,18 +30,73 @@
   color: var(--color-text-secondary);
 }
 
-.stepList {
-  list-style: decimal;
-  margin: var(--space-md) 0;
-  padding-left: var(--space-xl);
-  color: var(--color-text-secondary);
+.journeyMap {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin: var(--space-xl) 0;
+  position: relative;
+  padding: 0 var(--space-md);
+}
+
+.journeyStep {
   display: flex;
   flex-direction: column;
+  align-items: center;
   gap: var(--space-xs);
+  z-index: 1;
+  opacity: 0.5;
+  transition: opacity 0.3s ease;
+}
+
+.journeyStep.active {
+  opacity: 1;
+}
+
+.stepIcon {
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  background: var(--color-surface);
+  border: 2px solid var(--color-border);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: var(--font-size-xl);
+  box-shadow: var(--shadow-sm);
+}
+
+.active .stepIcon {
+  border-color: var(--color-primary);
+  box-shadow: var(--shadow-glow-primary);
+  background: var(--color-surface);
+}
+
+.connector {
+  flex: 1;
+  height: 2px;
+  background: var(--color-border);
+  margin: 0 var(--space-xs);
+  transform: translateY(-14px);
+  /* Align with icon center */
+}
+
+.journeyStep p {
+  font-size: var(--font-size-xs);
+  font-weight: var(--font-weight-medium);
+  text-align: center;
+  margin: 0;
+}
+
+.empty {
+  background: var(--color-surface);
+  border: 1px solid rgba(105, 127, 172, 0.2);
+  box-shadow: var(--shadow-glow-accent);
 }
 
 .collecting {
-  background: linear-gradient(135deg, rgba(59, 130, 246, 0.12), rgba(147, 51, 234, 0.12));
+  background: linear-gradient(135deg, rgba(105, 127, 172, 0.12), rgba(217, 70, 239, 0.08));
+  border: 1px solid rgba(105, 127, 172, 0.25);
 }
 
 .collectingHeader {
@@ -81,7 +136,7 @@
 .progressFill {
   height: 100%;
   border-radius: inherit;
-  background: linear-gradient(90deg, var(--color-primary), var(--color-secondary));
+  background: var(--gradient-primary-to-accent);
   transition: width 0.4s ease;
 }
 
@@ -92,7 +147,31 @@
 
 .ready {
   text-align: center;
-  background: linear-gradient(135deg, rgba(234, 179, 8, 0.15), rgba(249, 115, 22, 0.15));
+  background: linear-gradient(135deg, rgba(235, 200, 120, 0.22), rgba(249, 115, 22, 0.12));
+  border: 1px solid rgba(249, 115, 22, 0.3);
+  box-shadow: var(--shadow-glow-primary);
+}
+
+.tipCard {
+  margin: var(--space-lg) 0;
+  padding: var(--space-md);
+  border-radius: var(--radius-lg);
+  background: var(--color-bg-secondary);
+  border: 1px solid rgba(105, 127, 172, 0.3);
+  box-shadow: 0 8px 20px rgba(15, 23, 42, 0.08);
+}
+
+.tipLabel {
+  font-size: var(--font-size-xs);
+  text-transform: uppercase;
+  letter-spacing: 0.2em;
+  color: var(--color-accent);
+  margin-bottom: var(--space-xs);
+}
+
+.tipCopy {
+  margin: 0;
+  color: var(--color-text);
 }
 
 .activeGrid {
@@ -142,4 +221,3 @@
     grid-template-columns: 1fr;
   }
 }
-

@@ -19,12 +19,15 @@ interface DashboardStateViewProps {
   surveyStatus?: SurveyStatus | null;
   persona?: Persona | null;
   surveyUrl?: string | null;
+  shareCount?: number;
+  lastShared?: string;
   quests?: Quest[] | null;
   onCreateSurvey: () => void;
   onSummon?: () => void;
   onChat?: () => void;
   onViewPersona?: () => void;
   onClaimQuest?: (questId: string) => Promise<void>;
+  onCopySurveyLink?: () => void;
 }
 
 export function DashboardStateView({
@@ -32,12 +35,15 @@ export function DashboardStateView({
   surveyStatus,
   persona,
   surveyUrl,
+  shareCount,
+  lastShared,
   quests,
   onCreateSurvey,
   onSummon,
   onChat,
   onViewPersona,
   onClaimQuest,
+  onCopySurveyLink,
 }: DashboardStateViewProps) {
   const progressFillRef = useRef<HTMLDivElement>(null);
   const primaryActionRef = useRef<HTMLButtonElement>(null);
@@ -103,13 +109,34 @@ export function DashboardStateView({
   const renderEmptyState = () => (
     <div className={`${styles.card} ${styles.empty}`}>
       <h2>Your journey begins</h2>
-      <p>Collect echoes from friends to reveal who they believe you are.</p>
-      <ol className={styles.stepList}>
-        <li>Create a perception ritual (survey)</li>
-        <li>Share it with friends</li>
-        <li>Collect the required echoes</li>
-        <li>Summon your persona</li>
-      </ol>
+      <p>Create your first perception ritual to start gathering anonymous echoes.</p>
+
+      <div className={styles.journeyMap}>
+        <div className={`${styles.journeyStep} ${styles.active}`}>
+          <div className={styles.stepIcon}>🔗</div>
+          <p>Create Ritual</p>
+        </div>
+        <div className={styles.connector} />
+        <div className={styles.journeyStep}>
+          <div className={styles.stepIcon}>📤</div>
+          <p>Share Link</p>
+        </div>
+        <div className={styles.connector} />
+        <div className={styles.journeyStep}>
+          <div className={styles.stepIcon}>🔮</div>
+          <p>Collect Echoes</p>
+        </div>
+        <div className={styles.connector} />
+        <div className={styles.journeyStep}>
+          <div className={styles.stepIcon}>⚡</div>
+          <p>Summon</p>
+        </div>
+      </div>
+
+      <div className={styles.tipCard}>
+        <p className={styles.tipLabel}>Tip</p>
+        <p className={styles.tipCopy}>People respond 2× faster when you add a personal note to the link.</p>
+      </div>
       <Button variant="primary" size="lg" onClick={onCreateSurvey}>
         🌟 Create First Survey
       </Button>
@@ -154,7 +181,7 @@ export function DashboardStateView({
             variant="primary"
             size="lg"
             onClick={() => {
-              navigator.clipboard.writeText(surveyUrl);
+              onCopySurveyLink?.();
               announce('Survey link copied to clipboard', 'polite');
             }}
           >
@@ -170,9 +197,12 @@ export function DashboardStateView({
       {surveyUrl && (
         <SurveyLinkCard
           link={surveyUrl}
-          shareCount={0}
-          lastShared={undefined}
-          onCopy={() => announce('Survey link copied to clipboard', 'polite')}
+          shareCount={shareCount}
+          lastShared={lastShared}
+          onCopy={() => {
+            onCopySurveyLink?.();
+            announce('Survey link copied to clipboard', 'polite');
+          }}
         />
       )}
 
@@ -246,9 +276,22 @@ export function DashboardStateView({
     </div>
   );
 
+  const containerRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    if (reducedMotion || !containerRef.current) return;
+
+    // Animate entrance on state change
+    gsap.fromTo(
+      containerRef.current,
+      { opacity: 0, y: 20, scale: 0.98 },
+      { opacity: 1, y: 0, scale: 1, duration: 0.5, ease: 'power2.out' }
+    );
+  }, [state, reducedMotion]);
+
   return (
     <section className={`${styles.stateRoot} ${styles[state]}`}>
-      <div className={styles.stateContent}>
+      <div ref={containerRef} className={styles.stateContent}>
         {state === 'empty' && renderEmptyState()}
         {state === 'collecting' && renderCollectingState()}
         {state === 'ready' && renderReadyState()}

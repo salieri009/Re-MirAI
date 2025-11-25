@@ -3,17 +3,24 @@
 import { useState, useEffect, useRef, useMemo } from 'react';
 import gsap from 'gsap';
 import { Button } from '@/components/atoms/Button';
-import { conversionInteractions, delightInteractions } from '@/lib/micro-interactions';
+import { conversionInteractions } from '@/lib/micro-interactions';
 import { useAnnouncement, useReducedMotion } from '@/hooks/useAccessibility';
-import { tokens } from '@/design-tokens';
 import { trackEvent } from '@/lib/analytics';
 import { PersonaPreview } from './PersonaPreview';
+import { MirrorCanvas } from './MirrorCanvas/MirrorCanvas';
 import styles from './InteractiveHero.module.css';
 
 interface InteractiveHeroProps {
   onStartDiscovery: () => void;
   onSkipAnimation?: () => void;
 }
+
+// New component for accessibility announcements
+const HeroAnnouncement = ({ message }: { message: string }) => (
+  <div className={styles.heroAnnouncement} role="status" aria-live="polite">
+    {message}
+  </div>
+);
 
 export function InteractiveHero({ onStartDiscovery, onSkipAnimation }: InteractiveHeroProps) {
   const [stage, setStage] = useState<'idle' | 'hover' | 'active' | 'reveal'>('idle');
@@ -22,8 +29,7 @@ export function InteractiveHero({ onStartDiscovery, onSkipAnimation }: Interacti
 
   const mirrorRef = useRef<HTMLDivElement>(null);
   const ctaRef = useRef<HTMLButtonElement>(null);
-  const canvasRef = useRef<HTMLCanvasElement>(null);
-  const particleCleanup = useRef<(() => void) | null>(null);
+  const timelineRef = useRef<gsap.core.Timeline | null>(null);
 
   const reducedMotion = useReducedMotion();
   const announce = useAnnouncement();
@@ -32,34 +38,6 @@ export function InteractiveHero({ onStartDiscovery, onSkipAnimation }: Interacti
     const timer = setTimeout(() => setHeroReady(true), reducedMotion ? 150 : 400);
     return () => clearTimeout(timer);
   }, [reducedMotion]);
-
-  // Initialize particle system
-  useEffect(() => {
-    if (!canvasRef.current || reducedMotion || !isHeroReady) return;
-
-    const canvas = canvasRef.current;
-    const ctx = canvas.getContext('2d');
-    if (!ctx) return;
-
-    // Set canvas size
-    canvas.width = canvas.offsetWidth;
-    canvas.height = canvas.offsetHeight;
-
-    // Create particle system
-    const cleanup = delightInteractions.particleSystem(canvas, ctx, {
-      count: 30,
-        color: tokens.palette.primary,
-      speed: 0.5,
-    });
-
-    particleCleanup.current = cleanup;
-
-    return () => {
-      if (particleCleanup.current) {
-        particleCleanup.current();
-      }
-    };
-  }, [isHeroReady, reducedMotion]);
 
   // Announce stage transitions for screen reader users
   const stageMessages = useMemo<Record<typeof stage, { message: string; priority?: 'polite' | 'assertive' }>>(() => ({
@@ -139,10 +117,20 @@ export function InteractiveHero({ onStartDiscovery, onSkipAnimation }: Interacti
 
     if (!reducedMotion && mirrorRef.current) {
       // Trigger mirror shatter animation
-      await conversionInteractions.mirrorShatter(mirrorRef.current);
+      const tl = conversionInteractions.mirrorShatter(mirrorRef.current);
+      timelineRef.current = tl;
+      await tl;
     }
 
     setStage('reveal');
+  };
+
+  const handleSkip = () => {
+    if (timelineRef.current) {
+      timelineRef.current.progress(1);
+    }
+    setStage('reveal');
+    if (onSkipAnimation) onSkipAnimation();
   };
 
   const handleCTAHover = () => {
@@ -159,7 +147,7 @@ export function InteractiveHero({ onStartDiscovery, onSkipAnimation }: Interacti
   return (
     <section className={styles.hero}>
       {/* Particle background canvas */}
-      <canvas ref={canvasRef} className={styles.particleCanvas} />
+      <MirrorCanvas variant="background" intensity={0.8} />
 
       <div className={styles.container}>
         <div className={styles.content}>
@@ -197,6 +185,7 @@ export function InteractiveHero({ onStartDiscovery, onSkipAnimation }: Interacti
                 }}
               >
                 <div className={styles.mirrorGlass}>
+                  <MirrorCanvas variant="mirror" intensity={0.5} />
                   {stage === 'idle' && (
                     <div className={styles.mirrorText}>
                       🪞

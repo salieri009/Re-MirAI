@@ -164,30 +164,56 @@ Live progress tracking with shareable link prominence—making link sharing effo
 - Practice summon option
 
 ### Weaknesses
-- **Data vs. Ritual:** Presentation feels like "survey admin" rather than "gathering echoes".
-- **Passive Waiting:** No real-time feedback when a new "Echo" (response) arrives.
-- **High Friction Sharing:** Sharing the ritual link is not celebrated or streamlined.
-- **Lack of Insight:** Users cannot see the *quality* of gathered echoes, only quantity.
+- **Data vs. Ritual:** Presentation feels like "survey admin" rather than "gathering echoes". It's a spreadsheet view of a magical process.
+- **Passive Waiting:** No real-time feedback when a new "Echo" (response) arrives. The user has to refresh to see progress.
+- **High Friction Sharing:** Sharing the ritual link is not celebrated or streamlined. It's just a "Copy Link" button.
+- **Lack of Insight:** Users cannot see the *quality* of gathered echoes, only quantity. They don't know if the responses are meaningful.
 - **Accessibility Gaps:** Dashboard controls are not fully accessible.
+
+---
+
+## Detailed UX/UI Weakness Analysis
+
+| Weakness | UX Impact | UI Manifestation |
+|----------|-----------|------------------|
+| **Data vs. Ritual** | Breaks immersion; feels administrative. | Standard tables, "Response ID", "Timestamp". |
+| **Passive Waiting** | Reduces engagement; feels dead. | Static numbers. No "New" indicators. |
+| **High Friction Sharing** | Lowers conversion (fewer responses). | Hidden share options. No "Share Preview". |
+| **Lack of Insight** | Reduces anticipation; user feels blind. | "3 Responses" (Generic). No "Long response received!" indicator. |
 
 ---
 
 ## Enhancement Goals & Mitigation Strategies
 
 ### 1. Ritual Visualization (Mitigates: Data vs. Ritual)
-Replace standard data tables with "Gathering Echoes" metaphors (e.g., filling a vessel) to maintain the magical theme.
+**Goal:** Visualize the "Gathering" process.
+**Strategy:**
+- **Vessel Metaphor:** Represent the collection as filling a "Soul Vessel" or "Crystal" (using CSS clip-path or SVG animations) rather than a progress bar.
+- **Echo Orbs:** Represent each response as a floating "Orb" that orbits the vessel, varying in size based on response length.
 
 ### 2. Real-time Feedback (Mitigates: Passive Waiting)
-Implement live updates for new responses, providing immediate gratification and a sense of activity.
+**Goal:** Make the page feel alive.
+**Strategy:**
+- **Live Updates:** Use a polling hook (or WebSocket) to detect new responses.
+- **Arrival Animation:** When a new response arrives, animate a new "Orb" flying into the vessel (using `particleSystem`).
 
 ### 3. Frictionless Sharing (Mitigates: High Friction Sharing)
-Streamline the sharing process with one-click copy, QR codes, and pre-written social posts to encourage distribution.
+**Goal:** Encourage distribution.
+**Strategy:**
+- **Share Sheet:** Implement a custom "Share Sheet" (using the `ShareModal` component) with pre-generated social cards.
+- **QR Code:** Auto-generate a stylized QR code for in-person sharing.
 
 ### 4. Insight Visualization (Mitigates: Lack of Insight)
-Provide visual cues about the *quality* or *type* of feedback received (without breaking anonymity) to satisfy curiosity.
+**Goal:** Satisfy curiosity without breaking anonymity.
+**Strategy:**
+- **Sentiment Glow:** Color-code the "Echo Orbs" based on sentiment analysis (e.g., Warm Gold for positive, Cool Blue for analytical) if available, or response length.
+- **Teaser Text:** Show "Someone said: '...a true leader...'" (snippet) to entice the user to keep collecting.
 
 ### 5. Accessible Management (Mitigates: Accessibility Gaps)
-Ensure the hub's management tools are fully compliant with accessibility standards.
+**Goal:** Ensure inclusive control.
+**Strategy:**
+- **Keyboard Shortcuts:** Add hotkeys for "Copy Link" (Ctrl+C) and "View Progress" (Ctrl+P).
+- **Live Announcements:** Announce "New Echo received!" via `aria-live`.
 
 ### 6. UX Risk Mitigation Strategies
 - **Privacy Anxiety:** Users might fear that sharing a link exposes their personal data.
