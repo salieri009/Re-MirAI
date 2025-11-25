@@ -21,6 +21,7 @@
 - **Immersive Consistency:** Maintain the magical atmosphere (muted) to prevent a jarring transition from the landing page.
 - **Micro-Interactions:** Provide immediate, reassuring feedback (glows, loading states) for every interaction.
 - **Emotional Resonance:** Evoke **Safety** and **Anticipation** to make entry feel like an invitation, not a gate.
+- **Visual Identity:** Adheres to the **Small Switch Palette** (see `09-Color-Palette-Plan.md`) to ensure brand consistency and accessibility.
 
 ---
 

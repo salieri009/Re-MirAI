@@ -21,6 +21,7 @@
 - **Immersive Consistency:** Establish the "magical" brand atmosphere that persists throughout the journey.
 - **Micro-Interactions:** Use hover effects and scroll triggers to reward curiosity and maintain engagement.
 - **Emotional Resonance:** Evoke **Curiosity** and **Wonder** to drive the desire to sign up.
+- **Visual Identity:** Adheres to the **Small Switch Palette** (see `09-Color-Palette-Plan.md`) to ensure brand consistency and accessibility.
 
 ---
 

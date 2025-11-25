@@ -21,6 +21,7 @@
 - **Immersive Consistency:** A calm, reflective environment that feels distinct from the "gamified" app but part of the same universe.
 - **Micro-Interactions:** Smooth transitions and clear selection states make the task feel effortless.
 - **Emotional Resonance:** Evoke **Trust** and **Focus** to encourage honest and thoughtful responses.
+- **Visual Identity:** Adheres to the **Small Switch Palette** (see `09-Color-Palette-Plan.md`) to ensure brand consistency and accessibility.
 
 ---
 

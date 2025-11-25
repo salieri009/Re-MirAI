@@ -1117,34 +1117,16 @@ const handleStateChange = async (newState: State) => {
 
 ## Design System Reference
 
-### Color Palettes (Emotion-Mapped)
+### Color Palettes (Small Switch Standard)
+
+**Note:** See `09-Color-Palette-Plan.md` for the definitive guide and accessibility rules.
 
 ```typescript
-// Curiosity & Wonder (Landing Page)
-tokens.emotions.curiosity.primary   // #d946ef (Fuchsia)
-tokens.emotions.curiosity.secondary // #f093fb (Pink)
-tokens.emotions.curiosity.accent    // #8b5cf6 (Purple)
-
-// Trust & Clarity (Login, Survey)
-tokens.emotions.trust.primary       // #3b82f6 (Blue)
-tokens.emotions.trust.secondary     // #60a5fa (Light Blue)
-tokens.emotions.trust.success       // #10b981 (Green)
-
-// Progress & Motivation (Dashboard, Ritual Hub)
-tokens.emotions.progress.empty      // #94a3b8 (Gray)
-tokens.emotions.progress.collecting // #f59e0b (Yellow)
-tokens.emotions.progress.ready      // #10b981 (Green)
-tokens.emotions.progress.active     // #8b5cf6 (Purple)
-
-// Connection (Chat, Persona Room)
-tokens.emotions.connection.user     // #ef4444 (Red)
-tokens.emotions.connection.ai       // #6b7280 (Gray)
-tokens.emotions.connection.bond     // #f59e0b (Gold)
-
-// Delight (Summoning)
-tokens.emotions.delight.primary     // #8b5cf6 (Purple)
-tokens.emotions.delight.secondary   // #ec4899 (Pink)
-tokens.emotions.delight.accent      // #06b6d4 (Cyan)
+// Core Palette (Applied Globally)
+tokens.primary   // #d946ef (Fuchsia) - Brand Identity
+tokens.mist      // #e6ebf8 (Lavender Wash) - Backgrounds
+tokens.accent    // #697fac (Slate) - Decoration Only
+tokens.text      // #334155 (Dark Slate) - Readability (WCAG AA)
 ```
 
 ### Animation Durations

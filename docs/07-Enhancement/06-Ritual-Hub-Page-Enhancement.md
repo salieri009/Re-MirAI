@@ -21,6 +21,7 @@
 - **Immersive Consistency:** Frame "data collection" as "gathering echoes" to maintain the magical tone.
 - **Micro-Interactions:** "Copied!" tooltips, real-time counter updates, and progress bar fills provide instant gratification.
 - **Emotional Resonance:** Evoke **Anticipation** and **Gratitude** for friends' contributions.
+- **Visual Identity:** Adheres to the **Small Switch Palette** (see `09-Color-Palette-Plan.md`) to ensure brand consistency and accessibility.
 
 ---
 

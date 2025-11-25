@@ -21,6 +21,7 @@
 - **Immersive Consistency:** Use magical metaphors (Echoes, Crystals) for data to keep the user in the narrative.
 - **Micro-Interactions:** Use pulsing animations to guide attention to the next required action.
 - **Emotional Resonance:** Evoke **Motivation** and **Clarity** to encourage continued progress.
+- **Visual Identity:** Adheres to the **Small Switch Palette** (see `09-Color-Palette-Plan.md`) to ensure brand consistency and accessibility.
 
 ---
 

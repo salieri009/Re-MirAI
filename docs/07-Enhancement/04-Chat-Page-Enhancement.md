@@ -21,6 +21,7 @@
 - **Immersive Consistency:** The AI's "voice" is visually represented through typing indicators and reaction speeds.
 - **Micro-Interactions:** Use typing bubbles, message arrival animations, and reaction effects to simulate "life".
 - **Emotional Resonance:** Evoke **Intimacy** and **Belonging** through responsive and organic interactions.
+- **Visual Identity:** Adheres to the **Small Switch Palette** (see `09-Color-Palette-Plan.md`) to ensure brand consistency and accessibility.
 
 ---
 

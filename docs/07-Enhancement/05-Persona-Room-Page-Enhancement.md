@@ -21,6 +21,7 @@
 - **Immersive Consistency:** The room's visual state reflects the bond level, reinforcing the "living" persona concept.
 - **Micro-Interactions:** Interactive cards (flip, expand) and progress animations reward exploration.
 - **Emotional Resonance:** Evoke **Pride** and **Attachment** to the created persona.
+- **Visual Identity:** Adheres to the **Small Switch Palette** (see `09-Color-Palette-Plan.md`) to ensure brand consistency and accessibility.
 
 ---
 

@@ -21,6 +21,7 @@
 - **Immersive Consistency:** The culmination of all previous "magical" hints; the highest fidelity experience.
 - **Micro-Interactions:** Particle effects and light interactions make the wait (loading) feel like part of the show.
 - **Emotional Resonance:** Evoke **Awe** and **Joy** to create a memorable peak moment.
+- **Visual Identity:** Adheres to the **Small Switch Palette** (see `09-Color-Palette-Plan.md`) to ensure brand consistency and accessibility.
 
 ---
 
