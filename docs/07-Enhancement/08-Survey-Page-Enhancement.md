@@ -1,7 +1,7 @@
 # Survey Page Enhancement Plan
 
-**Version:** 1.0.1  
-**Last Updated:** 2025-01-27  
+**Version:** 1.0.2  
+**Last Updated:** 2025-11-25  
 **Status:** Active  
 **Route:** `/s/:id`  
 **Component:** `SurveyPage` (Page level)
@@ -25,6 +25,23 @@
 ## Executive Summary
 
 The Survey Page is Re:MirAI's **anonymous feedback collection portal**—where friends provide honest perceptions to create an AI persona.
+
+## Phase 1.5 Implementation Addendum (v1.0.2)
+
+### Current Build Snapshot
+- `/s/[id]` renders `PrivacyNotice` + `SurveyWizard`, delivering the trust-first introduction and multi-step questionnaire described in the doc (see `frontend/src/app/s/[id]/page.tsx`).
+- `SurveyWizard` orchestrates question cards, progress indicator, and navigation controls; Likert buttons use the new tokens + states.
+- Queries fetch survey metadata and questions via `surveyApi`, ensuring dynamic wording + counts.
+
+### Gap Analysis vs. Spec
+- Keyboard shortcuts + review step from §Likert UI Enhancement are not implemented; navigation is pointer-focused.
+- No `useAnnouncement` integration for question transitions or submission success, so accessibility acceptance criteria remain unmet.
+- Thank-you screen lacks CTA back into Ritual Hub (to remind sharer) and analytics instrumentation outlined in §Completion Loop.
+
+### Next Focus
+1. Implement key bindings (1-5, arrow keys) + accessible focus management for Likert buttons, per design spec.
+2. Add review/confirmation step and thank-you card with CTA (“Share with another friend”) and analytics event logging.
+3. Integrate `useAnnouncement` for question changes, validation errors, and submission success to satisfy WCAG guidelines.
 
 ### Page Purpose: **COLLECT**
 

@@ -3,7 +3,7 @@
 **Version:** 1.0.2  
 **Last Updated:** 2025-11-25  
 **Status:** Active  
-**Route:** `/room/:personaId`  
+**Route:** `/p/:id`  
 **Component:** `PersonaRoomPage` (Page level)
 
 ---
