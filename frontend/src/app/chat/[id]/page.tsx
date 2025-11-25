@@ -1,6 +1,6 @@
 'use client';
 
-import { use, useState } from 'react';
+import { use, useState, useEffect } from 'react';
 import { useQuery } from '@tanstack/react-query';
 import { chatApi } from '@/lib/api/chat';
 import { Button } from '@/components/atoms/Button';
@@ -16,11 +16,14 @@ export default function ChatPage({ params }: { params: Promise<{ id: string }> }
 
   const { data: history } = useQuery({
     queryKey: ['chat-history', id],
-    queryFn: () => chatApi.getHistory(id),
-    onSuccess: (data) => {
-      setMessages(data.messages);
-    }
+    queryFn: () => chatApi.getHistory(id)
   });
+
+  useEffect(() => {
+    if (history?.messages) {
+      setMessages(history.messages);
+    }
+  }, [history]);
 
   const handleSend = async () => {
     if (!message.trim() || isSending) return;
