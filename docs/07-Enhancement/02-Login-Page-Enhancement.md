@@ -1,7 +1,7 @@
 # Login Page Enhancement Plan
 
-**Version:** 1.0.1  
-**Last Updated:** 2025-01-27  
+**Version:** 1.0.2  
+**Last Updated:** 2025-11-25  
 **Status:** Active  
 **Route:** `/login`  
 **Component:** `LoginPage` (Page level)
@@ -25,6 +25,23 @@
 ## Executive Summary
 
 The Login Page is the authentication gateway to Re:MirAI. This enhancement plan focuses on **frictionless authentication** while building **emotional trust** through visual feedback, micro-interactions, and clear communication at every step of the auth journey.
+
+## Phase 1.5 Implementation Addendum (v1.0.2)
+
+### Current Build Snapshot
+- `/login` now renders the GSAP-animated auth card, ambient particle canvas, and trust badge grid exactly as specified in §Visual Hierarchy (see `frontend/src/app/login/page.tsx`).
+- `GoogleAuthButton` delivers loading states, spinner, and polite announcements; `trustInteractions.loadingStates` rotates status copy while `useAnnouncement` narrates auth progress.
+- Inline retry path + ghost button (“Back to home”) matches the escape hatch requirement and routes back to `/`.
+
+### Gap Analysis vs. Spec
+- Still using mock `authApi.googleLogin('mock-id-token')`; no actual OAuth handshake or failure telemetry.
+- Error module lacks micro-copy differentiation (network vs. permission) and the doc’s “magical recovery” animation.
+- Need ARIA wiring on trust badge carousel + focus ring tokens to hit WCAG 2.1 AA (doc calls this out in Accessibility Checklist).
+
+### Next Focus
+1. Integrate real Google OAuth + refresh token handling, then update `Status` copy deck to reflect real states (`init`, `popup`, `exchange`).
+2. Add `trustInteractions.buttonGlow` hover effect to the main CTA and ghost button to complete the interaction table.
+3. Implement analytics events (`auth.start`, `auth.success`, `auth.error`) and pipe failures into the error card with localized copy.
 
 ### Page Purpose: **ONBOARDING + TRUST**
 

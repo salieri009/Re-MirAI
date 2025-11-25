@@ -1,7 +1,7 @@
 # Dashboard Page Enhancement Plan
 
-**Version:** 1.0.1  
-**Last Updated:** 2025-01-27  
+**Version:** 1.0.2  
+**Last Updated:** 2025-11-25  
 **Status:** Active  
 **Route:** `/dashboard`  
 **Component:** `DashboardPage` (Page level)
@@ -25,6 +25,23 @@
 ## Executive Summary
 
 The Dashboard is Re:MirAI's **command center**—where users instantly understand their journey status and know exactly what to do next.
+
+## Phase 1.5 Implementation Addendum (v1.0.2)
+
+### Current Build Snapshot
+- `/dashboard` now renders `DashboardStateView` with state-driven templates (`empty`, `collecting`, `ready`, `active`) plus CTA wiring to survey, summoning, chat, and persona routes.
+- TanStack Query integrates survey, persona, and quest APIs ensuring cards reflect live backend data; `SurveyLinkCard` + `StatusCard` express the guidance patterns defined in this doc.
+- Guidance micro-interactions partially landed: `progressShimmer` animates ritual percentages and SurveyLink CTA duplicates share counts.
+
+### Gap Analysis vs. Spec
+- No real-time channel yet; queries poll once on mount and rely on manual refresh, so “live ritual pulse” requirement remains open.
+- `actionPulse` and CTA gradient tokens are not applied, meaning attention hierarchy leans entirely on static styles.
+- Dashboard analytics + education modules (empty tutorial, collecting tips) are absent, limiting insights for release/QA.
+
+### Next Focus
+1. Build `useSurveyStatus` hook with `refetchInterval`, jitter, and WebSocket fallback to keep responses + persona readiness hot.
+2. Instrument CTA buttons with `guidanceInteractions.actionPulse` + event logging (`dashboard.cta.click`) gated by `useReducedMotion`.
+3. Ship the onboarding checklist + tooltip copy described in §Empty State Blueprint to close the “Guided Onboarding” gap.
 
 ### Page Purpose: **INFORM + GUIDE**
 

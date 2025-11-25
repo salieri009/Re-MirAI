@@ -1,7 +1,7 @@
 # Persona Room Page Enhancement Plan
 
-**Version:** 1.0.1  
-**Last Updated:** 2025-01-27  
+**Version:** 1.0.2  
+**Last Updated:** 2025-11-25  
 **Status:** Active  
 **Route:** `/room/:personaId`  
 **Component:** `PersonaRoomPage` (Page level)
@@ -25,6 +25,23 @@
 ## Executive Summary
 
 The Persona Room Page is Re:MirAI's **showcase gallery**—where users display their persona, track achievements, and engage with quests.
+
+## Phase 1.5 Implementation Addendum (v1.0.2)
+
+### Current Build Snapshot
+- `/p/[id]` renders the Persona Room layout with `PersonaCard`, `StatsPanel`, `QuestCard` grid, `ActivityFeed`, and the reusable `ShareModal`, aligning with the Showcase + Engage blueprint (see `frontend/src/app/p/[id]/page.tsx`).
+- Share flows now export persona cards via canvas, increment a local share counter, and feed the activity log.
+- Quest list + activity feed leverage mock APIs, providing the feedback loops described in §Quest System + §Activity Narrative.
+
+### Gap Analysis vs. Spec
+- Persona room visuals are static; doc specifies bond-level theming + ambient animations not yet implemented.
+- Quest completion lacks celebration micro-interactions or confetti overlays from `connectionInteractions.bondLevelUp`.
+- Analytics + persona-sharing metrics aren’t persisted, so Ritual Hub cannot yet reflect cross-page share progress.
+
+### Next Focus
+1. Introduce dynamic theming (background gradients, particle layers) driven by persona rarity/bond level, per §Immersive Consistency.
+2. Wire `QuestCard` completion handlers to animated celebration timeline + audio cue (respecting reduced-motion) and sync state via `questApi`.
+3. Persist `shareCount`/`lastShared` via backend + analytics events to unlock the Ritual Hub social metrics and Persona Room insights section.
 
 ### Page Purpose: **SHOWCASE + ENGAGE**
 

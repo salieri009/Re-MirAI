@@ -1,7 +1,7 @@
 # Landing Page Enhancement Plan
 
-**Version:** 1.0.1  
-**Last Updated:** 2025-01-27  
+**Version:** 1.0.2  
+**Last Updated:** 2025-11-25  
 **Status:** Active  
 **Route:** `/`  
 **Component:** `LandingPage` (Page level)
@@ -25,6 +25,23 @@
 ## Executive Summary
 
 The Landing Page is Re:MirAI's primary entry point. This enhancement plan focuses on creating an **interactive Hero section** that embodies the project's core concept ("Who do others believe I am?") while maintaining strict compliance with Nielsen's Heuristics and Blonix Branch design principles.
+
+## Phase 1.5 Implementation Addendum (v1.0.2)
+
+### Current Build Snapshot
+- `InteractiveHero` ( `frontend/src/components/organisms/InteractiveHero.tsx` ) now delivers the GSAP-driven mirror, persona preview, hover states, and reduced-motion guardrails described in §Purpose-Driven UX.
+- `FeatureShowcase` (`frontend/src/components/organisms/FeatureShowcase.tsx`) ships the three-step ScrollTrigger walkthrough plus CTA alignment, matching the “How it Works” immersion goals.
+- Landing route (`frontend/src/app/page.tsx`) wires both organisms to the Google auth flow so the CTA transitions straight into `/dashboard`.
+
+### Gap Analysis vs. Spec
+- Mirror state machine lacks analytics + `useAnnouncement` hooks to narrate each transition (“Mirror awakened”, “Persona emerging”).
+- Feature Showcase copy still uses placeholder Korean/English mix; needs localization + trust badges beneath step three per §Micro-Interactions.
+- No skeleton/loading state before hero assets resolve; doc calls for shimmer fallback to preserve perceived performance.
+
+### Next Focus
+1. Instrument hero + CTA events (`mirror.hover`, `mirror.break`, `cta.startDiscovery`) with the analytics schema from `00-MASTER-IMPLEMENTATION-GUIDE.md`.
+2. Add `HeroAnnouncement` region that calls `useAnnouncement` when the mirror changes phases, meeting WCAG live-region requirements.
+3. Expand `FeatureShowcase` content blocks with screenshot thumbnails + trust badges to fully realize “Purpose Reinforcement” checklist.
 
 ### Page Purpose: **DISCOVERY + CONVERSION**
 

@@ -1,7 +1,7 @@
 # Summoning Page Enhancement Plan
 
-**Version:** 1.0.1  
-**Last Updated:** 2025-01-27  
+**Version:** 1.0.2  
+**Last Updated:** 2025-11-25  
 **Status:** Active  
 **Route:** `/summon`  
 **Component:** `SummoningPage` (Page level)
@@ -25,6 +25,23 @@
 ## Executive Summary
 
 The Summoning Page is Re:MirAI's **climactic moment**—the dramatic reveal where collected Echoes transform into a living AI persona.
+
+## Phase 1.5 Implementation Addendum (v1.0.2)
+
+### Current Build Snapshot
+- `/dashboard/synthesize` now includes the Auto vs. Alchemic mode cards and routes into `SummoningAnimation`, which plays the multi-stage reveal (sparkles → magic circle → silhouette → persona card) with skip support (see `frontend/src/app/dashboard/synthesize/page.tsx` + `components/organisms/SummoningAnimation.tsx`).
+- Animation respects `prefers-reduced-motion`, exposing instantaneous reveal for users who opt out of motion.
+- Variant styling changes background gradients for Fated vs. Custom summon paths, satisfying the “dual ritual” requirement.
+
+### Gap Analysis vs. Spec
+- Stage copy + narration are static; doc calls for `useAnnouncement` prompts and VO-friendly stage text to enhance accessibility.
+- Error/Retry narratives (analytics instrumentation + cinematic failure states) haven’t been implemented yet.
+- No share CTA inside the reveal screen; user is routed to Persona Room only, leaving the “Share the reveal instantly” goal unmet.
+
+### Next Focus
+1. Add contextual narration + `useAnnouncement` calls for each stage, plus localized copy pulled from tokens.
+2. Implement the described error timeline (glitch overlay, retry CTA, analytics events) and ensure SummoningAnimation can resume.
+3. Surface share + “Jump to Persona Room” CTAs directly inside the reveal stage, including analytics events for share and skip actions.
 
 ### Page Purpose: **DELIGHT + REVEAL**
 

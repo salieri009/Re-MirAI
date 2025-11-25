@@ -1,7 +1,7 @@
 # Ritual Hub Page Enhancement Plan
 
-**Version:** 1.0.1  
-**Last Updated:** 2025-01-27  
+**Version:** 1.0.2  
+**Last Updated:** 2025-11-25  
 **Status:** Active  
 **Route:** `/ritual`  
 **Component:** `RitualHubPage` (Page level)
@@ -25,6 +25,23 @@
 ## Executive Summary
 
 The Ritual Hub Page is Re:MirAI's **survey management center**—where users track progress and distribute survey links effortlessly.
+
+## Phase 1.5 Implementation Addendum (v1.0.2)
+
+### Current Build Snapshot
+- `/dashboard/ritual` renders the Progress card, SurveyLinkCard, ShareOptions, and reminder actions, with `guidanceInteractions.progressShimmer` animating the fill (see `frontend/src/app/dashboard/ritual/page.tsx`).
+- Survey status polling, share count badges, and CTA copy match the “Manage + Share” purpose across the new layout.
+- Reminder buttons + metrics block satisfy the doc’s Reminder Options & Analytics v1 checklist.
+
+### Gap Analysis vs. Spec
+- Real-time updates still rely on interval polling; no WebSocket hook / optimistic “new echo” toast yet.
+- Share flows lack the multi-platform modal with pre-crafted copy + keyboard shortcuts described under §Share Flows.
+- Analytics card shows mock counts only; backend instrumentation + cross-page sync with Persona Room hasn’t shipped.
+
+### Next Focus
+1. Implement `useSurveyUpdates` hook with SSE/websocket fallback + copy confirmations (per §Real-Time Updates).
+2. Replace inline `ShareOptions` panel with the full multi-platform modal (templates, keyboard shortcuts, analytics event logging).
+3. Populate the analytics section with actual metrics (conversion %, time-to-threshold) from backend + tie into `00-MASTER-IMPLEMENTATION-GUIDE` instrumentation.
 
 ### Page Purpose: **MANAGE + SHARE**
 

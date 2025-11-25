@@ -1,7 +1,7 @@
 # Chat Page Enhancement Plan
 
-**Version:** 1.0.1  
-**Last Updated:** 2025-01-27  
+**Version:** 1.0.2  
+**Last Updated:** 2025-11-25  
 **Status:** Active  
 **Route:** `/chat/:personaId`  
 **Component:** `ChatPage` (Page level)
@@ -25,6 +25,23 @@
 ## Executive Summary
 
 The Chat Page is Re:MirAI's **intimate conversation space**—where users build emotional connections with their AI persona through meaningful dialogue.
+
+## Phase 1.5 Implementation Addendum (v1.0.2)
+
+### Current Build Snapshot
+- `/chat/[id]` uses the new `TypingIndicator`, `ShareableSnippet`, `TopicSuggestion`, `ReactionButton`, and share sheet overlay to fulfill the “Real-Time Presence” + “Shareable Moments” pillars (see `frontend/src/app/chat/[id]/page.tsx`).
+- TanStack Query feeds persona context + chat history, while ShareableSnippet’s canvas export powers multi-platform sharing with preset captions.
+- Recent topics, keyboard shortcuts, and connection badges have been wired to match the document’s Purpose-Driven UX guidance.
+
+### Gap Analysis vs. Spec
+- Reactions are local-only; analytics + backend sync (“reaction loops”) are still TODO, so doc requirements for cross-session bond tracking aren’t satisfied.
+- `TopicSuggestion` lacks the AI-driven smart suggestions (currently static base array) and the highlight animation described in §Micro-Interactions.
+- Accessibility section requested ARIA live announcements for new AI messages + keyboard shortcuts for reactions; not yet implemented.
+
+### Next Focus
+1. Persist reactions + share counts via `chatApi.react()` and emit analytics (`chat.reaction.add`) per the data contract in `00-MASTER-IMPLEMENTATION-GUIDE.md`.
+2. Replace static topic list with persona-aware prompts (survey traits, recent quests) and add focus/animation cues from `connectionInteractions.topicGlow`.
+3. Add `useAnnouncement` hooks announcing new AI messages + share completions, and expose hotkeys for reaction buttons to hit the accessibility acceptance criteria.
 
 ### Page Purpose: **ENTERTAIN + CONNECT**
 
