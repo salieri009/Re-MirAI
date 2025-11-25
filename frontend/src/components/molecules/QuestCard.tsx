@@ -46,3 +46,4 @@ export function QuestCard({ quest, onClaim }: QuestCardProps) {
 
 
 
+

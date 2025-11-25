@@ -4,21 +4,8 @@
  */
 
 import { useEffect, useState, useCallback } from 'react';
+import type { CSSProperties, MouseEvent, RefObject } from 'react';
 
-/**
- * Hook: useReducedMotion
- * Detects user's motion preference
- * 
- * @returns {boolean} true if user prefers reduced motion
- * 
- * Usage:
- * ```tsx
- * const prefersReduced = useReducedMotion();
- * if (!prefersReduced) {
- *   // Run animations
- * }
- * ```
- */
 export function useReducedMotion(): boolean {
     const [prefersReduced, setPrefersReduced] = useState(false);
 
@@ -26,7 +13,7 @@ export function useReducedMotion(): boolean {
         const mediaQuery = window.matchMedia('(prefers-reduced-motion: reduce)');
         setPrefersReduced(mediaQuery.matches);
 
-        const handler = (e: MediaQueryListEvent) => setPrefersReduced(e.matches);
+        const handler = (event: MediaQueryListEvent) => setPrefersReduced(event.matches);
         mediaQuery.addEventListener('change', handler);
 
         return () => mediaQuery.removeEventListener('change', handler);
@@ -35,12 +22,6 @@ export function useReducedMotion(): boolean {
     return prefersReduced;
 }
 
-/**
- * Hook: useHighContrast
- * Detects user's contrast preference
- * 
- * @returns {boolean} true if user prefers high contrast
- */
 export function useHighContrast(): boolean {
     const [prefersHighContrast, setPrefersHighContrast] = useState(false);
 
@@ -48,7 +29,7 @@ export function useHighContrast(): boolean {
         const mediaQuery = window.matchMedia('(prefers-contrast: high)');
         setPrefersHighContrast(mediaQuery.matches);
 
-        const handler = (e: MediaQueryListEvent) => setPrefersHighContrast(e.matches);
+        const handler = (event: MediaQueryListEvent) => setPrefersHighContrast(event.matches);
         mediaQuery.addEventListener('change', handler);
 
         return () => mediaQuery.removeEventListener('change', handler);
@@ -57,21 +38,6 @@ export function useHighContrast(): boolean {
     return prefersHighContrast;
 }
 
-/**
- * Hook: useKeyboardNavigation
- * Enhanced keyboard navigation support
- * 
- * @param {Object} handlers - Keyboard event handlers
- * 
- * Usage:
- * ```tsx
- * useKeyboardNavigation({
- *   'Escape': closeModal,
- *   'ArrowLeft': previousItem,
- *   'ArrowRight': nextItem,
- * });
- * ```
- */
 export function useKeyboardNavigation(
     handlers: Record<string, (event: KeyboardEvent) => void>
 ) {
@@ -88,15 +54,8 @@ export function useKeyboardNavigation(
     }, [handlers]);
 }
 
-/**
- * Hook: useFocusTrap
- * Traps focus within a container (useful for modals)
- * 
- * @param {React.RefObject<HTMLElement>} containerRef - Container element ref
- * @param {boolean} isActive - Whether trap is active
- */
 export function useFocusTrap(
-    containerRef: React.RefObject<HTMLElement>,
+    containerRef: RefObject<HTMLElement>,
     isActive: boolean
 ) {
     useEffect(() => {
@@ -110,19 +69,17 @@ export function useFocusTrap(
         const firstElement = focusableElements[0] as HTMLElement;
         const lastElement = focusableElements[focusableElements.length - 1] as HTMLElement;
 
-        const handleTabKey = (e: KeyboardEvent) => {
-            if (e.key !== 'Tab') return;
+        const handleTabKey = (event: KeyboardEvent) => {
+            if (event.key !== 'Tab') return;
 
-            if (e.shiftKey) {
+            if (event.shiftKey) {
                 if (document.activeElement === firstElement) {
                     lastElement.focus();
-                    e.preventDefault();
+                    event.preventDefault();
                 }
-            } else {
-                if (document.activeElement === lastElement) {
-                    firstElement.focus();
-                    e.preventDefault();
-                }
+            } else if (document.activeElement === lastElement) {
+                firstElement.focus();
+                event.preventDefault();
             }
         };
 
@@ -135,18 +92,6 @@ export function useFocusTrap(
     }, [containerRef, isActive]);
 }
 
-/**
- * Hook: useAnnouncement
- * Screen reader announcements via aria-live regions
- * 
- * @returns {function} announce - Function to make announcements
- * 
- * Usage:
- * ```tsx
- * const announce = useAnnouncement();
- * announce('Form submitted successfully', 'polite');
- * ```
- */
 export function useAnnouncement(): (
     message: string,
     priority?: 'polite' | 'assertive'
@@ -181,7 +126,6 @@ export function useAnnouncement(): (
         announcer.setAttribute('aria-live', priority);
         announcer.textContent = message;
 
-        // Clear after announcement
         setTimeout(() => {
             announcer.textContent = '';
         }, 1000);
@@ -190,12 +134,6 @@ export function useAnnouncement(): (
     return announce;
 }
 
-/**
- * Hook: useAccessibility
- * Combined accessibility preferences
- * 
- * @returns {Object} accessibility preferences
- */
 export function useAccessibility() {
     const reducedMotion = useReducedMotion();
     const highContrast = useHighContrast();
@@ -208,58 +146,51 @@ export function useAccessibility() {
     };
 }
 
-/**
- * Utility: Skip to Content Link
- * Allows keyboard users to skip navigation
- * 
- * Usage in App:
- * ```tsx
- * <SkipToContent targetId="main-content" />
- * <main id="main-content">...</main>
- * ```
- */
 export function SkipToContent({ targetId }: { targetId: string }) {
-    const handleClick = (e: React.MouseEvent) => {
-        e.preventDefault();
+    const [isFocused, setIsFocused] = useState(false);
+
+    const hiddenStyles: CSSProperties = {
+        position: 'absolute',
+        left: '-10000px',
+        top: 'auto',
+        width: '1px',
+        height: '1px',
+        overflow: 'hidden',
+    };
+
+    const visibleStyles: CSSProperties = {
+        position: 'fixed',
+        top: '0',
+        left: '0',
+        width: 'auto',
+        height: 'auto',
+        overflow: 'visible',
+        zIndex: 9999,
+        padding: '0.75rem 1.5rem',
+        background: '#000',
+        color: '#fff',
+        fontWeight: 600,
+        borderBottomRightRadius: '0.5rem',
+        boxShadow: '0 8px 24px rgba(0, 0, 0, 0.2)',
+    };
+
+    const handleClick = (event: MouseEvent<HTMLAnchorElement>) => {
+        event.preventDefault();
         const target = document.getElementById(targetId);
-        target?.focus();
-        target?.scrollIntoView();
+        target?.focus({ preventScroll: false });
+        target?.scrollIntoView({ behavior: 'smooth', block: 'start' });
     };
 
     return (
         <a
-            href= {`#${targetId}`
-}
-onClick = { handleClick }
-style = {{
-    position: 'absolute',
-        left: '-10000px',
-            top: 'auto',
-                width: '1px',
-                    height: '1px',
-                        overflow: 'hidden',
-            }}
-onFocus = {(e) => {
-    e.currentTarget.style.position = 'fixed';
-    e.currentTarget.style.top = '0';
-    e.currentTarget.style.left = '0';
-    e.currentTarget.style.width = 'auto';
-    e.currentTarget.style.height = 'auto';
-    e.currentTarget.style.overflow = 'visible';
-    e.currentTarget.style.zIndex = '9999';
-    e.currentTarget.style.padding = '8px 16px';
-    e.currentTarget.style.background = '#000';
-    e.currentTarget.style.color = '#fff';
-}}
-onBlur = {(e) => {
-    e.currentTarget.style.position = 'absolute';
-    e.currentTarget.style.left = '-10000px';
-    e.currentTarget.style.width = '1px';
-    e.currentTarget.style.height = '1px';
-    e.currentTarget.style.overflow = 'hidden';
-}}
+            href={`#${targetId}`}
+            onClick={handleClick}
+            onFocus={() => setIsFocused(true)}
+            onBlur={() => setIsFocused(false)}
+            style={isFocused ? visibleStyles : hiddenStyles}
         >
-    Skip to main content
+            Skip to main content
         </a>
     );
 }
+

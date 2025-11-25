@@ -1,14 +1,17 @@
 'use client';
 
 import { useEffect, useRef } from 'react';
-import gsap from 'gsap';
+import { gsap } from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import { useReducedMotion } from '@/hooks/useAccessibility';
 import styles from './FeatureShowcase.module.css';
 
 // Register ScrollTrigger plugin
-if (typeof window !== 'undefined') {
-    gsap.register(ScrollTrigger);
+let isScrollTriggerRegistered = false;
+
+if (typeof window !== 'undefined' && !isScrollTriggerRegistered) {
+    gsap.registerPlugin(ScrollTrigger);
+    isScrollTriggerRegistered = true;
 }
 
 interface Step {

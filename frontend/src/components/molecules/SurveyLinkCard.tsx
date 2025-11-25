@@ -1,8 +1,9 @@
 'use client';
 
-import { useState } from 'react';
-import { motion } from 'framer-motion';
+import { useEffect, useRef, useState } from 'react';
+import gsap from 'gsap';
 import { Button } from '@/components/atoms/Button';
+import { useReducedMotion } from '@/hooks/useAccessibility';
 import { ShareOptions } from './ShareOptions';
 import styles from './SurveyLinkCard.module.css';
 
@@ -16,6 +17,22 @@ interface SurveyLinkCardProps {
 export function SurveyLinkCard({ link, onCopy, shareCount, lastShared }: SurveyLinkCardProps) {
   const [copied, setCopied] = useState(false);
   const [showShareOptions, setShowShareOptions] = useState(false);
+  const cardRef = useRef<HTMLDivElement>(null);
+  const prefersReducedMotion = useReducedMotion();
+
+  useEffect(() => {
+    if (!cardRef.current || prefersReducedMotion) return;
+
+    const ctx = gsap.context(() => {
+      gsap.fromTo(
+        cardRef.current,
+        { opacity: 0, y: 24 },
+        { opacity: 1, y: 0, duration: 0.5, ease: 'power2.out' }
+      );
+    }, cardRef);
+
+    return () => ctx.revert();
+  }, [prefersReducedMotion]);
 
   const handleCopy = () => {
     navigator.clipboard.writeText(link);
@@ -44,11 +61,7 @@ export function SurveyLinkCard({ link, onCopy, shareCount, lastShared }: SurveyL
   };
 
   return (
-    <motion.div
-      initial={{ opacity: 0, y: 20 }}
-      animate={{ opacity: 1, y: 0 }}
-      className={styles.card}
-    >
+    <div ref={cardRef} className={styles.card}>
       <div className={styles.header}>
         <h3>🔗 Survey Link</h3>
         {shareCount !== undefined && (
@@ -83,25 +96,25 @@ export function SurveyLinkCard({ link, onCopy, shareCount, lastShared }: SurveyL
         </Button>
       </div>
 
-      {showShareOptions && (
-        <motion.div
-          initial={{ opacity: 0, height: 0 }}
-          animate={{ opacity: 1, height: 'auto' }}
-          exit={{ opacity: 0, height: 0 }}
-          className={styles.shareSection}
-        >
+      <div
+        className={`${styles.shareSection} ${
+          showShareOptions ? styles.shareSectionVisible : ''
+        }`}
+        aria-hidden={!showShareOptions}
+      >
+        {showShareOptions && (
           <ShareOptions
             platforms={['whatsapp', 'instagram', 'twitter', 'copy']}
             onShare={handleShare}
             link={link}
           />
-        </motion.div>
-      )}
+        )}
+      </div>
 
       {lastShared && (
         <p className={styles.lastShared}>Last shared: {lastShared}</p>
       )}
-    </motion.div>
+    </div>
   );
 }
 

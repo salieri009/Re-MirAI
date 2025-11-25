@@ -1,9 +1,9 @@
 'use client';
 
-import { useState } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
+import { useEffect, useRef, useState } from 'react';
+import gsap from 'gsap';
 import { ShareOptions } from '@/components/molecules/ShareOptions';
-import { Button } from '@/components/atoms/Button';
+import { useFocusTrap, useReducedMotion } from '@/hooks/useAccessibility';
 import styles from './ShareModal.module.css';
 
 interface Persona {
@@ -19,8 +19,58 @@ interface ShareModalProps {
 }
 
 export function ShareModal({ persona, onShare, onClose }: ShareModalProps) {
-  const [platform, setPlatform] = useState('instagram');
   const [preview, setPreview] = useState<Blob | null>(null);
+  const [isClosing, setIsClosing] = useState(false);
+  const modalRef = useRef<HTMLDivElement>(null);
+  const backdropRef = useRef<HTMLDivElement>(null);
+  const prefersReducedMotion = useReducedMotion();
+
+  useFocusTrap(modalRef, true);
+
+  useEffect(() => {
+    if (prefersReducedMotion || !modalRef.current || !backdropRef.current) return;
+
+    const tl = gsap.timeline();
+    tl.fromTo(
+      backdropRef.current,
+      { opacity: 0 },
+      { opacity: 1, duration: 0.2, ease: 'power2.out' }
+    ).fromTo(
+      modalRef.current,
+      { opacity: 0, scale: 0.92, y: 16 },
+      { opacity: 1, scale: 1, y: 0, duration: 0.3, ease: 'power3.out' },
+      '<'
+    );
+  }, [prefersReducedMotion]);
+
+  const handleClose = () => {
+    if (isClosing) return;
+    if (prefersReducedMotion || !modalRef.current || !backdropRef.current) {
+      onClose();
+      return;
+    }
+
+    setIsClosing(true);
+    const tl = gsap.timeline({
+      onComplete: onClose,
+    });
+
+    tl.to(modalRef.current, {
+      opacity: 0,
+      scale: 0.92,
+      y: 16,
+      duration: 0.2,
+      ease: 'power2.in',
+    }).to(
+      backdropRef.current,
+      {
+        opacity: 0,
+        duration: 0.2,
+        ease: 'power1.in',
+      },
+      '<'
+    );
+  };
 
   const generatePreview = async (platform: string) => {
     // Generate persona card image
@@ -50,53 +100,58 @@ export function ShareModal({ persona, onShare, onClose }: ShareModalProps) {
     }, 'image/png');
   };
 
-  const handleShare = (platform: string) => {
+  const handleShare = (selectedPlatform: string) => {
     if (preview) {
-      onShare(platform, preview);
-    } else {
-      generatePreview(platform).then(() => {
-        onShare(platform);
-      });
+      onShare(selectedPlatform, preview);
+      return;
     }
+
+    generatePreview(selectedPlatform).then(() => {
+      onShare(selectedPlatform);
+    });
   };
 
   return (
-    <AnimatePresence>
-      <div className={styles.backdrop} onClick={onClose}>
-        <motion.div
-          initial={{ opacity: 0, scale: 0.9 }}
-          animate={{ opacity: 1, scale: 1 }}
-          exit={{ opacity: 0, scale: 0.9 }}
-          className={styles.modal}
-          onClick={(e) => e.stopPropagation()}
-        >
-          <div className={styles.header}>
-            <h2>Share Your Persona Card</h2>
-            <button onClick={onClose} className={styles.closeButton} aria-label="Close">
-              ×
-            </button>
-          </div>
+    <div
+      ref={backdropRef}
+      className={styles.backdrop}
+      onClick={handleClose}
+      role="presentation"
+    >
+      <div
+        ref={modalRef}
+        className={styles.modal}
+        role="dialog"
+        aria-modal="true"
+        aria-label="Share persona card"
+        onClick={(event) => event.stopPropagation()}
+      >
+        <div className={styles.header}>
+          <h2>Share Your Persona Card</h2>
+          <button onClick={handleClose} className={styles.closeButton} aria-label="Close">
+            ×
+          </button>
+        </div>
 
-          <div className={styles.content}>
-            <ShareOptions
-              platforms={['instagram', 'twitter', 'tiktok', 'whatsapp', 'copy']}
-              onShare={handleShare}
-              link={`${window.location.origin}/p/${persona.id}`}
-            />
+        <div className={styles.content}>
+          <ShareOptions
+            platforms={['instagram', 'twitter', 'tiktok', 'whatsapp', 'copy']}
+            onShare={handleShare}
+            link={typeof window !== 'undefined' ? `${window.location.origin}/p/${persona.id}` : ''}
+          />
 
-            {preview && (
-              <div className={styles.preview}>
-                <img
-                  src={URL.createObjectURL(preview)}
-                  alt="Persona card preview"
-                  className={styles.previewImage}
-                />
-              </div>
-            )}
-          </div>
-        </motion.div>
+          {preview && (
+            <div className={styles.preview}>
+              <img
+                src={URL.createObjectURL(preview)}
+                alt={`${persona.name} persona card preview`}
+                className={styles.previewImage}
+              />
+            </div>
+          )}
+        </div>
       </div>
-    </AnimatePresence>
+    </div>
   );
 }
 

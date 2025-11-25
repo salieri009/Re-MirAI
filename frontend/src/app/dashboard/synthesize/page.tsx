@@ -2,7 +2,6 @@
 
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
-import { motion } from 'framer-motion';
 import { personaApi } from '@/lib/api/persona';
 import { Button } from '@/components/atoms/Button';
 import { SummoningAnimation } from '@/components/organisms/SummoningAnimation';
@@ -53,27 +52,25 @@ export default function SynthesizePage() {
       <h1>Ready to summon?</h1>
       
       <div className={styles.modeSelector}>
-        <motion.button
+        <button
           className={`${styles.modeButton} ${mode === 'FATED' ? styles.active : ''}`}
           onClick={() => setMode('FATED')}
-          whileHover={{ scale: 1.02, y: -4 }}
-          transition={{ duration: 0.2 }}
+          type="button"
         >
           <h2>🎲 Auto Mode (Fated)</h2>
           <p>Let fate decide your archetype</p>
           <span className={styles.free}>Free</span>
-        </motion.button>
+        </button>
         
-        <motion.button
+        <button
           className={`${styles.modeButton} ${mode === 'ALCHEMIC' ? styles.active : ''}`}
           onClick={() => setMode('ALCHEMIC')}
-          whileHover={{ scale: 1.02, y: -4 }}
-          transition={{ duration: 0.2 }}
+          type="button"
         >
           <h2>✨ Alchemic Mode</h2>
           <p>Choose your archetype (Premium)</p>
           <span className={styles.premium}>Premium</span>
-        </motion.button>
+        </button>
       </div>
 
       <Button

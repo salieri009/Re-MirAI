@@ -11,7 +11,7 @@
  */
 
 import gsap from 'gsap';
-import { tokens } from './design-tokens';
+import { tokens } from '../design-tokens';
 
 /**
  * 1. CONVERSION Interactions (Landing Page)
@@ -49,6 +49,12 @@ export const conversionInteractions = {
      */
     mirrorShatter: (element: HTMLElement) => {
         const tl = gsap.timeline();
+        const crackElements = element.querySelectorAll<SVGElement>('.mirror-crack');
+        const fragmentElements = element.querySelectorAll<SVGElement>('.mirror-fragment');
+
+        if (!crackElements.length || !fragmentElements.length) {
+            return tl;
+        }
 
         // Stage 1: Shake
         tl.to(element, {
@@ -59,17 +65,17 @@ export const conversionInteractions = {
         });
 
         // Stage 2: Crack appears
-        tl.to('.mirror-crack', {
+        tl.to(crackElements, {
             strokeDashoffset: 0,
             duration: 0.5,
             ease: tokens.easing.calm,
         });
 
         // Stage 3: Fragments scatter
-        tl.to('.mirror-fragment', {
-            x: (i) => gsap.utils.random(-300, 300),
-            y: (i) => gsap.utils.random(-300, 300),
-            rotation: (i) => gsap.utils.random(-180, 180),
+        tl.to(fragmentElements, {
+            x: () => gsap.utils.random(-300, 300),
+            y: () => gsap.utils.random(-300, 300),
+            rotation: () => gsap.utils.random(-180, 180),
             opacity: 0,
             duration: 0.6,
             stagger: 0.02,

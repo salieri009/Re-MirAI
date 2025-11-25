@@ -4,6 +4,7 @@
   padding: var(--space-xl);
   box-shadow: var(--shadow-lg);
   margin-bottom: var(--space-lg);
+  transform-origin: top center;
 }
 
 .header {
@@ -56,9 +57,26 @@
 }
 
 .shareSection {
+  margin-top: 0;
+  padding-top: 0;
+  border-top: 1px solid transparent;
+  max-height: 0;
+  opacity: 0;
+  overflow: hidden;
+  transition:
+    max-height var(--transition-base),
+    opacity var(--transition-base),
+    margin-top var(--transition-base),
+    padding-top var(--transition-base),
+    border-top-color var(--transition-base);
+}
+
+.shareSectionVisible {
   margin-top: var(--space-lg);
   padding-top: var(--space-lg);
-  border-top: 1px solid var(--color-border);
+  border-top-color: var(--color-border);
+  max-height: 400px;
+  opacity: 1;
 }
 
 .lastShared {

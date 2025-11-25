@@ -1,7 +1,9 @@
 'use client';
 
-import { motion } from 'framer-motion';
+import { useEffect, useRef } from 'react';
+import gsap from 'gsap';
 import { Button } from '@/components/atoms/Button';
+import { useReducedMotion } from '@/hooks/useAccessibility';
 import { ProgressBar } from './ProgressBar';
 import styles from './StatusCard.module.css';
 
@@ -17,13 +19,29 @@ interface StatusCardProps {
   message?: string;
 }
 
-export function StatusCard({ 
-  status, 
-  progress, 
-  onAction, 
+export function StatusCard({
+  status,
+  progress,
+  onAction,
   actionLabel,
-  message 
+  message
 }: StatusCardProps) {
+  const cardRef = useRef<HTMLDivElement>(null);
+  const prefersReducedMotion = useReducedMotion();
+
+  useEffect(() => {
+    if (!cardRef.current || prefersReducedMotion) return;
+
+    const ctx = gsap.context(() => {
+      gsap.fromTo(
+        cardRef.current,
+        { opacity: 0, y: 24 },
+        { opacity: 1, y: 0, duration: 0.6, ease: 'power2.out' }
+      );
+    }, cardRef);
+
+    return () => ctx.revert();
+  }, [status, prefersReducedMotion]);
   const getStatusConfig = () => {
     switch (status) {
       case 'empty':
@@ -67,11 +85,7 @@ export function StatusCard({
   const config = getStatusConfig();
 
   return (
-    <motion.div
-      initial={{ opacity: 0, y: 20 }}
-      animate={{ opacity: 1, y: 0 }}
-      className={`${styles.card} ${styles[status]}`}
-    >
+    <div ref={cardRef} className={`${styles.card} ${styles[status]}`}>
       <div className={styles.header}>
         <h2 className={styles.title}>{config.title}</h2>
         {message && <p className={styles.message}>{message}</p>}
@@ -114,7 +128,7 @@ export function StatusCard({
       {config.subtitle && (
         <p className={styles.subtitle}>{config.subtitle}</p>
       )}
-    </motion.div>
+    </div>
   );
 }
 

@@ -17,6 +17,18 @@
   height: 8px;
   border-radius: 50%;
   background-color: var(--color-text-secondary);
+  animation: typingBounce 0.8s ease-in-out infinite;
+}
+
+@keyframes typingBounce {
+  0%, 100% {
+    transform: translateY(0);
+    opacity: 0.4;
+  }
+  50% {
+    transform: translateY(-6px);
+    opacity: 1;
+  }
 }
 
 .text {

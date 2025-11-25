@@ -1,8 +1,8 @@
 # Phase 1 Implementation Progress
 
 **Last Updated:** 2025-11-25  
-**Phase:** Week 2 – Multi-Page Enhancements Kickoff  
-**Status:** 2 of 9 scope slices fully implemented (Landing ✅, Login ✅, others pending)
+**Phase:** Week 3 – Purpose-Driven UX Build-Out  
+**Status:** 0 of 9 scope slices implemented (documentation ready, engineering queued)
 
 ---
 
@@ -16,16 +16,16 @@ This document tracks the implementation of Phase 1 (Week 2) enhancements for the
 
 | Scope ID | Route(s) | Status | Dependencies | Notes |
 |----------|----------|--------|--------------|-------|
-| track-docs | `docs/07-Enhancement/*` | 🔄 In Progress | — | Align status doc + walkthrough links with new plan |
-| landing | `/` | ✅ Complete | track-docs | Interactive hero + FeatureShowcase live; QA pass pending regression sweep |
-| login | `/login` | ✅ Complete | track-docs | GSAP auth card + trust badges in place |
-| dashboard | `/dashboard` | ⏳ Not Started | landing, login | Requires state views + micro-interactions |
-| chat | `/chat/[id]` | ⏸ Not Started | dashboard | Typing indicator, share snippets, reactions |
-| persona-room | `/p/[id]` | ⏸ Not Started | chat | Persona display, quests, viral sharing |
-| ritual-hub | `/dashboard/ritual` (TBC) | ⏸ Not Started | dashboard | Progress hub + share flows |
-| summoning | `/dashboard/synthesize` | ⏸ Not Started | dashboard | Cinematic GSAP reveal |
-| survey | `/s/[id]` | ⏸ Not Started | dashboard | Survey wizard + privacy-first flow |
-| qa-docs | repo-wide | 🚫 Blocked | all scopes above | Final QA + documentation sweep happens last |
+| track-docs | `docs/07-Enhancement/*` | 🔄 In Progress | — | Align status doc + walkthrough links with purpose-driven plan |
+| landing | `/` | ⏳ Planned | track-docs | Implement GSAP InteractiveHero + FeatureShowcase (see §2) |
+| login | `/login` | ⏳ Planned | track-docs | GSAP auth card, trust badges, magical loading states |
+| dashboard | `/dashboard` | ⏳ Planned | landing, login | State views + progress shimmer micro-interactions |
+| chat | `/chat/[id]` | ⏳ Planned | dashboard | Typing presence, shareable snippets, reactions |
+| persona-room | `/p/[id]` | ⏳ Planned | chat | Persona showcase, quests, analytics-backed sharing |
+| ritual-hub | `/dashboard/ritual` | ⏳ Planned | dashboard | Progress hub, live updates, multi-platform share flows |
+| summoning | `/dashboard/synthesize` | ⏳ Planned | dashboard | Cinematic GSAP reveal w/ skip + error paths |
+| survey | `/s/[id]` | ⏳ Planned | dashboard | Trust-first wizard, Likert UI, review + thank-you |
+| qa-docs | repo-wide | 🚫 Blocked | all scopes above | Final QA + analytics/hand-off after features ship |
 
 ### Immediate Blockers
 - Need updated product requirements for ritual hub route (confirm final pathname).
@@ -36,129 +36,26 @@ This document tracks the implementation of Phase 1 (Week 2) enhancements for the
 
 ## Completed Work
 
-### ✅ **Phase 0: Foundation** (100% Complete)
+### ✅ **Purpose-Driven Enhancement Documentation** (100% Complete)
 
-All foundational design system files created and integrated:
+All eight page-level enhancement guides plus the master README have been rewritten to embrace the new “purpose-driven UX” directive. Each document now codifies:
 
-| Component | File | Status |
-|-----------|------|--------|
-| Design Tokens | `frontend/src/design-tokens.ts` | ✅ Complete |
-| Global CSS | `frontend/src/global.css` | ✅ Complete |
-| Micro-Interactions | `frontend/src/lib/micro-interactions.ts` | ✅ Complete |
-| Accessibility Hooks | `frontend/src/hooks/useAccessibility.ts` | ✅ Complete |
-| GSAP Library | Installed with `--legacy-peer-deps` | ✅ Complete |
-| Integration | Imported in `app/layout.tsx` | ✅ Complete |
+| Page / Doc | Purpose | Key Artifacts |
+|------------|---------|---------------|
+| `docs/07-Enhancement/01-Landing-Page-Enhancement.md` | Discovery + Conversion | Interactive hero specs, mirror state machine, GSAP timelines |
+| `02-Login-Page-Enhancement.md` | Onboarding + Trust | Trust badge system, magical loading carousel, accessibility states |
+| `03-Dashboard-Page-Enhancement.md` | Inform + Guide | State-driven dashboard blueprint, progress shimmer rules |
+| `04-Chat-Page-Enhancement.md` | Entertain + Connect | Typing presence, shareable snippets, reactions, keyboard map |
+| `05-Persona-Room-Page-Enhancement.md` | Showcase + Engage | Persona display/quest loop, viral sharing analytics |
+| `06-Ritual-Hub-Page-Enhancement.md` | Manage + Share | Progress hub layout, multi-platform share flows, reminder system |
+| `07-Summoning-Page-Enhancement.md` | Delight + Reveal | Cinematic GSAP timeline, skip/error narratives, reduced-motion paths |
+| `08-Survey-Page-Enhancement.md` | Collect + Trust | Survey wizard UX, privacy-first components, accessibility plan |
 
-**Documentation:** See [`walkthrough.md`](file:///C:/Users/Salieri/.gemini/antigravity/brain/3f8ba947-4300-442f-8079-0a3c22a65d65/walkthrough.md)
+Supporting references:
+- `docs/07-Enhancement/README.md` – High-level purpose-driven UX framework
+- `docs/07-Enhancement/00-MASTER-IMPLEMENTATION-GUIDE.md` – Cross-page orchestration + design philosophy
 
----
-
-### ✅ **1. Landing Page Enhancement** (100% Complete)
-
-**Route:** `/`  
-**Component:** `app/page.tsx`
-
-#### Implemented Features
-
-1. **Interactive Hero with GSAP** ✅
-   - **File:** `frontend/src/components/organisms/InteractiveHero.tsx`
-   - **Changes:**
-     - Replaced Framer Motion with GSAP animations
-     - Added particle background (30 floating particles)
-     - Implemented mirror shatter animation on click
-     - Added persona preview reveal sequence
-     - Glowing CTA pulse animation on reveal state
-   - **Animations:**
-     - Idle → Hover (glow effect)
-     - Click → Shatter (mirror fragments)
-     - Reveal → Persona preview with scale animation
-
-2. **Feature Showcase** ✅
-   - **File:** `frontend/src/components/organisms/FeatureShowcase.tsx`
-   - **Features:**
-     - GSAP ScrollTrigger integration
-     - 3 feature cards with stagger animation (0.2s delay)
-     - Hover lift effects on cards
-     - Icons with drop-shadow effects
-   - **Steps:** Create Survey → Friends Vote → Reveal Persona
-
-3. **Enhanced Styling** ✅
-   - **File:** `frontend/src/components/organisms/InteractiveHero.module.css`
-   - **Improvements:**
-     - Glassmorphism on mirror (backdrop-filter: blur(20px))
-     - Gradient headline with text clipping
-     - Emotion-mapped shadows (curiosity colors)
-     - Responsive design (280px-768px-1024px+)
-
-#### Files Modified
-
-- ✅ `frontend/src/components/organisms/InteractiveHero.tsx` - GSAP upgrade
-- ✅ `frontend/src/components/organisms/InteractiveHero.module.css` - Enhanced styles
-- ✅ `frontend/src/components/organisms/FeatureShowcase.tsx` - NEW
-- ✅ `frontend/src/components/organisms/FeatureShowcase.module.css` - NEW
-- ✅ `frontend/src/app/page.tsx` - Integrated FeatureShowcase
-
-#### Testing Status
-
-- ✅ Visual: Mirror hover, click, reveal animations working
-- ✅ Accessibility: Reduced motion support, keyboard navigation
-- ✅ Performance: 60fps particle system, smooth GSAP transitions
-- ✅ Responsive: Mobile (280px+), Tablet (768px+), Desktop (1024px+)
-
-**Documentation:** See [`phase1-landing-page-walkthrough.md`](file:///C:/Users/Salieri/.gemini/antigravity/brain/3f8ba947-4300-442f-8079-0a3c22a65d65/phase1-landing-page-walkthrough.md)
-
----
-
-### ✅ **2. Login Page Enhancement** (100% Complete)
-
-**Route:** `/login`  
-**Component:** `app/login/page.tsx`
-
-#### Implemented Features
-
-1. **GSAP Integration** ✅
-   - **File:** `frontend/src/app/login/page.tsx`
-   - **Changes:**
-     - Replaced Framer Motion with GSAP
-     - Added particle background (20 ambient particles)
-     - Enhanced entrance animation (opacity, y, scale)
-     - Integrated `useReducedMotion` and `useAnnouncement` hooks
-
-2. **Trust Badges** ✅
-   - **File:** `frontend/src/components/molecules/TrustBadge.tsx` - NEW
-   - **Badges:**
-     - 🔐 Secure OAuth - "Google-verified authentication"
-     - 🔒 Privacy First - "100% anonymous responses"
-     - ⚡ No Password - "One-click access"
-   - **Animation:** Privacy badge pulse from `trustInteractions.privacyBadgePulse()`
-
-3. **Atmosphere Continuity** ✅
-   - **File:** `frontend/src/app/login/page.module.css`
-   - **Improvements:**
-     - Gradient background matching Landing Page
-     - Glassmorphism on card (backdrop-filter: blur(20px))
-     - Particle canvas background
-     - Trust badges grid layout (3 columns, responsive to 1 column)
-
-4. **Loading State Carousel** ✅
-   - **Already existing**, enhanced with:
-     - GSAP-based message rotation
-     - Accessibility announcements
-     - Messages: "Connecting to Google..." → "Verifying your account..." → "Almost there..."
-
-#### Files Modified
-
-- ✅ `frontend/src/app/login/page.tsx` - GSAP upgrade + trust badges
-- ✅ `frontend/src/app/login/page.module.css` - Glassmorphism + atmosphere
-- ✅ `frontend/src/components/molecules/TrustBadge.tsx` - NEW
-- ✅ `frontend/src/components/molecules/TrustBadge.module.css` - NEW
-
-#### Testing Status
-
-- ✅ Visual: Particle background, trust badges, glassmorphism working
-- ✅ Accessibility: Screen reader announcements, keyboard navigation
-- ✅ Atmosphere: Seamless transition from Landing Page
-- ✅ Responsive: Mobile (280px+), Desktop (768px+)
+These docs are now the single source of truth for naming conventions, Nielsen heuristic compliance, emotion mapping, and animation guidelines. Engineering work will implement directly against these specs.
 
 ---
 
