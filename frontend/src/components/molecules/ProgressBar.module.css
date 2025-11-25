@@ -1,0 +1,38 @@
+.wrapper {
+  width: 100%;
+}
+
+.label {
+  font-size: var(--font-size-sm);
+  color: var(--color-text-secondary);
+  margin-bottom: var(--space-xs);
+}
+
+.container {
+  position: relative;
+  height: 24px;
+  background-color: var(--color-bg-tertiary);
+  border-radius: var(--radius-md);
+  overflow: hidden;
+}
+
+.bar {
+  position: absolute;
+  height: 100%;
+  background: linear-gradient(90deg, var(--color-primary), var(--color-secondary));
+  transition: width var(--transition-base);
+  border-radius: var(--radius-md);
+}
+
+.text {
+  position: absolute;
+  width: 100%;
+  text-align: center;
+  line-height: 24px;
+  font-weight: var(--font-weight-semibold);
+  font-size: var(--font-size-sm);
+  color: var(--color-text);
+  mix-blend-mode: difference;
+}
+
+

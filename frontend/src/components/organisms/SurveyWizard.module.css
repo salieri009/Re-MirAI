@@ -1,0 +1,18 @@
+.wizard {
+  max-width: 800px;
+  margin: 0 auto;
+  padding: var(--space-xl);
+}
+
+.questionContainer {
+  margin: var(--space-2xl) 0;
+}
+
+.navigation {
+  display: flex;
+  justify-content: space-between;
+  gap: var(--space-md);
+  margin-top: var(--space-xl);
+}
+
+

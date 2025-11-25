@@ -1,0 +1,7 @@
+.container {
+  min-height: 100vh;
+  padding: var(--space-xl);
+  background-color: var(--color-bg-secondary);
+}
+
+
