@@ -10,9 +10,153 @@
 
 ## Executive Summary
 
-The Dashboard is the state management hub where users instantly understand their persona status and next actions. This enhancement plan focuses on **state visibility** and **actionability** while ensuring complete compliance with Nielsen's Heuristics.
+The Dashboard is Re:MirAI's **command center**—where users instantly understand their journey status and know exactly what to do next.
+
+### Page Purpose: **INFORM + GUIDE**
+
+**Core Intent:** Users land here to:
+1. **INFORM:** See their persona creation status at a glance
+2. **GUIDE:** Know the next required action with zero ambiguity
+
+**Unique Experience:**  
+State-driven UI that completely transforms based on user progress—each state tells a different visual story.
+
+**Emotional Journey:** Control → Progress → Anticipation → Action
+
+**Primary Goal:** Complete next step in persona creation (varies by state)
+
+**How This Differs From Other Pages:**
+- **vs. Landing:** Not selling/converting—user already committed
+- **vs. Chat:** Not entertaining—focused on status & action
+- **vs. Persona Room:** Not showcasing—showing journey state
 
 ---
+
+## Visual Purpose Communication
+
+### State 1: Empty State - "GET STARTED"
+
+**Purpose:** Guide new users to first action
+
+**ASCII Mockup:**
+```
+┌────────────────────────────────────────┐
+│  Welcome, Seeker ✨                      │
+│  Memory Crystals: 0 💎                    │
+│────────────────────────────────────────│
+│                                          │
+│   ╭─────────────────────────────╮         │
+│   │ 🗺️  Your Journey Begins       │         │
+│   │  ─────────────────────   │         │
+│   │  1. Create Perception Ritual  │         │
+│   │  2. Share with friends        │         │
+│   │  3. Collect 3 Echoes          │         │
+│   │  4. Summon your Persona       │         │
+│   │                              │         │
+│   │  [🌟 Create First Ritual]  │ ← Pulsing │
+│   ╰─────────────────────────────╯         │
+│                                          │
+└────────────────────────────────────────┘
+```
+
+**Visual Pattern:**
+- **Layout:** Single centered card (no distractions)
+- **Hierarchy:** Numbered steps + massive CTA
+- **Color:** Neutral background, fuchsia CTA
+- **Animation:** CTA pulses gently (inviting)
+
+### State 2: Collecting State - "KEEP GOING"
+
+**Purpose:** Show progress and encourage sharing
+
+**ASCII Mockup:**
+```
+┌────────────────────────────────────────┐
+│  Welcome back ✨                        │
+│  Memory Crystals: 25 💎                   │
+│────────────────────────────────────────│
+│                                          │
+│   ╭─────────────────────────────╮         │
+│   │ 🔮  Echoes Collected           │         │
+│   │  ─────────────────────   │         │
+│   │  ██████████░░░░░ 67% (2/3) │ ← Shimmer│
+│   │  ↑ Animated fill             │         │
+│   │                              │         │
+│   │  "One more Echo needed..."    │ ← Fade  │
+│   │  ↑ Gentle fade in/out         │         │
+│   │                              │         │
+│   │  [🔗 Share Ritual Link]     │ ← Blue  │
+│   ╰─────────────────────────────╯         │
+│                                          │
+└────────────────────────────────────────┘
+```
+
+**Visual Pattern:**
+- **Layout:** Progress card dominates
+- **Hierarchy:** Progress bar → Status text → Share CTA
+- **Color:** Blue accents (calming progress)
+- **Animation:** Bar fills + shimmer effect, text pulses
+
+### State 3: Ready State - "TAKE ACTION"
+
+**Purpose:** Celebrate completion and direct to summoning
+
+**ASCII Mockup:**
+```
+┌────────────────────────────────────────┐
+│  The time has come ✨🌟                   │
+│  Memory Crystals: 50 💎                   │
+│────────────────────────────────────────│
+│                                          │
+│   ╭─────────────────────────────╮         │
+│   │ ⚡ SUMMON READY ⚡             │         │
+│   │  ─────────────────────   │         │
+│   │  ███████████████ 100% ✓   │ ← Gold  │
+│   │  ↑ Pulsing gold gradient      │   pulse │
+│   │                              │         │
+│   │  ┌──────────────────────┐ │         │
+│   │  │ [SUMMON PERSONA NOW!] │ │ ← Glow+ │
+│   │  │  ↑ Glow + bounce      │ │   bounce │
+│   │  └──────────────────────┘ │         │
+│   │                              │         │
+│   ╰─────────────────────────────╯         │
+│                                          │
+└────────────────────────────────────────┘
+```
+
+**Visual Pattern:**
+- **Layout:** Celebration card with dramatic CTA
+- **Hierarchy:** Status badge → 100% bar → HUGE CTA
+- **Color:** Gold gradient (achievement)
+- **Animation:** Glow pulse + bounce (excitement)
+
+### State 4: Active Persona State - "ENGAGE"
+
+**Purpose:** Show persona and encourage interaction
+
+**ASCII Mockup:**
+```
+┌────────────────────────────────────────┐
+│  Welcome back. The Mystic awaits... ✨    │
+│  Memory Crystals: 150 💎  Bond: Lv 3 ❤️    │
+│────────────────────────────────────────│
+│                                          │
+│   ╭─────────╮  ╭────────────────╮      │
+│   │ PERSONA │  │ Quick Actions  │      │
+│   │  CARD   │  │────────────────│      │
+│   │ [Image]│  │ 💬 Chat Now    │      │
+│   │   SSR  │  │ 🎯 View Quests │      │
+│   ╰─────────╯  │ 💎 Check Shop  │      │
+│               ╰────────────────╯      │
+│                                          │
+└────────────────────────────────────────┘
+```
+
+**Visual Pattern:**
+- **Layout:** Split view (Persona + Actions)
+- **Hierarchy:** Persona card → Primary action (Chat) → Secondary actions
+- **Color:** Vibrant (persona achieved)
+- **Animation:** Persona card subtle float, action buttons on hover
 
 ## Current State Analysis
 
@@ -23,11 +167,11 @@ The Dashboard is the state management hub where users instantly understand their
 - Minimal design
 
 ### Weaknesses
-- No real-time updates
-- Limited progress visibility
-- Missing error recovery
-- No keyboard shortcuts
-- Limited accessibility features
+- **Utilitarian UI:** Fails to visually represent the "Hero's Journey" narrative.
+- **Static Status:** "Echoes" and "Crystals" feel like static numbers, not magical resources.
+- **Disconnected States:** Transition between "Collecting" and "Ready" lacks celebration.
+- **Low Urgency:** No visual cues to prompt the next specific action.
+- **Accessibility Gaps:** Navigation is not optimized for keyboard/screen readers.
 
 ---
 

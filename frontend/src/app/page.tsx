@@ -1,9 +1,9 @@
 'use client';
 
 import { useRouter } from 'next/navigation';
-import { Button } from '@/components/atoms/Button';
 import { authApi } from '@/lib/api/auth';
 import { useAuthStore } from '@/stores/authStore';
+import { InteractiveHero } from '@/components/organisms/InteractiveHero';
 import styles from './page.module.css';
 
 export default function LandingPage() {
@@ -25,16 +25,8 @@ export default function LandingPage() {
 
   return (
     <main className={styles.main}>
-      <section className={styles.hero}>
-        <h1 className={styles.headline}>Re:MirAI</h1>
-        <p className={styles.subtext}>
-          Discover how your friends see you through AI-powered persona generation
-        </p>
-        <Button variant="primary" size="lg" onClick={handleGoogleLogin}>
-          Continue with Google
-        </Button>
-      </section>
-
+      <InteractiveHero onStartDiscovery={handleGoogleLogin} />
+      
       <section className={styles.socialProof}>
         <h2>How It Works</h2>
         <div className={styles.steps}>

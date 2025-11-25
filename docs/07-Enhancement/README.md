@@ -9,8 +9,20 @@
 
 ## Overview
 
-This directory contains detailed enhancement plans for each page in Re:MirAI. Each plan is **independent** and follows:
+This directory contains detailed enhancement plans for each page in Re:MirAI. Each page has a **distinct purpose** and **unique experience** while maintaining consistent navigation patterns.
 
+**Design Philosophy:**  
+Every page clearly communicates its core intent (inform, guide, convert, entertain) through purpose-driven visual hierarchy, contextual feedback, and role-specific micro-interactions.
+
+**Enhancement Principles:**
+1. **Purpose Clarity** - Users instantly understand the page's goal (<2 seconds)
+2. **Distinct Experience** - Each page feels unique through layout, visuals, and interactions  
+3. **Consistent Navigation** - Familiar patterns allow users to focus on page-specific content  
+4. **Visual Hierarchy** - Design directs attention toward the page's primary goal  
+5. **Contextual Feedback** - Micro-interactions reinforce the page's role in the journey
+6. **Clarity + Delight** - Balance understanding with engagement  
+
+**Standards:**
 1. **Naming Conventions** - Atomic Design Pattern (atoms, molecules, organisms, templates, pages)
 2. **Nielsen's Heuristics** - All 10 usability principles
 3. **Project Concept** - Re:MirAI's core philosophy ("Who do others believe I am?")
@@ -18,47 +30,74 @@ This directory contains detailed enhancement plans for each page in Re:MirAI. Ea
 
 ---
 
-## Page Enhancement Plans
+## Page Purposes & Unique Experiences
 
 ### 1. [Landing Page](./01-Landing-Page-Enhancement.md)
-- **Route:** `/`
-- **Key Feature:** Interactive Hero Section
-- **Focus:** First impression, conversion, trust building
+- **Route:** `/`  
+- **Purpose:** **CONVERT** - Transform curiosity into commitment  
+- **Intent:** Intrigue visitors and drive sign-ups  
+- **Unique Experience:** Interactive mirror animation reveals persona concept  
+- **Emotion:** Curiosity → Wonder → Commitment  
+- **Primary Goal:** Click "Summon Your Reflection" (CTA)  
+- **Visual Pattern:** Hero-dominant, minimal text, immersive animations
 
 ### 2. [Login Page](./02-Login-Page-Enhancement.md)
-- **Route:** `/login`
-- **Key Feature:** Frictionless authentication
-- **Focus:** Quick entry, trust communication
+- **Route:** `/login`  
+- **Purpose:** **ENABLE** - Frictionless entry into the experience  
+- **Intent:** Build trust and reduce authentication anxiety  
+- **Unique Experience:** Single-action OAuth with trust-building micro-feedback  
+- **Emotion:** Uncertainty → Clarity → Trust → Action  
+- **Primary Goal:** Complete Google sign-in  
+- **Visual Pattern:** Centered card, minimal UI, status-driven feedback
 
 ### 3. [Dashboard Page](./03-Dashboard-Page-Enhancement.md)
-- **Route:** `/dashboard`
-- **Key Feature:** State-driven architecture
-- **Focus:** Status visibility, actionability
+- **Route:** `/dashboard`  
+- **Purpose:** **INFORM + GUIDE** - Show status and direct next action  
+- **Intent:** Users instantly know their persona state and what to do next  
+- **Unique Experience:** State-driven UI that transforms based on user progress  
+- **Emotion:** Control → Progress → Anticipation  
+- **Primary Goal:** Complete next step in persona creation journey  
+- **Visual Pattern:** Card-based, status-centric, action-oriented  
 
 ### 4. [Chat Page](./04-Chat-Page-Enhancement.md)
-- **Route:** `/chat/:personaId`
-- **Key Feature:** Real-time conversation
-- **Focus:** Immersive experience, persona interaction
+- **Route:** `/chat/:personaId`  
+- **Purpose:** **ENTERTAIN + CONNECT** - Foster intimacy with AI persona  
+- **Intent:** Create engaging, emotionally resonant conversations  
+- **Unique Experience:** Real-time chat with depth, typing indicators, bond tracking  
+- **Emotion:** Curiosity → Engagement → Intimacy → Connection  
+- **Primary Goal:** Sustain conversation, increase bond level  
+- **Visual Pattern:** Message-focused, minimal chrome, conversational flow  
 
 ### 5. [Persona Room Page](./05-Persona-Room-Page-Enhancement.md)
-- **Route:** `/room/:personaId`
-- **Key Feature:** Persona interaction hub
-- **Focus:** Profile display, quest system
+- **Route:** `/room/:personaId`  
+- **Purpose:** **SHOWCASE + ENGAGE** - Display persona and encourage interaction  
+- **Intent:** Highlight persona details and provide quest engagement  
+- **Unique Experience:** Profile gallery with gamification elements  
+- **Emotion:** Pride → Exploration → Achievement  
+- **Primary Goal:** View persona details, engage with quests  
+- **Visual Pattern:** Gallery-style, stat-heavy, achievement-oriented  
 
 ### 6. [Ritual Hub Page](./06-Ritual-Hub-Page-Enhancement.md)
-- **Route:** `/ritual`
-- **Key Feature:** Survey management
-- **Focus:** Progress tracking, link sharing
+- **Route:** `/ritual`  
+- **Purpose:** **MANAGE + SHARE** - Track survey and distribute link  
+- **Intent:** Make link sharing effortless and progress visible  
+- **Unique Experience:** Live progress tracking with shareable link prominence  
+- **Emotion:** Anticipation → Pride → Sharing  
+- **Primary Goal:** Share survey link, monitor responses  
+- **Visual Pattern:** Progress-centric, share-focused, live updates  
 
 ### 7. [Summoning Page](./07-Summoning-Page-Enhancement.md)
-- **Route:** `/summon`
-- **Key Feature:** Persona creation process
-- **Focus:** Magical experience, progress visualization
+- **Route:** `/summon`  
+- **Purpose:** **DELIGHT + REVEAL** - Create magical persona reveal moment  
+- **Intent:** Deliver climactic "wow" moment of persona creation  
+- **Unique Experience:** Cinematic animation sequence with dramatic reveal  
+- **Emotion:** Anticipation → Excitement → Awe → Joy  
+- **Primary Goal:** Complete persona summon, share result  
+- **Visual Pattern:** Full-screen, animation-heavy, theatrical  
 
 ### 8. [Survey Page](./08-Survey-Page-Enhancement.md)
-- **Route:** `/s/:id`
-- **Key Feature:** Anonymous response collection
-- **Focus:** Anonymity, ease of use
+- **Route:** `/s/:id`  
+- **Purpose:** **COLLECT** - Gather anonymous feedback effortlessly
 
 ---
 

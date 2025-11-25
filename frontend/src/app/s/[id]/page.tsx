@@ -4,6 +4,7 @@ import { use } from 'react';
 import { useQuery } from '@tanstack/react-query';
 import { surveyApi } from '@/lib/api/survey';
 import { SurveyWizard } from '@/components/organisms/SurveyWizard';
+import { PrivacyNotice } from '@/components/molecules/PrivacyNotice';
 import styles from './page.module.css';
 
 export default function SurveyPage({ params }: { params: Promise<{ id: string }> }) {
@@ -32,6 +33,10 @@ export default function SurveyPage({ params }: { params: Promise<{ id: string }>
 
   return (
     <div className={styles.container}>
+      <PrivacyNotice />
+      <div className={styles.intro}>
+        <h2>Helping a friend discover themselves</h2>
+      </div>
       <SurveyWizard surveyId={id} questions={survey.questions} />
     </div>
   );

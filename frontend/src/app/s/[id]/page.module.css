@@ -4,4 +4,16 @@
   background-color: var(--color-bg-secondary);
 }
 
+.intro {
+  text-align: center;
+  margin-bottom: var(--space-xl);
+}
+
+.intro h2 {
+  font-size: var(--font-size-2xl);
+  font-weight: var(--font-weight-semibold);
+  color: var(--color-text);
+  margin: 0;
+}
+
 

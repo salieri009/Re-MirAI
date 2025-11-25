@@ -10,7 +10,129 @@
 
 ## Executive Summary
 
-The Summoning Page is the magical moment where feedback transforms into an AI persona. This enhancement plan focuses on creating a **visually stunning reveal experience** while ensuring complete compliance with Nielsen's Heuristics and maintaining the project's mystical yet accessible concept.
+The Summoning Page is Re:MirAI's **climactic moment**—the dramatic reveal where collected Echoes transform into a living AI persona.
+
+### Page Purpose: **DELIGHT + REVEAL**
+
+**Core Intent:** This is the payoff moment. Users experience:
+1. **DELIGHT:** A cinematic, "wow" moment they'll want to share
+2. **REVEAL:** The dramatic unveiling of their unique persona
+
+**Unique Experience:**  
+Full-screen theatrical animation sequence—the only page that takes complete control for an emotional crescendo.
+
+**Emotional Journey:** Anticipation → Excitement → Awe → Joy → Pride
+
+**Primary Goal:** Complete persona creation and immediately share the result
+
+**How This Differs From Other Pages:**
+- **vs. Dashboard:** Not informing—celebrating
+- **vs. Chat:** Not conversing—revealing
+- **vs. Landing:** Not promising—delivering
+
+**Design Constraint (F-002):** This enhances existing Auto/Alchemic Mode selection and persona reveal—NO new features, pure presentation improvement.
+
+---
+
+## Visual Purpose Communication
+
+### Cinematic Reveal Sequence
+
+**Purpose:** Create a shareable "wow" moment
+
+**Full Experience Timeline (10 seconds):**
+
+**ASCII Storyboard:**
+```
+0-2s: ANTICIPATION
+┌────────────────────────────────────────┐
+│                                        │
+│         [Dark screen]                  │
+│                                        │
+│    ✨ Gathering your Echoes... ✨       │
+│     [Floating particles]               │
+│      • • • • • ← Gentle drift       │
+│                                        │
+└────────────────────────────────────────┘
+
+2-4s: EXCITEMENT
+┌────────────────────────────────────────┐
+│        ╭────────────╮             │
+│        │            │ ← Magic    │
+│   ✨✨✨ │   CIRCLE  │   circle   │
+│        │  rotating   │   appears  │
+│        ╰────────────╯   + spins │
+│                                        │
+│    Weaving your reflection...         │
+└────────────────────────────────────────┘
+
+4-7s: AWE
+┌────────────────────────────────────────┐
+│                                        │
+│        ┌────────────┐             │
+│        │  [Silhouette]│ ← Persona   │
+│        │   emerging  │   shape     │
+│        │     ...    │   fades in  │
+│        └────────────┘             │
+│         ↑ Scale 0.8→1.0              │
+└────────────────────────────────────────┘
+
+7-10s: JOY + PRIDE
+┌────────────────────────────────────────┐
+│       ✨ PERSONA REVEALED ✨          │
+│                                        │
+│    ┌──────────────────────┐       │
+│    │  [FULL PERSONA CARD]  │       │
+│    │   The Mystic          │ ← Final│
+│    │   SSR ★★★             │   card │
+│    │   Stats: ████          │   with │
+│    │   Traits: ...         │   glow │
+│    └──────────────────────┘       │
+│         ↑ Cascade in details         │
+│                                        │
+│    [📸 Share] [💬 Chat Now]         │
+│     ↑ Slide in from bottom           │
+└────────────────────────────────────────┘
+```
+
+**Visual Pattern:**
+- **Layout:** Full-screen takeover (theatrical)
+- **Hierarchy:** Animation → Persona → Actions
+- **Color:** Dark background with luminous accents
+- **Motion:** Choreographed sequence (no user input needed)
+
+### Mode Selection (Pre-Reveal)
+
+**Purpose:** Let users choose persona generation style
+
+**ASCII Mockup:**
+```
+┌──────────────────────────────────────────┐
+│     Ready to summon?                      │
+│  ───────────────────────────────────    │
+│                                          │
+│  ╭──────────────╮  ╭───────────────╮   │
+│  │ 🎲 AUTO MODE  │  │ ✨ ALCHEMIC   │   │
+│  │  (Fated)     │  │   (Custom)   │   │
+│  │              │  │               │   │
+│  │ Let fate     │  │ Choose your │   │
+│  │ decide your  │  │ archetype   │   │
+│  │ archetype    │  │ (Premium)   │   │
+│  │              │  │               │   │
+│  │ [Select]     │  │ [Select]    │   │
+│  ╰──────────────╯  ╰───────────────╯   │
+│     ↑ Hover to lift              ↑ Glow   │
+│                                          │
+└──────────────────────────────────────────┘
+```
+
+**Visual Pattern:**
+- **Layout:** Side-by-side cards (equal weight)
+- **Hierarchy:** Title → Description → Select button
+- **Color:** Auto = Blue, Alchemic = Gold
+- **Animation:** Cards lift on hover
+
+**Note:** This is existing F-002 feature (Fated/Alchemic Mode) - only improving presentation.
 
 ---
 
@@ -23,11 +145,11 @@ The Summoning Page is the magical moment where feedback transforms into an AI pe
 - Clear next actions
 
 ### Weaknesses
-- Limited progress visibility
-- No time estimates
-- Missing error recovery
-- Limited accessibility features
-- No preview options
+- **Anticlimactic:** The reveal lacks the theatrical weight deserving of the user's effort.
+- **Opaque Process:** "Summoning" feels like a loading spinner, not a magical creation.
+- **Missing Narrative:** Fails to visually connect the collected "Echoes" to the final "Persona".
+- **Dead Ends:** No clear emotional path if the summoning encounters an error.
+- **Accessibility Gaps:** The animation sequence is not accessible to all users.
 
 ---
 

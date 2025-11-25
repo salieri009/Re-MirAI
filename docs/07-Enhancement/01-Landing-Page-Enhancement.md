@@ -23,10 +23,10 @@ The Landing Page is Re:MirAI's primary entry point. This enhancement plan focuse
 - Responsive design
 
 ### Weaknesses
-- Static Hero section (no interactivity)
-- Limited engagement opportunities
-- No immediate demonstration of concept
-- Missing interactive elements that showcase AI persona
+- **Static Hero:** Fails to deliver the "Mirror" metaphor; users cannot "see" themselves.
+- **Low Immersion:** Visuals are informative but lack the "magical" atmosphere of the brand.
+- **Delayed Value:** Users must sign up to understand the core "Persona" concept.
+- **Passive Experience:** No interactive elements to trigger curiosity or wonder.
 
 ---
 
@@ -52,6 +52,49 @@ The Landing Page is Re:MirAI's primary entry point. This enhancement plan focuse
 
 **Core Interaction:** Users can interact with a "mirror" that reflects their persona concept.
 
+**Emotional Journey:** Curiosity → Intrigue → Wonder → Commitment
+
+**Visual Mockup (ASCII):**
+```
+┌───────────────────────────────────────────┐
+│  ✨ Re:MirAI  [floating particles]       │
+│  ─────────────────────────────────────    │
+│                                           │
+│      ╭─────────────────────────╮          │
+│      │    🪞  THE MIRROR      │ ← HOVER  │
+│      │   [Ripples appear]     │          │
+│      │   "Who am I?"          │          │
+│      │   [Cursor reflection]   │ ← CLICK │
+│      ╰─────────────────────────╯          │
+│              ↓ ↓ ↓                        │
+│      [Mirror transforms...]              │
+│              ↓ ↓ ↓                        │
+│      ┌────────────────────┐               │
+│      │ PERSONA PREVIEW   │ ← REVEALED    │
+│      │ "The Mystic"      │               │
+│      └────────────────────┘               │
+│                                           │
+│  [✨ Summon Your Reflection ✨] ← Glowing│
+└───────────────────────────────────────────┘
+```
+
+### Depth & Layering Strategy
+
+**Z-Axis Composition (Front to Back):**
+```css
+z-50: Primary CTA ("Summon" button) + hover glow
+z-40: Mirror glass surface + interaction effects
+z-30: Mirror frame + subtle shadow
+z-20: Floating particle system (canvas)
+z-10: Ambient gradient animation (15s loop)
+z-0:  Base page background
+```
+
+**Shadow Progression (Emotional States):**
+- **Default (Calm):** `box-shadow: 0 0 40px rgba(217, 70, 239, 0.2)`
+- **Hover (Curious):** `box-shadow: 0 0 60px rgba(217, 70, 239, 0.4), 0 8px 32px rgba(0, 0, 0, 0.15)`
+- **Active (Engaged):** `box-shadow: 0 0 80px rgba(217, 70, 239, 0.6), inset 0 0 60px rgba(255, 255, 255, 0.1)`
+
 ### Component Structure (Atomic Design)
 
 ```
@@ -67,27 +110,171 @@ organisms/
         └── PersonaPreview.module.css
 ```
 
-### Interaction Flow
+### Interaction Flow with Emotional Progression
 
-1. **Initial State:**
-   - Large mirror-like element (glassmorphism effect)
-   - Text: "Who do others believe I am?"
-   - Subtle animation: gentle pulse/glow
+#### State 1: Default (CURIOSITY) - 0s
+**Visual:**
+- Large mirror element with glassmorphism (rgba(255, 255, 255, 0.1), blur(20px))
+- Floating ambient particles (30 max, slow drift)
+- Background: Animated gradient (purple-pink, 15s cycle)
 
-2. **Hover State:**
-   - Mirror reflects user's cursor position
-   - Particles or light effects follow cursor
-   - Text transitions: "Discover your reflection..."
+**Typography:**
+- Primary: "Who do others believe I am?" (Poppins, 48px, fade-in)
+- Secondary: "Discover your reflection through AI" (Inter, 18px, 0.3s delay)
 
-3. **Click/Interaction:**
-   - Mirror "shatters" or "transforms" into persona preview
-   - Shows example persona card (animated reveal)
-   - Text: "This could be you"
-   - CTA appears: "Start Your Discovery"
+**Animation:**
+```css
+@keyframes gentle-pulse {
+  0%, 100% { 
+    box-shadow: 0 0 40px rgba(217, 70, 239, 0.2);
+    transform: scale(1);
+  }
+  50% { 
+    box-shadow: 0 0 60px rgba(217, 70, 239, 0.3);
+    transform: scale(1.01);
+  }
+}
+animation: gentle-pulse 4s ease-in-out infinite;
+```
 
-4. **Scroll Trigger:**
-   - As user scrolls, mirror transforms into persona
-   - Smooth transition to "How It Works" section
+#### State 2: Hover (INTRIGUE) - User proximity
+**Visual:**
+- Mirror surface ripples follow cursor (displacement map)
+- Particle count increases to 50, accelerates toward cursor
+- Border glow intensifies (0.3 → 0.6 opacity)
+
+**Micro-Interaction:**
+```javascript
+// Cursor tracking with smooth follow
+mirror.addEventListener('mousemove', (e) => {
+  const { offsetX, offsetY } = e;
+  const centerX = mirror.clientWidth / 2;
+  const centerY = mirror.clientHeight / 2;
+  
+  // Calculate displacement
+  const displaceX = (offsetX - centerX) / centerX;
+  const displaceY = (offsetY - centerY) / centerY;
+  
+  // Apply ripple effect
+  mirror.style.filter = `
+    blur(0) 
+    hue-rotate(${displaceX * 10}deg)
+  `;
+  mirror.style.transform = `
+    perspective(1000px)
+    rotateY(${displaceX * 5}deg)
+    rotateX(${-displaceY * 5}deg)
+  `;
+});
+```
+
+**Text Transition:**
+"Discover your reflection..." (cross-fade, 0.5s)
+
+#### State 3: Click/Active (WONDER) - User engagement
+**Animation Sequence (3.2s total):**
+```
+0.0s → Mirror shake (0.3s, intensity: 5px)
+0.3s → Cracks appear from center (0.5s, SVG path animation)
+0.8s → Fragments scatter (0.6s, each fragment random trajectory)
+1.4s → Persona preview fades in from behind (0.8s, scale 0.8 → 1.0)
+2.2s → Persona details cascade in (1.0s, stagger: 0.1s each)
+   - Name
+   - Archetype badge
+   - Stats bars (animated fill)
+   - Rarity glow
+```
+
+**Code Implementation:**
+```typescript
+async function triggerMirrorTransform() {
+  const timeline = gsap.timeline();
+  
+  // Shake
+  timeline.to('.mirror', {
+    x: '+=5',
+    yoyo: true,
+    repeat: 5,
+    duration: 0.05
+  });
+  
+  // Shatter
+  timeline.to('.mirror-crack', {
+    strokeDashoffset: 0,
+    duration: 0.5,
+    ease: 'power2.out'
+  }, '+=0.3');
+  
+  // Scatter fragments
+  timeline.to('.mirror-fragment', {
+    x: (i) => gsap.utils.random(-300, 300),
+    y: (i) => gsap.utils.random(-300, 300),
+    rotation: (i) => gsap.utils.random(-180, 180),
+    opacity: 0,
+    duration: 0.6,
+    stagger: 0.02,
+    ease: 'power3.out'
+  });
+  
+  // Reveal persona
+  timeline.fromTo('.persona-preview',
+    { scale: 0.8, opacity: 0, y: 50 },
+    { scale: 1, opacity: 1, y: 0, duration: 0.8, ease: 'back.out(1.4)' }
+  );
+  
+  // Cascade details
+  timeline.from('.persona-detail', {
+    opacity: 0,
+    y: 20,
+    duration: 0.3,
+    stagger: 0.1,
+    ease: 'power2.out'
+  });
+  
+  // Play sound (optional)
+  playSound('/sounds/mirror-shatter.mp3', 0.3);
+}
+```
+
+**Text:** "This could be you" (fade-in, mysterious font)
+
+**CTA Appearance:**
+```css
+.cta-summon {
+  animation: cta-glow 2s ease-in-out infinite;
+}
+
+@keyframes cta-glow {
+  0%, 100% { 
+    box-shadow: 0 0 30px rgba(217, 70, 239, 0.5);
+  }
+  50% { 
+    box-shadow: 0 0 50px rgba(217, 70, 239, 0.8), 0 0 80px rgba(240, 147, 251, 0.4);
+  }
+}
+```
+
+#### State 4: Scroll Trigger (TRANSITION) - Natural progression
+**Behavior:**
+- Persona preview smoothly scales down (1.0 → 0.6) as user scrolls
+- Opacity fades (1.0 → 0.3)
+- Parallax effect: Moves slower than scroll speed (0.5x)
+- Crosses into "How It Works" section
+
+**Implementation:**
+```javascript
+window.addEventListener('scroll', () => {
+  const scrolled = window.scrollY;
+  const heroHeight = heroSection.clientHeight;
+  const progress = Math.min(scrolled / heroHeight, 1);
+  
+  personaPreview.style.transform = `
+    scale(${1 - progress * 0.4})
+    translateY(${scrolled * 0.5}px)
+  `;
+  personaPreview.style.opacity = 1 - progress * 0.7;
+});
+```
 
 ### Technical Implementation
 

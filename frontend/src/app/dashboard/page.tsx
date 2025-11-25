@@ -10,6 +10,8 @@ import { questApi } from '@/lib/api/quest';
 import { ProgressBar } from '@/components/molecules/ProgressBar';
 import { PersonaCard } from '@/components/molecules/PersonaCard';
 import { QuestCard } from '@/components/molecules/QuestCard';
+import { StatusCard } from '@/components/molecules/StatusCard';
+import { SurveyLinkCard } from '@/components/molecules/SurveyLinkCard';
 import { Button } from '@/components/atoms/Button';
 import { SurveyStatus } from '@/lib/mock-data/surveys';
 import { Persona } from '@/lib/mock-data/personas';
@@ -20,6 +22,7 @@ export default function DashboardPage() {
   const { isAuthenticated, logout } = useAuthStore();
   const [surveyStatus, setSurveyStatus] = useState<SurveyStatus | null>(null);
   const [persona, setPersona] = useState<Persona | null>(null);
+  const [surveyUrl, setSurveyUrl] = useState<string | null>(null);
 
   // Redirect if not authenticated
   useEffect(() => {
@@ -33,10 +36,17 @@ export default function DashboardPage() {
     queryKey: ['survey-status'],
     queryFn: () => surveyApi.getStatus('550e8400-e29b-41d4-a716-446655440000'),
     enabled: isAuthenticated,
-    onSuccess: (data) => {
-      setSurveyStatus(data);
-    }
   });
+
+  useEffect(() => {
+    if (statusData) {
+      setSurveyStatus(statusData);
+      // Set default survey URL if status exists
+      if (statusData.id && !surveyUrl) {
+        setSurveyUrl(`https://remirai.app/s/${statusData.id}`);
+      }
+    }
+  }, [statusData, surveyUrl]);
 
   // Fetch persona if exists
   const { data: personas } = useQuery({
@@ -57,10 +67,12 @@ export default function DashboardPage() {
     enabled: isAuthenticated
   });
 
+  const [surveyLink, setSurveyLink] = useState<string | null>(null);
+
   const handleCreateSurvey = async () => {
     try {
       const survey = await surveyApi.create();
-      alert(`Survey created! URL: ${survey.url}`);
+      setSurveyUrl(survey.url);
       // Refresh status
       window.location.reload();
     } catch (error) {
@@ -84,31 +96,46 @@ export default function DashboardPage() {
 
   // State 1: Awaiting Responses
   if (surveyStatus && !surveyStatus.canCreatePersona && !persona) {
+    const progressPercentage = Math.round(
+      (surveyStatus.responsesCount / surveyStatus.threshold) * 100
+    );
+    
     return (
       <div className={styles.dashboard}>
         <header className={styles.header}>
-          <h1>Dashboard</h1>
+          <h1>Welcome back ✨</h1>
           <Button variant="ghost" onClick={logout}>Logout</Button>
         </header>
 
-        <div className={styles.statusSection}>
-          <h2>Waiting for Responses</h2>
-          <ProgressBar
-            current={surveyStatus.responsesCount}
-            total={surveyStatus.threshold}
-            label={`${surveyStatus.responsesCount} out of ${surveyStatus.threshold} responses received`}
-          />
-        </div>
+        <StatusCard
+          status="collecting"
+          progress={{
+            current: surveyStatus.responsesCount,
+            target: surveyStatus.threshold,
+            percentage: progressPercentage
+          }}
+          message={
+            surveyStatus.responsesCount < surveyStatus.threshold
+              ? `One more Echo needed...`
+              : undefined
+          }
+        />
 
-        <div className={styles.actions}>
-          <div className={styles.card}>
-            <h3>Share Survey</h3>
-            <p>Share your survey link with friends</p>
+        {surveyUrl && (
+          <SurveyLinkCard
+            link={surveyUrl}
+            shareCount={0}
+            lastShared={undefined}
+          />
+        )}
+
+        {!surveyUrl && (
+          <div className={styles.actions}>
             <Button variant="primary" onClick={handleCreateSurvey}>
-              Create Survey
+              Create Survey Link
             </Button>
           </div>
-        </div>
+        )}
 
         {quests && quests.length > 0 && (
           <div className={styles.quests}>
@@ -136,20 +163,20 @@ export default function DashboardPage() {
     return (
       <div className={styles.dashboard}>
         <header className={styles.header}>
-          <h1>Dashboard</h1>
+          <h1>The time has come ✨🌟</h1>
           <Button variant="ghost" onClick={logout}>Logout</Button>
         </header>
 
-        <div className={styles.statusSection}>
-          <h2>Ready to Create Persona!</h2>
-          <p>You have received {surveyStatus.responsesCount} responses.</p>
-        </div>
-
-        <div className={styles.actions}>
-          <Button variant="primary" size="lg" onClick={handleCreatePersona}>
-            Create Persona
-          </Button>
-        </div>
+        <StatusCard
+          status="ready"
+          progress={{
+            current: surveyStatus.responsesCount,
+            target: surveyStatus.threshold,
+            percentage: 100
+          }}
+          onAction={handleCreatePersona}
+          actionLabel="SUMMON PERSONA NOW!"
+        />
       </div>
     );
   }
@@ -159,30 +186,37 @@ export default function DashboardPage() {
     return (
       <div className={styles.dashboard}>
         <header className={styles.header}>
-          <h1>Dashboard</h1>
+          <h1>Welcome back. {persona.name} awaits... ✨</h1>
           <Button variant="ghost" onClick={logout}>Logout</Button>
         </header>
 
+        <StatusCard
+          status="active"
+          onAction={handleChat}
+          actionLabel={`💬 Chat with ${persona.name}`}
+        />
+
         <div className={styles.personaSection}>
           <PersonaCard persona={persona} />
-        </div>
-
-        <div className={styles.actions}>
-          <Button variant="primary" size="lg" onClick={handleChat}>
-            Chat with {persona.name}
-          </Button>
         </div>
       </div>
     );
   }
 
+  // Empty State
   return (
     <div className={styles.dashboard}>
       <header className={styles.header}>
-        <h1>Dashboard</h1>
+        <h1>Welcome, Seeker ✨</h1>
         <Button variant="ghost" onClick={logout}>Logout</Button>
       </header>
-      <p>Loading...</p>
+
+      <StatusCard
+        status="empty"
+        onAction={handleCreateSurvey}
+        actionLabel="🌟 Create First Survey"
+        message="1. Create Survey | 2. Share with friends | 3. Collect 3 Echoes | 4. Summon your Persona"
+      />
     </div>
   );
 }

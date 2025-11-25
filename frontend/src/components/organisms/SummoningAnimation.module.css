@@ -1,0 +1,181 @@
+.container {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: linear-gradient(135deg, #0f172a 0%, #1e293b 50%, #312e81 100%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+  overflow: hidden;
+}
+
+.stage {
+  text-align: center;
+  color: white;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.sparkles {
+  font-size: var(--font-size-5xl);
+  margin-bottom: var(--space-xl);
+  animation: sparkle 2s ease-in-out infinite;
+}
+
+@keyframes sparkle {
+  0%, 100% {
+    opacity: 0.5;
+    transform: scale(1);
+  }
+  50% {
+    opacity: 1;
+    transform: scale(1.1);
+  }
+}
+
+.title {
+  font-size: var(--font-size-3xl);
+  font-weight: var(--font-weight-bold);
+  margin-top: var(--space-2xl);
+  text-shadow: 0 2px 20px rgba(217, 70, 239, 0.5);
+}
+
+.particles {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  top: 0;
+  left: 0;
+}
+
+.particle {
+  position: absolute;
+  width: 4px;
+  height: 4px;
+  background: rgba(217, 70, 239, 0.8);
+  border-radius: 50%;
+  top: 50%;
+  left: 50%;
+}
+
+.magicCircle {
+  width: 200px;
+  height: 200px;
+  border: 4px solid rgba(217, 70, 239, 0.6);
+  border-radius: 50%;
+  position: relative;
+  margin-bottom: var(--space-2xl);
+}
+
+.magicCircle::before {
+  content: '';
+  position: absolute;
+  top: -4px;
+  left: 50%;
+  width: 8px;
+  height: 8px;
+  background: var(--color-primary);
+  border-radius: 50%;
+  transform: translateX(-50%);
+}
+
+.silhouette {
+  width: 300px;
+  height: 400px;
+  background: linear-gradient(135deg, rgba(217, 70, 239, 0.3), rgba(59, 130, 246, 0.3));
+  border-radius: var(--radius-xl);
+  margin-bottom: var(--space-2xl);
+  position: relative;
+}
+
+.silhouette::after {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 200px;
+  height: 200px;
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 50%;
+}
+
+.personaCard {
+  background: rgba(255, 255, 255, 0.95);
+  color: var(--color-text);
+  padding: var(--space-3xl);
+  border-radius: var(--radius-xl);
+  box-shadow: 0 0 100px rgba(217, 70, 239, 0.8);
+  min-width: 400px;
+  text-align: center;
+}
+
+.personaName {
+  font-size: var(--font-size-4xl);
+  font-weight: var(--font-weight-bold);
+  color: var(--color-primary);
+  margin-bottom: var(--space-md);
+}
+
+.personaBadge {
+  font-size: var(--font-size-xl);
+  color: var(--color-warning);
+  margin-bottom: var(--space-lg);
+}
+
+.celebration {
+  font-size: var(--font-size-2xl);
+  color: var(--color-primary);
+  font-weight: var(--font-weight-bold);
+  margin-top: var(--space-lg);
+  animation: glow 2s ease-in-out infinite;
+}
+
+@keyframes glow {
+  0%, 100% {
+    text-shadow: 0 0 10px rgba(217, 70, 239, 0.5);
+  }
+  50% {
+    text-shadow: 0 0 20px rgba(217, 70, 239, 1);
+  }
+}
+
+.skipButton {
+  position: absolute;
+  top: var(--space-lg);
+  right: var(--space-lg);
+  background: rgba(255, 255, 255, 0.1);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  color: white;
+  padding: var(--space-sm) var(--space-md);
+  border-radius: var(--radius-md);
+  cursor: pointer;
+  font-size: var(--font-size-sm);
+}
+
+.skipButton:hover {
+  background: rgba(255, 255, 255, 0.2);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .magicCircle {
+    animation: none;
+  }
+  
+  .particle {
+    animation: none;
+  }
+  
+  .personaCard {
+    opacity: 1;
+    transform: none;
+  }
+}
+

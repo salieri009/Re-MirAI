@@ -4,18 +4,6 @@
 **Last Updated:** 2025-11-25  
 **Status:** Active  
 **Route:** `/ritual`  
-**Component:** `RitualHubPage` (Page level)
-
----
-
-## Executive Summary
-
-The Ritual Hub is the survey management center where users create and monitor feedback collection. This enhancement plan focuses on **frictionless sharing** and **real-time progress tracking** while ensuring complete compliance with Nielsen's Heuristics and the viral-first design philosophy.
-
----
-
-## Current State Analysis
-
 ### Strengths
 - Clear progress visualization
 - Easy link sharing
@@ -23,11 +11,11 @@ The Ritual Hub is the survey management center where users create and monitor fe
 - Practice summon option
 
 ### Weaknesses
-- No real-time updates
-- Limited share options
-- Missing reminder system
-- No analytics display
-- Limited accessibility features
+- **Data vs. Ritual:** Presentation feels like "survey admin" rather than "gathering echoes".
+- **Passive Waiting:** No real-time feedback when a new "Echo" (response) arrives.
+- **High Friction Sharing:** Sharing the ritual link is not celebrated or streamlined.
+- **Lack of Insight:** Users cannot see the *quality* of gathered echoes, only quantity.
+- **Accessibility Gaps:** Dashboard controls are not fully accessible.
 
 ---
 

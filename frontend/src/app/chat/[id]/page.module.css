@@ -28,14 +28,24 @@
   color: var(--color-text-inverse);
 }
 
+.message.persona,
 .message.ai {
   align-self: flex-start;
   background-color: var(--color-bg-tertiary);
   color: var(--color-text);
+  position: relative;
 }
 
 .content {
   margin-bottom: var(--space-xs);
+}
+
+.messageFooter {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-sm);
+  margin-top: var(--space-xs);
 }
 
 .timestamp {

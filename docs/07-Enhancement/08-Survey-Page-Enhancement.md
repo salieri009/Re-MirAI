@@ -10,7 +10,170 @@
 
 ## Executive Summary
 
-The Survey Page is where anonymous respondents provide feedback. This enhancement plan focuses on **complete anonymity**, **ease of use**, and **progress clarity** while ensuring complete compliance with Nielsen's Heuristics and maintaining trust through transparency.
+The Survey Page is Re:MirAI's **anonymous feedback collection portal**—where friends provide honest perceptions to create an AI persona.
+
+### Page Purpose: **COLLECT**
+
+**Core Intent:** Users (respondents) come here to:
+1. **COLLECT:** Provide anonymous feedback quickly and easily
+2. **TRUST:** Feel safe that responses are truly anonymous
+
+**Unique Experience:**  
+Minimal, trust-focused form with clear progress and strong privacy messaging—optimized for completion.
+
+**Emotional Journey:** Uncertainty → Trust → Focus → Satisfaction
+
+**Primary Goal:** Complete all questions and submit feedback
+
+**How This Differs From Other Pages:**
+- **vs. Ritual Hub:** Not sharing—responding
+- **vs. Dashboard:** Not managing—completing task
+- **vs. Landing:** Not discovering—contributing
+
+**Design Constraint (F-001 Survey System):**  
+Enhances existing anonymous survey feature—NO new functionality, pure UX improvement.
+
+**Feature Requirements (Direct Quotes from F-001):**
+> **FR-001.1:** "Users can create a perception ritual (survey) to collect anonymous feedback"
+> **FR-001.2:** "Survey contains 10 pre-defined questions about personality perception"
+> **FR-001.3:** "Each question uses a 1-5 Likert scale"
+> **FR-001.4:** "Survey link is shareable and requires no login"
+> **FR-001.5:** "Responses are collected anonymously"
+
+---
+
+## Visual Purpose Communication
+
+### Trust-First Layout
+
+**Purpose:** Make anonymity obvious, completion easy
+
+**Design Rationale (F-001.5):**  
+> "Responses are collected anonymously"  
+→ Privacy badge must be prominent to build trust immediately
+
+**ASCII Mockup:**
+```
+┌──────────────────────────────────────────────┐
+│  🔒 Your responses are 100% anonymous      │
+│  ──────────────────────────────────────────  │
+├──────────────────────────────────────────────┤
+│                                              │
+│  Helping a friend discover themselves        │
+│  ────────────────────────────────            │
+│                                              │
+│  ╭────────────────────────────────────╮     │
+│  │ Question 3 of 10                   │     │
+│  │ ──────────────────────────────     │     │
+│  │                                    │     │
+│  │ How charismatic is this person?    │     │
+│  │                                    │     │
+│  │  ○ 1 - Not at all                  │     │
+│  │  ○ 2 - Slightly                    │     │
+│  │  ○ 3 - Moderately                  │     │
+│  │  ● 4 - Very          ← Selected    │     │
+│  │  ○ 5 - Extremely                   │     │
+│  │                                    │     │
+│  ╰────────────────────────────────────╯     │
+│                                              │
+│  ▰▰▰▰▰▰▱▱▱▱ 30% Complete                    │
+│   ↑ Progress bar (F-001 clarity)            │
+│                                              │
+│  [← Back]              [Next →]             │
+│                                              │
+└──────────────────────────────────────────────┘
+```
+
+**Visual Pattern:**
+- **Layout:** Privacy header → Question card → Progress → Navigation
+- **Hierarchy:** Privacy → Question → Options → Actions
+- **Color:** Soft, non-threatening (blues, grays)
+- **Space:** Generous padding (reduces anxiety)
+
+### Likert Scale: Clear Selection
+
+**Design Rationale (F-001.3):**  
+> "Each question uses a 1-5 Likert scale"  
+→ Radio buttons with clear labels, large touch targets
+
+**Enhanced Likert Design:**
+```css
+/* Large, accessible radio buttons */
+.likert-option {
+  display: flex;
+  align-items: center;
+  padding: 16px 24px;
+  margin: 8px 0;
+  background: #f8fafc;
+  border: 2px solid #e2e8f0;
+  border-radius: 12px;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.likert-option:hover {
+  background: #f1f5f9;
+  border-color: #cbd5e1;
+  transform: translateX(4px);
+}
+
+.likert-option--selected {
+  background: linear-gradient(135deg, #dbeafe, #eff6ff);
+  border-color: #3b82f6;
+  box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+}
+```
+
+### Progress Visibility
+
+**Design Rationale (F-001.2):**  
+> "Survey contains 10 pre-defined questions"  
+→ Show "X of 10" so users know commitment level
+
+**Implementation:**
+```typescript
+function ProgressIndicator({ current, total = 10 }: ProgressProps) {
+  const percentage = (current / total) * 100;
+  
+  return (
+    <div className="survey-progress">
+      <div className="progress-bar">
+        <div 
+          className="progress-fill"
+          style={{ width: `${percentage}%` }}
+          aria-valuenow={current}
+          aria-valuemin={0}
+          aria-valuemax={total}
+        />
+      </div>
+      <span className="progress-text">
+        Question {current} of {total} • {Math.round(percentage)}% Complete
+      </span>
+    </div>
+  );
+}
+```
+
+### No-Login Experience
+
+**Design Rationale (F-001.4):**  
+> "Survey link is shareable and requires no login"  
+→ Zero friction entry, immediate start
+
+**Landing Flow:**
+```
+User clicks link
+    ↓
+Lands on /s/{id}
+    ↓
+Sees: Privacy badge + "Help [Friend Name] discover..."
+    ↓  
+Question 1 immediately visible (no "Start" button needed)
+    ↓
+Select answer → Auto-enable "Next"
+```
+
+**Note:** All design improvements support existing F-001 requirements—no new features added.
 
 ---
 
@@ -23,11 +186,11 @@ The Survey Page is where anonymous respondents provide feedback. This enhancemen
 - Thank you page
 
 ### Weaknesses
-- Limited progress visibility
-- No question navigation
-- Missing accessibility features
-- No save/resume option
-- Limited error handling
+- **Clinical Design:** Visuals feel like a standard form, lacking the "Re:MirAI" warmth.
+- **Tedium:** Linear flow without milestones makes the survey feel longer than it is.
+- **Trust Gaps:** Anonymity assurances are not visually prominent enough.
+- **Rigid Flow:** Inability to skip or review questions increases drop-off.
+- **Accessibility Gaps:** Form controls are not optimized for all users.
 
 ---
 
