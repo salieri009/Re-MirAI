@@ -1,9 +1,9 @@
 # Re:MirAI Design Enhancement - Master Implementation Guide
 
-**Version:** 1.0  
-**Last Updated:** 2025-11-25  
+**Version:** 1.1.0  
+**Last Updated:** 2025-11-26  
 **Total Duration:** 5 Weeks  
-**Current Status:** Phase 1 (Week 2) - 67% Complete
+**Current Status:** Phase 1 (Complete) + UX/UI Expert Review Complete
 
 ---
 
@@ -41,7 +41,7 @@ Transform Re:MirAI from a functional application into an **immersive, emotion-dr
 | Phase | Timeline | Focus | Status |
 |-------|----------|-------|--------|
 | **Phase 0** | Week 1 | Foundation (Design System) | ✅ **100% Complete** |
-| **Phase 1** | Week 2 | Landing, Login, Dashboard | 🟡 **67% Complete** |
+| **Phase 1** | Week 2 | Landing, Login, Dashboard | ✅ **100% Complete** |
 | **Phase 2** | Week 2-3 | Chat, Persona Room, Ritual Hub, Summoning, Survey | ⏸️ **0% Complete** |
 | **Phase 3** | Week 4 | Polish & Performance | ⏸️ **Not Started** |
 | **Phase 4** | Week 5 | Validation & Testing | ⏸️ **Not Started** |
@@ -373,127 +373,166 @@ trustInteractions.privacyBadgePulse(badgeRef.current);
 
 ---
 
-### 3. Dashboard Page (⏳ NEXT UP - 0% Complete)
+### 3. Dashboard Page (✅ COMPLETE - Chat Integrated)
 
 **Route:** `/dashboard`  
-**Purpose:** INFORM + GUIDE (State-driven clarity)  
-**Enhancement Doc:** [`docs/07-Enhancement/03-Dashboard-Page-Enhancement.md`](file:///d:/UTS/ToyProjecT_2/docs/07-Enhancement/03-Dashboard-Page-Enhancement.md)
+**Purpose:** INFORM + GUIDE + CONNECT (Unified command center)  
+**Enhancement Doc:** [`docs/07-Enhancement/03-Dashboard-Page-Enhancement.md`](file:///d:/UTS/ToyProjecT_2/docs/07-Enhancement/03-Dashboard-Page-Enhancement.md)  
+**Version:** 1.1.0 (Updated 2025-11-26)
 
-#### Planned Implementation
+#### Implementation Summary
 
-##### A. State-Specific Views (TODO)
+> [!IMPORTANT]
+> **Architecture Change:** Dashboard now includes **integrated chat functionality** in addition to the original state-driven views. This creates a Discord/Slack-style 3-column layout.
 
-Create 4 distinct dashboard states based on user journey:
+##### A. Three-Column Layout ✅
+**File:** [`frontend/src/app/dashboard/page.tsx`](file:///d:/UTS/ToyProjecT_2/frontend/src/app/dashboard/page.tsx)
 
-**1. Empty State** - No surveys created
-```typescript
-<EmptyStateView>
-  - Icon: 🌟
-  - Headline: "Let's discover your reflection"
-  - CTA: "Create Your First Survey" (with actionPulse)
-  - Visual: Soft gradient, encouraging tone
-</EmptyStateView>
+**Structure:**
+```tsx
+<div className={styles.dashboard}>  // flexbox container
+  <DashboardSidebar />             // Left: Navigation
+  <DashboardChatArea />            // Center: Chat + Quick Actions  
+  <DashboardRightPanel />          // Right: Status & Progress
+</div>
 ```
 
-**2. Collecting State** - Survey active, gathering responses
+##### B. Left Sidebar - Navigation ✅
+**File:** [`frontend/src/components/organisms/DashboardSidebar.tsx`](file:///d:/UTS/ToyProjecT_2/frontend/src/components/organisms/DashboardSidebar.tsx)
+
+**Features:**
+- Server branding ("R" icon + "Re:MirAI" title)
+- Channel navigation:
+  - Overview (`/dashboard`)
+  - Daily Ritual (`/dashboard/ritual`)
+  - Persona Sync (`/dashboard/synthesize`)
+  - Settings (`/settings`)
+- User panel with avatar and online status
+- Active route highlighting via `usePathname()`
+
+**Code Pattern:**
 ```typescript
-<CollectingStateView>
-  - Progress bar with shimmer animation
-  - Response count: {current}/{minimum} (with echoCountUp)
-  - Live updates indicator
-  - CTA: "Share Survey Link" (if < minimum)
-  - Visual: Progress colors (yellow → green)
-</CollectingStateView>
+const pathname = usePathname();
+const isActive = pathname === channel.href;
 ```
 
-**3. Ready State** - Minimum responses met
-```typescript
-<ReadyStateView>
-  - Celebration visual
-  - "Ready to synthesize!" message
-  - CTA: "Summon Your Persona" (glowing, pulsing)
-  - Visual: Success green, anticipation energy
-</ReadyStateView>
+##### C. Center Chat Area - Messaging ✅
+**File:** [`frontend/src/components/organisms/DashboardChatArea.tsx`](file:///d:/UTS/ToyProjecT_2/frontend/src/components/organisms/DashboardChatArea.tsx)
+
+**New Feature:** Integrated chat system with three sections:
+
+**1. Quick Actions Grid (Top)**
+```tsx
+<div className={styles.actionsGrid}>  // 3-card grid
+  <Link href="/dashboard/create-survey">Create New Survey</Link>
+  <Link href="/dashboard/ritual">Daily Ritual</Link>
+  <Link href="/dashboard/synthesize">Persona Sync</Link>
+</div>
 ```
 
-**4. Active State** - Personas revealed
+**2. Messages Container (Middle)**
+- Message types: `user` | `system` | `persona`
+- Slide-in animations (`@keyframes messageSlideIn`)
+- Scrollable conversation history
+- Welcome message on mount
+
+**3. Input Area (Bottom)**
+- Text input with Enter key support
+- Send button (disabled when empty)
+- Real-time state management
+
+**Message Interface:**
 ```typescript
-<ActiveStateView>
-  - Persona cards grid
-  - Quest engagement section
-  - Stats overview
-  - CTA: "Continue Your Journey"
-  - Visual: Rich, immersive, multiple focal points
-</ActiveStateView>
+interface Message {
+  id: string;
+  type: 'user' | 'system' | 'persona';
+  content: string;
+  timestamp: Date;
+}
 ```
 
-##### B. Real-Time Progress (TODO)
-
-**Progress Shimmer Animation:**
-```typescript
-useEffect(() => {
-  if (progressRef.current) {
-    guidanceInteractions.progressShimmer(progressRef.current, {
-      current: responseCount,
-      total: minResponses,
-    });
-  }
-}, [responseCount, minResponses]);
+**Animation:**
+```css
+@keyframes messageSlideIn {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
 ```
 
-**Response Count Animation:**
-```typescript
-guidanceInteractions.echoCountUp(countRef.current, {
-  from: previousCount,
-  to: responseCount,
-});
+##### D. Right Panel - Status Monitoring ✅
+**File:** [`frontend/src/components/organisms/DashboardRightPanel.tsx`](file:///d:/UTS/ToyProjecT_2/frontend/src/components/organisms/DashboardRightPanel.tsx)
+
+**Displays:**
+- **Persona Status**: Level (5), Bond (75%), Essence (420)
+- **Survey Progress**: Active badge, response counter (2/3), progress bar
+- **Active Quests**: Daily Ritual (2/3), Persona Sync (Pending)
+- **Quick Action Buttons**: "Start Ritual", "Sync Persona"
+
+##### E. Styling - Switch Palette ✅
+**Files:** `DashboardChatArea.module.css`, `DashboardSidebar.module.css`, `DashboardRightPanel.module.css`
+
+**Color System:**
+```css
+--primary: #F3C5FF;    /* Fuchsia - links, highlights */
+--text: #FEFEDF;       /* Light Yellow - main text */
+--accent: #00C9A7;     /* Teal - action icons */
+--bg: rgba(243, 197, 255, 0.05);  /* Subtle backgrounds */
 ```
 
-##### C. Action Guidance (TODO)
+**Animations:**
+- Message slide-in (0.2s)
+- Action card hover (translateY -4px)
+- Button state transitions
 
-**Next Action Pulse:**
-```typescript
-useEffect(() => {
-  if (nextActionRef.current) {
-    guidanceInteractions.actionPulse(nextActionRef.current);
-  }
-}, [currentState]);
-```
+#### Files Modified (7)
+- ✅ `frontend/src/app/dashboard/page.tsx`
+- ✅ `frontend/src/app/dashboard/page.module.css`
+- ✅ `frontend/src/components/organisms/DashboardSidebar.tsx`
+- ✅ `frontend/src/components/organisms/DashboardSidebar.module.css`
+- ✅ `frontend/src/components/organisms/DashboardChatArea.tsx` - **NEW**
+- ✅ `frontend/src/components/organisms/DashboardChatArea.module.css` - **NEW**
+- ✅ `frontend/src/components/organisms/DashboardRightPanel.tsx`
+- ✅ `frontend/src/components/organisms/DashboardRightPanel.module.css`
 
-**State Transitions:**
-```typescript
-const handleStateChange = (newState: DashboardState) => {
-  guidanceInteractions.stateTransition(
-    currentViewRef.current,
-    nextViewRef.current
-  );
-  setState(newState);
-};
-```
+#### Current Status
 
-#### Files to Create/Modify (4)
-- [ ] `frontend/src/app/dashboard/page.tsx` - Add state logic
-- [ ] `frontend/src/components/organisms/DashboardStateView.tsx` - NEW
-- [ ] `frontend/src/components/organisms/DashboardStateView.module.css` - NEW
-- [ ] `frontend/src/app/dashboard/page.module.css` - Enhanced styling
+**✅ Complete (Frontend UI):**
+- 3-column layout
+- Navigation sidebar
+- Chat messaging UI
+- Quick actions grid
+- Status panels
+- Switch Palette styling
+- Message animations
 
-#### Implementation Steps
-1. Review existing dashboard (`app/dashboard/page.tsx`)
-2. Create `DashboardStateView` component with 4 sub-components
-3. Add state detection logic (check response count, persona status)
-4. Implement progress shimmer and count-up animations
-5. Add action pulse to primary CTA
-6. Style with glassmorphism + state-specific colors
-7. Test all 4 states with different data scenarios
+**⏳ Pending (Backend Integration):**
+- Real-time chat API connection
+- Dynamic persona status updates
+- Live survey progress polling
+- Quest data from backend
+- Message persistence
+- WebSocket or polling for updates
 
 #### Testing Checklist
-- [ ] All 4 states render correctly
-- [ ] Progress bar shimmer animates smoothly
-- [ ] Count-up animation triggers on response change
-- [ ] Action pulse guides to next step
-- [ ] State transitions are smooth
-- [ ] Accessibility: keyboard nav, screen readers
-- [ ] Responsive on mobile/desktop
+- ✅ 3-column layout renders correctly
+- ✅ Navigation highlights active route
+- ✅ Quick actions cards clickable
+- ✅ Messages display with slide-in animation
+- ✅ Input sends messages on Enter key
+- ✅ Persona status displays correctly
+- ✅ Survey progress shows with bar
+- ✅ Responsive on mobile/desktop
+- ⏳ Real-time message updates (pending backend)
+- ⏳ Message persistence (pending backend)
+
+#### Chat Implementation Note
+
+> [!NOTE]
+> Chat functionality is now implemented in **two locations**:
+> 1. **Dashboard** (`/dashboard`) - Basic messaging for quick interactions
+> 2. **Chat Page** (`/chat/[id]`) - Full-featured conversations with reactions, sharing, typing indicators
+> 
+> See [04-Chat-Page-Enhancement.md](file:///d:/UTS/ToyProjecT_2/docs/07-Enhancement/04-Chat-Page-Enhancement.md) for the dedicated chat page details.
 
 ---
 
