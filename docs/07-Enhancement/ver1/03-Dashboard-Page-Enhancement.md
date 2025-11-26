@@ -82,8 +82,168 @@
 7. **P2**: Connect quest system to gamification backend
 8. **P2**: Implement breadcrumb navigation for multi-step flows
 
-### Compliance Score: 90/100 (+10)
-Layout complete with fully integrated chat system. All UI elements implemented with static data. Remaining: Backend API integration for real-time data updates.
+### Compliance Score: 90/100
+Dashboard successfully integrates chat with status monitoring. Needs backend integration for real-time data updates.
+
+---
+
+## 🟡 UX/UI Weak Points & Mitigation Strategies
+
+### Critical Issue #1: Dual-Chat Mental Model Confusion (Severity: 9/10)
+
+**Problem:** Users don't understand when to use Dashboard chat vs. Chat Page
+
+**Current State:**
+- Dashboard chat: Basic messaging with quick actions
+- Chat Page (`/chat/[id]`): Full features (reactions, sharing, typing)
+- **No visual or contextual differentiation**
+
+**User's Mental Question:**
+> "If I message here, does it show up in the Chat page?"
+
+**Psychology Principle Violated:** Conceptual Model (Don Norman)
+- Users cannot predict system behavior
+- Leads to learned helplessness
+
+**Mitigation (Choose One):**
+
+**Option A: Message Continuity (Recommended)**
+```tsx
+// Dashboard shows last 5 messages from full chat history
+<DashboardChat>
+  <MessageList maxMessages={5} />
+  <ViewFullButton href="/chat/{id}">
+    View full conversation ({totalMessages} messages) →
+  </ViewFullButton>
+</DashboardChat>
+```
+
+**Option B: Separate Context with Clear Labels**
+```tsx
+<DashboardChat theme="system">
+  <Icon>🤖</Icon>
+  <Label>System Updates Only</Label>
+  <SystemMessage>
+    For persona conversations, 
+    <Link>open Chat Room →</Link>
+  </SystemMessage>
+</DashboardChat>
+```
+
+**Option C: Merge Completely**
+- Remove dashboard chat
+- Add floating chat widget accessible from anywhere
+- Simpler mental model
+
+---
+
+### Issue #2: Information Overload (Severity: 6/10)
+
+**Problem:** 15+ interactive elements compete for attention
+
+**Current Layout:**
+- Left: 4 navigation channels
+- Center: 3 quick actions + messages + input
+- Right: 4 information panels
+
+**Hick's Law:** Decision time increases logarithmically with choices
+
+**Eye-Tracking Prediction (F-Pattern):**
+1. Eyes scan top-left ✅
+2. Horizontal scan quick actions ✅
+3. Drop to right panel ⚠️ (competes with chat)
+4. **Chat input gets missed**
+
+**Mitigation:**
+
+```tsx
+// Progressive Disclosure
+<QuickActions collapsed={hasActiveSurvey}>
+  {/* Show only when user needs action */}
+</QuickActions>
+
+// Sticky Chat Input (always visible)
+<ChatInput className={styles.sticky} />
+
+// Accordion Right Panel
+<RightPanel>
+<PriorityMetric /> {/* Show TOP priority only */}
+  <Accordion items={[status, quests, actions]} />
+</RightPanel>
+```
+
+**Research:** Miller's Law (7±2 items) - Reduce visible elements to 9
+
+---
+
+### Issue #3: Static Data Without Real-Time Updates (Severity: 7/10)
+
+**Problem:** Persona status, survey progress, quests all show mock static data
+
+**User Expectation:** "Live" dashboard should update automatically
+
+**Current Backend Integration Status:**
+- ❌ Chat messages: Local state only
+- ❌ Persona status: Hardcoded (Level 5, Bond 75%)
+- ❌ Survey progress: Hardcoded (2/3)
+- ❌ Quest data: Mock data
+
+**Mitigation:**
+
+```typescript
+// Real-time polling approach
+const { data: personaStatus } = useQuery({
+  queryKey: ['persona-status'],
+  queryFn: () => personaApi.getStatus(),
+  refetchInterval: 10000, // Poll every 10s
+});
+
+// WebSocket approach (better)
+useEffect(() => {
+  const ws = new WebSocket('wss://api.remirai.app/dashboard');
+  ws.onmessage = (event) => {
+    const update = JSON.parse(event.data);
+    updateDashboardState(update);
+  };
+}, []);
+```
+
+**Priority:** HIGH - Without backend, dashboard feels "fake"
+
+---
+
+### Issue #4: Missing Visual Hierarchy in Quick Actions (Severity: 4/10)
+
+**Problem:** All 3 action cards have equal visual weight
+
+**User Goal:** Identify NEXT action quickly
+
+**Mitigation:**
+
+```css
+/* Primary action (what user should do NOW) */
+.actionCard--primary {
+  border: 2px solid var(--color-primary);
+  box-shadow: 0 0 20px rgba(243, 197, 255, 0.3);
+  animation: subtle-pulse 2s infinite;
+}
+
+/* Secondary actions */
+.actionCard--secondary {
+  opacity: 0.7;
+  border: 1px solid var(--color-border);
+}
+```
+
+**Smart Priority Logic:**
+```typescript
+const priorityAction = {
+  noSurvey: 'create-survey',
+  surveyActive: 'ritual', // Share link
+  surveysufficient: 'synthesize', // Create persona
+  personaReady: 'chat',
+}[userState];
+```
 
 ---
 
