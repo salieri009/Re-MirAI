@@ -9,9 +9,10 @@ import styles from './MirrorCanvas.module.css';
 interface MirrorCanvasProps {
     variant?: 'background' | 'mirror';
     intensity?: number;
+    interactionMode?: 'default' | 'converge';
 }
 
-export function MirrorCanvas({ variant = 'background', intensity = 1 }: MirrorCanvasProps) {
+export function MirrorCanvas({ variant = 'background', intensity = 1, interactionMode = 'default' }: MirrorCanvasProps) {
     const canvasRef = useRef<HTMLCanvasElement>(null);
     const reducedMotion = useReducedMotion();
     const cleanupRef = useRef<(() => void) | null>(null);
@@ -32,23 +33,25 @@ export function MirrorCanvas({ variant = 'background', intensity = 1 }: MirrorCa
         resizeCanvas();
         window.addEventListener('resize', resizeCanvas);
 
-        // Create enhanced graphic particle system based on variant
+        // Create enhanced graphic particle system with mirror effect
         if (variant === 'background') {
             cleanupRef.current = delightInteractions.particleSystem(canvas, ctx, {
-                count: 40 * intensity,
-                color: tokens.palette.primary,
-                speed: 0.5 * intensity,
-                connectDistance: 120,
+                count: 100 * intensity,
+                color: '#845ec2', // Purple fire
+                speed: 1.5 * intensity,
+                connectDistance: 180,
                 showConnections: true,
+                interactionMode: 'default'
             });
         } else {
-            // Mirror specific effects with connections
+            // Mirror specific effects with reflection and fire-like connections
             cleanupRef.current = delightInteractions.particleSystem(canvas, ctx, {
-                count: 20 * intensity,
-                color: tokens.palette.accent,
-                speed: 0.8 * intensity,
-                connectDistance: 80,
+                count: 80 * intensity,
+                color: '#f3c5ff', // Light pink fire glow
+                speed: 2.0 * intensity,
+                connectDistance: 140,
                 showConnections: true,
+                interactionMode: interactionMode
             });
         }
 
@@ -58,7 +61,7 @@ export function MirrorCanvas({ variant = 'background', intensity = 1 }: MirrorCa
                 cleanupRef.current();
             }
         };
-    }, [reducedMotion, variant, intensity]);
+    }, [reducedMotion, variant, intensity, interactionMode]);
 
     if (reducedMotion) return null;
 

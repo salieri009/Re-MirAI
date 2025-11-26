@@ -1,49 +1,62 @@
 /**
  * Global Styles
- * CSS custom properties and base styles
+ * CSS custom properties and base styles - Switch Palette
  */
 
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Poppins:wght@400;500;600;700;800&family=Space+Mono:wght@400;700&display=swap');
 
-/* CSS Custom Properties (Design Tokens) */
+/* CSS Custom Properties - Switch Palette */
 :root {
-    /* Emotional Colors - Curiosity & Wonder (Muted) */
-    --color-curiosity-primary: #a855f7;
-    --color-curiosity-secondary: #c084fc;
-    --color-curiosity-accent: #7c3aed;
+    /* Switch Palette - Primary Colors */
+    --color-primary: #845ec2;
+    --color-primary-dark: #6b4a9e;
+    --color-primary-light: #a284d4;
 
-    /* Emotional Colors - Trust & Clarity */
-    --color-trust-primary: #3b82f6;
-    --color-trust-secondary: #60a5fa;
-    --color-trust-accent: #10b981;
+    --color-secondary: #f3c5ff;
+    --color-secondary-dark: #e0a8ff;
+    --color-secondary-light: #fff5ff;
 
-    /* Emotional Colors - Progress & Motivation */
-    --color-progress-collecting: #3b82f6;
-    --color-progress-ready: #d946ef;
-    --color-progress-success: #10b981;
-    --color-progress-warning: #f59e0b;
+    --color-accent: #00c9a7;
+    --color-accent-dark: #00a285;
+    --color-accent-light: #33d6bb;
 
-    /* Emotional Colors - Connection */
-    --color-connection-user: #d946ef;
-    --color-connection-ai: #f1f5f9;
-    --color-connection-bond: #f59e0b;
+    --color-tertiary: #fefedf;
+    --color-tertiary-dark: #e8e8c9;
+    --color-tertiary-light: #fffff5;
 
-    /* Emotional Colors - Delight */
-    --color-delight-dark: #1e1b4b;
-    --color-delight-magical: #d946ef;
-    --color-delight-celebration: #f59e0b;
+    /* Unified Color Palette for All Features */
+    --color-curiosity-primary: #845ec2;
+    --color-curiosity-secondary: #f3c5ff;
+    --color-curiosity-accent: #845ec2;
 
-    /* Surfaces - Primary Color Based */
-    --surface-light: #f3e8ff; /* Primary color light wash - Main background */
-    --surface-card: rgba(255, 255, 255, 0.95);
-    --surface-glass: rgba(255, 255, 255, 0.1);
-    --surface-dark: #0f172a;
-    --surface-overlay: rgba(0, 0, 0, 0.5);
+    --color-trust-primary: #00c9a7;
+    --color-trust-secondary: #00c9a7;
+    --color-trust-accent: #00c9a7;
+
+    --color-progress-collecting: #00c9a7;
+    --color-progress-ready: #845ec2;
+    --color-progress-success: #00c9a7;
+    --color-progress-warning: #fefedf;
+
+    --color-connection-user: #845ec2;
+    --color-connection-ai: #f3c5ff;
+    --color-connection-bond: #00c9a7;
+
+    --color-delight-dark: #6b4a9e;
+    --color-delight-magical: #845ec2;
+    --color-delight-celebration: #00c9a7;
+
+    /* Surfaces */
+    --surface-light: #fefedf;
+    --surface-card: rgba(243, 197, 255, 0.95);
+    --surface-glass: rgba(243, 197, 255, 0.1);
+    --surface-dark: #6b4a9e;
+    --surface-overlay: rgba(107, 74, 158, 0.5);
 
     /* Typography */
     --font-display: 'Poppins', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
     --font-body: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
-    --font-tech: 'Space Mono', 'Courier New', monospace; /* Accent (The Tech) - For data, stats, echoes */
+    --font-tech: 'Space Mono', 'Courier New', monospace;
 
     /* Spacing (4px grid) */
     --space-xs: 4px;
@@ -83,14 +96,14 @@
     --radius-2xl: 24px;
     --radius-full: 9999px;
 
-    /* Shadows - All offsets are multiples of 4px (4px baseline grid) */
-    --shadow-sm: 0 4px 4px 0 rgba(0, 0, 0, 0.05);
-    --shadow-md: 0 4px 8px -4px rgba(0, 0, 0, 0.1);
-    --shadow-lg: 0 8px 16px -4px rgba(0, 0, 0, 0.1);
-    --shadow-xl: 0 20px 24px -4px rgba(0, 0, 0, 0.1);
-    --shadow-glow: 0 0 30px rgba(168, 85, 247, 0.25);
-    --shadow-glow-blue: 0 0 20px rgba(59, 130, 246, 0.25);
-    --shadow-glow-green: 0 0 20px rgba(16, 185, 129, 0.25);
+    /* Shadows */
+    --shadow-sm: 0 4px 4px 0 rgba(132, 94, 194, 0.05);
+    --shadow-md: 0 4px 8px -4px rgba(132, 94, 194, 0.1);
+    --shadow-lg: 0 8px 16px -4px rgba(132, 94, 194, 0.1);
+    --shadow-xl: 0 20px 24px -4px rgba(132, 94, 194, 0.1);
+    --shadow-glow: 0 0 30px rgba(243, 197, 255, 0.4);
+    --shadow-glow-blue: 0 0 20px rgba(0, 201, 167, 0.4);
+    --shadow-glow-green: 0 0 20px rgba(0, 201, 167, 0.25);
 }
 
 /* Base Reset & Typography */
@@ -111,8 +124,8 @@ html {
 body {
     font-family: var(--font-body);
     line-height: 1.6;
-    color: #1e293b;
-    background-color: var(--surface-light);
+    color: #fefedf;
+    background-color: #845ec2;
 }
 
 h1,
@@ -126,9 +139,7 @@ h6 {
     line-height: 1.2;
 }
 
-/* Utility Classes for Purpose-Driven UX */
-
-/* Z-Index Utilities */
+/* Utility Classes */
 .z-background {
     z-index: var(--z-background);
 }
@@ -151,23 +162,23 @@ h6 {
 
 /* Emotional State Classes */
 .emotional-curiosity {
-    background: linear-gradient(135deg, var(--color-curiosity-primary), var(--color-curiosity-secondary));
+    background: linear-gradient(135deg, #845ec2, #f3c5ff);
 }
 
 .emotional-trust {
-    background: linear-gradient(135deg, var(--color-trust-primary), var(--color-trust-secondary));
+    background: linear-gradient(135deg, #00c9a7, #00c9a7);
 }
 
 .emotional-progress {
-    background: linear-gradient(90deg, var(--color-progress-collecting), var(--color-progress-ready));
+    background: linear-gradient(90deg, #00c9a7, #845ec2);
 }
 
 /* Glassmorphism Effect */
 .glass {
-    background: var(--surface-glass);
+    background: rgba(243, 197, 255, 0.1);
     -webkit-backdrop-filter: blur(10px);
     backdrop-filter: blur(10px);
-    border: 1px solid rgba(255, 255, 255, 0.2);
+    border: 1px solid rgba(243, 197, 255, 0.2);
 }
 
 /* Card Component Base */
@@ -201,7 +212,7 @@ h6 {
 }
 
 .btn-primary {
-    background: linear-gradient(135deg, var(--color-curiosity-primary), var(--color-curiosity-secondary));
+    background: linear-gradient(135deg, #845ec2, #f3c5ff);
     color: white;
 }
 
@@ -275,7 +286,7 @@ h6 {
 
 /* Focus States */
 *:focus {
-    outline: 2px solid var(--color-curiosity-primary);
+    outline: 2px solid #845ec2;
     outline-offset: 2px;
 }
 

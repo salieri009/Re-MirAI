@@ -354,22 +354,24 @@ export const delightInteractions = {
     particleSystem: (
         canvas: HTMLCanvasElement,
         ctx: CanvasRenderingContext2D,
-        options: { 
-            count?: number; 
-            color?: string; 
+        options: {
+            count?: number;
+            color?: string;
             speed?: number;
             connectDistance?: number;
             showConnections?: boolean;
+            interactionMode?: 'default' | 'converge';
         } = {}
     ) => {
         if (!ctx) return () => { };
 
-        const { 
-            count = 50, 
-            color = '#ffffff', 
+        const {
+            count = 50,
+            color = '#8b5cf6', // Default to purple (violet-500)
             speed = 1,
             connectDistance = 100,
-            showConnections = true
+            showConnections = true,
+            interactionMode = 'default'
         } = options;
 
         interface Particle {
@@ -380,6 +382,8 @@ export const delightInteractions = {
             radius: number;
             alpha: number;
             baseAlpha: number;
+            targetX?: number;
+            targetY?: number;
         }
 
         const particles: Particle[] = [];
@@ -422,34 +426,70 @@ export const delightInteractions = {
         function animate() {
             ctx.clearRect(0, 0, canvas.width, canvas.height);
 
+            const centerX = canvas.width / 2;
+            const centerY = canvas.height / 2;
+
             // Update and draw particles
             particles.forEach((p) => {
-                p.x += p.vx;
-                p.y += p.vy;
-
-                // Wrap around edges
-                if (p.x < 0) p.x = canvas.width;
-                if (p.x > canvas.width) p.x = 0;
-                if (p.y < 0) p.y = canvas.height;
-                if (p.y > canvas.height) p.y = 0;
-
-                // Interactive response to mouse
-                if (isMouseActive) {
-                    const dx = mouseX - p.x;
-                    const dy = mouseY - p.y;
+                if (interactionMode === 'converge') {
+                    // Swirl effect towards center
+                    const dx = centerX - p.x;
+                    const dy = centerY - p.y;
                     const distance = Math.sqrt(dx * dx + dy * dy);
-                    const maxDistance = 150;
-                    
-                    if (distance < maxDistance) {
-                        const force = (maxDistance - distance) / maxDistance;
-                        p.vx += (dx / distance) * force * 0.1;
-                        p.vy += (dy / distance) * force * 0.1;
-                        p.alpha = Math.min(1, p.baseAlpha + force * 0.3);
+
+                    if (distance > 5) {
+                        // Normalize vector to center
+                        const nx = dx / distance;
+                        const ny = dy / distance;
+
+                        // Tangential vector (rotate 90 degrees) for swirl
+                        const tx = -ny;
+                        const ty = nx;
+
+                        // Calculate speeds - faster swirl as they get closer
+                        const swirlSpeed = 3 + (200 / (distance + 10));
+                        const suctionSpeed = 4;
+
+                        // Apply movement
+                        p.x += nx * suctionSpeed + tx * swirlSpeed;
+                        p.y += ny * suctionSpeed + ty * swirlSpeed;
+
+                        // Increase alpha as they converge
+                        p.alpha = Math.min(1, p.alpha + 0.03);
+                    } else {
+                        // Keep them at center with slight jitter
+                        p.x = centerX + (Math.random() - 0.5) * 5;
+                        p.y = centerY + (Math.random() - 0.5) * 5;
+                    }
+                } else {
+                    // Normal movement
+                    p.x += p.vx;
+                    p.y += p.vy;
+
+                    // Wrap around edges
+                    if (p.x < 0) p.x = canvas.width;
+                    if (p.x > canvas.width) p.x = 0;
+                    if (p.y < 0) p.y = canvas.height;
+                    if (p.y > canvas.height) p.y = 0;
+
+                    // Interactive response to mouse
+                    if (isMouseActive) {
+                        const dx = mouseX - p.x;
+                        const dy = mouseY - p.y;
+                        const distance = Math.sqrt(dx * dx + dy * dy);
+                        const maxDistance = 150;
+
+                        if (distance < maxDistance) {
+                            const force = (maxDistance - distance) / maxDistance;
+                            p.vx += (dx / distance) * force * 0.1;
+                            p.vy += (dy / distance) * force * 0.1;
+                            p.alpha = Math.min(1, p.baseAlpha + force * 0.3);
+                        } else {
+                            p.alpha = p.baseAlpha;
+                        }
                     } else {
                         p.alpha = p.baseAlpha;
                     }
-                } else {
-                    p.alpha = p.baseAlpha;
                 }
 
                 // Draw particle with gradient
@@ -468,7 +508,7 @@ export const delightInteractions = {
                 }
                 gradient.addColorStop(0, color);
                 gradient.addColorStop(1, transparentColor);
-                
+
                 ctx.beginPath();
                 ctx.arc(p.x, p.y, p.radius, 0, Math.PI * 2);
                 ctx.fillStyle = gradient;
@@ -480,7 +520,7 @@ export const delightInteractions = {
             if (showConnections) {
                 ctx.strokeStyle = color;
                 ctx.lineWidth = 0.5;
-                
+
                 for (let i = 0; i < particles.length; i++) {
                     for (let j = i + 1; j < particles.length; j++) {
                         const p1 = particles[i];

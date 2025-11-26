@@ -1,96 +1,138 @@
 :root {
-  /* Small Switch Palette */
-  --color-primary: #d946ef;
-  --color-primary-dark: #b51eca;
-  --color-primary-light: #f5c6ff;
-  
-  --color-accent: #697fac;
-  --color-accent-dark: #4b5d80;
-  --color-accent-light: #90a1c8;
+  /* Switch Palette - Main Colors */
+  --color-primary: #845ec2;
+  /* Purple */
+  --color-primary-dark: #6b4a9e;
+  /* Darker purple variant */
+  --color-primary-light: #a284d4;
+  /* Lighter purple variant */
 
-  /* Backwards-compatible secondary alias */
-  --color-secondary: var(--color-accent);
-  --color-secondary-dark: var(--color-accent-dark);
-  --color-secondary-light: var(--color-accent-light);
-  
-  /* Background & Surface Colors - Primary Color Based */
-  --color-bg-primary: #f3e8ff; /* Primary color light wash - Main background */
-  --color-bg-secondary: #f3e8ff; /* Primary color light wash */
-  --color-bg-tertiary: #e9d5ff; /* Primary color lighter wash */
-  
-  --color-surface: #f3e8ff; /* Primary color light wash */
-  --color-surface-elevated: rgba(255, 255, 255, 0.95); /* White cards on primary wash */
-  --color-surface-alt: #f3e8ff; /* Primary color light wash */
-  
+  --color-secondary: #00c9a7;
+  /* Teal/Turquoise */
+  --color-secondary-dark: #00a285;
+  /* Darker teal */
+  --color-secondary-light: #33d6bb;
+  /* Lighter teal */
+
+  --color-accent: #f3c5ff;
+  /* Light pink/lavender */
+
+  --color-tertiary: #fefedf;
+  /* Cream/Beige */
+
+  /* Background & Surface Colors - Purple Primary */
+  --color-bg-primary: #845ec2;
+  /* Purple background */
+  --color-bg-secondary: #6b4a9e;
+  /* Darker purple for contrast */
+  --color-bg-tertiary: #a284d4;
+  /* Lighter purple */
+
+  --color-surface: #f3c5ff;
+  /* Light pink for cards */
+  --color-surface-elevated: #fefedf;
+  /* Cream for elevated surfaces */
+  --color-surface-alt: #00c9a7;
+  /* Teal for alternate surfaces */
+
   /* Text Colors */
-  --color-text: #0f172a;
-  --color-text-secondary: #334155; /* Updated for readability (was #697fac) */
-  --color-text-tertiary: #a5b4d6;
-  --color-text-inverse: #ffffff;
-  
+  --color-text: #fefedf;
+  /* Cream text for purple background */
+  --color-text-secondary: #f3c5ff;
+  /* Light pink for secondary text */
+  --color-text-tertiary: #00c9a7;
+  /* Teal for tertiary text */
+  --color-text-inverse: #845ec2;
+  /* Purple text on light backgrounds */
+
   /* Border Colors */
-  --color-border: #d2d9ec;
-  --color-border-dark: #b4bedb;
-  
-  /* Status Colors */
-  --color-success: #10b981;
-  --color-warning: #f59e0b;
-  --color-error: #ef4444;
-  --color-info: #3b82f6;
-  
+  --color-border: #a284d4;
+  /* Light purple for borders */
+  --color-border-dark: #f3c5ff;
+  /* Light pink for emphasis borders */
+
+  /* Status Colors - Using palette colors only */
+  --color-success: #00c9a7;
+  /* Teal for success */
+  --color-warning: #fefedf;
+  /* Cream for warning */
+  --color-error: #f3c5ff;
+  /* Light pink for error */
+  --color-info: #00c9a7;
+  /* Teal for info */
+
   /* Spacing */
-  --space-xs: 0.25rem;   /* 4px */
-  --space-sm: 0.5rem;    /* 8px */
-  --space-md: 1rem;      /* 16px */
-  --space-lg: 1.5rem;    /* 24px */
-  --space-xl: 2rem;      /* 32px */
-  --space-2xl: 3rem;     /* 48px */
-  --space-3xl: 4rem;     /* 64px */
-  
+  --space-xs: 0.25rem;
+  /* 4px */
+  --space-sm: 0.5rem;
+  /* 8px */
+  --space-md: 1rem;
+  /* 16px */
+  --space-lg: 1.5rem;
+  /* 24px */
+  --space-xl: 2rem;
+  /* 32px */
+  --space-2xl: 3rem;
+  /* 48px */
+  --space-3xl: 4rem;
+  /* 64px */
+
   /* Typography */
   --font-family-base: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue', sans-serif;
   --font-family-display: 'Inter', var(--font-family-base);
-  
-  --font-size-xs: 0.75rem;    /* 12px */
-  --font-size-sm: 0.875rem;    /* 14px */
-  --font-size-base: 1rem;     /* 16px */
-  --font-size-lg: 1.125rem;   /* 18px */
-  --font-size-xl: 1.25rem;   /* 20px */
-  --font-size-2xl: 1.5rem;    /* 24px */
-  --font-size-3xl: 2rem;      /* 32px - aligned to 4px grid */
-  --font-size-4xl: 2.25rem;   /* 36px */
-  --font-size-5xl: 3rem;      /* 48px */
-  
+
+  --font-size-xs: 0.75rem;
+  /* 12px */
+  --font-size-sm: 0.875rem;
+  /* 14px */
+  --font-size-base: 1rem;
+  /* 16px */
+  --font-size-lg: 1.125rem;
+  /* 18px */
+  --font-size-xl: 1.25rem;
+  /* 20px */
+  --font-size-2xl: 1.5rem;
+  /* 24px */
+  --font-size-3xl: 2rem;
+  /* 32px */
+  --font-size-4xl: 2.25rem;
+  /* 36px */
+  --font-size-5xl: 3rem;
+  /* 48px */
+
   --font-weight-normal: 400;
   --font-weight-medium: 500;
   --font-weight-semibold: 600;
   --font-weight-bold: 700;
-  
+
   --line-height-tight: 1.25;
   --line-height-normal: 1.5;
   --line-height-relaxed: 1.75;
-  
+
   /* Border Radius */
-  --radius-sm: 0.25rem;   /* 4px */
-  --radius-md: 0.5rem;    /* 8px */
-  --radius-lg: 0.75rem;   /* 12px */
-  --radius-xl: 1rem;      /* 16px */
+  --radius-sm: 0.25rem;
+  /* 4px */
+  --radius-md: 0.5rem;
+  /* 8px */
+  --radius-lg: 0.75rem;
+  /* 12px */
+  --radius-xl: 1rem;
+  /* 16px */
   --radius-full: 9999px;
-  
-  /* Shadows - All offsets are multiples of 4px */
-  --shadow-sm: 0 4px 4px 0 rgba(0, 0, 0, 0.05);
-  --shadow-md: 0 4px 8px -4px rgba(15, 23, 42, 0.08), 0 4px 4px -4px rgba(15, 23, 42, 0.06);
-  --shadow-lg: 0 8px 16px -4px rgba(15, 23, 42, 0.15);
-  --shadow-xl: 0 20px 32px -8px rgba(15, 23, 42, 0.2);
-  --shadow-glow-primary: 0 0 32px rgba(217, 70, 239, 0.4);
-  --shadow-glow-accent: 0 0 28px rgba(105, 127, 172, 0.45);
-  --shadow-glow-dual: 0 0 36px rgba(217, 70, 239, 0.3), 0 0 52px rgba(105, 127, 172, 0.35);
-  
+
+  /* Shadows */
+  --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.1);
+  --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.15);
+  --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.2);
+  --shadow-xl: 0 20px 25px -5px rgba(0, 0, 0, 0.25);
+  --shadow-glow-primary: 0 0 32px rgba(243, 197, 255, 0.4);
+  --shadow-glow-secondary: 0 0 28px rgba(0, 201, 167, 0.4);
+
   /* Transitions */
   --transition-fast: 150ms ease-in-out;
   --transition-base: 200ms ease-in-out;
   --transition-slow: 300ms ease-in-out;
-  
+
   /* Z-index */
   --z-base: 0;
   --z-dropdown: 1000;
@@ -100,18 +142,16 @@
   --z-modal: 1050;
   --z-popover: 1060;
   --z-tooltip: 1070;
+  --z-primary: 10;
+  --z-overlay: 20;
 }
 
-/* Dark mode support (for future use) */
+/* Dark mode support */
 @media (prefers-color-scheme: dark) {
   :root {
-    --color-bg-primary: #0f172a;
-    --color-bg-secondary: #1e293b;
-    --color-text: #f1f5f9;
-    --color-text-secondary: #cbd5e1;
+    --color-bg-primary: #6b4a9e;
+    --color-bg-secondary: #845ec2;
+    --color-text: #fefedf;
+    --color-text-secondary: #f3c5ff;
   }
 }
-
-
-
-

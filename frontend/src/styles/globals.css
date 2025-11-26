@@ -14,7 +14,7 @@ body {
   font-size: var(--font-size-base);
   line-height: var(--line-height-normal);
   color: var(--color-text);
-  background-color: var(--color-bg-secondary);
+  background-color: var(--color-bg-primary);
 }
 
 a {
@@ -29,7 +29,8 @@ button {
   background: none;
 }
 
-input, textarea {
+input,
+textarea {
   font-family: inherit;
 }
 
@@ -52,7 +53,3 @@ input, textarea {
   white-space: nowrap;
   border-width: 0;
 }
-
-
-
-
