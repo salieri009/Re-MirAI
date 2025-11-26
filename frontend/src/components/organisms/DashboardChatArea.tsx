@@ -1,6 +1,7 @@
 'use client';
 
 import { useState } from 'react';
+import Link from 'next/link';
 import styles from './DashboardChatArea.module.css';
 
 interface Message {
@@ -37,6 +38,40 @@ export function DashboardChatArea() {
 
     return (
         <div className={styles.chatArea}>
+            {/* Quick Actions Card */}
+            <div className={styles.quickActions}>
+                <h2 className={styles.quickActionsTitle}>Quick Actions</h2>
+                <div className={styles.actionsGrid}>
+                    <Link href="/dashboard/create-survey" className={styles.actionCard}>
+                        <div className={styles.actionIcon}>+</div>
+                        <div className={styles.actionContent}>
+                            <h3 className={styles.actionTitle}>Create New Survey</h3>
+                            <p className={styles.actionDescription}>
+                                Generate a new survey link to collect echoes
+                            </p>
+                        </div>
+                    </Link>
+                    <Link href="/dashboard/ritual" className={styles.actionCard}>
+                        <div className={styles.actionIcon}>#</div>
+                        <div className={styles.actionContent}>
+                            <h3 className={styles.actionTitle}>Daily Ritual</h3>
+                            <p className={styles.actionDescription}>
+                                Complete your daily tasks
+                            </p>
+                        </div>
+                    </Link>
+                    <Link href="/dashboard/synthesize" className={styles.actionCard}>
+                        <div className={styles.actionIcon}>*</div>
+                        <div className={styles.actionContent}>
+                            <h3 className={styles.actionTitle}>Persona Sync</h3>
+                            <p className={styles.actionDescription}>
+                                Synthesize your digital persona
+                            </p>
+                        </div>
+                    </Link>
+                </div>
+            </div>
+
             <div className={styles.messagesContainer}>
                 {messages.map((message) => (
                     <div

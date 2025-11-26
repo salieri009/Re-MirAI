@@ -6,6 +6,77 @@
   background: var(--color-bg-primary);
 }
 
+.quickActions {
+  padding: 24px;
+  background: rgba(243, 197, 255, 0.05);
+  border-bottom: 4px solid rgba(243, 197, 255, 0.1);
+}
+
+.quickActionsTitle {
+  font-family: var(--font-display);
+  font-size: 20px;
+  font-weight: var(--font-weight-bold);
+  color: #fefedf;
+  margin-bottom: 16px;
+}
+
+.actionsGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 16px;
+}
+
+.actionCard {
+  display: flex;
+  align-items: flex-start;
+  gap: 16px;
+  padding: 20px;
+  background: rgba(243, 197, 255, 0.1);
+  border: 4px solid rgba(243, 197, 255, 0.2);
+  border-radius: 12px;
+  text-decoration: none;
+  transition: all var(--transition-base);
+  cursor: pointer;
+}
+
+.actionCard:hover {
+  background: rgba(243, 197, 255, 0.15);
+  border-color: #f3c5ff;
+  transform: translateY(-4px);
+}
+
+.actionIcon {
+  width: 48px;
+  height: 48px;
+  background: #00c9a7;
+  color: #ffffff;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 28px;
+  font-weight: var(--font-weight-bold);
+  flex-shrink: 0;
+}
+
+.actionContent {
+  flex: 1;
+}
+
+.actionTitle {
+  font-size: 16px;
+  font-weight: var(--font-weight-semibold);
+  color: #f3c5ff;
+  margin-bottom: 4px;
+}
+
+.actionDescription {
+  font-size: 14px;
+  color: #fefedf;
+  opacity: 0.9;
+  line-height: 1.5;
+}
+
 .messagesContainer {
   flex: 1;
   overflow-y: auto;
@@ -27,6 +98,7 @@
     opacity: 0;
     transform: translateY(10px);
   }
+
   to {
     opacity: 1;
     transform: translateY(0);
