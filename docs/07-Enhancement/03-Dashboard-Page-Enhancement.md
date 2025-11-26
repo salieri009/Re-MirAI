@@ -1,10 +1,89 @@
 # Dashboard Page Enhancement Plan
 
-**Version:** 1.0.2  
-**Last Updated:** 2025-11-25  
-**Status:** Active  
+**Version:** 1.1.0  
+**Last Updated:** 2025-11-26  
+**Status:** ✅ Complete (Chat-Integrated Dashboard)  
 **Route:** `/dashboard`  
-**Component:** `DashboardPage` (Page level)
+**Component:** `DashboardPage` (Page level)  
+**Feature Specs:** F-001, F-002, F-003, F-006
+
+---
+
+## Feature Compliance Review
+
+### Related Specifications
+**Primary:** Central hub for all features  
+**Features:** F-001 (Survey System), F-002 (Persona Synthesis), F-003 (Chat Interface), F-006 (Gamification)
+
+### Implementation Status
+
+#### ✅ Completed (v1.1.0 - Chat-Integrated Dashboard)
+
+**Core Architecture:**
+- **Layout**: 3-column chat-style design (Discord/Slack inspired)
+  - **Left Sidebar** ([DashboardSidebar.tsx](file:///d:/UTS/ToyProjecT_2/frontend/src/components/organisms/DashboardSidebar.tsx)): Navigation channels (Overview, Daily Ritual, Persona Sync, Settings)
+  - **Center Area** ([DashboardChatArea.tsx](file:///d:/UTS/ToyProjecT_2/frontend/src/components/organisms/DashboardChatArea.tsx)): Quick Actions + Chat Messages + Input
+  - **Right Panel** ([DashboardRightPanel.tsx](file:///d:/UTS/ToyProjecT_2/frontend/src/components/organisms/DashboardRightPanel.tsx)): Persona Stats + Progress + Quests
+
+**Integrated Chat System:**
+- **Message Types**: Support for `user`, `system`, and `persona` messages
+- **Real-time Messaging**: Message input with Enter key support
+- **Message Display**: Animated message list with slide-in effects
+- **Chat Input**: Full-width input area with Send button
+- **Welcome Message**: System message on initial load
+
+**Quick Actions (Center Area):**
+- **Create New Survey**: Primary action card with link to survey creation
+- **Daily Ritual**: Link to `/dashboard/ritual` with icon
+- **Persona Sync**: Link to `/dashboard/synthesize` with icon
+- **Grid Layout**: Responsive 3-card grid (auto-fit, minmax 280px)
+- **Hover Effects**: translateY(-4px) animation + color transitions
+
+**Right Panel Features:**
+- **Persona Status Card**: Displays Level (5), Bond (75%), Essence (420)
+- **Survey Progress**: Active survey tracking with response counter (2/3) and progress bar
+- **Active Quests**: Daily Ritual (2/3 completed) and Persona Sync (Pending)
+- **Quick Action Buttons**: "Start Ritual" and "Sync Persona"
+
+**Design System:**
+- **Color Palette**: Switch Palette implementation (F3C5FF primary, FEFEDF text, 00C9A7 accents)
+- **Typography**: Display font for titles, consistent font weights
+- **Animations**: Message slide-in, button hover effects, card transitions
+- **Accessibility**: Proper semantic HTML structure
+
+#### ✅ Feature Integration Status
+
+| Feature | Requirement | Status | Implementation |
+|:---|:---|:---:|:---|
+| **F-001** | Survey creation flow | ✅ | "Create New Survey" quick action card with routing |
+| **F-001** | Response progress display | ✅ | Response counter (2/3) with progress bar in right panel |
+| **F-003** | Chat interface integration | ✅ | Full messaging system in `DashboardChatArea` |
+| **F-003** | Message types support | ✅ | User, system, and persona message variants |
+| **F-003** | Bond Level tracking | ⚠️ | Static display (75%) - needs backend integration |
+| **F-006** | Quest system display | ✅ | Active quests UI in right panel (static data) |
+| **F-006** | Gamification metrics | ✅ | Level, Bond, Essence displayed in right panel |
+
+#### 🔄 Pending Backend Integration
+
+| Component | Current State | Action Needed |
+|:---|:---|:---|
+| **Chat Messages** | Local state management | Connect to real-time chat API |
+| **Persona Status** | Mock data (Level 5, Bond 75%) | Fetch from persona API |
+| **Survey Progress** | Static (2/3 responses) | Poll or subscribe to survey status updates |
+| **Active Quests** | Hardcoded quests | Integrate with gamification backend |
+
+### Priority Actions
+1. ~~**P0**: Add prominent "Create New Survey" button (F-001.UC-01)~~ ✅ **COMPLETE**
+2. ~~**P0**: Implement survey response progress indicator (0/3, 1/3, 2/3, 3/3)~~ ✅ **COMPLETE**
+3. ~~**P1**: Integrate chat messaging system in dashboard~~ ✅ **COMPLETE**
+4. **P0**: Connect chat message system to backend API (real-time messaging)
+5. **P1**: Implement dynamic persona status updates from backend
+6. **P1**: Add real-time survey progress polling/WebSocket subscription
+7. **P2**: Connect quest system to gamification backend
+8. **P2**: Implement breadcrumb navigation for multi-step flows
+
+### Compliance Score: 90/100 (+10)
+Layout complete with fully integrated chat system. All UI elements implemented with static data. Remaining: Backend API integration for real-time data updates.
 
 ---
 
@@ -367,7 +446,85 @@ State-driven UI that completely transforms based on user progress—each state t
 
 ---
 
-## Component Structure (Atomic Design)
+## Component Structure (Actual Implementation)
+
+### Current Architecture (v1.1.0)
+
+```
+pages/
+└── dashboard/
+    └── page.tsx                      # Main dashboard container (flex layout)
+
+organisms/
+├── DashboardSidebar.tsx              # Left navigation panel
+│   ├── Server info (Re:MirAI branding)
+│   ├── Channel list navigation
+│   └── User panel (avatar, status)
+├── DashboardChatArea.tsx             # Center chat/messaging area
+│   ├── Quick Actions card grid
+│   ├── Messages container (scrollable)
+│   └── Input area (message input + send button)
+└── DashboardRightPanel.tsx           # Right status panel
+    ├── Persona Status card
+    ├── Survey Progress card
+    ├── Active Quests list
+    └── Quick Action buttons
+```
+
+### Component Details
+
+#### DashboardSidebar
+- **File**: [DashboardSidebar.tsx](file:///d:/UTS/ToyProjecT_2/frontend/src/components/organisms/DashboardSidebar.tsx)
+- **Purpose**: Navigation and user identity
+- **Features**:
+  - Server branding ("R" icon + "Re:MirAI" title)
+  - Navigation channels with active state highlighting  
+  - User avatar with online status
+  - Pathname-based active link detection
+
+#### DashboardChatArea
+- **File**: [DashboardChatArea.tsx](file:///d:/UTS/ToyProjecT_2/frontend/src/components/organisms/DashboardChatArea.tsx)
+- **Purpose**: Primary interaction area combining quick actions and messaging
+- **Features**:
+  - **Quick Actions Grid**: 3 action cards (Create Survey, Daily Ritual, Persona Sync)
+  - **Message Display**: Typed messages (user/system/persona) with animations
+  - **Chat Input**: Text input with Enter key handler + Send button
+  - **Local State**: Messages managed with useState hook
+
+#### DashboardRightPanel
+- **File**: [DashboardRightPanel.tsx](file:///d:/UTS/ToyProjecT_2/frontend/src/components/organisms/DashboardRightPanel.tsx)
+- **Purpose**: Status monitoring and quick actions
+- **Features**:
+  - **Persona Status**: Level, Bond percentage, Essence count
+  - **Survey Progress**: Active survey badge, response counter, progress bar
+  - **Active Quests**: Daily Ritual progress, Persona Sync status
+  - **Action Buttons**: "Start Ritual", "Sync Persona"
+
+### Data Flow (Current Implementation)
+
+```
+┌──────────────────┐
+│  authStore       │ ─── User authentication state
+└──────────────────┘      │
+                          ↓
+┌────────────────────────────────────────────────┐
+│  DashboardPage (page.tsx)                      │
+│  - Auth check & redirect                       │
+│  - Layout container (flex row)                 │
+└────────────────────────────────────────────────┘
+         │              │              │
+         ↓              ↓              ↓
+┌──────────────┐ ┌──────────────┐ ┌──────────────┐
+│  Sidebar     │ │  ChatArea    │ │ RightPanel   │
+│  - User data │ │  - Messages  │ │ - Mock data  │
+│  - Pathname  │ │  - Actions   │ │ - Static UI  │
+└──────────────┘ └──────────────┘ └──────────────┘
+```
+
+### Planned Component Structure (Original Design - For Reference)
+
+<details>
+<summary>Click to expand original atomic design plan</summary>
 
 ```
 atoms/
@@ -389,6 +546,127 @@ organisms/
 pages/
 └── DashboardPage.tsx              # Page container
 ```
+
+</details>
+
+---
+
+## Current Implementation Details (v1.1.0)
+
+### Chat System Integration
+
+**Message Interface:**
+```typescript
+interface Message {
+  id: string;
+  type: 'user' | 'system' | 'persona';
+  content: string;
+  timestamp: Date;
+}
+```
+
+**Features:**
+- **Message Types**: Three distinct message variants with different styling
+  - `user`: Right-aligned, primary color background
+  - `system`: Center-aligned, tertiary background, system announcements
+  - `persona`: Left-aligned, elevated surface with border
+- **Message Display**: Animated slide-in effect (translateY + opacity)
+- **Input Handling**: 
+  - Text input with real-time state management
+  - Enter key submission support
+  - Send button with disabled state when empty
+- **Initial State**: Welcome message from system on mount
+
+### Quick Actions Implementation
+
+**Grid System:**
+- Responsive grid: `repeat(auto-fit, minmax(280px, 1fr))`
+- 16px gap between cards
+- Three action cards with consistent structure
+
+**Card Structure:**
+```tsx
+<Link href="/route" className={styles.actionCard}>
+  <div className={styles.actionIcon}>Icon</div>
+  <div className={styles.actionContent}>
+    <h3>Title</h3>
+    <p>Description</p>
+  </div>
+</Link>
+```
+
+**Actions:**
+1. **Create New Survey** → `/dashboard/create-survey`
+2. **Daily Ritual** → `/dashboard/ritual`
+3. **Persona Sync** → `/dashboard/synthesize`
+
+### Styling Approach
+
+**Color System (Switch Palette):**
+- Primary: `#F3C5FF` (Fuchsia - links, highlights)
+- Text: `#FEFEDF` (Light Yellow - main text)
+- Accent: `#00C9A7` (Teal - action icons)
+- Backgrounds: RGBA variations of F3C5FF for depth
+
+**Animation Tokens:**
+```css
+/* Message slide-in */
+@keyframes messageSlideIn {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* Action card hover */
+.actionCard:hover {
+  transform: translateY(-4px);
+  border-color: #f3c5ff;
+}
+```
+
+**Layout Structure:**
+```css
+.dashboard {
+  display: flex;           /* 3-column layout */
+  width: 100vw;
+  height: 100vh;
+  overflow: hidden;        /* Fixed viewport */
+}
+
+.chatArea {
+  flex: 1;                 /* Takes remaining space */
+  display: flex;
+  flex-direction: column;  /* Quick Actions → Messages → Input */
+}
+```
+
+### User Interactions
+
+**Message Sending Flow:**
+1. User types in input field → `setInputValue(e.target.value)`
+2. User presses Enter or clicks Send → `handleSend()`
+3. Validation: Check if `inputValue.trim()` is not empty
+4. Create message object with timestamp
+5. Append to messages array → `setMessages([...messages, newMessage])`
+6. Clear input → `setInputValue('')`
+7. Message appears with slide-in animation
+
+**Navigation Flow:**
+- Sidebar channels update active state based on `usePathname()`
+- Quick action cards use Next.js `<Link>` for client-side navigation
+- Right panel buttons are currently static (future: routing)
+
+### State Management
+
+**Current State:**
+- **Local Component State**: Messages managed in `DashboardChatArea`
+- **Auth State**: Global store via `useAuthStore()` (Zustand)
+- **Router State**: `usePathname()` and `useRouter()` from Next.js
+
+**Pending Backend Integration:**
+- Chat API connection for real-time messaging
+- Persona API for dynamic status updates
+- Survey API for progress polling
+- Quest API for gamification data
 
 ---
 

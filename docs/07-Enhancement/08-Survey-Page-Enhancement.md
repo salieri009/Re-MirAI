@@ -1,70 +1,54 @@
 # Survey Page Enhancement Plan
 
-**Version:** 1.0.2  
-**Last Updated:** 2025-11-25  
-**Status:** Active  
+**Version:** 1.0.3  
+**Last Updated:** 2025-11-26  
+**Status:** Active (Requires Verification)  
 **Route:** `/s/:id`  
 **Component:** `SurveyPage` (Page level)
+**Feature Spec:** F-001 Survey System
+
+---
+
+## Feature Compliance Review (F-001)
+
+### Specification Mapping
+**Primary Feature:** F-001 Survey System (P0 MVP)
+
+### Functional Requirements Status
+
+| ID | Requirement | Status | Implementation Notes |
+|:---|:---|:---:|:---|
+| **FR-001.1** | Generate unique, shareable URL | ✅ | `/s/[id]` route implemented |
+| **FR-001.2** | Fixed set of 10-15 questions | ⚠️ | **Verify**: Question count in current implementation |
+| **FR-001.3** | Anonymous submission (no account) | ✅ | No login required for respondents |
+| **FR-001.4** | Minimum 3 responses threshold | ⚠️ | **Verify**: Enforcement in backend/UI |
+| **FR-001.5** | Practice Mode support | ❌ | **Missing**: Not implemented in survey flow |
+
+### Non-Functional Requirements Status
+
+| ID | Requirement | Target | Status | Notes |
+|:---|:---|:---:|:---:|:---|
+| **NFR-001.1** | Zero PII leakage | N/A | ⚠️ | **Verify**: No IP/device tracking visible to user |
+| **NFR-001.2** | Link generation time | <1s | ⚠️ | **Test**: Measure link generation performance |
+| **NFR-001.3** | Scalability | 1000 CCU | ⚠️ | **Test**: Load testing required |
+
+### Priority Actions
+1. **P0**: Verify 10-15 question count is displayed in UI
+2. **P0**: Verify 3-response threshold prevents early persona creation
+3. **P0**: Add progress indicator showing "X of 3 responses collected"
+4. **P1**: Implement Practice Mode option (FR-001.5)
+5. **P2**: Add "🛡️ Your responses are anonymous" privacy badge
+
+### Compliance Score: 70/100 (Pending Verification)
+Core functionality implemented, but requires verification testing for thresholds, anonymity, and performance metrics.
 
 ---
 
 ## Design Philosophy
 
-**Core Concept:** **"The Magical Mirror"** — A mystical interface that reveals how others perceive you (*"Who do others believe I am?"*).
+**Core Concept:** **"The Magical Mirror"** — A mystical interface that reveals how others perceive you (*"Who do others believe I am?'"*).
 
-**Objective:** Design a multi-page interface where each page emphasizes its unique purpose and enhances the user experience aligned with that purpose.
-
-**Core Principles:**
-- **Core Purpose:** **Collect & Trust** (The contribution).
-- **Tailored UX:** Prioritize ease of use and clarity; emphasize anonymity to build trust.
-- **Visual Hierarchy:** Question focus is central; progress and privacy indicators are always visible but secondary.
-- **Immersive Consistency:** A calm, reflective environment that feels distinct from the "gamified" app but part of the same universe.
-- **Micro-Interactions:** Smooth transitions and clear selection states make the task feel effortless.
-- **Emotional Resonance:** Evoke **Trust** and **Focus** to encourage honest and thoughtful responses.
-- **Visual Identity:** Adheres to the **Small Switch Palette** (see `09-Color-Palette-Plan.md`) to ensure brand consistency and accessibility.
-
----
-
-## Executive Summary
-
-The Survey Page is Re:MirAI's **anonymous feedback collection portal**—where friends provide honest perceptions to create an AI persona.
-
-## Phase 1.5 Implementation Addendum (v1.0.2)
-
-### Current Build Snapshot
-- `/s/[id]` renders `PrivacyNotice` + `SurveyWizard`, delivering the trust-first introduction and multi-step questionnaire described in the doc (see `frontend/src/app/s/[id]/page.tsx`).
-- `SurveyWizard` orchestrates question cards, progress indicator, and navigation controls; Likert buttons use the new tokens + states.
-- Queries fetch survey metadata and questions via `surveyApi`, ensuring dynamic wording + counts.
-
-### Gap Analysis vs. Spec
-- Keyboard shortcuts + review step from §Likert UI Enhancement are not implemented; navigation is pointer-focused.
-- No `useAnnouncement` integration for question transitions or submission success, so accessibility acceptance criteria remain unmet.
-- Thank-you screen lacks CTA back into Ritual Hub (to remind sharer) and analytics instrumentation outlined in §Completion Loop.
-
-### Next Focus
-1. Implement key bindings (1-5, arrow keys) + accessible focus management for Likert buttons, per design spec.
-2. Add review/confirmation step and thank-you card with CTA (“Share with another friend”) and analytics event logging.
-3. Integrate `useAnnouncement` for question changes, validation errors, and submission success to satisfy WCAG guidelines.
-
-### Page Purpose: **COLLECT**
-
-**Core Intent:** Users (respondents) come here to:
-1. **COLLECT:** Provide anonymous feedback quickly and easily
-2. **TRUST:** Feel safe that responses are truly anonymous
-
-**Unique Experience:**  
-Minimal, trust-focused form with clear progress and strong privacy messaging—optimized for completion.
-
-**Emotional Journey:** Uncertainty → Trust → Focus → Satisfaction
-
-**Primary Goal:** Complete all questions and submit feedback
-
-**How This Differs From Other Pages:**
-- **vs. Ritual Hub:** Not sharing—responding
-- **vs. Dashboard:** Not managing—completing task
-- **vs. Landing:** Not discovering—contributing
-
-**Design Constraint (F-001 Survey System):**  
+**Design Constraint from F-001:**  
 Enhances existing anonymous survey feature—NO new functionality, pure UX improvement.
 
 **Feature Requirements (Direct Quotes from F-001):**  
@@ -73,6 +57,11 @@ Enhances existing anonymous survey feature—NO new functionality, pure UX impro
 > **FR-001.3:** "Each question uses a 1-5 Likert scale"  
 > **FR-001.4:** "Survey link is shareable and requires no login"  
 > **FR-001.5:** "Responses are collected anonymously"
+
+---
+
+## Design Philosophy
+
 
 ---
 

@@ -27,6 +27,28 @@ export function DashboardRightPanel() {
             </div>
 
             <div className={styles.section}>
+                <h3 className={styles.sectionTitle}>Survey Progress</h3>
+                <div className={styles.surveyProgressCard}>
+                    <div className={styles.progressHeader}>
+                        <span className={styles.progressTitle}>Active Survey</span>
+                        <span className={styles.progressBadge}>Active</span>
+                    </div>
+                    <div className={styles.responseCount}>
+                        <span className={styles.responseNumber}>2</span>
+                        <span className={styles.responseSeparator}>/</span>
+                        <span className={styles.responseTotal}>3</span>
+                    </div>
+                    <div className={styles.responseLabel}>responses collected</div>
+                    <div className={styles.progressBarContainer}>
+                        <div className={styles.progressBarFill} style={{ width: '66%' }}></div>
+                    </div>
+                    <div className={styles.progressHelp}>
+                        1 more response needed to unlock synthesis
+                    </div>
+                </div>
+            </div>
+
+            <div className={styles.section}>
                 <h3 className={styles.sectionTitle}>Active Quests</h3>
                 <div className={styles.questList}>
                     <div className={styles.questItem}>
