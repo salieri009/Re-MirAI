@@ -17,7 +17,7 @@ export function InteractiveHero() {
           Fast. Private. Otaku-friendly.
         </p>
         <p className={styles.description}>
-          Create your digital persona through AI-powered conversations and daily rituals.
+          Create your digital persona through AI-powered conversations and daily check-ins.
         </p>
         <Link href="/login" className={styles.ctaButton}>
           Get Started

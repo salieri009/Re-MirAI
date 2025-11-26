@@ -27,7 +27,7 @@ const steps: Step[] = [
     {
         number: 1,
         title: 'Launch the Link',
-        description: 'One tap. Your ritual survey is live.',
+        description: 'One tap. Your survey is live.',
         icon: '🔗',
     },
     {

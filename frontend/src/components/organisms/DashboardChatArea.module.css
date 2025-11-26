@@ -27,6 +27,12 @@
 }
 
 .actionCard {
+  position: relative;
+  border-radius: 12px;
+  transition: all var(--transition-base);
+}
+
+.actionCardLink {
   display: flex;
   align-items: flex-start;
   gap: 16px;
@@ -37,12 +43,44 @@
   text-decoration: none;
   transition: all var(--transition-base);
   cursor: pointer;
+  width: 100%;
+  height: 100%;
 }
 
-.actionCard:hover {
+.actionCard:hover .actionCardLink {
   background: rgba(243, 197, 255, 0.15);
   border-color: #f3c5ff;
   transform: translateY(-4px);
+}
+
+.actionCardPrimary {
+  border: 2px solid var(--color-primary);
+  box-shadow: 0 0 20px rgba(243, 197, 255, 0.3);
+  position: relative;
+}
+
+.actionCardPrimary::before {
+  content: '';
+  position: absolute;
+  inset: -2px;
+  border-radius: 12px;
+  padding: 2px;
+  background: linear-gradient(135deg, var(--color-primary), var(--color-accent));
+  -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+  -webkit-mask-composite: xor;
+  mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+  mask-composite: exclude;
+  opacity: 0.5;
+  animation: subtle-pulse 2s infinite;
+}
+
+@keyframes subtle-pulse {
+  0%, 100% {
+    opacity: 0.5;
+  }
+  50% {
+    opacity: 0.8;
+  }
 }
 
 .actionIcon {
@@ -176,4 +214,23 @@
 
 .sendButton:active {
   transform: translateY(0);
+}
+
+.viewFullLink {
+  margin-top: var(--space-md);
+  text-align: center;
+  padding: var(--space-md);
+}
+
+.viewFullLink a {
+  color: var(--color-primary);
+  text-decoration: none;
+  font-size: var(--font-size-sm);
+  font-weight: var(--font-weight-medium);
+  transition: all var(--transition-base);
+}
+
+.viewFullLink a:hover {
+  color: var(--color-primary-dark);
+  text-decoration: underline;
 }

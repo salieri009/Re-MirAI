@@ -15,7 +15,7 @@ interface Channel {
 
 const channels: Channel[] = [
     { id: 'dashboard', name: 'Overview', icon: '#', href: '/dashboard' },
-    { id: 'ritual', name: 'Daily Ritual', icon: '#', href: '/dashboard/ritual' },
+    { id: 'survey', name: 'Daily Check-in', icon: '#', href: '/dashboard/survey' },
     { id: 'synthesis', name: 'Persona Sync', icon: '#', href: '/dashboard/synthesize' },
     { id: 'settings', name: 'Settings', icon: '#', href: '/settings' },
 ];

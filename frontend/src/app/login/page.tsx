@@ -34,6 +34,32 @@ const TRUST_BADGES = [
   },
 ];
 
+// Error message dictionary for consistent, user-friendly errors
+const ERROR_MESSAGES: Record<string, string> = {
+  network: 'Connection issue. Check your internet and try again.',
+  oauth_cancelled: 'Sign in cancelled. Ready to try again?',
+  server: 'Our servers hiccuped. Give it another shot.',
+  timeout: 'Request timed out. Please try again.',
+  unknown: 'Something went wrong. Let\'s try that again.',
+};
+
+// Helper to extract error type from error object
+function getErrorType(error: any): string {
+  if (error?.code === 'NETWORK_ERROR' || error?.message?.includes('network')) {
+    return 'network';
+  }
+  if (error?.code === 'OAUTH_CANCELLED' || error?.message?.includes('cancelled')) {
+    return 'oauth_cancelled';
+  }
+  if (error?.status >= 500 || error?.message?.includes('server')) {
+    return 'server';
+  }
+  if (error?.code === 'TIMEOUT' || error?.message?.includes('timeout')) {
+    return 'timeout';
+  }
+  return 'unknown';
+}
+
 export default function LoginPage() {
   const router = useRouter();
   const { login } = useAuthStore();
@@ -42,6 +68,8 @@ export default function LoginPage() {
   const [error, setError] = useState<string | null>(null);
 
   const cardRef = useRef<HTMLDivElement>(null);
+  const backButtonRef = useRef<HTMLButtonElement>(null);
+  const successCheckRef = useRef<HTMLDivElement>(null);
 
   const reducedMotion = useReducedMotion();
   const announce = useAnnouncement();
@@ -93,15 +121,31 @@ export default function LoginPage() {
       setAuthState('success');
       announce('Login successful! Redirecting…', 'polite');
       trackEvent('auth.success', { provider: 'google' });
+      
+      // Success checkmark animation
+      if (!reducedMotion && successCheckRef.current) {
+        gsap.fromTo(
+          successCheckRef.current,
+          { scale: 0, opacity: 0 },
+          { 
+            scale: 1, 
+            opacity: 1, 
+            duration: 0.4,
+            ease: 'back.out(1.7)',
+          }
+        );
+      }
+      
       setTimeout(() => router.push('/dashboard'), 1200);
     } catch (err: any) {
       console.error('Login failed:', err);
-      const errorMsg = err.message || 'Login failed. Please try again.';
+      const errorType = getErrorType(err);
+      const errorMsg = ERROR_MESSAGES[errorType] || ERROR_MESSAGES.unknown;
       setError(errorMsg);
-      setStatusMessage('We hit a snag. Try again.');
+      setStatusMessage(errorMsg);
       setAuthState('error');
       announce(errorMsg, 'assertive');
-      trackEvent('auth.error', { provider: 'google', message: errorMsg });
+      trackEvent('auth.error', { provider: 'google', type: errorType, message: errorMsg });
     }
   };
 
@@ -157,14 +201,27 @@ export default function LoginPage() {
 
         <div className={styles.footer}>
           <Button
+            ref={backButtonRef}
             variant="ghost"
             size="sm"
             onClick={() => router.push('/')}
+            onMouseEnter={() => {
+              if (!reducedMotion && backButtonRef.current) {
+                trustInteractions.buttonGlow(backButtonRef.current);
+              }
+            }}
             aria-label="Return to home page"
           >
             ← Back to home
           </Button>
         </div>
+        
+        {/* Success checkmark overlay */}
+        {authState === 'success' && (
+          <div ref={successCheckRef} className={styles.successOverlay} aria-hidden="true">
+            <div className={styles.checkmark}>✓</div>
+          </div>
+        )}
       </div>
     </main>
   );

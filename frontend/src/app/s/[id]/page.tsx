@@ -33,10 +33,24 @@ export default function SurveyPage({ params }: { params: Promise<{ id: string }>
 
   return (
     <div className={styles.container}>
-      <PrivacyNotice />
       <div className={styles.intro}>
-        <h2>Helping a friend discover themselves</h2>
+        <h2>Help your friend see themselves through your eyes</h2>
+        <div className={styles.valueProps}>
+          <div className={styles.valueProp}>
+            <span className={styles.icon}>🔒</span>
+            <span>100% anonymous - your friend won't know who said what</span>
+          </div>
+          <div className={styles.valueProp}>
+            <span className={styles.icon}>⏱️</span>
+            <span>Takes 2 minutes - just {survey.questions.length} honest questions</span>
+          </div>
+          <div className={styles.valueProp}>
+            <span className={styles.icon}>✨</span>
+            <span>You'll help create their AI persona - a unique digital reflection</span>
+          </div>
+        </div>
       </div>
+      <PrivacyNotice />
       <SurveyWizard surveyId={id} questions={survey.questions} />
     </div>
   );

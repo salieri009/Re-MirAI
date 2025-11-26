@@ -54,7 +54,7 @@ export function DashboardRightPanel() {
                     <div className={styles.questItem}>
                         <div className={styles.questIcon}>#</div>
                         <div className={styles.questInfo}>
-                            <div className={styles.questName}>Daily Ritual</div>
+                            <div className={styles.questName}>Daily Check-in</div>
                             <div className={styles.questProgress}>2/3 completed</div>
                         </div>
                     </div>
@@ -72,7 +72,7 @@ export function DashboardRightPanel() {
                 <h3 className={styles.sectionTitle}>Quick Actions</h3>
                 <div className={styles.actionButtons}>
                     <button className={styles.actionButton}>
-                        Start Ritual
+                        Start Survey
                     </button>
                     <button className={styles.actionButton}>
                         Sync Persona
