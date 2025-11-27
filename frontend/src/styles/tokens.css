@@ -1,67 +1,45 @@
 :root {
-  /* Switch Palette - Main Colors */
-  --color-primary: #845ec2;
-  /* Purple */
-  --color-primary-dark: #6b4a9e;
-  /* Darker purple variant */
-  --color-primary-light: #a284d4;
-  /* Lighter purple variant */
+  /* === CORE 3-COLOR PALETTE (HSL) === */
+  /* Primary: Amethyst Purple #845EC2 */
+  --hue-primary: 263;
+  --sat-primary: 48%;
+  --lig-primary: 56%;
 
-  --color-secondary: #00c9a7;
-  /* Teal/Turquoise */
-  --color-secondary-dark: #00a285;
-  /* Darker teal */
-  --color-secondary-light: #33d6bb;
-  /* Lighter teal */
+  /* Accent: Mint Green #00C9A7 */
+  --hue-accent: 170;
+  --sat-accent: 100%;
+  --lig-accent: 39%;
 
-  --color-accent: #f3c5ff;
-  /* Light pink/lavender */
+  /* Highlight: Light Lavender #C197FF */
+  --hue-highlight: 264;
+  --sat-highlight: 100%;
+  --lig-highlight: 80%;
 
-  --color-tertiary: #fefedf;
-  /* Cream/Beige */
+  /* === SEMANTIC COLORS === */
+  --color-primary: hsl(var(--hue-primary), var(--sat-primary), var(--lig-primary));
+  --color-primary-dark: hsl(var(--hue-primary), var(--sat-primary), 40%);
+  --color-primary-light: hsl(var(--hue-primary), var(--sat-primary), 70%);
 
-  /* Background & Surface Colors - Purple Primary */
-  --color-bg-primary: #845ec2;
-  /* Purple background */
-  --color-bg-secondary: #6b4a9e;
-  /* Darker purple for contrast */
-  --color-bg-tertiary: #a284d4;
-  /* Lighter purple */
+  --color-accent: hsl(var(--hue-accent), var(--sat-accent), var(--lig-accent));
+  --color-accent-dark: hsl(var(--hue-accent), var(--sat-accent), 30%);
+  --color-accent-light: hsl(var(--hue-accent), var(--sat-accent), 50%);
 
-  --color-surface: #f3c5ff;
-  /* Light pink for cards */
-  --color-surface-elevated: #fefedf;
-  /* Cream for elevated surfaces */
-  --color-surface-alt: #00c9a7;
-  /* Teal for alternate surfaces */
+  --color-highlight: hsl(var(--hue-highlight), var(--sat-highlight), var(--lig-highlight));
 
-  /* Text Colors */
-  --color-text: #fefedf;
-  /* Cream text for purple background */
-  --color-text-secondary: #f3c5ff;
-  /* Light pink for secondary text */
-  --color-text-tertiary: #00c9a7;
-  /* Teal for tertiary text */
-  --color-text-inverse: #845ec2;
-  /* Purple text on light backgrounds */
+  /* === BACKGROUNDS & SURFACES === */
+  /* Dark Mode Default */
+  --color-bg-dark: #0A0112;
+  --color-surface: hsla(var(--hue-primary), 30%, 20%, 0.4);
+  --color-surface-elevated: hsla(var(--hue-primary), 30%, 30%, 0.6);
+  --color-border: hsla(var(--hue-highlight), 100%, 80%, 0.2);
 
-  /* Border Colors */
-  --color-border: #a284d4;
-  /* Light purple for borders */
-  --color-border-dark: #f3c5ff;
-  /* Light pink for emphasis borders */
+  /* === TEXT COLORS === */
+  --color-text-primary: #f8f6f7;
+  --color-text-secondary: #c197ff;
+  --color-text-muted: rgba(248, 246, 247, 0.6);
+  --color-text-inverse: #0A0112;
 
-  /* Status Colors - Using palette colors only */
-  --color-success: #00c9a7;
-  /* Teal for success */
-  --color-warning: #fefedf;
-  /* Cream for warning */
-  --color-error: #f3c5ff;
-  /* Light pink for error */
-  --color-info: #00c9a7;
-  /* Teal for info */
-
-  /* Spacing */
+  /* === SPACING (4px Grid) === */
   --space-xs: 0.25rem;
   /* 4px */
   --space-sm: 0.5rem;
@@ -77,81 +55,29 @@
   --space-3xl: 4rem;
   /* 64px */
 
-  /* Typography */
-  --font-family-base: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue', sans-serif;
-  --font-family-display: 'Inter', var(--font-family-base);
+  /* === TYPOGRAPHY === */
+  --font-display: 'Space Grotesk', sans-serif;
+  --font-sans: 'Plus Jakarta Sans', sans-serif;
 
-  --font-size-xs: 0.75rem;
-  /* 12px */
-  --font-size-sm: 0.875rem;
-  /* 14px */
-  --font-size-base: 1rem;
-  /* 16px */
-  --font-size-lg: 1.125rem;
-  /* 18px */
-  --font-size-xl: 1.25rem;
-  /* 20px */
-  --font-size-2xl: 1.5rem;
-  /* 24px */
-  --font-size-3xl: 2rem;
-  /* 32px */
-  --font-size-4xl: 2.25rem;
-  /* 36px */
-  --font-size-5xl: 3rem;
-  /* 48px */
+  /* === SHADOWS === */
+  --shadow-glow-primary: 0 0 32px hsla(var(--hue-primary), 100%, 50%, 0.3);
+  --shadow-glow-accent: 0 0 28px hsla(var(--hue-accent), 100%, 50%, 0.3);
 
-  --font-weight-normal: 400;
-  --font-weight-medium: 500;
-  --font-weight-semibold: 600;
-  --font-weight-bold: 700;
-
-  --line-height-tight: 1.25;
-  --line-height-normal: 1.5;
-  --line-height-relaxed: 1.75;
-
-  /* Border Radius */
-  --radius-sm: 0.25rem;
-  /* 4px */
-  --radius-md: 0.5rem;
-  /* 8px */
-  --radius-lg: 0.75rem;
-  /* 12px */
-  --radius-xl: 1rem;
-  /* 16px */
-  --radius-full: 9999px;
-
-  /* Shadows */
-  --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.1);
-  --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.15);
-  --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.2);
-  --shadow-xl: 0 20px 25px -5px rgba(0, 0, 0, 0.25);
-  --shadow-glow-primary: 0 0 32px rgba(243, 197, 255, 0.4);
-  --shadow-glow-secondary: 0 0 28px rgba(0, 201, 167, 0.4);
-
-  /* Transitions */
-  --transition-fast: 150ms ease-in-out;
-  --transition-base: 200ms ease-in-out;
-  --transition-slow: 300ms ease-in-out;
-
-  /* Z-index */
+  /* === Z-INDEX === */
   --z-base: 0;
   --z-dropdown: 1000;
   --z-sticky: 1020;
   --z-fixed: 1030;
   --z-modal-backdrop: 1040;
   --z-modal: 1050;
-  --z-popover: 1060;
   --z-tooltip: 1070;
-  --z-primary: 10;
-  --z-overlay: 20;
 }
 
-/* Dark mode support */
-@media (prefers-color-scheme: dark) {
+/* Dark mode is default, but we support light mode override if needed (though ver2 is dark-first) */
+@media (prefers-color-scheme: light) {
+
+  /* Keeping minimal light mode support for now, but ver2 is primarily dark */
   :root {
-    --color-bg-primary: #6b4a9e;
-    --color-bg-secondary: #845ec2;
-    --color-text: #fefedf;
-    --color-text-secondary: #f3c5ff;
+    /* Invert logic could go here if requested */
   }
 }
