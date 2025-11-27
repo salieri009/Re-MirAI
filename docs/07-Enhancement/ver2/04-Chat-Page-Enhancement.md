@@ -1,52 +1,54 @@
 # Chat Page Enhancement Plan (ver2)
 
-**Version:** 2.0.0
+**Version:** 2.1.0
 **Last Updated:** 2025-11-27
-**Status:** 📝 Planning (Design Phase)
-**Route:** `/chat/[id]`
+**Status:** 📝 Planning (Design Phase - Updated Layout)
+**Route:** `/chat/:id`
 **Component:** `ChatInterface` (Page level)
-**Design Systems:** Tailwind Custom Config (Plus Jakarta Sans, Custom Colors)
+**Design Systems:** Tailwind Custom Config (Plus Jakarta Sans, Unified Color Palette)
 
 > [!IMPORTANT]
-> **Version 2 Design:** This document outlines the **Version 2** enhancement plan. It supersedes previous versions and uses a specific HTML reference implementation as the source of truth for visual design and structure.
+> **Version 2.1 Update:** This document now reflects a **three-column layout** with sidebar navigation, enhancing the original two-column design with improved navigation and multi-persona support.
 
 ---
 
 ## 🔴 UX/UI Expert Review (Design Rationale)
 
-### Critical Issues Addressed by ver2 Design
+### Critical Issues Addressed by ver2.1 Design
 
-#### 1. Emotional Connection & Immersion
-**Previous State:** Standard chat interface, functional but impersonal.
-**ver2 Solution:**
-- **Persona Presence:** The "Right Sidebar" prominently displays the Persona's avatar, status ("Feeling thoughtful..."), and a "Bond Level" meter. This constantly reminds the user they are interacting with a unique entity, not just a text bot.
-- **Visual Identity:** Uses a distinct color palette (`primary-accent` Purple vs `user-accent` Mint Green) to visually separate the two participants.
+#### 1. Navigation & Context
+**Previous State:** Two-column layout (Chat + Persona Sidebar) lacked global navigation.
+**ver2.1 Solution:**
+- **Left Sidebar:** Dedicated navigation panel with user profile, menu (Dashboard, My Personas, Discover, Chat), and settings.
+- **Always Accessible:** Users can switch contexts or access other features without leaving the chat.
 
-#### 2. Conversation Flow & Engagement
-**Previous State:** Blank screen anxiety (what do I say?).
-**ver2 Solution:**
-- **Suggested Starters:** A carousel of conversation prompts ("Ask me about my dreams," "Let's talk about anime") reduces friction and encourages deeper engagement.
-- **Memory Highlights:** Explicitly showing what the AI remembers ("Remembers you like lo-fi music") builds trust and reinforces the "long-term memory" feature.
+#### 2. Multi-Persona Management
+**Previous State:** Unclear how to switch between different personas.
+**ver2.1 Solution:**
+- **"My Personas" Nav Item:** Quick access to persona list.
+- **Active State Indicator:** Current "Chat" menu item highlighted with accent color + filled icon.
 
-#### 3. Usability & Accessibility
-**Previous State:** Basic input fields.
-**ver2 Solution:**
-- **Rich Input:** Dedicated buttons for emojis and attachments within the input bar.
-- **Clear Typography:** `Plus Jakarta Sans` offers excellent readability for long text blocks.
+#### 3. Visual Identity & Warmth
+**Previous State:** Generic messenger aesthetic.
+**ver2.1 Solution:**
+- **Persona Avatar Prominence:** Large avatar in header and sidebar creates personal connection.
+- **Trait Tags:** Sidebar displays persona essence traits as colorful pills.
+- **Light/Dark Mode Support:** Explicit theme switching capability.
 
 ---
 
 ## Current Implementation Status
 
 ### ✅ Design Ready (Reference Implementation)
-- **HTML Structure:** Complete layout including Sidebar, Chat Area, and Input.
-- **Styling:** Tailwind CSS configuration defined (Colors, Fonts, Animations).
-- **Assets:** Avatar images and Material Symbols identified.
+- **HTML Structure:** Complete three-column layout provided.
+- **Styling:** Tailwind CSS configuration with sidebar navigation.
+- **Typing Indicator:** Animated dots for AI response feedback.
 
 ### ⏳ Pending Implementation
-- **React Component Migration:** Converting the static HTML to Next.js/React components.
-- **Real-time Logic:** Integrating with the backend WebSocket/API for message streaming.
-- **State Management:** Handling the "Bond Level" progress and "Memory Highlights" dynamic data.
+- **React Component Migration:** Converting static HTML to Next.js/React components.
+- **WebSocket Integration:** Real-time message streaming.
+- **Persona Sidebar Data:** Dynamic loading of persona essence traits.
+- **Color Unification:** Adapting provided colors to Re:MirAI's unified palette.
 
 ---
 
@@ -55,35 +57,831 @@
 This design adheres to key feature requirements:
 
 ### ✅ F-003: Chat Interface
-- **Core Chat:** Supports text input, history display, and typing indicators.
-- **Rich Interactions:** Includes "Suggested Starters" to guide the conversation.
+- **Core Chat:** Message history, input, send button.
+- **Typing Indicator:** Visual feedback when AI is responding.
+- **Persona Context:** Sidebar displays persona details.
 
 ### ✅ F-002: Persona Synthesis
-- **Bond System:** Visualizes the relationship depth via the "Bond Level" meter.
-- **Memory:** Displays "Memory Highlights" to show the persona's evolving knowledge base.
+- **Bond System:** Sidebar shows persona essence (traits).
+- **Memory:** Foundation for displaying "Memory Highlights" (to be added).
 
 ---
 
-## Design Philosophy (ver2)
+## Design Philosophy (ver2.1)
 
-**Core Concept:** **"The Inner Sanctum"** — A private, intimate space for deep conversation.
+**Core Concept:** **"The Sacred Conversation"** — A private, intimate space for deep dialogue with your persona, enhanced by contextual navigation.
 
 **Visual Identity:**
-- **Palette:** `background-dark` (#0C0A09) for a deep, distraction-free environment.
-- **Accents:** `primary-accent` (#845EC2) for the AI (Mystical/Royal), `user-accent` (#00c9a7) for the User (Fresh/Alive).
-- **Typography:** `Plus Jakarta Sans` for a modern, friendly, and highly legible chat experience.
+- **Palette (Unified):**
+  - `primary`: #845EC2 (Amethyst Purple) - Main brand color, active states
+  - `accent`: #00c9a7 (Mint Green) - User message bubbles, highlights
+  - `highlight`: #c197ff (Light Lavender) - Trait tags, accents
+  - `background-dark`: #0A0112 (Deep Dark) - Dark mode base
+- **Typography:** `Plus Jakarta Sans` for modern, friendly readability.
+- **Layout:** Three-column (Sidebar 256px, Chat flex-1 max-w-4xl, Persona Sidebar 320px).
 
 ---
 
 ## Executive Summary
 
-The Version 2 Chat Page Enhancement transforms the messaging interface into a relationship-building tool. By integrating "Bond Level" metrics, "Memory Highlights," and "Suggested Starters" directly into the UI, the design encourages users to form deeper connections with their AI personas. The aesthetic shifts to a "Sanctum" theme—dark, elegant, and focused—ensuring that the conversation remains the center of attention while peripheral details reinforce the persona's presence.
+The Chat Page is the heart of the Re:MirAI experience—where relationships with AI personas deepen. This ver2.1 design:
+- **Adds Navigation:** Left sidebar provides global context and easy switching between features.
+- **Maintains Intimacy:** Central chat area remains uncluttered and focused.
+- **Enhances Context:** Right sidebar displays persona essence, creating a sense of "presence."
+
+By unifying colors with the Landing Page palette and adding structured navigation, this page becomes both functional and emotionally engaging.
 
 ---
 
-## Reference Implementation (Target Design)
+## Reference Implementation (Target Design - Color Adjusted)
 
-The following HTML structure is the **definitive source of truth** for the ver2 visual design.
+The following HTML structure is the **definitive source of truth** for the ver2.1 visual design, with colors adjusted to match Re:MirAI's unified palette.
+
+```html
+<!DOCTYPE html>
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<title>Re:MirAI - Chat with Your Persona</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols_Outlined" rel="stylesheet"/>
+<script>
+  tailwind.config = {
+    darkMode: "class",
+    theme: {
+      extend: {
+        colors: {
+          "primary": "#845EC2",         // Unified Purple
+          "accent": "#00c9a7",           // Unified Mint Green
+          "highlight": "#c197ff",        // Light Lavender
+          "dark-accent": "#005b44",      // Dark Teal
+          "background-light": "#f8f6f7",
+          "background-dark": "#0A0112",
+          "neutral-gray": "#F3F4F6",
+          "medium-gray": "#6B7280",
+        },
+        fontFamily: {
+          "display": ["Plus Jakarta Sans", "sans-serif"]
+        },
+      },
+    },
+  }
+</script>
+</head>
+<body class="font-display bg-background-light dark:bg-background-dark">
+<!-- Three-Column Layout: Nav Sidebar (Left) + Chat (Center) + Persona Sidebar (Right) -->
+<!-- (Full HTML structure similar to provided, with unified colors) -->
+</body></html>
+```
+
+---
+
+## Purpose-Driven UX Design
+
+### Detailed UX/UI Analysis (ver2.1)
+
+### Strengths
+- **Contextual Navigation:** Left sidebar keeps users oriented without disrupting conversation flow.
+- **Persistent Persona Presence:** Right sidebar's trait tags and avatar reinforce "who" you're chatting with.
+- **Clean Chat Area:** Centered, max-width design keeps messages readable and focused.
+
+### Enhancement Goals
+- **Conversation History:** Add persistent chat history in left sidebar (list of previous conversations).
+- **Mobile Adaptation:** Collapse sidebars into drawer/modal on mobile, show chat-only by default.
+- **Voice Input:** Microphone button in input area for voice-to-text.
+
+---
+
+## Implementation Plan
+
+### 1. Component Breakdown
+- `atoms/NavItem.tsx`: Single navigation menu item
+- `molecules/MessageBubble.tsx`: Reused from previous ver2 design
+- `molecules/TypingIndicator.tsx`: Animated dots
+- `molecules/TraitPill.tsx`: Persona essence trait tag
+- `organisms/NavigationSidebar.tsx`: Left sidebar (user profile + nav menu)
+- `organisms/ChatHeader.tsx`: Persona name + status bar
+- `organisms/ChatLog.tsx`: Scrollable message history
+- `organisms/ChatInput.tsx`: Input field + send button
+- `organisms/PersonaSidebar.tsx`: Right sidebar (persona details)
+- `pages/ChatPage.tsx`: Three-column layout orchestrator
+
+### 2. State Management
+
+```typescript
+interface ChatState {
+  personaId: string;
+  messages: Message[];
+  isTyping: boolean;
+  inputValue: string;
+}
+
+interface Message {
+  id: string;
+  sender: 'user' | 'ai';
+  content: string;
+  timestamp: Date;
+}
+
+const [chatState, setChatState] = useState<ChatState>({
+  personaId: params.id,
+  messages: [],
+  isTyping: false,
+  inputValue: '',
+});
+
+const sendMessage = async (content: string) => {
+  // Optimistic UI update
+  const userMessage = { id: genId(), sender: 'user', content, timestamp: new Date() };
+  setChatState(prev => ({ ...prev, messages: [...prev.messages, userMessage], isTyping: true }));
+  
+  // API call
+  const aiResponse = await chatApi.send(personaId, content);
+  const aiMessage = { id: aiResponse.id, sender: 'ai', content: aiResponse.content, timestamp: new Date() };
+  setChatState(prev => ({ ...prev, messages: [...prev.messages, aiMessage], isTyping: false }));
+};
+```
+
+### 3. Responsive Layout
+
+```typescript
+// Mobile: Stack vertically, use drawers for sidebars
+<div className="flex h-screen w-full">
+  {/* Left Sidebar - Drawer on mobile */}
+  <aside className="hidden md:flex w-64 shrink-0">
+    <NavigationSidebar />
+  </aside>
+  
+  {/* Main Chat - Always visible */}
+  <main className="flex-1 flex justify-center">
+    <div className="flex flex-col max-w-4xl w-full">
+      <ChatHeader persona={persona} onMenuClick={() => toggleNav()} />
+      <ChatLog messages={messages} />
+      <ChatInput onSend={sendMessage} />
+    </div>
+  </main>
+  
+  {/* Right Sidebar - Drawer on mobile */}
+  <aside className="hidden lg:flex w-80 shrink-0">
+    <PersonaSidebar persona={persona} />
+  </aside>
+</div>
+```
+
+### 4. Asset Integration
+- **Icons:** Material Symbols (`dashboard`, `groups`, `explore`, `chat`, `settings`, `help_center`, `send`, `mic`, `more_vert`)
+- **Avatars:** Dynamic persona images + user profile image.
+
+---
+
+## Frontend Refactoring Plan
+
+### Code Reusability
+
+**Shared Components:**
+- `NavigationSidebar.tsx` can be reused across:
+  - Dashboard
+  - Persona Room
+  - Survey Hub
+  (Create unified `layouts/AppShell.tsx` with navigation)
+
+- `MessageBubble.tsx` pattern applies to:
+  - Survey response previews (Survey Hub)
+  - Activity feed items (Dashboard)
+
+- `TraitPill.tsx` used in:
+  - Persona Room (key traits)
+  - Survey templates (tags)
+  - Quest categories
+
+**Unified Layout System:**
+Create `layouts/AppShell.tsx`:
+```typescript
+interface AppShellProps {
+  children: ReactNode;
+  showNav?: boolean;
+  showSidebar?: boolean;
+  sidebarContent?: ReactNode;
+}
+
+export const AppShell = ({ children, showNav = true, showSidebar = false, sidebarContent }) => (
+  <div className="flex h-screen w-full">
+    {showNav && <NavigationSidebar />}
+    <main className="flex-1">{children}</main>
+    {showSidebar && <aside className="w-80">{sidebarContent}</aside>}
+  </div>
+);
+```
+
+### UX/UI Experience Improvements
+
+**Real-Time Feedback:**
+- Typing indicator appears <1s after user sends message.
+- Message send animation (fade-in + slide-up).
+- Scroll to bottom when new message arrives.
+
+**Accessibility:**
+- Live region announces new AI messages: `<div aria-live="polite" aria-atomic="true">`.
+- Keyboard shortcuts:
+  - Ctrl+/ : Focus input
+  - Esc : Clear input
+  - Ctrl+↑/↓ : Navigate message history
+- High contrast mode: ensure message bubbles have sufficient contrast.
+
+**Error Handling:**
+- Message send failure: Show retry button inline with failed message.
+- Connection lost: Banner at top: "Reconnecting..." with manual retry option.
+- API errors: "The persona is resting. Try again in a moment." (calming, not alarming).
+
+### Organic Connections
+
+**From Persona Room:**
+- "Chat with Your Persona" button → `/chat/:id`.
+
+**To Navigation Sidebar:**
+- "Dashboard" → `/dashboard`
+- "My Personas" → `/personas` or persona list modal
+- "Discover" → `/discover` (explore other personas)
+- "Settings" → `/settings`
+
+**Shared State:**
+- Chat history persisted in database, loaded via TanStack Query.
+- Persona data cached from Persona Room for instant sidebar population.
+- User profile synced across all pages.
+
+---
+
+## Color Palette Unification
+
+### Original HTML Colors → Unified Palette
+
+| Element | Original Color | Unified Color | Variable Name |
+|---------|----------------|----------------|---------------|
+| Primary (Active Nav) | #D946EF (Pink-Magenta) | #845EC2 (Purple) | `primary` |
+| Accent (Trait Pills) | #D946EF | #c197ff (Light Lavender) | `highlight` |
+| User Message Bubble | (Neutral Gray) | #00c9a7 (Mint Green) | `accent` |
+| AI Message Border | #D946EF/20 | #845EC2/20 | `primary` with opacity |
+| Send Button | #D946EF | #845EC2 (Purple) | `primary` |
+
+**Gradient Adjustments:**
+- Active nav item background: `bg-primary/10` (light purple tint).
+- Trait pill: `bg-highlight/20 text-highlight` (light lavender).
+- Send button hover: `hover:bg-primary/90`.
+
+This ensures the chat page visually integrates with Landing, Login, Survey, Summoning, and Persona Room pages.
+
+---
+
+## Advanced Features (Future Enhancements)
+
+### Memory Highlights (F-002 Integration)
+**Right Sidebar Addition:**
+```html
+<div class="mt-6">
+  <h3 class="text-sm font-semibold text-gray-400 uppercase">Memory Highlights</h3>
+  <ul class="mt-3 space-y-2">
+    <li class="flex items-start gap-2">
+      <span class="material-symbols-outlined text-accent text-sm">check_circle</span>
+      <p class="text-sm">You like <strong>lo-fi music</strong>.</p>
+    </li>
+    <!-- More memories -->
+  </ul>
+</div>
+```
+
+### Bond Level Indicator (F-006 Gamification)
+**Header Addition:**
+```html
+<div class="flex items-center gap-2">
+  <span class="text-sm text-gray-400">Bond Level 3</span>
+  <div class="h-2 w-20 bg-gray-200 dark:bg-gray-700 rounded-full overflow-hidden">
+    <div class="h-full bg-gradient-to-r from-accent to-primary w-[65%]"></div>
+  </div>
+</div>
+```
+
+### Suggested Starters (from previous ver2)
+**Below Chat Log (when empty):**
+Horizontal scrolling carousel of conversation starters.
+
+---
+
+## Animation Specifications
+
+**Emotional Journey**: Curiosity → Engagement → Connection
+
+**Animation Philosophy**: Create sense of presence and responsiveness. Build emotional bond through natural, human-like timing and feedback.
+
+### 1. Typing Indicator Animation
+
+**File**: `frontend/src/components/molecules/TypingIndicator.tsx`  
+**Micro-interaction**: `connectionInteractions.typingIndicator()`
+
+**Purpose**: Create AI "presence" during response generation
+
+**Implementation**:
+```typescript
+// Three dots bounce sequentially
+gsap.to(dots, {
+  y: -10,
+  duration: 0.6,
+  stagger: 0.2,    // Each dot starts 200ms after previous
+  repeat: -1,
+  yoyo: true,
+  ease: 'sine.inOut'
+});
+```
+
+**Visual Behavior**:
+```
+Dot 1: ●       ●  ●  ●  ●       ●
+Dot 2: ●  ●       ●  ●  ●       ●
+Dot 3: ●  ●  ●       ●  ●  ●    ●
+Time:  0  200  400  600  800  1000ms
+```
+
+**Timing**: Continuous during AI response (NFR-003.1: < 3 seconds)
+
+**Emotional Effect**: **Anticipation → Engagement**
+- Staggered motion mimics human "thinking"
+- Predictable rhythm reduces anxiety
+- Visible activity confirms system is working
+
+**Accessibility**: Announced via `aria-live="polite"` region
+
+---
+
+### 2. Message Entrance Animation
+
+**File**: `micro-interactions.ts` - `connectionInteractions.messageEnter()`
+
+**Trigger**: On new message arrival (user or AI)
+
+**Implementation**:
+```typescript
+const direction = sender === 'user' ? 20 : -20;
+
+gsap.fromTo(message,
+  {
+    opacity: 0,
+    x: direction,  // User from right (+), AI from left (-)
+  },
+  {
+    opacity: 1,
+    x: 0,
+    duration: 0.3,
+    ease: 'power2.out'
+  }
+);
+```
+
+**Visual Direction**:
+```
+User Messages:
+   [Message] ───→ [Final Position]
+       +20px          0px
+
+AI Messages:
+←─── [Message]    [Final Position]
+     -20px               0px
+```
+
+**Purpose**: Reinforce conversation directionality
+
+**Performance**: GPU-accelerated (transform only), 60fps
+
+---
+
+### 3. Bond Level Up Animation
+
+**File**: `micro-interactions.ts` - `connectionInteractions.bondLevelUp()`
+
+**Trigger**: When bond level increases (e.g., every 10 messages)
+
+**Implementation**:
+```typescript
+const tl = gsap.timeline();
+
+tl.to(badge, {
+  scale: 1.3,
+  rotation: 10,
+  filter: 'brightness(1.5)',
+  duration: 0.3,
+  ease: 'back.out(1.7)'
+})
+.to(badge, {
+  scale: 1,
+  rotation: 0,
+  filter: 'brightness(1)',
+  duration: 0.3,
+  ease: 'back.out(1.7)',
+  onComplete: () => {
+    // Trigger confetti if available
+    confettiCallback?.();
+  }
+});
+```
+
+**Visual Sequence**:
+1. **0.0s**: Badge swells to 1.3x + tilts 10°
+2. **0.3s**: Returns to normal with bounce
+3. **0.6s**: Confetti burst (optional)
+
+**Emotional Effect**: **Connection → Celebration**
+- Elastic bounce creates delight
+- Rotation adds playfulness
+- Brief (0.6s) so doesn't interrupt chat
+
+**Frequency**: Every 10 messages (too frequent = annoying)
+
+---
+
+### 4. Heart Reaction Burst
+
+**File**: `micro-interactions.ts` - `connectionInteractions.heartReaction()`
+
+**Trigger**: When user reacts to AI message with ❤️
+
+**Implementation**:
+```typescript
+gsap.fromTo(element,
+  {
+    scale: 0,
+    y: 0,
+    opacity: 1,
+  },
+  {
+    scale: 1.5,
+    y: -40,
+    opacity: 0,
+    duration: 0.8,
+    ease: 'power2.out'
+  }
+);
+```
+
+**Visual Effect**:
+```
+Start:  ❤️ (scale 0, y=0)
+         ↑
+Mid:    ❤️ (scale 1.5, y=-20)
+         ↑
+End:    ❤️ (scale 1.5, y=-40, opacity 0)
+       (disappears)
+```
+
+**Purpose**: Instant gratification for user action
+
+**Accessibility**: Announced as "Reaction ❤️ sent"
+
+---
+
+### 5. Topic Suggestion Glow
+
+**File**: `micro-interactions.ts` - `connectionInteractions.topicGlow()`
+
+**Current Implementation** (`chat/[id]/page.tsx` lines 189-197):
+```typescript
+useEffect(() => {
+  if (!reducedMotion && topicSuggestionRef.current && !isSending && messages.length > 0) {
+    const timeout = setTimeout(() => {
+      connectionInteractions.topicGlow(topicSuggestionRef.current!);
+    }, 5000); // After 5 seconds of inactivity
+    
+    return () => clearTimeout(timeout);
+  }
+}, [reducedMotion, isSending, messages.length]);
+```
+
+**Effect**:
+```typescript
+gsap.to(element, {
+  boxShadow: '0 0 32px rgba(132, 94, 194, 0.4)',
+  scale: 1.02,
+  duration: 0.4,
+  yoyo: true,
+  repeat: 1,  // Glow twice then stop
+  ease: 'sine.inOut'
+});
+```
+
+**Trigger Logic**:
+- **Wait 5s** of user inactivity
+- **Glow** topic suggestions (proactive guidance)
+- **Reset** on next message sent
+
+**Emotional Effect**: **Idle → Re-engagement**
+- Gentle nudge (not pushy)
+- Only after pause (respects conversation flow)
+
+---
+
+### 6. Status Dot Pulse (Online/Typing)
+
+**Location**: Chat header (persona status indicator)
+
+**Implementation**:
+```typescript
+// Typing state (pulsing red/orange)
+const typingDot = (dot: HTMLElement) => {
+  gsap.to(dot, {
+    scale: 1.3,
+    opacity: 0.6,
+    duration: 0.8,
+    repeat: -1,
+    yoyo: true,
+    ease: 'sine.inOut'
+  });
+};
+
+// Online state (solid green, no animation)
+const onlineDot = (dot: HTMLElement) => {
+  gsap.killTweensOf(dot);
+  gsap.set(dot, { scale: 1, opacity: 1 });
+};
+```
+
+**Visual States**:
+| State | Color | Animation |
+|-------|-------|-----------|
+| Online | Green | None (solid) |
+| Typing | Orange | Pulse (0.8s cycle) |
+| Offline | Gray | None (solid) |
+
+**Purpose**: Ambient awareness of persona state
+
+---
+
+### 7. Message Send Button State Transition
+
+**States**: Default → Hover → Active → Disabled
+
+**Implementation**:
+```typescript
+// Hover (when input has text)
+gsap.to(sendButton, {
+  backgroundColor: '#00a285', // Darker teal
+  scale: 1.05,
+  duration: 0.15,
+  ease: 'power2.out'
+});
+
+// Active (on click)
+gsap.to(sendButton, {
+  scale: 0.95,
+  duration: 0.1,
+  ease: 'power2.inOut',
+  onComplete: () => {
+    // Send message
+    // Then spring back
+    gsap.to(sendButton, { scale: 1, duration: 0.2 });
+  }
+});
+
+// Disabled (while sending)
+gsap.to(sendButton, {
+  opacity: 0.5,
+  filter: 'grayscale(50%)',
+  duration: 0.2
+});
+```
+
+**Micro-feedback**: Confirms action at every step
+
+---
+
+### 8. Scroll-to-Bottom Auto
+
+**Trigger**: On new message (from either party)
+
+**Implementation** (RECOMMENDED, not in current code):
+```typescript
+const scrollToBottom = () => {
+  const messagesContainer = messagesRef.current;
+  
+  gsap.to(messagesContainer, {
+    scrollTop: messagesContainer.scrollHeight,
+    duration: 0.4,
+    ease: 'power2.out'
+  });
+};
+
+useEffect(() => {
+  if (messages.length > 0) {
+    scrollToBottom();
+  }
+}, [messages]);
+```
+
+**Smart Behavior**:
+- **Auto-scroll** if user is at bottom (within 100px)
+- **Don't scroll** if user is reading history
+- **Smooth** transition (0.4s) vs instant jump
+
+---
+
+### 9. Three-Column Layout Transitions
+
+**For Mobile**: Sidebars collapse into drawers
+
+**Navigation Sidebar** (Left):
+```typescript
+// Slide in from left
+gsap.from(navSidebar, {
+  x: -256, // Full width of sidebar
+  duration: 0.3,
+  ease: 'power2.out'
+});
+
+// Backdrop fade
+gsap.from(backdrop, {
+  opacity: 0,
+  duration: 0.3
+});
+```
+
+**Persona Sidebar** (Right):
+```typescript
+// Slide in from right
+gsap.from(personaSidebar, {
+  x: 320, // Full width of sidebar
+  duration: 0.3,
+  ease: 'power2.out'
+});
+```
+
+**Mobile Interaction**:
+1. User taps hamburger menu → Nav slides in (left)
+2. User taps persona avatar → Sidebar slides in (right)
+3. User taps backdrop → Active sidebar slides out
+
+---
+
+### 10. Accessibility & Performance
+
+**Reduced Motion**:
+```typescript
+const reducedMotion = useReducedMotion();
+
+if (reducedMotion) {
+  // Message entrance: instant (no slide)
+  // Typing indicator: static 3 dots
+  // Bond level: number update only (no animation)
+  // Topic glow: border highlight (no scale/shadow)
+}
+```
+
+**Screen Reader Announcements** (`chat/[id]/page.tsx`):
+```typescript
+// Line 171: On reaction
+announce(`Reaction ${emoji} sent`, 'polite');
+
+// Line 204: On new AI message
+announce(`New message from ${persona?.name || 'your persona'}`, 'polite');
+```
+
+**Performance Budget**:
+- Max concurrent animations: 5 (typing + entrance + 3 reactions)
+- Memory: < 5MB (no canvas needed)
+- FPS: Locked to 60 (GSAP ticker)
+
+---
+
+## Animation Timeline (Conversation Flow)
+
+```
+[PAGE LOAD]
+  │
+  ├─ Header/sidebar fade in (0.3s)
+  └─ Suggested starters slide up (0.4s)
+
+[USER TYPES MESSAGE]
+  │
+  └─ Send button: default → hover state (0.15s)
+
+[USER SENDS]
+  │
+  ├─ Message entrance (user, +20px → 0)
+  ├─ Auto-scroll to bottom (0.4s)
+  └─ AI starts typing...
+
+[AI TYPING]
+  │
+  ├─ Status dot: online → typing pulse
+  ├─ Typing indicator appears (3 dots bounce)
+  └─ Duration: 1-3s (NFR-003.1)
+
+[AI RESPONDS]
+  │
+  ├─ Message entrance (AI, -20px → 0)
+  ├─ Auto-scroll to bottom (0.4s)
+  ├─ Status dot: typing → online
+  └─ Typing indicator fades out
+
+[BOND LEVEL UP] (every 10 messages)
+  │
+  ├─ Badge scale + rotate (0.3s)
+  ├─ Spring back (0.3s)
+  └─ Optional confetti
+
+[USER IDLE 5s]
+  │
+  └─ Topic suggestions glow (0.4s × 2)
+```
+
+**Total typical exchange**: ~5 seconds (send → receive)
+
+---
+
+## Chat-Specific Animation Patterns
+
+### Pattern 1: Staggered Message History Load
+
+**On initial page load with existing messages**:
+```typescript
+gsap.from('.message', {
+  opacity: 0,
+  y: 10,
+  duration: 0.3,
+  stagger: 0.05, // 50ms between each message
+  ease: 'power2.out'
+});
+```
+
+**Visual**: Messages "unfold" top-to-bottom
+
+### Pattern 2: Reaction Emoji Pop
+
+**When user clicks reaction button**:
+```typescript
+gsap.fromTo(emoji,
+  { scale: 0 },
+  { 
+    scale: 1.2,
+    duration: 0.2,
+    ease: 'back.out(2)',
+    onComplete: () => {
+      gsap.to(emoji, { scale: 1, duration: 0.1 });
+    }
+  }
+);
+```
+
+**Effect**: Emoji "pops" onto message (like iMessage)
+
+### Pattern 3: Share Panel Slide-Up
+
+**When user clicks "Share" on message**:
+```typescript
+const tl = gsap.timeline();
+
+tl.fromTo(backdrop,
+  { opacity: 0 },
+  { opacity: 1, duration: 0.2 }
+)
+.fromTo(sharePanel,
+  { y: 100, opacity: 0 },
+  { y: 0, opacity: 1, duration: 0.3, ease: 'power2.out' },
+  '-=0.1' // Overlap by 100ms
+);
+```
+
+**Close animation**: Reverse timeline
+
+---
+
+## Implementation Checklist
+
+- ✅ Typing indicator (implemented)
+- ✅ Message entrance (implemented)
+- ✅ Bond level up (implemented)
+- ✅ Heart reaction burst (implemented)
+- ✅ Topic suggestion glow (implemented, with 5s delay)
+- ⚠️ Status dot pulse (partially implemented, needs typing state)
+- ⚠️ Scroll-to-bottom auto (RECOMMENDED, not implemented)
+- ⚠️ Message history stagger (RECOMMENDED for UX)
+- ✅ Reduced motion support (implemented)
+- ✅ Screen reader announcements (implemented)
+
+**Priority Enhancements**:
+1. Auto-scroll smart behavior (1 hour dev time)
+2. Message history stagger on load (30 minutes)
+3. Status dot typing pulse animation (15 minutes)
+
+---
+
+**Animation Library**: GSAP 3.x  
+**Performance Target**: 60fps on mid-range mobile devices  
+**Accessibility**: WCAG 2.1 AA compliant (reduced motion, screen reader)
+
+## Success Metrics
+
+- **Message Send Rate:** Average >10 messages per session.
+- **Return Rate:** >70% return for another chat within 3 days.
+- **Navigation Usage:** >30% use nav sidebar to access Dashboard or My Personas.
+- **Mobile Engagement:** Mobile users send >8 messages per session (vs desktop 10+).
+- **Error Recovery:** <5% abandon chat after encountering error.
+
 
 ```html
 <!DOCTYPE html>

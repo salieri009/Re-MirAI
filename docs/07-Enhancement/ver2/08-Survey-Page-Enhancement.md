@@ -251,3 +251,158 @@ The following HTML structure is the **definitive source of truth** for the ver2 
 ### 3. Asset Integration
 - **Icons:** `arrow_forward`, `link` (Material Symbols).
 - **Background:** Radial gradient CSS class or inline style.
+
+### 4. Animation Specifications (Form UX Focus)
+
+**Framework**: Next.js 14+, React 18+, TypeScript, GSAP 3.x
+
+**Animation Philosophy**: Build confidence through immediate visual feedback. Reduce form anxiety with clear success indicators.
+
+#### 4.1 Link Preview Live Update
+
+**Trigger**: User types in survey name input
+
+```typescript
+'use client';
+
+const [surveyName, setSurveyName] = useState('');
+const [previewUrl, setPreviewUrl] = useState('');
+const linkPreviewRef = useRef<HTMLDivElement>(null);
+
+const handleNameChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const value = e.target.value;
+  setSurveyName(value);
+  
+  // Generate slug
+  const slug = value.toLowerCase().replace(/\s+/g, '-').replace(/[^a-z0-9-]/g, '');
+  const url = slug ? `remirai.app/s/${slug}` : '';
+  
+  setPreviewUrl(url);
+  
+  // Animate link preview appearance
+  if (url && !reducedMotion && linkPreviewRef.current) {
+    gsap.from(linkPreviewRef.current, {
+      opacity: 0,
+      y: -10,
+      duration: 0.3,
+      ease: 'power2.out'
+    });
+  }
+};
+```
+
+**Visual Effect**: URL materializes as user types (reduces uncertainty)
+
+#### 4.2 Copy Link Success Animation
+
+**Trigger**: User clicks "Copy Link" button
+
+```typescript
+const copyButtonRef = useRef<HTMLButtonElement>(null);
+
+const handleCopyLink = async () => {
+  await navigator.clipboard.writeText(previewUrl);
+  
+  // Success feedback
+  if (copyButtonRef.current && !reducedMotion) {
+    gsap.timeline()
+      .to(copyButtonRef.current, {
+        scale: 0.9,
+        duration: 0.1
+      })
+      .to(copyButtonRef.current, {
+        scale: 1.1,
+        backgroundColor: '#00c9a7', // Success color
+        duration: 0.2,
+        ease: 'back.out(1.7)'
+      })
+      .to(copyButtonRef.current, {
+        scale: 1,
+        duration: 0.2
+      });
+  }
+  
+  // Visual checkmark
+  setShowCheckmark(true);
+  setTimeout(() => setShowCheckmark(false), 2000);
+  
+  toast.success('Link copied!');
+  announce('Survey link copied to clipboard', 'polite');
+};
+```
+
+#### 4.3 Form Validation Feedback
+
+**Input Error State**:
+```typescript
+{errors.surveyName && (
+  <motion.p
+    className="error-message"
+    initial={{ opacity: 0, y: -5 }}
+    animate={{ opacity: 1, y: 0 }}
+    exit={{ opacity: 0 }}
+  >
+    {errors.surveyName}
+  </motion.p>
+)}
+```
+
+**Success Animation** (on submit):
+```typescript
+const handleSubmit = async () => {
+  // ... validation
+  
+  if (!reducedMotion && formRef.current) {
+    gsap.to(formRef.current, {
+      opacity: 0,
+      y: -20,
+      duration: 0.3,
+      onComplete: () => {
+        router.push(`/dashboard/surveys/${newSurveyId}`);
+      }
+    });
+  } else {
+    router.push(`/dashboard/surveys/${newSurveyId}`);
+  }
+};
+```
+
+#### 4.4 Template Selection Animation
+
+**Card Selection**:
+```typescript
+const templateRefs = useRef<Record<string, HTMLDivElement>>({});
+
+const handleTemplateSelect = (templateId: string) => {
+  Object.values(templateRefs.current).forEach(card => {
+    gsap.to(card, {
+      scale: 1,
+      borderColor: 'transparent',
+      duration: 0.2
+    });
+  });
+  
+  const selectedCard = templateRefs.current[templateId];
+  if (selectedCard && !reducedMotion) {
+    gsap.to(selectedCard, {
+      scale: 1.05,
+      borderColor: '#00c9a7',
+      duration: 0.3,
+      ease: 'back.out(1.7)'
+    });
+  }
+  
+  setSelectedTemplate(templateId);
+};
+```
+
+#### 4.5 Checklist
+
+- ⚠️ Live URL preview (RECOMMENDED)
+- ⚠️ Copy success animation (RECOMMENDED)
+- ⚠️ Form validation feedback (RECOMMENDED)
+- ⚠️ Template selection (RECOMMENDED)
+- ✅ Reduced motion support
+- ✅ Screen reader announcements
+
+**Focus**: Micro-interactions that build user confidence during form filling
