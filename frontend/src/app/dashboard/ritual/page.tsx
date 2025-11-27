@@ -11,6 +11,27 @@ import { ShareOptions } from '@/components/molecules/ShareOptions';
 import { guidanceInteractions } from '@/lib/micro-interactions';
 import styles from './page.module.css';
 
+const SURVEY_TEMPLATES = [
+  {
+    id: 'foundations',
+    title: 'Foundations Ritual',
+    description: '10 cinematic questions that map core motivations.',
+    length: '6 min',
+  },
+  {
+    id: 'bonding',
+    title: 'Bonding Sprint',
+    description: 'Fast 5-question pulse to deepen the persona bond.',
+    length: '3 min',
+  },
+  {
+    id: 'archetype',
+    title: 'Archetype Focus',
+    description: 'Guide respondents toward a specific archetypal vibe.',
+    length: '8 min',
+  },
+];
+
 export default function RitualHubPage() {
   const router = useRouter();
   const { isAuthenticated } = useAuthStore();
@@ -151,6 +172,27 @@ export default function RitualHubPage() {
             <Button variant="primary" onClick={() => alert('Reminder sent!')}>
               📣 Notify friends
             </Button>
+          </div>
+        </section>
+
+        <section className={styles.templateSection}>
+          <div>
+            <p className={styles.kicker}>Templates</p>
+            <h2>Choose a survey flow that matches your ritual.</h2>
+          </div>
+          <div className={styles.templateGrid}>
+            {SURVEY_TEMPLATES.map((template) => (
+              <div key={template.id} className={styles.templateCard}>
+                <div>
+                  <p className={styles.templateLabel}>{template.length}</p>
+                  <h3>{template.title}</h3>
+                  <p>{template.description}</p>
+                </div>
+                <Button variant="ghost" onClick={() => alert(`Template ${template.title} selected`)}>
+                  Preview
+                </Button>
+              </div>
+            ))}
           </div>
         </section>
       </div>

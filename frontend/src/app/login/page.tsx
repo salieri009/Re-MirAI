@@ -10,6 +10,7 @@ import { GoogleAuthButton } from '@/components/molecules/GoogleAuthButton';
 import { TrustBadge } from '@/components/molecules/TrustBadge';
 import { Button } from '@/components/atoms/Button';
 import { MirrorCanvas } from '@/components/organisms/MirrorCanvas/MirrorCanvas';
+import { ProgressBar } from '@/components/molecules/ProgressBar';
 import { trustInteractions } from '@/lib/micro-interactions';
 import { useReducedMotion, useAnnouncement } from '@/hooks/useAccessibility';
 import styles from './page.module.css';
@@ -32,6 +33,18 @@ const TRUST_BADGES = [
     label: 'No Password',
     description: 'One-click access',
   },
+];
+
+const SECURITY_POINTS = [
+  'OAuth tokens are never stored client-side.',
+  'Survey answers remain anonymous until you approve a persona.',
+  'Session expires automatically after 20 minutes of inactivity.',
+];
+
+const PROGRESS_METRICS = [
+  { label: 'Survey constellations completed', value: 64 },
+  { label: 'Persona synthesis queue', value: 32 },
+  { label: 'Community trust index', value: 92 },
 ];
 
 export default function LoginPage() {
@@ -114,56 +127,75 @@ export default function LoginPage() {
 
   return (
     <main className={styles.main}>
-      {/* Particle background canvas */}
-      <MirrorCanvas variant="background" intensity={0.5} />
+      <section className={styles.showcase}>
+        <p className={styles.kicker}>ver2 onboarding</p>
+        <h1 className={styles.headline}>Authorize the ritual console.</h1>
+        <p className={styles.copy}>
+          The Login Page follows the ver2 spec: cinematic gradient, trust checklist, and real-time
+          telemetry from the Summoning pipeline.
+        </p>
 
-      <div ref={cardRef} className={styles.card}>
-        <div className={styles.header}>
-          <h1 className={styles.title}>✨ Re:MirAI</h1>
-          <h2 className={styles.subtitle}>Ready to discover your reflection?</h2>
-        </div>
+        <ul className={styles.pointList}>
+          {SECURITY_POINTS.map((point) => (
+            <li key={point}>{point}</li>
+          ))}
+        </ul>
 
-        <div className={styles.content}>
-          <GoogleAuthButton
-            onAuth={handleGoogleAuth}
-            onRetry={handleRetry}
-            state={authState}
-            statusMessage={statusMessage}
-            errorMessage={error}
-          />
-
-          <p className={styles.privacyPromise}>
-            We only use your email to save your progress. No data is sold.
-          </p>
-
-          <p className={styles.helpText}>
-            Quick, secure, simple
-          </p>
-        </div>
-
-        {/* Trust Badges */}
-        <div className={styles.trustBadges} role="list">
-          {TRUST_BADGES.map((badge) => (
-            <div key={badge.label} role="listitem">
-              <TrustBadge
-                icon={badge.icon}
-                label={badge.label}
-                description={badge.description}
-                aria-label={`${badge.label} — ${badge.description}`}
-              />
-            </div>
+        <div className={styles.metricGrid}>
+          {PROGRESS_METRICS.map((metric) => (
+            <ProgressBar key={metric.label} label={metric.label} value={metric.value} />
           ))}
         </div>
+      </section>
 
-        <div className={styles.footer}>
-          <Button
-            variant="ghost"
-            size="sm"
-            onClick={() => router.push('/')}
-            aria-label="Return to home page"
-          >
-            ← Back to home
-          </Button>
+      <div className={styles.cardWrapper}>
+        <MirrorCanvas variant="background" intensity={0.6} />
+
+        <div ref={cardRef} className={styles.card}>
+          <div className={styles.header}>
+            <h1 className={styles.title}>✨ Re:MirAI</h1>
+            <h2 className={styles.subtitle}>Ready to discover your reflection?</h2>
+          </div>
+
+          <div className={styles.content}>
+            <GoogleAuthButton
+              onAuth={handleGoogleAuth}
+              onRetry={handleRetry}
+              state={authState}
+              statusMessage={statusMessage}
+              errorMessage={error}
+            />
+
+            <p className={styles.privacyPromise}>
+              We only use your email to save your progress. No data is sold.
+            </p>
+
+            <p className={styles.helpText}>Quick, secure, simple</p>
+          </div>
+
+          <div className={styles.trustBadges} role="list">
+            {TRUST_BADGES.map((badge) => (
+              <div key={badge.label} role="listitem">
+                <TrustBadge
+                  icon={badge.icon}
+                  label={badge.label}
+                  description={badge.description}
+                  aria-label={`${badge.label} — ${badge.description}`}
+                />
+              </div>
+            ))}
+          </div>
+
+          <div className={styles.footer}>
+            <Button
+              variant="ghost"
+              size="sm"
+              onClick={() => router.push('/')}
+              aria-label="Return to home page"
+            >
+              ← Back to home
+            </Button>
+          </div>
         </div>
       </div>
     </main>

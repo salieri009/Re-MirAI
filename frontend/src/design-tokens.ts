@@ -18,6 +18,59 @@ export const tokens = {
         surface: 'rgba(132, 94, 194, 0.2)', // Purple tint
     },
 
+    spacing: {
+        grid: 4, // 4px baseline
+        xxs: 4,
+        xs: 8,
+        sm: 12,
+        md: 16,
+        lg: 24,
+        xl: 32,
+        '2xl': 40,
+        '3xl': 48,
+        '4xl': 64,
+    },
+
+    radius: {
+        xs: 4,
+        sm: 8,
+        md: 12,
+        lg: 16,
+        xl: 24,
+        pill: 999,
+    },
+
+    typography: {
+        family: {
+            display: '\'Plus Jakarta Sans\', sans-serif',
+            body: '\'Plus Jakarta Sans\', sans-serif',
+            mono: '\'Space Mono\', monospace',
+        },
+        weight: {
+            regular: 400,
+            medium: 500,
+            semiBold: 600,
+            bold: 700,
+            extraBold: 800,
+        },
+        size: {
+            xs: '0.75rem',   // 12px
+            sm: '0.875rem',  // 14px
+            base: '1rem',    // 16px
+            lg: '1.125rem',  // 18px
+            xl: '1.25rem',   // 20px
+            '2xl': '1.5rem', // 24px
+            '3xl': '2rem',   // 32px
+            '4xl': '2.5rem', // 40px
+        },
+        lineHeight: {
+            snug: 1.1,
+            tight: 1.2,
+            relaxed: 1.4,
+            loose: 1.6,
+        },
+    },
+
     /**
      * Emotional Color Mappings
      */

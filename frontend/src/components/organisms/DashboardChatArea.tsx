@@ -2,21 +2,52 @@
 
 import { useState } from 'react';
 import Link from 'next/link';
+import { useRouter } from 'next/navigation';
+import { Button } from '@/components/atoms/Button';
+import { ProgressBar } from '@/components/molecules/ProgressBar';
 import styles from './DashboardChatArea.module.css';
 
 interface Message {
     id: string;
-    type: 'user' | 'system' | 'persona';
+    type: 'user' | 'persona';
     content: string;
     timestamp: Date;
 }
 
+const QUICK_ACTIONS = [
+    {
+        href: '/dashboard/synthesize',
+        label: 'Resume Summoning',
+        description: 'Continue the ver2 three-stage ritual.',
+        icon: '✨',
+    },
+    {
+        href: '/dashboard/create-survey',
+        label: 'Launch Survey Hub',
+        description: 'Collect the 12 echoes required for synthesis.',
+        icon: '📋',
+    },
+    {
+        href: '/p/demo',
+        label: 'Visit Persona Room',
+        description: 'Review quests & bonding meter.',
+        icon: '🪞',
+    },
+];
+
+const PROMPTS = [
+    'What archetype should I try next?',
+    'Summarize today’s ritual insights.',
+    'How many surveys remain?',
+];
+
 export function DashboardChatArea() {
+    const router = useRouter();
     const [messages, setMessages] = useState<Message[]>([
         {
             id: '1',
-            type: 'system',
-            content: 'Welcome to your Digital Persona dashboard! Start a ritual or check your persona sync.',
+            type: 'persona',
+            content: 'Ceremony is idle. Collect 3 more responses or enter Alchemic Mode to boost resonance.',
             timestamp: new Date(),
         },
     ]);
@@ -32,57 +63,75 @@ export function DashboardChatArea() {
             timestamp: new Date(),
         };
 
-        setMessages([...messages, newMessage]);
+        setMessages((prev) => [...prev, newMessage]);
         setInputValue('');
     };
 
     return (
-        <div className={styles.chatArea}>
-            {/* Quick Actions Card */}
-            <div className={styles.quickActions}>
-                <h2 className={styles.quickActionsTitle}>Quick Actions</h2>
-                <div className={styles.actionsGrid}>
-                    <Link href="/dashboard/create-survey" className={styles.actionCard}>
-                        <div className={styles.actionIcon}>+</div>
-                        <div className={styles.actionContent}>
-                            <h3 className={styles.actionTitle}>Create New Survey</h3>
-                            <p className={styles.actionDescription}>
-                                Generate a new survey link to collect echoes
-                            </p>
-                        </div>
-                    </Link>
-                    <Link href="/dashboard/ritual" className={styles.actionCard}>
-                        <div className={styles.actionIcon}>#</div>
-                        <div className={styles.actionContent}>
-                            <h3 className={styles.actionTitle}>Daily Ritual</h3>
-                            <p className={styles.actionDescription}>
-                                Complete your daily tasks
-                            </p>
-                        </div>
-                    </Link>
-                    <Link href="/dashboard/synthesize" className={styles.actionCard}>
-                        <div className={styles.actionIcon}>*</div>
-                        <div className={styles.actionContent}>
-                            <h3 className={styles.actionTitle}>Persona Sync</h3>
-                            <p className={styles.actionDescription}>
-                                Synthesize your digital persona
-                            </p>
-                        </div>
-                    </Link>
+        <section className={styles.chatArea}>
+            <header className={styles.statusHeader}>
+                <div>
+                    <p className={styles.kicker}>dashboard ritual state</p>
+                    <h2>Summoning pipeline overview</h2>
                 </div>
+                <div className={styles.headerActions}>
+                    <ProgressBar value={72} label="Survey completion" />
+                    <Button size="sm" variant="secondary" onClick={() => router.push('/summon')}>
+                        Enter Summoning Page
+                    </Button>
+                </div>
+            </header>
+
+            <div className={styles.quickActions}>
+                {QUICK_ACTIONS.map((action) => (
+                    <Link key={action.label} href={action.href} className={styles.actionCard}>
+                        <span className={styles.actionIcon}>{action.icon}</span>
+                        <div>
+                            <p className={styles.actionLabel}>{action.label}</p>
+                            <p className={styles.actionDescription}>{action.description}</p>
+                        </div>
+                    </Link>
+                ))}
             </div>
 
-            <div className={styles.messagesContainer}>
-                {messages.map((message) => (
-                    <div
-                        key={message.id}
-                        className={`${styles.message} ${styles[message.type]}`}
-                    >
-                        <div className={styles.messageContent}>{message.content}</div>
-                        <div className={styles.messageTime}>
-                            {message.timestamp.toLocaleTimeString()}
+            <div className={styles.chatLayout}>
+                <div className={styles.messagesContainer}>
+                    {messages.map((message) => (
+                        <div
+                            key={message.id}
+                            className={`${styles.message} ${styles[message.type]}`}
+                        >
+                            <div className={styles.messageContent}>{message.content}</div>
+                            <time className={styles.messageTime}>
+                                {message.timestamp.toLocaleTimeString()}
+                            </time>
                         </div>
+                    ))}
+                </div>
+
+                <aside className={styles.personaPanel}>
+                    <p className={styles.panelLabel}>Persona Pulse</p>
+                    <div className={styles.panelCard}>
+                        <p>Bonding Meter</p>
+                        <ProgressBar value={48} showValue />
+                        <p className={styles.panelHint}>Complete 2 rituals to unlock next memory.</p>
                     </div>
+                    <div className={styles.panelCard}>
+                        <p>Ritual Timeline</p>
+                        <ul>
+                            <li>Survey Constellation · Completed</li>
+                            <li>Alchemic Mode · In progress</li>
+                            <li>Reveal · Pending</li>
+                        </ul>
+                    </div>
+                </aside>
+            </div>
+
+            <div className={styles.suggestions}>
+                {PROMPTS.map((prompt) => (
+                    <button key={prompt} onClick={() => setInputValue(prompt)}>
+                        {prompt}
+                    </button>
                 ))}
             </div>
 
@@ -90,15 +139,13 @@ export function DashboardChatArea() {
                 <input
                     type="text"
                     className={styles.input}
-                    placeholder="Message your persona..."
+                    placeholder="Ask your persona..."
                     value={inputValue}
                     onChange={(e) => setInputValue(e.target.value)}
-                    onKeyPress={(e) => e.key === 'Enter' && handleSend()}
+                    onKeyDown={(e) => e.key === 'Enter' && handleSend()}
                 />
-                <button onClick={handleSend} className={styles.sendButton}>
-                    Send
-                </button>
+                <Button onClick={handleSend}>Send</Button>
             </div>
-        </div>
+        </section>
     );
 }

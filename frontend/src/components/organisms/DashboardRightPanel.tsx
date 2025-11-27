@@ -1,83 +1,79 @@
 'use client';
 
+import Link from 'next/link';
+import { useRouter } from 'next/navigation';
+import { ProgressBar } from '@/components/molecules/ProgressBar';
+import { Button } from '@/components/atoms/Button';
 import { useAuthStore } from '@/stores/authStore';
 import styles from './DashboardRightPanel.module.css';
 
+const QUESTS = [
+    { name: 'Daily Ritual', progress: '2 / 3', status: 'In progress' },
+    { name: 'Alchemic Mode', progress: 'Select archetype', status: 'Waiting' },
+    { name: 'Reveal Ceremony', progress: 'Locked', status: 'Pending survey data' },
+];
+
+const ACTIONS = [
+    { label: 'Open Survey Hub', href: '/s' },
+    { label: 'Resume Summoning', href: '/summon' },
+];
+
 export function DashboardRightPanel() {
+    const router = useRouter();
     const { user } = useAuthStore();
 
     return (
         <aside className={styles.rightPanel}>
             <div className={styles.section}>
-                <h3 className={styles.sectionTitle}>Persona Status</h3>
-                <div className={styles.statusCard}>
-                    <div className={styles.statusItem}>
-                        <span className={styles.statusLabel}>Level</span>
-                        <span className={styles.statusValue}>5</span>
+                <p className={styles.sectionKicker}>persona resonance</p>
+                <div className={styles.personaCard}>
+                    <div>
+                        <p className={styles.personaName}>{user?.name ?? 'Summoner'}</p>
+                        <p className={styles.personaMeta}>Phase 1 · Ritual Build 2.0</p>
                     </div>
-                    <div className={styles.statusItem}>
-                        <span className={styles.statusLabel}>Bond</span>
-                        <span className={styles.statusValue}>75%</span>
-                    </div>
-                    <div className={styles.statusItem}>
-                        <span className={styles.statusLabel}>Essence</span>
-                        <span className={styles.statusValue}>420</span>
-                    </div>
+                    <ProgressBar value={58} label="Bonding meter" />
                 </div>
             </div>
 
-            <div className={styles.section}>
-                <h3 className={styles.sectionTitle}>Survey Progress</h3>
-                <div className={styles.surveyProgressCard}>
-                    <div className={styles.progressHeader}>
-                        <span className={styles.progressTitle}>Active Survey</span>
-                        <span className={styles.progressBadge}>Active</span>
-                    </div>
-                    <div className={styles.responseCount}>
-                        <span className={styles.responseNumber}>2</span>
-                        <span className={styles.responseSeparator}>/</span>
-                        <span className={styles.responseTotal}>3</span>
-                    </div>
-                    <div className={styles.responseLabel}>responses collected</div>
-                    <div className={styles.progressBarContainer}>
-                        <div className={styles.progressBarFill} style={{ width: '66%' }}></div>
-                    </div>
-                    <div className={styles.progressHelp}>
-                        1 more response needed to unlock synthesis
+                <div className={styles.section}>
+                    <p className={styles.sectionKicker}>survey readiness</p>
+                    <div className={styles.surveyCard}>
+                        <div className={styles.cardRow}>
+                            <span>Active constellation</span>
+                            <span className={styles.badge}>12 / 14</span>
+                        </div>
+                        <ProgressBar value={86} showValue />
+                        <p className={styles.cardHint}>Collect 2 more echoes to unlock reveal.</p>
                     </div>
                 </div>
-            </div>
 
             <div className={styles.section}>
-                <h3 className={styles.sectionTitle}>Active Quests</h3>
+                <p className={styles.sectionKicker}>quests</p>
                 <div className={styles.questList}>
-                    <div className={styles.questItem}>
-                        <div className={styles.questIcon}>#</div>
-                        <div className={styles.questInfo}>
-                            <div className={styles.questName}>Daily Ritual</div>
-                            <div className={styles.questProgress}>2/3 completed</div>
+                    {QUESTS.map((quest) => (
+                        <div key={quest.name} className={styles.questItem}>
+                            <div>
+                                <p className={styles.questName}>{quest.name}</p>
+                                <p className={styles.questMeta}>{quest.progress}</p>
+                            </div>
+                            <span className={styles.questStatus}>{quest.status}</span>
                         </div>
-                    </div>
-                    <div className={styles.questItem}>
-                        <div className={styles.questIcon}>#</div>
-                        <div className={styles.questInfo}>
-                            <div className={styles.questName}>Persona Sync</div>
-                            <div className={styles.questProgress}>Pending</div>
-                        </div>
-                    </div>
+                    ))}
                 </div>
             </div>
 
             <div className={styles.section}>
-                <h3 className={styles.sectionTitle}>Quick Actions</h3>
-                <div className={styles.actionButtons}>
-                    <button className={styles.actionButton}>
-                        Start Ritual
-                    </button>
-                    <button className={styles.actionButton}>
-                        Sync Persona
-                    </button>
+                <p className={styles.sectionKicker}>shortcuts</p>
+                <div className={styles.links}>
+                    {ACTIONS.map((action) => (
+                        <Link key={action.label} href={action.href}>
+                            {action.label}
+                        </Link>
+                    ))}
                 </div>
+                <Button className={styles.primaryAction} onClick={() => router.push('/summon')}>
+                    Launch Summoning Page
+                </Button>
             </div>
         </aside>
     );

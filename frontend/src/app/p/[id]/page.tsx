@@ -11,6 +11,7 @@ import { Button } from '@/components/atoms/Button';
 import { StatsPanel } from '@/components/molecules/StatsPanel';
 import { QuestCard } from '@/components/molecules/QuestCard';
 import { ActivityFeed, ActivityItem } from '@/components/molecules/ActivityFeed';
+import { ProgressBar } from '@/components/molecules/ProgressBar';
 import { Quest } from '@/lib/mock-data/quests';
 import styles from './page.module.css';
 
@@ -98,6 +99,16 @@ export default function PersonaPage({ params }: { params: Promise<{ id: string }
     );
   }
 
+  const bondScore = Math.round(
+    (persona.stats.charisma + persona.stats.intellect + persona.stats.kindness + persona.stats.energy) / 4
+  );
+
+  const memories = [
+    'Origin Ritual · Completed',
+    `Archetype ${persona.archetype} affirmed`,
+    'First shared reflection unlocked',
+  ];
+
   return (
     <div className={styles.container}>
       <div className={styles.room}>
@@ -124,6 +135,35 @@ export default function PersonaPage({ params }: { params: Promise<{ id: string }
             </div>
           </div>
           <StatsPanel stats={persona.stats} />
+        </section>
+
+        <section className={styles.section}>
+          <div className={styles.sectionHeader}>
+            <div>
+              <h2>Bonding Meter & Memory Gallery</h2>
+              <p className={styles.sectionSubtitle}>Stay aligned with ver2 Persona Room spec.</p>
+            </div>
+            <Button size="sm" variant="secondary" onClick={() => router.push('/dashboard/ritual')}>
+              View Survey Threads
+            </Button>
+          </div>
+          <div className={styles.bondingGrid}>
+            <div className={styles.bondCard}>
+              <p className={styles.label}>Bond strength</p>
+              <ProgressBar value={bondScore} showValue />
+              <p className={styles.helper}>
+                Complete daily rituals in the Survey Hub to unlock the next persona memory.
+              </p>
+            </div>
+            <div className={styles.memoryBoard}>
+              <p className={styles.label}>Memory gallery</p>
+              <ul>
+                {memories.map((memory) => (
+                  <li key={memory}>{memory}</li>
+                ))}
+              </ul>
+            </div>
+          </div>
         </section>
 
         {quests && (

@@ -40,28 +40,50 @@
   --color-text-inverse: #0A0112;
 
   /* === SPACING (4px Grid) === */
-  --space-xs: 0.25rem;
+  --grid-unit: 4px;
+  --space-xxs: 0.25rem;
   /* 4px */
-  --space-sm: 0.5rem;
+  --space-xs: 0.5rem;
   /* 8px */
+  --space-sm: 0.75rem;
+  /* 12px */
   --space-md: 1rem;
   /* 16px */
   --space-lg: 1.5rem;
   /* 24px */
   --space-xl: 2rem;
   /* 32px */
-  --space-2xl: 3rem;
+  --space-2xl: 2.5rem;
+  /* 40px */
+  --space-3xl: 3rem;
   /* 48px */
-  --space-3xl: 4rem;
+  --space-4xl: 4rem;
   /* 64px */
 
   /* === TYPOGRAPHY === */
-  --font-display: 'Space Grotesk', sans-serif;
+  --font-display: 'Plus Jakarta Sans', sans-serif;
   --font-sans: 'Plus Jakarta Sans', sans-serif;
+  --font-mono: 'Space Mono', monospace;
+  --font-weight-regular: 400;
+  --font-weight-medium: 500;
+  --font-weight-semibold: 600;
+  --font-weight-bold: 700;
+  --font-weight-extrabold: 800;
+  --line-height-tight: 1.2;
+  --line-height-relaxed: 1.4;
+  --line-height-loose: 1.6;
 
   /* === SHADOWS === */
   --shadow-glow-primary: 0 0 32px hsla(var(--hue-primary), 100%, 50%, 0.3);
   --shadow-glow-accent: 0 0 28px hsla(var(--hue-accent), 100%, 50%, 0.3);
+
+  /* === RADII === */
+  --radius-xs: 0.25rem;
+  --radius-sm: 0.5rem;
+  --radius-md: 0.75rem;
+  --radius-lg: 1rem;
+  --radius-xl: 1.5rem;
+  --radius-pill: 999px;
 
   /* === Z-INDEX === */
   --z-base: 0;
