@@ -40,6 +40,7 @@
 .statusItem:last-child {
     border-bottom: none;
 }
+}
 
 .questItem {
     background: var(--color-surface);

@@ -62,7 +62,7 @@ export function DashboardStateView({
 
   useEffect(() => {
     const messages: Record<DashboardState, string> = {
-      empty: 'No survey detected. Create your first survey link to begin.',
+      empty: 'No survey detected. Create your first ritual link to begin.',
       collecting: 'Collecting anonymous echoes. Share your survey link to progress.',
       ready: 'Required echoes gathered. Summon your persona when ready.',
       active: 'Persona active. Continue bonding or explore new quests.',
@@ -110,12 +110,12 @@ export function DashboardStateView({
   const renderEmptyState = () => (
     <div className={`${styles.card} ${styles.empty}`}>
       <h2>Your journey begins</h2>
-      <p>Create your first survey to start gathering anonymous echoes.</p>
+      <p>Create your first perception ritual to start gathering anonymous echoes.</p>
 
       <div className={styles.journeyMap}>
         <div className={`${styles.journeyStep} ${styles.active}`}>
           <div className={styles.stepIcon}>🔗</div>
-          <p>Create Survey</p>
+          <p>Create Ritual</p>
         </div>
         <div className={styles.connector} />
         <div className={styles.journeyStep}>
@@ -176,7 +176,7 @@ export function DashboardStateView({
         </div>
 
         <p className={styles.helperText}>
-          Every echo is anonymous. Keep sharing your survey link to reach the summoning
+          Every echo is anonymous. Keep sharing your ritual link to reach the summoning
           threshold.
         </p>
 
@@ -232,7 +232,7 @@ export function DashboardStateView({
     <div className={`${styles.card} ${styles.ready}`}>
       <p className={styles.label}>SUMMON READY ⚡</p>
       <h2>All echoes gathered</h2>
-      <p>Your persona is waiting to be born. Begin the synthesis to reveal them.</p>
+      <p>Your persona is waiting to be born. Begin the ritual to reveal them.</p>
       <Button
         ref={state === 'ready' ? primaryActionRef : undefined}
         variant="primary"

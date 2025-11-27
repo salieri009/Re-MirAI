@@ -6,7 +6,7 @@ export function HowItWorks() {
     const steps = [
         {
             number: '1',
-            title: 'One tap. Your survey is live.'
+            title: 'One tap. Your ritual survey is live.'
         },
         {
             number: '2',

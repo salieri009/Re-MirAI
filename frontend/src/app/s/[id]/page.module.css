@@ -13,49 +13,7 @@
   font-size: var(--font-size-2xl);
   font-weight: var(--font-weight-semibold);
   color: var(--color-text);
-  margin: 0 0 var(--space-lg) 0;
-}
-
-.valueProps {
-  display: flex;
-  flex-direction: column;
-  gap: var(--space-md);
-  margin-top: var(--space-lg);
-  max-width: 600px;
-  margin-left: auto;
-  margin-right: auto;
-}
-
-.valueProp {
-  display: flex;
-  align-items: center;
-  gap: var(--space-md);
-  padding: var(--space-md);
-  background: rgba(255, 255, 255, 0.05);
-  border-radius: var(--radius-lg);
-  border: 1px solid rgba(255, 255, 255, 0.1);
-  text-align: left;
-}
-
-.valueProp .icon {
-  font-size: var(--font-size-xl);
-  flex-shrink: 0;
-}
-
-.valueProp span:last-child {
-  color: var(--color-text-secondary);
-  font-size: var(--font-size-sm);
-  line-height: 1.5;
-}
-
-@media (max-width: 768px) {
-  .valueProps {
-    gap: var(--space-sm);
-  }
-  
-  .valueProp {
-    padding: var(--space-sm);
-  }
+  margin: 0;
 }
 
 

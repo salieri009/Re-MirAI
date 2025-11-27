@@ -11,7 +11,7 @@ import { ShareOptions } from '@/components/molecules/ShareOptions';
 import { guidanceInteractions } from '@/lib/micro-interactions';
 import styles from './page.module.css';
 
-export default function SurveyHubPage() {
+export default function RitualHubPage() {
   const router = useRouter();
   const { isAuthenticated } = useAuthStore();
   const [surveyUrl, setSurveyUrl] = useState<string | null>(null);
@@ -19,7 +19,7 @@ export default function SurveyHubPage() {
   const progressFillRef = useRef<HTMLDivElement>(null);
 
   const { data: surveyStatus } = useQuery({
-    queryKey: ['survey-status'],
+    queryKey: ['ritual-status'],
     queryFn: () => surveyApi.getStatus('550e8400-e29b-41d4-a716-446655440000'),
     enabled: isAuthenticated,
     refetchInterval: 5000,
@@ -80,10 +80,10 @@ export default function SurveyHubPage() {
       <div className={styles.rhub}>
         <header className={styles.header}>
           <div>
-            <p className={styles.kicker}>Survey Hub</p>
+            <p className={styles.kicker}>Ritual Hub</p>
             <h1>Gather anonymous echoes</h1>
             <p className={styles.subtitle}>
-              Track progress, share your survey link, and nudge friends for more feedback.
+              Track progress, share your ritual link, and nudge friends for more feedback.
             </p>
           </div>
         </header>
@@ -111,7 +111,7 @@ export default function SurveyHubPage() {
             <p className={styles.helper}>
               {surveyStatus?.canCreatePersona
                 ? 'Threshold reached. You can synthesize your persona now.'
-                : 'Share your survey link to gather anonymous echoes.'}
+                : 'Share your ritual link to gather anonymous echoes.'}
             </p>
             <div className={styles.metrics}>
               {metrics.map((metric) => (

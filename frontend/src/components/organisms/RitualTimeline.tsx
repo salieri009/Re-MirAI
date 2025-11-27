@@ -14,11 +14,11 @@ interface TimelineStage {
     timestamp?: string;
 }
 
-interface SurveyTimelineProps {
+interface RitualTimelineProps {
     stages: TimelineStage[];
 }
 
-export function SurveyTimeline({ stages }: SurveyTimelineProps) {
+export function RitualTimeline({ stages }: RitualTimelineProps) {
     const timelineRef = useRef<HTMLDivElement>(null);
     const progressRef = useRef<HTMLDivElement>(null);
     const reducedMotion = useReducedMotion();

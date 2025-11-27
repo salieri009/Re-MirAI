@@ -1,9 +1,7 @@
 'use client';
 
-import { useState, useEffect, useRef } from 'react';
+import { useState } from 'react';
 import Link from 'next/link';
-import { guidanceInteractions } from '@/lib/micro-interactions';
-import { useReducedMotion } from '@/hooks/useAccessibility';
 import styles from './DashboardChatArea.module.css';
 
 interface Message {
@@ -18,20 +16,11 @@ export function DashboardChatArea() {
         {
             id: '1',
             type: 'system',
-            content: 'Welcome to your Digital Persona dashboard! Start a survey or check your persona sync.',
+            content: 'Welcome to your Digital Persona dashboard! Start a ritual or check your persona sync.',
             timestamp: new Date(),
         },
     ]);
     const [inputValue, setInputValue] = useState('');
-    const primaryActionRef = useRef<HTMLAnchorElement>(null);
-    const reducedMotion = useReducedMotion();
-    
-    // Apply action pulse to primary action (Create New Survey)
-    useEffect(() => {
-        if (!reducedMotion && primaryActionRef.current) {
-            guidanceInteractions.actionPulse(primaryActionRef.current);
-        }
-    }, [reducedMotion]);
 
     const handleSend = () => {
         if (!inputValue.trim()) return;
@@ -53,45 +42,33 @@ export function DashboardChatArea() {
             <div className={styles.quickActions}>
                 <h2 className={styles.quickActionsTitle}>Quick Actions</h2>
                 <div className={styles.actionsGrid}>
-                    <div 
-                        ref={primaryActionRef}
-                        className={`${styles.actionCard} ${styles.actionCardPrimary}`}
-                    >
-                        <Link 
-                            href="/dashboard/survey" 
-                            className={styles.actionCardLink}
-                        >
-                            <div className={styles.actionIcon}>+</div>
-                            <div className={styles.actionContent}>
-                                <h3 className={styles.actionTitle}>Create New Survey</h3>
-                                <p className={styles.actionDescription}>
-                                    Generate a new survey link to collect echoes
-                                </p>
-                            </div>
-                        </Link>
-                    </div>
-                    <div className={styles.actionCard}>
-                        <Link href="/dashboard/survey" className={styles.actionCardLink}>
-                            <div className={styles.actionIcon}>#</div>
-                            <div className={styles.actionContent}>
-                                <h3 className={styles.actionTitle}>Daily Check-in</h3>
-                                <p className={styles.actionDescription}>
-                                    Complete your daily tasks
-                                </p>
-                            </div>
-                        </Link>
-                    </div>
-                    <div className={styles.actionCard}>
-                        <Link href="/dashboard/synthesize" className={styles.actionCardLink}>
-                            <div className={styles.actionIcon}>*</div>
-                            <div className={styles.actionContent}>
-                                <h3 className={styles.actionTitle}>Persona Sync</h3>
-                                <p className={styles.actionDescription}>
-                                    Synthesize your digital persona
-                                </p>
-                            </div>
-                        </Link>
-                    </div>
+                    <Link href="/dashboard/create-survey" className={styles.actionCard}>
+                        <div className={styles.actionIcon}>+</div>
+                        <div className={styles.actionContent}>
+                            <h3 className={styles.actionTitle}>Create New Survey</h3>
+                            <p className={styles.actionDescription}>
+                                Generate a new survey link to collect echoes
+                            </p>
+                        </div>
+                    </Link>
+                    <Link href="/dashboard/ritual" className={styles.actionCard}>
+                        <div className={styles.actionIcon}>#</div>
+                        <div className={styles.actionContent}>
+                            <h3 className={styles.actionTitle}>Daily Ritual</h3>
+                            <p className={styles.actionDescription}>
+                                Complete your daily tasks
+                            </p>
+                        </div>
+                    </Link>
+                    <Link href="/dashboard/synthesize" className={styles.actionCard}>
+                        <div className={styles.actionIcon}>*</div>
+                        <div className={styles.actionContent}>
+                            <h3 className={styles.actionTitle}>Persona Sync</h3>
+                            <p className={styles.actionDescription}>
+                                Synthesize your digital persona
+                            </p>
+                        </div>
+                    </Link>
                 </div>
             </div>
 
@@ -107,13 +84,6 @@ export function DashboardChatArea() {
                         </div>
                     </div>
                 ))}
-                {messages.length > 0 && (
-                    <div className={styles.viewFullLink}>
-                        <Link href="/chat/1">
-                            View full conversation ({messages.length} messages) →
-                        </Link>
-                    </div>
-                )}
             </div>
 
             <div className={styles.inputArea}>

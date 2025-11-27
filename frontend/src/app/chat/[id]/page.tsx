@@ -13,8 +13,6 @@ import { ChatMessage } from '@/components/organisms/ChatMessage';
 import { ShareOptions } from '@/components/molecules/ShareOptions';
 import { TopicSuggestion } from '@/components/molecules/TopicSuggestion';
 import { ChatMessage as ChatMessageType } from '@/lib/mock-data/chat';
-import { connectionInteractions } from '@/lib/micro-interactions';
-import { useAnnouncement, useReducedMotion } from '@/hooks/useAccessibility';
 import styles from './page.module.css';
 
 export default function ChatPage({ params }: { params: Promise<{ id: string }> }) {
@@ -29,9 +27,6 @@ export default function ChatPage({ params }: { params: Promise<{ id: string }> }
   const [sharePanelOpen, setSharePanelOpen] = useState(false);
   const [messageReactions, setMessageReactions] = useState<Record<string, Record<string, number>>>({});
   const inputRef = useRef<HTMLInputElement>(null);
-  const topicSuggestionRef = useRef<HTMLDivElement>(null);
-  const reducedMotion = useReducedMotion();
-  const announce = useAnnouncement();
 
   const { data: history } = useQuery({
     queryKey: ['chat-history', id],
@@ -152,8 +147,7 @@ export default function ChatPage({ params }: { params: Promise<{ id: string }> }
     inputRef.current?.focus();
   };
 
-  const handleReact = async (messageId: string, emoji: string) => {
-    // Update local state immediately
+  const handleReact = (messageId: string, emoji: string) => {
     setMessageReactions((prev) => {
       const current = prev[messageId] ?? {};
       return {
@@ -164,47 +158,7 @@ export default function ChatPage({ params }: { params: Promise<{ id: string }> }
         },
       };
     });
-    
-    // Send reaction to backend
-    try {
-      await chatApi.react(id, messageId, emoji);
-      announce(`Reaction ${emoji} sent`, 'polite');
-    } catch (error) {
-      console.error('Failed to send reaction:', error);
-      // Revert on error
-      setMessageReactions((prev) => {
-        const current = prev[messageId] ?? {};
-        return {
-          ...prev,
-          [messageId]: {
-            ...current,
-            [emoji]: Math.max(0, (current[emoji] ?? 1) - 1),
-          },
-        };
-      });
-    }
   };
-  
-  // Apply topic glow animation when user is idle
-  useEffect(() => {
-    if (!reducedMotion && topicSuggestionRef.current && !isSending && messages.length > 0) {
-      const timeout = setTimeout(() => {
-        connectionInteractions.topicGlow(topicSuggestionRef.current!);
-      }, 5000); // After 5 seconds of inactivity
-      
-      return () => clearTimeout(timeout);
-    }
-  }, [reducedMotion, isSending, messages.length]);
-  
-  // Announce new messages
-  useEffect(() => {
-    if (messages.length > 0) {
-      const lastMessage = messages[messages.length - 1];
-      if (lastMessage.role === 'assistant') {
-        announce(`New message from ${persona?.name || 'your persona'}`, 'polite');
-      }
-    }
-  }, [messages, persona, announce]);
 
   const connectionStatus = isSending ? 'typing…' : 'online';
 
@@ -261,7 +215,7 @@ export default function ChatPage({ params }: { params: Promise<{ id: string }> }
         )}
       </div>
 
-      <div className={styles.suggestions} ref={topicSuggestionRef}>
+      <div className={styles.suggestions}>
         <TopicSuggestion
           topics={topicSuggestions}
           recentTopics={recentTopics}
