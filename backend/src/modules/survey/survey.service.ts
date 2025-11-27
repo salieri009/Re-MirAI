@@ -58,12 +58,12 @@ export class SurveyService {
     userId: string,
     dto: CreateSurveyDto,
   ): Promise<SurveyResponseDto> {
-    const shareableLink = nanoid(10);
+    const shareableLink: string = nanoid(10);
 
     const survey = await this.prisma.survey.create({
       data: {
         userId,
-        title: dto.title ?? null,
+        title: dto.title ?? undefined,
         minResponses: dto.minResponses ?? 3,
         shareableLink,
         status: 'COLLECTING',
@@ -87,7 +87,10 @@ export class SurveyService {
   async getPublicSurvey(linkOrId: string): Promise<PublicSurveyDto> {
     const survey = await this.prisma.survey.findFirst({
       where: {
-        OR: [{ id: linkOrId }, { shareableLink: linkOrId }],
+        OR: [
+          { id: linkOrId },
+          { shareableLink: linkOrId },
+        ],
         status: 'COLLECTING',
       },
     });
@@ -138,7 +141,7 @@ export class SurveyService {
     await this.prisma.surveyResponse.create({
       data: {
         surveyId,
-        answers: dto.answers as Prisma.JsonValue,
+        answers: dto.answers as Prisma.InputJsonValue,
         fingerprintHash: dto.fingerprintHash,
       },
     });
@@ -159,8 +162,8 @@ export class SurveyService {
   private mapToResponseDto(
     survey: Survey & { responses: SurveyResponse[] },
   ): SurveyResponseDto {
-    const frontendUrl = process.env.FRONTEND_URL ?? 'http://localhost:3000';
-    const shareable = survey.shareableLink ?? survey.id;
+    const frontendUrl: string = process.env.FRONTEND_URL ?? 'http://localhost:3000';
+    const shareable: string = survey.shareableLink ?? survey.id;
 
     return {
       id: survey.id,
@@ -169,7 +172,7 @@ export class SurveyService {
       title: survey.title ?? undefined,
       shareableLink: `${frontendUrl}/ritual/${shareable}`,
       minResponses: survey.minResponses,
-      responseCount: survey.responses?.length || 0,
+      responseCount: survey.responses?.length ?? 0,
       createdAt: survey.createdAt,
       expiresAt: survey.expiresAt,
     };
