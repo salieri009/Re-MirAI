@@ -4,6 +4,7 @@ import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { PrismaModule } from './prisma/prisma.module';
 import { AuthModule } from './modules/auth/auth.module';
+import { SurveyModule } from './modules/survey/survey.module';
 import databaseConfig from './config/database.config';
 import jwtConfig from './config/jwt.config';
 
@@ -15,6 +16,7 @@ import jwtConfig from './config/jwt.config';
     }),
     PrismaModule,
     AuthModule,
+    SurveyModule,
   ],
   controllers: [AppController],
   providers: [AppService],

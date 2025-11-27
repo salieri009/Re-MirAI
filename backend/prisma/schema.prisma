@@ -4,7 +4,12 @@ generator client {
 
 datasource db {
   provider = "postgresql"
+  url      = env("DATABASE_URL")
 }
+
+// ============================================================================
+// CORE MODELS (Currently Active)
+// ============================================================================
 
 model User {
   id        String   @id @default(uuid())
@@ -16,15 +21,19 @@ model User {
 
   surveys   Survey[]
   personas  Persona[]
+  // TODO: Phase 2 - Uncomment when Chat module is ready
+  // chatSessions ChatSession[]
 
   @@map("users")
 }
 
-// Placeholder models - will be expanded in Week 2-3
 model Survey {
   id        String   @id @default(uuid())
   userId    String
-  status    String   @default("ACTIVE")
+  status    String   @default("COLLECTING") // COLLECTING, READY, COMPLETED, ARCHIVED
+  title     String?
+  shareableLink String? @unique
+  minResponses Int     @default(3)
   createdAt DateTime @default(now())
   expiresAt DateTime @default(dbgenerated("NOW() + INTERVAL '30 days'"))
 
@@ -33,6 +42,7 @@ model Survey {
 
   @@index([userId])
   @@index([status])
+  @@index([shareableLink])
   @@map("surveys")
 }
 
@@ -59,14 +69,54 @@ model Persona {
   statIntellect   Int      @default(50)
   statKindness    Int      @default(50)
   statEnergy      Int      @default(50)
-  systemPrompt    String
+  systemPrompt    String   @db.Text
   greetingMessage String?
   bondLevel       Int      @default(0)
+  rarity          String   @default("COMMON") // COMMON, RARE, EPIC, LEGENDARY
   createdAt       DateTime @default(now())
   updatedAt       DateTime @updatedAt
 
   user            User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  
+  // TODO: Phase 2 - Uncomment when Chat module is ready
+  // chatSessions   ChatSession[]
+  // traits         PersonaTrait[]
 
   @@index([userId])
   @@map("personas")
 }
+
+// ============================================================================
+// PHASE 2: CHAT SYSTEM (Uncomment when implementing Chat Module)
+// ============================================================================
+
+// model ChatSession {
+//   id         String   @id @default(uuid())
+//   userId     String
+//   personaId  String
+//   startedAt  DateTime @default(now())
+//   lastMsgAt  DateTime @default(now())
+//   
+//   user       User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+//   persona    Persona  @relation(fields: [personaId], references: [id], onDelete: Cascade)
+//   messages   ChatMessage[]
+//
+//   @@index([userId])
+//   @@index([personaId])
+//   @@map("chat_sessions")
+// }
+
+// model ChatMessage {
+//   id         String   @id @default(uuid())
+//   sessionId  String
+//   sender     String   // "USER" | "AI"
+//   content    String   @db.Text
+//   reactions  Json?    // {emoji: "❤️", count: 5}
+//   createdAt  DateTime @default(now())
+//
+//   session    ChatSession @relation(fields: [sessionId], references: [id], onDelete: Cascade)
+//
+//   @@index([sessionId])
+//   @@index([createdAt])
+//   @@map("chat_messages")
+// }

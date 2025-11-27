@@ -1,4 +1,12 @@
-import { Controller, Get, Post, Body, UseGuards, Req, HttpCode } from '@nestjs/common';
+import {
+  Controller,
+  Get,
+  Post,
+  Body,
+  UseGuards,
+  Req,
+  HttpCode,
+} from '@nestjs/common';
 import { AuthGuard } from '@nestjs/passport';
 import { AuthService } from './auth.service';
 
@@ -24,4 +32,3 @@ export class AuthController {
     return this.authService.refreshAccessToken(refreshToken);
   }
 }
-

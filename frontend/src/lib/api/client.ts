@@ -1,7 +1,5 @@
-// Base API Client
-// TODO: Uncomment when backend is ready
+// Base API Client - Connected to Backend
 import axios, { AxiosInstance, AxiosError } from 'axios';
-// import { useAuthStore } from '@/stores/authStore';
 
 const API_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3001';
 
@@ -11,68 +9,45 @@ const apiClient: AxiosInstance = axios.create({
   headers: {
     'Content-Type': 'application/json'
   },
-  timeout: 30000 // 30 second timeout
+  timeout: 30000, // 30 second timeout
+  withCredentials: true, // Enable cookies for auth
 });
 
-// Request interceptor: Add auth token
-// TODO: Uncomment when backend is ready
-/*
+// Request interceptor: Add auth token from localStorage
 apiClient.interceptors.request.use((config) => {
-  const token = useAuthStore.getState().token;
+  // Get token from localStorage (set by auth module)
+  const token = typeof window !== 'undefined' ? localStorage.getItem('auth_token') : null;
   if (token) {
     config.headers.Authorization = `Bearer ${token}`;
   }
   return config;
 });
-*/
 
 // Response interceptor: Comprehensive error handling
-// TODO: Uncomment when backend is ready
-/*
 apiClient.interceptors.response.use(
   (response) => response,
   async (error: AxiosError) => {
     // Network error (no response)
     if (!error.response) {
       console.error('Network connection lost. Please check your internet.');
-      return Promise.reject(error);
+      return Promise.reject(new Error('Network error'));
     }
 
     const { status, data } = error.response;
 
     switch (status) {
       case 401:
-        // Unauthorized - try refresh token
-        // const refreshToken = useAuthStore.getState().refreshToken;
-        
-        // if (refreshToken && !error.config._retry) {
-        //   error.config._retry = true;
+        // Unauthorized - redirect to login
+        if (typeof window !== 'undefined') {
+          localStorage.removeItem('auth_token');
+          window.location.href = '/login';
+        }
+        break;
           
         //   try {
         //     // Attempt to refresh access token
         //     const response = await axios.post(
-        //       `${API_URL}/v1/auth/refresh`,
-        //       { refresh_token: refreshToken }
-        //     );
-            
-        //     const { access_token } = response.data;
-        //     useAuthStore.getState().setToken(access_token);
-            
-        //     // Retry original request with new token
-        //     error.config.headers.Authorization = `Bearer ${access_token}`;
-        //     return apiClient(error.config);
-        //   } catch (refreshError) {
-        //     // Refresh failed - logout user
-        //     useAuthStore.getState().logout();
-        //     window.location.href = '/login';
-        //   }
-        // } else {
-        //   // No refresh token - logout
-        //   useAuthStore.getState().logout();
-        //   window.location.href = '/login';
-        // }
-        break;
-
+      
       case 403:
         console.error('Access denied.');
         break;
@@ -100,7 +75,6 @@ apiClient.interceptors.response.use(
     return Promise.reject(error);
   }
 );
-*/
 
 export default apiClient;
 
