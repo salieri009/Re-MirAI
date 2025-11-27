@@ -3,7 +3,7 @@ import {
   Injectable,
   NotFoundException,
 } from '@nestjs/common';
-import { Prisma, Survey, SurveyResponse } from '@prisma/client';
+import { Prisma } from '@prisma/client';
 import { nanoid } from 'nanoid';
 import { PrismaService } from '../../prisma/prisma.service';
 import {
@@ -13,6 +13,10 @@ import {
   SurveyQuestion,
   SurveyResponseDto,
 } from './dto/survey.dto';
+
+type SurveyWithResponses = Prisma.SurveyGetPayload<{
+  include: { responses: true };
+}>;
 
 @Injectable()
 export class SurveyService {
@@ -58,12 +62,12 @@ export class SurveyService {
     userId: string,
     dto: CreateSurveyDto,
   ): Promise<SurveyResponseDto> {
-    const shareableLink: string = nanoid(10);
+    const shareableLink = nanoid(10);
 
-    const survey = await this.prisma.survey.create({
+    const survey: SurveyWithResponses = await this.prisma.survey.create({
       data: {
         userId,
-        title: dto.title ?? undefined,
+        title: dto.title ?? null,
         minResponses: dto.minResponses ?? 3,
         shareableLink,
         status: 'COLLECTING',
@@ -75,7 +79,7 @@ export class SurveyService {
   }
 
   async getMySurveys(userId: string): Promise<SurveyResponseDto[]> {
-    const surveys = await this.prisma.survey.findMany({
+    const surveys: SurveyWithResponses[] = await this.prisma.survey.findMany({
       where: { userId },
       include: { responses: true },
       orderBy: { createdAt: 'desc' },
@@ -87,10 +91,7 @@ export class SurveyService {
   async getPublicSurvey(linkOrId: string): Promise<PublicSurveyDto> {
     const survey = await this.prisma.survey.findFirst({
       where: {
-        OR: [
-          { id: linkOrId },
-          { shareableLink: linkOrId },
-        ],
+        OR: [{ id: linkOrId }, { shareableLink: linkOrId }],
         status: 'COLLECTING',
       },
     });
@@ -159,11 +160,9 @@ export class SurveyService {
     }
   }
 
-  private mapToResponseDto(
-    survey: Survey & { responses: SurveyResponse[] },
-  ): SurveyResponseDto {
-    const frontendUrl: string = process.env.FRONTEND_URL ?? 'http://localhost:3000';
-    const shareable: string = survey.shareableLink ?? survey.id;
+  private mapToResponseDto(survey: SurveyWithResponses): SurveyResponseDto {
+    const frontendUrl = process.env.FRONTEND_URL ?? 'http://localhost:3000';
+    const shareable = survey.shareableLink ?? survey.id;
 
     return {
       id: survey.id,
@@ -172,7 +171,7 @@ export class SurveyService {
       title: survey.title ?? undefined,
       shareableLink: `${frontendUrl}/ritual/${shareable}`,
       minResponses: survey.minResponses,
-      responseCount: survey.responses?.length ?? 0,
+      responseCount: survey.responses.length,
       createdAt: survey.createdAt,
       expiresAt: survey.expiresAt,
     };

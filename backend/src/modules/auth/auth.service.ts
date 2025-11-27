@@ -1,6 +1,13 @@
 import { Injectable, UnauthorizedException } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
+import { User } from '@prisma/client';
+import type { Profile as GoogleProfile } from 'passport-google-oauth20';
 import { PrismaService } from '../../prisma/prisma.service';
+
+export interface TokenPayload {
+  sub: string;
+  email: string;
+}
 
 @Injectable()
 export class AuthService {
@@ -9,7 +16,13 @@ export class AuthService {
     private jwtService: JwtService,
   ) {}
 
-  async validateGoogleUser(profile: any) {
+  async validateGoogleUser(profile: GoogleProfile): Promise<User> {
+    const primaryEmail = profile.emails?.[0]?.value;
+
+    if (!primaryEmail) {
+      throw new UnauthorizedException('Google profile missing email');
+    }
+
     // Find or create user
     let user = await this.prisma.user.findUnique({
       where: { googleId: profile.id },
@@ -19,8 +32,8 @@ export class AuthService {
       user = await this.prisma.user.create({
         data: {
           googleId: profile.id,
-          email: profile.emails[0].value,
-          name: profile.displayName,
+          email: primaryEmail,
+          name: profile.displayName ?? null,
         },
       });
     }
@@ -28,8 +41,8 @@ export class AuthService {
     return user;
   }
 
-  async login(user: any) {
-    const payload = { sub: user.id, email: user.email };
+  login(user: User) {
+    const payload: TokenPayload = { sub: user.id, email: user.email };
 
     // Generate access token (1 hour expiry)
     const accessToken = this.jwtService.sign(payload, {
@@ -56,7 +69,7 @@ export class AuthService {
 
   async refreshAccessToken(refreshToken: string) {
     try {
-      const payload = this.jwtService.verify(refreshToken, {
+      const payload = this.jwtService.verify<TokenPayload>(refreshToken, {
         secret: process.env.JWT_REFRESH_SECRET,
       });
 
@@ -69,7 +82,7 @@ export class AuthService {
       }
 
       return this.login(user);
-    } catch (error) {
+    } catch {
       throw new UnauthorizedException('Invalid refresh token');
     }
   }

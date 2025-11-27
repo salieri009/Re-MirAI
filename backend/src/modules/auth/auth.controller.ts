@@ -1,14 +1,20 @@
 import {
+  Body,
   Controller,
   Get,
-  Post,
-  Body,
-  UseGuards,
-  Req,
   HttpCode,
+  Post,
+  Req,
+  UseGuards,
 } from '@nestjs/common';
 import { AuthGuard } from '@nestjs/passport';
+import type { Request } from 'express';
+import type { User } from '@prisma/client';
 import { AuthService } from './auth.service';
+
+interface GoogleAuthRequest extends Request {
+  user: User;
+}
 
 @Controller('v1/auth')
 export class AuthController {
@@ -22,7 +28,7 @@ export class AuthController {
 
   @Get('google/callback')
   @UseGuards(AuthGuard('google'))
-  async googleAuthCallback(@Req() req) {
+  googleAuthCallback(@Req() req: GoogleAuthRequest) {
     return this.authService.login(req.user);
   }
 
