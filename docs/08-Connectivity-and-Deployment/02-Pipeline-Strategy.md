@@ -1,123 +1,178 @@
 # 02. Pipeline Strategy (FE ↔ BE Deployment)
 
-**Version:** 1.0  
-**Owners:** DevOps + Platform Team  
-**Scope:** Build/test/deploy automation covering Next.js frontend, NestJS backend, Prisma migrations, and integration verification described in `01-Frontend-Backend-Connectivity-Test-Plan.md`.
+**Version:** 1.2
+**Owners:** DevOps + Platform Team
+**Scope:** Build, Test, and Deployment automation for Next.js (Frontend) and NestJS (Backend) using GitHub Actions, Vercel, and Railway.
 
 ---
 
 ## 1. Goals
 
-1. **Consistent CI/CD** for both apps with shared quality gates (lint, tests, connectivity smoke).  
-2. **Zero-downtime releases** via blue/green or rolling strategies.  
-3. **Automated schema + env validation** before traffic shifts.  
+1.  **Automated CI/CD**: Consistent build and test pipelines for both applications with shared quality gates (linting, unit tests, type checking).
+2.  **Zero-Downtime Deployment**: Leverage Vercel's atomic deployments and Railway's rolling updates to ensure availability.
+3.  **Environment Parity**: Maintain strict configuration alignment between Staging and Production environments.
+4.  **Feature Assurance**: Ensure critical feature paths (Survey, Persona, Chat) are validated by the pipeline before any code reaches production.
 
 ---
 
 ## 2. Pipeline Overview
 
-```
-┌────────────┐    ┌──────────────┐    ┌─────────────┐    ┌──────────────┐
-│ Source     │ -> │ Build & Test │ -> │ Deploy Stg  │ -> │ Deploy Prod  │
-│ (GitHub)   │    │ (CI)         │    │ (CD stage)  │    │ (blue/green) │
-└────────────┘    └──────────────┘    └─────────────┘    └──────────────┘
+The pipeline utilizes **GitHub Actions** for Continuous Integration (CI) and platform-native integrations (Vercel/Railway) for Continuous Deployment (CD).
+
+```mermaid
+graph LR
+    A[Push to GitHub] --> B{Branch?}
+    B -- main --> C[Production Pipeline]
+    B -- develop --> D[Staging Pipeline]
+    B -- feature/* --> E[PR Checks]
+
+    subgraph CI [GitHub Actions]
+        E --> F[Lint & Type Check]
+        E --> G[Unit Tests]
+    end
+
+    subgraph CD_Staging [Staging Deployment]
+        D --> H[Build Frontend]
+        D --> I[Build Backend]
+        H --> J[Deploy to Vercel Preview]
+        I --> K[Deploy to Railway Staging]
+    end
+
+    subgraph CD_Prod [Production Deployment]
+        C --> L[Build Frontend]
+        C --> M[Build Backend]
+        L --> N[Deploy to Vercel Prod]
+        M --> O[Deploy to Railway Prod]
+    end
 ```
 
 ---
 
 ## 3. CI (Build & Test) Steps
 
-| Step | Frontend | Backend |
-|------|----------|---------|
-| Install deps | `npm ci` | `npm ci` |
-| Lint | `npm run lint` | `npm run lint` |
-| Unit tests | `npm run test` (if available) | `npm run test` |
-| Type check | `npm run typecheck` | `tsc --noEmit` |
-| Connectivity stubs | Pact/contract tests hitting mocked API | Jest hitting Swagger mocks |
-| Artifact build | `npm run build` (Next.js) | `npm run build` (Nest) |
+These steps run on every Pull Request and push to main/develop branches.
 
-Artifacts stored in GitHub Actions caches or artifact store (`frontend/.next`, `backend/dist`).
-
----
-
-## 4. CD Staging Pipeline
-
-1. **Prereq:** `main` branch merged; CI green.  
-2. **Infrastructure provisioning:**  
-   - Backend: deploy Docker image to staging cluster (`stg-api`).  
-   - Frontend: push static build to Cloudflare Pages staging environment.  
-3. **Database:** `npx prisma migrate deploy` against staging DB.  
-4. **Env config:** update `NEXT_PUBLIC_API_URL` to staging API domain; ensure secrets synced (Google OAuth, JWT).  
-5. **Smoke tests:** run `frontend-backend-connectivity` suite (Doc 01).  
-6. **Manual QA:** verify Summoning ritual, persona room, login.  
-7. **Gate:** release manager approval before prod deploy.
+| Step | Frontend (Next.js) | Backend (NestJS) |
+| :--- | :--- | :--- |
+| **Install Dependencies** | `npm ci` | `npm ci` |
+| **Linting** | `npm run lint` | `npm run lint` |
+| **Type Checking** | `npm run typecheck` | `tsc --noEmit` |
+| **Unit Tests** | `npm run test` | `npm run test` |
+| **Build Verification** | `npm run build` | `npm run build` |
 
 ---
 
-## 5. Production Deployment Strategy
+## 4. Feature-Specific Pipeline Gates
 
-### 5.1 Backend (NestJS)
-- Use **blue/green** or canary: deploy new image to `api-vNext`, run migrations with `--create-only`, cut traffic via load balancer flip.  
-- Rollback plan: switch LB back to previous version, run `prisma migrate resolve --rolled-back`.  
+To ensure the stability of core features defined in `docs/02-project-overview/features`, the following gates are enforced during the **Staging Smoke Test** phase.
 
-### 5.2 Frontend (Next.js)
-- Publish to Cloudflare Pages / Vercel with atomic deploys.  
-- Configure environment variable to point to new API slot only after backend healthy.  
+### F-001: Survey System Gates
+*   **Contract Check**: The `CreateSurveyDto` must match the frontend's `surveyApi.create` payload.
+*   **Smoke Test**: A survey created in Staging must successfully generate a public link (Validation of **FR-001.1**).
 
-### 5.3 Ordering
-1. Deploy backend & migrations.  
-2. Run smoke tests pointing to `api-vNext`.  
-3. Flip frontend env to new API.  
+### F-002: Persona Synthesis Gates
+*   **Performance Gate**: The summoning process must complete within 60 seconds. If the smoke test times out, the deployment is marked as **FAILED** (Validation of **NFR-002.1**).
+*   **Data Integrity**: The synthesized persona must contain valid stats (Validation of **FR-002.1**).
 
----
-
-## 6. Automation Details
-
-| Tool | Usage |
-|------|-------|
-| GitHub Actions | `ci-frontend.yml`, `ci-backend.yml`, `deploy-staging.yml`, `deploy-prod.yml`. |
-| Docker | Containerize Nest service; use multi-stage builds for smaller images. |
-| Prisma | `migrate deploy` in CD; use `db push` only for local dev. |
-| Monitoring hooks | After deploy, hit `/health`, log version (commit SHA) for tracing. |
+### F-003: Chat Interface Gates
+*   **Latency Check**: The first token of a chat response must be received within 3 seconds. If latency exceeds this threshold in Staging, the deployment is blocked (Validation of **NFR-003.1**).
 
 ---
 
-## 7. Rollback & Incident Response
+## 5. CD Staging Pipeline
 
-1. **Auto rollback triggers:** API error rate >5%, contract tests failing, Summoning stage stuck >5 min.  
-2. **Manual steps:**  
-   - Backend: redeploy previous image, rerun last known good migrations (or revert).  
-   - Frontend: revert to previous Pages/Vercel deployment.  
-3. **Postmortem:** log in Notion/Confluence; update pipelines to add missing guardrails.  
+**Trigger**: Push to `develop` branch.
 
----
+1.  **Backend Deployment (Railway)**:
+    *   Railway detects the commit and triggers a build.
+    *   **Migration**: `npx prisma migrate deploy` runs automatically during the build or start phase.
+    *   **Health Check**: Railway verifies the service is up before routing traffic.
 
-## 8. Future Enhancements
+2.  **Frontend Deployment (Vercel)**:
+    *   Vercel detects the commit and triggers a "Preview" deployment.
+    *   **Environment**: Uses Staging environment variables (pointing to Railway Staging API).
+    *   **Verification**: URL is generated (e.g., `remirai-git-develop.vercel.app`) for QA.
 
-- Add **integration test** stage hitting real API from Next.js Playwright scripts.  
-- Introduce **feature flag toggles** (LaunchDarkly) to roll out Summoning enhancements gradually.  
-- Implement **database migration simulator** (shadow DB) to catch Prisma drift before staging.  
-- Add **chaos tests** (kill backend pod, ensure frontend error UX remains acceptable).  
-
----
-
-## 9. Alignment with `02-project-overview`
-
-> “Each feature file includes use cases, functional requirements (FR), and non-functional requirements (NFR).” — `02-Core-Features.md`.
-
-Pipeline responsibilities per core feature:
-
-| Feature | Pipeline Enforcement |
-|---------|---------------------|
-| F-001 Survey System | CI contract tests block deployments if DTOs drift; staging smoke tests exercise `/v1/surveys/*`. |
-| F-002 Persona Synthesis | Blue/green deploy ensures Summoning workers can warm up before user traffic (per Phase 1 roadmap). |
-| F-003 AI Chat Interface | SSE smoke tests required before flipping frontend env; latency tracked post-release. |
-| F-004 Persona Card / F-005 Social / F-006 Gamification | Feature-flag deploys + canary strategy let us align releases with viral growth goals outlined in `01-Project-Goals.md`. |
-
-Roadmap dependencies (`04-Roadmap.md`) tie to pipeline gates: Phase 1 (MVP) must pass Survey + Persona checks, Phase 2 adds Chat streaming asserts, Phase 3 introduces monetization toggles managed by feature flags in the CD process.
+3.  **Smoke Tests**:
+    *   GitHub Action `frontend-backend-connectivity` runs against the Staging URLs, executing the checks defined in **Section 4**.
 
 ---
 
-**Last Updated:** 2025-11-27  
-**Next Review:** After Summoning API endpoints reach MVP (Doc 07 reference). 
+## 6. Production Deployment Strategy
 
+**Trigger**: Push to `main` branch (or Release Tag).
+
+### 6.1 Backend (Railway)
+*   **Strategy**: Rolling Update.
+*   **Process**: Railway builds the new container. Once healthy, it replaces the old instance.
+*   **Rollback**: Instant rollback to the previous deployment via Railway Dashboard if health checks fail.
+
+### 6.2 Frontend (Vercel)
+*   **Strategy**: Atomic Deployment.
+*   **Process**: Vercel builds the new version. It is deployed to a unique URL first. Once checks pass, the main domain (`remirai.app`) is updated to point to this deployment.
+*   **Rollback**: Instant rollback to the previous deployment ID via Vercel Dashboard.
+
+### 6.3 Database Migrations
+*   **Safety**: Migrations are run as part of the deployment process.
+*   **Pre-requisite**: Ensure migrations are non-destructive (e.g., add columns, don't rename/delete without a multi-step process).
+
+---
+
+## 7. Automation Details
+
+### 7.1 GitHub Actions Configuration
+We use standard actions to ensure code quality before deployment.
+
+**Example: `.github/workflows/ci.yml`**
+```yaml
+name: CI
+on: [push, pull_request]
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - name: Setup Node
+        uses: actions/setup-node@v3
+        with:
+          node-version: '18'
+      
+      - name: Install Dependencies
+        run: npm ci
+        
+      - name: Lint
+        run: npm run lint
+        
+      - name: Test
+        run: npm run test
+```
+
+### 7.2 Platform Configuration
+*   **Vercel**: Connected to GitHub repository. "Framework Preset" set to Next.js.
+*   **Railway**: Connected to GitHub repository. "Watch Paths" configured to trigger only on relevant folder changes (e.g., `/backend`).
+
+---
+
+## 8. Rollback & Incident Response
+
+1.  **Automatic Rollback**:
+    *   **Vercel**: Automatically cancels deployment if the build fails.
+    *   **Railway**: Keeps the previous instance running if the new build fails to start or pass health checks.
+
+2.  **Manual Rollback**:
+    *   **Frontend**: Go to Vercel Dashboard > Deployments > Select previous successful deploy > "Redeploy" or "Promote to Production".
+    *   **Backend**: Go to Railway Dashboard > Deployments > Select previous successful deploy > "Rollback".
+
+3.  **Incident Logging**:
+    *   All deployment failures and rollbacks must be logged in the incident tracker for post-mortem analysis.
+
+---
+
+## 9. Alignment with Project Goals
+
+This pipeline strategy directly supports the project's core goals:
+
+*   **Speed**: Rapid iteration via automated CI and preview deployments.
+*   **Reliability**: Automated testing and health checks prevent broken code from reaching production.
+*   **Scalability**: Vercel and Railway manage infrastructure scaling automatically, allowing the team to focus on feature development (Survey, Persona, Chat).
