@@ -101,6 +101,37 @@ To clarify the distinction:
 
 ---
 
+## 🔍 Comprehensive UX/UI & Frontend Review
+
+**Goal:** Review the Survey Hub to ensure information reliability, UX/UI immersion, animation relevance, and provide actionable improvements.
+
+### 1. Information Verification
+*   **Unverified Metrics:** The plan mentions "Response Count" and "Share Count" on survey cards. We need to verify if the `Survey` entity in the database aggregates these counts or if they need to be calculated on-the-fly (which could be a performance bottleneck).
+*   **Status Logic:** The "Expired" status implies surveys have a `validUntil` date. This field needs to be confirmed in the backend schema to ensure the "Status Badge" logic works as intended.
+
+### 2. UX/UI Immersion Check
+*   **Flow Breakers:**
+    *   **Empty State:** The plan mentions an "Empty State Illustration" but doesn't specify what it is. A generic "No Data" message would break the "Control Center" vibe. It needs to be a call to action (e.g., "Begin your first reflection").
+    *   **Grid Overload:** If a user has 20+ surveys, a simple grid might become overwhelming. Pagination or a "Load More" button is missing from the specs.
+*   **Immersion Strength:** The "Control Center" concept with the dark, card-based UI fits well. It feels professional yet consistent with the "Digital Mirror" theme.
+
+### 3. Animation & Module Relevance
+*   **Relevance:**
+    *   **Staggered Grid:** The "Card Grid Stagger" animation is **essential** for making the data feel manageable and "loaded" rather than just appearing.
+    *   **Copy Link Success:** The "Morphing Button" (Scale -> Green -> Scale) provides excellent tactile feedback for a key action.
+*   **Missing Interactions:**
+    *   **Hover Depth:** The cards are flat. Adding a "Lift on Hover" (z-index + shadow) would reinforce interactivity and make the "Quick Actions" feel more accessible.
+
+### 4. UX/UI Weaknesses & Improvement Proposals
+
+| Category | Weakness | Improvement Proposal |
+| :--- | :--- | :--- |
+| **Onboarding** | Boring Empty State | **"First Spark" CTA:** Design a dedicated "Empty State" component that isn't just an illustration, but a "Create First Survey" card that pulses gently, inviting the user to start. |
+| **Usability** | Hard-to-Hit Actions | **Action Bar Reveal:** Instead of cramping buttons on the card, reveal a "Quick Action Bar" (Copy, Share, Delete) when the user hovers over the card, keeping the UI clean. |
+| **Feedback** | Delete Anxiety | **"Undo" Toast:** When deleting a survey, show a "Survey Deleted (Undo)" toast notification for 5 seconds instead of a jarring confirmation modal, for a smoother flow. |
+
+---
+
 ## Implementation Plan
 
 ### 1. Component Breakdown

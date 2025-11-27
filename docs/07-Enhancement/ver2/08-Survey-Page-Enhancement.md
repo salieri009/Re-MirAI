@@ -220,18 +220,34 @@ The following HTML structure is the **definitive source of truth** for the ver2 
 
 ---
 
-## Purpose-Driven UX Design
+## 🔍 Comprehensive UX/UI & Frontend Review
 
-### Detailed UX/UI Analysis (ver2)
+**Goal:** Review the Survey Page to ensure information reliability, UX/UI immersion, animation relevance, and provide actionable improvements.
 
-### Strengths
-- **Contextual Clarity:** The "Active" state on the "Surveys" nav item (underline) helps users know exactly where they are.
-- **Visual Feedback:** The toggle switch for AI settings provides clear on/off status with color changes (`peer-checked:bg-secondary`).
-- **Aesthetic Integration:** The form inputs use a dark background (`bg-[#211c27]`) that blends seamlessly with the page, avoiding the "jarring white box" effect.
+### 1. Information Verification
+*   **Unverified Features:** The "AI Follow-up Questions" toggle implies a complex backend logic where the AI dynamically inserts questions based on previous answers. This is a high-effort feature. We need to verify if the backend currently supports "Dynamic Survey Logic" or if this is just a placeholder UI.
+*   **Template Logic:** The "Question Template" selection (Team Morale, etc.) assumes these templates exist in the database. Verification is needed to ensure the `SurveyTemplate` entity is seeded and available via API.
 
-### Enhancement Goals
-- **Dynamic Preview:** When the user types the survey name, update the "Your Link Will Appear Here" text to show a mock URL (e.g., `re-mir.ai/s/team-synergy`).
-- **Template Details:** When a template is selected, show a small tooltip or summary of what that template includes.
+### 2. UX/UI Immersion Check
+*   **Flow Breakers:**
+    *   **Context Disconnect:** The "Split Layout" (Input vs Preview) is functional but might feel "cold". The user is "Constructing a Mirror", but the UI feels like "Filling a Form".
+    *   **Preview Staticness:** The "Your Link Will Appear Here" box is static until the user types. It could be more engaging if it showed a "Ghost" version of the final card that solidifies as they type.
+*   **Immersion Strength:** The "Architect's Canvas" concept is strong. Using the "Blueprint" grid pattern (`bg-grid-white/5`) effectively communicates that this is a construction zone.
+
+### 3. Animation & Module Relevance
+*   **Relevance:**
+    *   **Live Link Preview:** The "URL Materialization" animation (URL appearing as you type) is **highly relevant**. It gives immediate feedback and makes the abstract concept of a "Link" feel concrete.
+    *   **Copy Success:** Standard but necessary for a utility page.
+*   **Missing Interactions:**
+    *   **Template Preview:** When selecting a template, there's no visual feedback on *what* that template looks like (e.g., sample questions). This forces the user to guess.
+
+### 4. UX/UI Weaknesses & Improvement Proposals
+
+| Category | Weakness | Improvement Proposal |
+| :--- | :--- | :--- |
+| **Clarity** | Blind Template Choice | **Template Drawer:** When a template is selected, slide out a "Mini-Preview" drawer or tooltip showing the first 3 questions, so the user knows what they are choosing. |
+| **Immersion** | Static Preview Box | **Holographic Preview:** Make the "Link Preview" box feel like a hologram being projected. Add a subtle "Scanline" effect and make it "flicker" into existence when the name is typed. |
+| **Guidance** | "AI" Ambiguity | **Feature Explainer:** Add a small "info" icon next to "AI Follow-up Questions" that reveals a tooltip explaining *how* it works (e.g., "AI will ask 1 custom question based on user answers"), managing expectations. |
 
 ---
 

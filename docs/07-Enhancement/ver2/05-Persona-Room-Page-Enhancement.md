@@ -136,19 +136,34 @@ The following HTML structure is the **definitive source of truth** for the ver2 
 
 ---
 
-## Purpose-Driven UX Design
+## 🔍 Comprehensive UX/UI & Frontend Review
 
-### Detailed UX/UI Analysis (ver2)
+**Goal:** Review the Persona Room to ensure information reliability, UX/UI immersion, animation relevance, and provide actionable improvements.
 
-### Strengths
-- **Immediate Impact:** Hero image creates "wow" moment on page load.
-- **Information Density:** Radar chart packs 5 data points into a single, scannable visual.
-- **Clear Hierarchy:** Archetype → Stats → Traits → Analysis flows naturally for progressive disclosure.
+### 1. Information Verification
+*   **Unverified Integrations:** The plan mentions a "Share Modal" with platform-specific formatting (Instagram/Twitter). This requires the `html-to-image` or `dom-to-image` library to generate the "Persona Card" visual on the fly. This dependency is not currently in `package.json` and needs verification.
+*   **Data Consistency:** The "Radar Chart" assumes 5 stats (Creativity, Logic, Empathy, Ambition, Openness). We need to verify if the backend `Persona` model actually stores these specific values or if they need to be derived from the `archetype` or `traits`.
 
-### Enhancement Goals
-- **Interactive Radar Chart:** Allow users to hover over each axis for detailed explanations.
-- **Animated Entrance:** Fade-in animation for sections as user scrolls.
-- **Mobile Optimization:** Stack columns vertically on small screens, ensure hero image remains full-width.
+### 2. UX/UI Immersion Check
+*   **Flow Breakers:**
+    *   **Static "Analysis":** The "In-Depth Analysis" section is described as a "Multi-paragraph narrative". If this is just a wall of text without visual breaks or interactive elements (like "Ask about this trait"), it risks being skipped by users.
+    *   **Navigation Dead-End:** After viewing the persona, the secondary CTA is "Create Your Own Persona". If the user *just* created one, this feels repetitive. A better secondary CTA might be "Visit Ritual Hub" or "View Dashboard".
+*   **Immersion Strength:** The "Gallery" concept with the large Hero Image is excellent. It elevates the persona from "Bot" to "Art", which aligns perfectly with the "Digital Mirror" philosophy.
+
+### 3. Animation & Module Relevance
+*   **Relevance:**
+    *   **Quest Celebration:** The "Confetti + Card Tilt" animation for claiming quests is **highly relevant** for Gamification (F-006). It provides the necessary dopamine hit for engagement.
+    *   **Radar Chart Bloom:** The "Blooming" animation for the stats chart effectively draws attention to the persona's unique attributes.
+*   **Missing Interactions:**
+    *   **Hero Interaction:** The large Hero Image is static. Adding a "Parallax Tilt" or "Glow on Hover" would make it feel more alive and "magical".
+
+### 4. UX/UI Weaknesses & Improvement Proposals
+
+| Category | Weakness | Improvement Proposal |
+| :--- | :--- | :--- |
+| **Engagement** | Static Hero Image | **Parallax Tilt:** Implement a subtle 3D tilt effect on the Hero Image that responds to mouse movement, making the persona feel "trapped" inside the mirror/card. |
+| **Shareability** | Complex Share Flow | **One-Click Copy:** Ensure the "Share" button has a primary "Copy Image to Clipboard" function for instant pasting into Discord/WhatsApp, rather than just a generic modal. |
+| **Retention** | Text Wall | **Interactive Analysis:** Break the "Analysis" text into collapsible sections or "Key Insight" cards that can be flipped or expanded. |
 
 ---
 

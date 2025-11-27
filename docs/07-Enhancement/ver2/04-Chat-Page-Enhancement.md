@@ -136,19 +136,34 @@ The following HTML structure is the **definitive source of truth** for the ver2.
 
 ---
 
-## Purpose-Driven UX Design
+## 🔍 Comprehensive UX/UI & Frontend Review
 
-### Detailed UX/UI Analysis (ver2.1)
+**Goal:** Review the Chat Page to ensure information reliability, UX/UI immersion, animation relevance, and provide actionable improvements.
 
-### Strengths
-- **Contextual Navigation:** Left sidebar keeps users oriented without disrupting conversation flow.
-- **Persistent Persona Presence:** Right sidebar's trait tags and avatar reinforce "who" you're chatting with.
-- **Clean Chat Area:** Centered, max-width design keeps messages readable and focused.
+### 1. Information Verification
+*   **Unverified Integrations:** The design mentions "Voice Input" (microphone button) as an enhancement goal, but the current `frontend/src` codebase does not have any voice-to-text libraries (like `react-speech-recognition`) installed or configured. This is an unverified feature claim.
+*   **Data Consistency:** The "Bond Level" indicator in the header relies on gamification data (F-006). Verification is needed to ensure the `Persona` entity in the backend actually supports a `bondLevel` field and that it's exposed via the API.
 
-### Enhancement Goals
-- **Conversation History:** Add persistent chat history in left sidebar (list of previous conversations).
-- **Mobile Adaptation:** Collapse sidebars into drawer/modal on mobile, show chat-only by default.
-- **Voice Input:** Microphone button in input area for voice-to-text.
+### 2. UX/UI Immersion Check
+*   **Flow Breakers:**
+    *   **Context Switching:** The new "Three-Column Layout" is a massive improvement for immersion, preventing the user from needing to leave the chat to check their profile or other personas.
+    *   **Mobile Experience:** The current plan mentions "Drawers" for mobile, but without careful implementation (e.g., swipe gestures), accessing the nav/persona sidebars on mobile can be clunky.
+*   **Visual Warmth:** The shift to `Plus Jakarta Sans` and the "Unified Palette" (Purple/Mint) significantly improves the "human" feel compared to the previous generic messenger look.
+
+### 3. Animation & Module Relevance
+*   **Relevance:**
+    *   **Typing Indicator:** The "Three Dots" animation is **critical** for the "Sacred Conversation" feel. It creates the illusion of a living entity thinking, rather than just a database query returning text.
+    *   **Message Entrance:** The slide-in animation (User right, AI left) effectively reinforces the "dialogue" metaphor.
+*   **Missing Interactions:**
+    *   **Emotional Feedback:** The "Heart Reaction Burst" is a great addition, but there's no animation for *negative* or *confused* feedback, which might be necessary for model training/refinement.
+
+### 4. UX/UI Weaknesses & Improvement Proposals
+
+| Category | Weakness | Improvement Proposal |
+| :--- | :--- | :--- |
+| **Immersion** | Static History Load | **Staggered History:** When loading the chat, animate the last 5 messages appearing in sequence (bottom-up) rather than a static dump. This makes the chat feel "alive" upon entry. |
+| **Accessibility** | Voice Input Gap | **Implement Web Speech API:** Add a `VoiceInput` component using the native browser Web Speech API for the microphone button, ensuring it has a "Listening" pulse animation. |
+| **Feedback** | Connection Loss | **Reconnecting Pulse:** If the WebSocket disconnects, show a subtle "Reconnecting..." pulse in the status bar (Orange color) to manage user expectations without panic. |
 
 ---
 
