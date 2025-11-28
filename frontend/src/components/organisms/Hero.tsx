@@ -94,17 +94,16 @@ export const Hero = () => {
             <div className="relative z-10 container mx-auto px-4 text-center">
                 <h1
                     ref={titleRef}
-                    className="font-display text-5xl md:text-7xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-primary via-white to-accent mb-6 tracking-tight"
+                    className="font-display text-4xl md:text-5xl font-black text-white mb-4 tracking-[-0.033em] leading-tight"
                 >
-                    Discover the You <br />
-                    That Others See
+                    The mirror reflects your soul. What image do you cast in others?
                 </h1>
 
                 <p
                     ref={subtitleRef}
-                    className="text-lg md:text-xl text-text-muted max-w-2xl mx-auto mb-10 leading-relaxed"
+                    className="text-sm md:text-base text-highlight max-w-2xl mx-auto mb-10 leading-normal"
                 >
-                    Re:MirAI uses advanced AI to analyze your social footprint and reveal the persona you project to the world.
+                    Summon an AI Persona forged from your relationships.
                 </p>
 
                 <div ref={ctaRef} className="flex flex-col sm:flex-row gap-4 justify-center items-center">
