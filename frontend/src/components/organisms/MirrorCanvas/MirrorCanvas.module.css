@@ -1,0 +1,23 @@
+.canvas {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    z-index: var(--z-background);
+}
+
+.mirrorCanvas {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: var(--z-secondary);
+    pointer-events: none;
+    opacity: 0.95;
+    /* Mirror reflection effect */
+    -webkit-box-reflect: below 4px linear-gradient(to bottom, rgba(0, 0, 0, 0.0), rgba(0, 0, 0, 0.2));
+    filter: brightness(1.2) contrast(1.1);
+}

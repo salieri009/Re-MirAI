@@ -1,0 +1,49 @@
+.badge {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--space-xs);
+    padding: var(--space-xs) var(--space-sm);
+    border-radius: var(--radius-pill);
+    font-size: 0.75rem;
+    font-weight: var(--font-weight-semibold);
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    transition: all 0.3s ease;
+}
+
+.icon {
+    font-size: 0.875rem;
+    line-height: 1;
+}
+
+.label {
+    line-height: 1;
+}
+
+.badge.accent {
+    background: hsla(var(--hue-accent), 100%, 50%, 0.15);
+    color: var(--color-accent);
+    border: 1px solid hsla(var(--hue-accent), 100%, 50%, 0.3);
+}
+
+.badge.primary {
+    background: hsla(var(--hue-primary), 100%, 50%, 0.15);
+    color: var(--color-primary);
+    border: 1px solid hsla(var(--hue-primary), 100%, 50%, 0.3);
+    box-shadow: 0 0 12px hsla(var(--hue-primary), 100%, 50%, 0.2);
+}
+
+.badge.highlight {
+    background: hsla(var(--hue-highlight), 100%, 50%, 0.15);
+    color: var(--color-highlight);
+    border: 1px solid hsla(var(--hue-highlight), 100%, 50%, 0.3);
+}
+
+.badge.accent:hover,
+.badge.primary:hover,
+.badge.highlight:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+}
+
+

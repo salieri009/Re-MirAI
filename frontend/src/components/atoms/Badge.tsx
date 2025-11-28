@@ -1,9 +1,11 @@
 import React from 'react';
 import styles from './Badge.module.css';
 
+type BadgeVariant = 'default' | 'primary' | 'accent' | 'outline' | 'success' | 'warning' | 'error';
+
 interface BadgeProps {
   children: React.ReactNode;
-  variant?: 'default' | 'primary' | 'success' | 'warning' | 'error';
+  variant?: BadgeVariant;
   size?: 'sm' | 'md';
 }
 

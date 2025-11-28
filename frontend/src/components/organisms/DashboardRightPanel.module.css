@@ -1,0 +1,117 @@
+.rightPanel {
+  width: 320px;
+  height: 100vh;
+  padding: var(--space-2xl) var(--space-xl);
+  background: rgba(10, 1, 18, 0.8);
+  border-left: 1px solid rgba(255, 255, 255, 0.08);
+  position: sticky;
+  top: 0;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2xl);
+}
+
+.section {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-md);
+}
+
+.sectionKicker {
+  text-transform: uppercase;
+  letter-spacing: 0.3em;
+  color: var(--color-text-muted);
+  font-size: 0.75rem;
+}
+
+.personaCard,
+.surveyCard {
+  border-radius: var(--radius-lg);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  background: rgba(255, 255, 255, 0.03);
+  padding: var(--space-lg);
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-md);
+}
+
+.personaName {
+  font-size: 1.25rem;
+  font-weight: var(--font-weight-semibold);
+}
+
+.personaMeta,
+.cardHint {
+  color: var(--color-text-muted);
+  font-size: 0.9rem;
+}
+
+.cardRow {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.cardRowRight {
+  display: flex;
+  align-items: center;
+  gap: var(--space-sm);
+}
+
+.badge {
+  padding: 0.2rem 0.7rem;
+  border-radius: var(--radius-pill);
+  background: rgba(0, 201, 167, 0.15);
+  color: var(--color-accent);
+  font-size: 0.85rem;
+}
+
+.questList {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-sm);
+}
+
+.questItem {
+  border-radius: var(--radius-md);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  padding: var(--space-md);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background: rgba(255, 255, 255, 0.02);
+}
+
+.questName {
+  font-weight: var(--font-weight-semibold);
+}
+
+.questMeta,
+.questStatus {
+  color: var(--color-text-muted);
+  font-size: 0.85rem;
+}
+
+.links {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-xs);
+}
+
+.links a {
+  color: var(--color-accent);
+  text-decoration: none;
+  font-size: 0.9rem;
+}
+
+.primaryAction {
+  margin-top: var(--space-md);
+  width: 100%;
+}
+
+@media (max-width: 1024px) {
+  .rightPanel {
+    display: none;
+  }
+}

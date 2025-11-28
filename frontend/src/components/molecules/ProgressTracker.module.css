@@ -1,0 +1,99 @@
+.tracker {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-sm);
+    width: 100%;
+}
+
+.steps {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    position: relative;
+    z-index: 2;
+}
+
+.step {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: var(--space-xs);
+    flex: 1;
+}
+
+.circle {
+    width: 2.5rem;
+    height: 2.5rem;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.1);
+    border: 2px solid rgba(255, 255, 255, 0.2);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.3s ease;
+    position: relative;
+}
+
+.circle.active {
+    background: var(--color-accent);
+    border-color: var(--color-accent);
+    box-shadow: 0 0 16px hsla(var(--hue-accent), 100%, 50%, 0.4);
+}
+
+.circle.current {
+    animation: pulse 2s infinite;
+}
+
+@keyframes pulse {
+    0%, 100% {
+        box-shadow: 0 0 16px hsla(var(--hue-accent), 100%, 50%, 0.4);
+    }
+    50% {
+        box-shadow: 0 0 24px hsla(var(--hue-accent), 100%, 50%, 0.6);
+    }
+}
+
+.number {
+    font-size: 0.875rem;
+    font-weight: var(--font-weight-semibold);
+    color: var(--color-text-muted);
+}
+
+.circle.active .number {
+    color: var(--color-text-inverse);
+}
+
+.checkmark {
+    width: 1.25rem;
+    height: 1.25rem;
+    color: var(--color-text-inverse);
+}
+
+.label {
+    font-size: 0.75rem;
+    color: var(--color-text-muted);
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    transition: color 0.3s ease;
+}
+
+.label.active {
+    color: var(--color-text-secondary);
+}
+
+.line {
+    position: relative;
+    height: 2px;
+    background: rgba(255, 255, 255, 0.1);
+    margin-top: calc(-1.25rem - var(--space-xs));
+    z-index: 1;
+}
+
+.progress {
+    height: 100%;
+    background: linear-gradient(90deg, var(--color-accent), var(--color-primary));
+    transition: width 0.5s ease;
+    box-shadow: 0 0 8px hsla(var(--hue-accent), 100%, 50%, 0.3);
+}
+
+

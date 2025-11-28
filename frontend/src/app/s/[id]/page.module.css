@@ -1,7 +1,113 @@
 .container {
   min-height: 100vh;
+  padding: var(--space-2xl);
+  background-color: var(--color-bg-dark);
+  display: flex;
+  justify-content: center;
+}
+
+.shell {
+  width: min(1200px, 100%);
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-xl);
+}
+
+.header {
+  display: flex;
+  justify-content: space-between;
+  gap: var(--space-xl);
+  align-items: flex-start;
+}
+
+.kicker {
+  text-transform: uppercase;
+  letter-spacing: 0.4em;
+  font-size: 0.75rem;
+  color: var(--color-text-secondary);
+}
+
+.stageChips {
+  display: flex;
+  gap: var(--space-sm);
+  flex-wrap: wrap;
+}
+
+.stageChips span {
+  padding: var(--space-xs) var(--space-md);
+  border-radius: var(--radius-pill);
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  font-size: 0.85rem;
+}
+
+.wizardLayout {
+  display: grid;
+  grid-template-columns: 2.5fr 1fr;
+  gap: var(--space-xl);
+}
+
+.wizardPanel {
+  background: rgba(255, 255, 255, 0.03);
+  border-radius: var(--radius-xl);
   padding: var(--space-xl);
-  background-color: var(--color-bg-secondary);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.preview {
+  border-radius: var(--radius-xl);
+  padding: var(--space-xl);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  background: rgba(255, 255, 255, 0.02);
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-lg);
+}
+
+.previewCard {
+  padding: var(--space-md);
+  border-radius: var(--radius-lg);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  background: rgba(255, 255, 255, 0.03);
+  text-align: left;
+}
+
+.previewTitle {
+  font-size: 0.875rem;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: var(--color-text-muted);
+  margin-bottom: var(--space-sm);
+}
+
+.urlPreview {
+  display: flex;
+  align-items: center;
+  gap: var(--space-sm);
+  padding: var(--space-sm);
+  background: rgba(0, 0, 0, 0.2);
+  border-radius: var(--radius-md);
+}
+
+.urlCode {
+  flex: 1;
+  font-size: 0.75rem;
+  color: var(--color-text-secondary);
+  word-break: break-all;
+  font-family: var(--font-mono);
+}
+
+.previewHint {
+  margin-top: var(--space-md);
+  color: var(--color-text-secondary);
+  font-size: 0.95rem;
+}
+
+@media (max-width: 960px) {
+  .wizardLayout {
+    grid-template-columns: 1fr;
+  }
 }
 
 

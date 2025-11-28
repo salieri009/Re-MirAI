@@ -1,0 +1,88 @@
+.messageRow {
+    display: flex;
+    width: 100%;
+    margin-bottom: var(--space-md);
+    opacity: 0;
+    /* Initial state for animation */
+}
+
+.messageRow.user {
+    justify-content: flex-end;
+}
+
+.messageRow.ai {
+    justify-content: flex-start;
+}
+
+.bubble {
+    max-width: 80%;
+    padding: var(--space-md);
+    border-radius: var(--radius-lg);
+    position: relative;
+    transition: all 0.3s ease;
+}
+
+/* User Message Styles */
+.user .bubble {
+    background: linear-gradient(135deg, var(--color-primary) 0%, var(--color-highlight) 100%);
+    color: white;
+    border-bottom-right-radius: var(--radius-sm);
+    box-shadow: 0 4px 12px rgba(217, 70, 239, 0.2);
+}
+
+/* AI Message Styles */
+.ai .bubble {
+    background: var(--color-surface);
+    color: var(--color-text);
+    border: 1px solid var(--color-border);
+    border-bottom-left-radius: var(--radius-sm);
+    box-shadow: var(--shadow-sm);
+}
+
+/* Depth Layers based on Bond Level (applied via inline styles or classes) */
+.depth1 {
+    box-shadow: var(--shadow-sm);
+}
+
+.depth2 {
+    box-shadow: var(--shadow-md);
+}
+
+.depth3 {
+    box-shadow: var(--shadow-lg);
+    border-color: rgba(105, 127, 172, 0.3);
+}
+
+.depth4 {
+    box-shadow: var(--shadow-glow-accent);
+    border-color: rgba(105, 127, 172, 0.5);
+}
+
+.depth5 {
+    box-shadow: var(--shadow-glow-dual);
+    border-color: var(--color-primary);
+}
+
+.content {
+    line-height: 1.5;
+    font-size: var(--font-size-base);
+}
+
+.footer {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-top: var(--space-xs);
+    gap: var(--space-sm);
+    font-size: var(--font-size-xs);
+    opacity: 0.7;
+}
+
+.timestamp {
+    font-size: var(--font-size-xs);
+}
+
+.actions {
+    display: flex;
+    gap: var(--space-xs);
+}

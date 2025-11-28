@@ -1,31 +1,91 @@
 'use client';
 
-import { use, useState } from 'react';
+import { use, useState, useEffect, useRef, useMemo } from 'react';
 import { useQuery } from '@tanstack/react-query';
+import { useRouter } from 'next/navigation';
+import gsap from 'gsap';
 import { chatApi } from '@/lib/api/chat';
+import { personaApi } from '@/lib/api/persona';
 import { Button } from '@/components/atoms/Button';
 import { Input } from '@/components/atoms/Input';
-import { ChatMessage } from '@/lib/mock-data/chat';
+import { TypingIndicator } from '@/components/molecules/TypingIndicator';
+import { BondLevelIndicator } from '@/components/molecules/BondLevelIndicator';
+import { ChatMessage } from '@/components/organisms/ChatMessage';
+import { ShareOptions } from '@/components/molecules/ShareOptions';
+import { TopicSuggestion } from '@/components/molecules/TopicSuggestion';
+import { NavigationSidebar } from '@/components/organisms/NavigationSidebar';
+import { useReducedMotion } from '@/hooks/useAccessibility';
+import { slideIn } from '@/lib/animations';
+import { ChatMessage as ChatMessageType } from '@/lib/mock-data/chat';
 import styles from './page.module.css';
 
 export default function ChatPage({ params }: { params: Promise<{ id: string }> }) {
   const { id } = use(params);
+  const router = useRouter();
   const [message, setMessage] = useState('');
-  const [messages, setMessages] = useState<ChatMessage[]>([]);
+  const [messages, setMessages] = useState<ChatMessageType[]>([]);
   const [isSending, setIsSending] = useState(false);
+  const [recentTopics, setRecentTopics] = useState<string[]>([]);
+  const [shareBlob, setShareBlob] = useState<Blob | null>(null);
+  const [sharePreviewUrl, setSharePreviewUrl] = useState<string | null>(null);
+  const [sharePanelOpen, setSharePanelOpen] = useState(false);
+  const [messageReactions, setMessageReactions] = useState<Record<string, Record<string, number>>>({});
+  const inputRef = useRef<HTMLInputElement>(null);
+  const messagesRef = useRef<HTMLDivElement>(null);
+  const reducedMotion = useReducedMotion();
 
   const { data: history } = useQuery({
     queryKey: ['chat-history', id],
-    queryFn: () => chatApi.getHistory(id),
-    onSuccess: (data) => {
-      setMessages(data.messages);
-    }
+    queryFn: () => chatApi.getHistory(id)
   });
+
+  const { data: persona } = useQuery({
+    queryKey: ['persona', id],
+    queryFn: () => personaApi.get(id),
+    enabled: !!id
+  });
+
+  useEffect(() => {
+    if (history?.messages) {
+      setMessages(history.messages);
+    }
+  }, [history]);
+
+  // Animate new messages
+  useEffect(() => {
+    if (!messagesRef.current || reducedMotion) return;
+
+    const lastMessage = messagesRef.current.lastElementChild as HTMLElement;
+    if (lastMessage) {
+      slideIn(lastMessage, 'up');
+    }
+  }, [messages, reducedMotion]);
+
+  useEffect(() => {
+    return () => {
+      if (sharePreviewUrl) {
+        URL.revokeObjectURL(sharePreviewUrl);
+      }
+    };
+  }, [sharePreviewUrl]);
+
+  const topicSuggestions = useMemo(() => {
+    const base = [
+      'Share a perception from my survey responses.',
+      'Give me a daily mantra.',
+      'Help me understand my strongest trait.',
+      'Tell me how others describe me.',
+    ];
+    if (persona?.archetype) {
+      base.unshift(`What would a ${persona.archetype} do today?`);
+    }
+    return base;
+  }, [persona]);
 
   const handleSend = async () => {
     if (!message.trim() || isSending) return;
 
-    const userMessage: ChatMessage = {
+    const userMessage: ChatMessageType = {
       id: `msg-${Date.now()}`,
       sender: 'USER',
       content: message,
@@ -46,48 +106,235 @@ export default function ChatPage({ params }: { params: Promise<{ id: string }> }
     }
   };
 
+  const handleShare = (blob: Blob) => {
+    if (sharePreviewUrl) {
+      URL.revokeObjectURL(sharePreviewUrl);
+    }
+    const previewUrl = URL.createObjectURL(blob);
+    setShareBlob(blob);
+    setSharePreviewUrl(previewUrl);
+    setSharePanelOpen(true);
+  };
+
+  const closeSharePanel = () => {
+    if (sharePreviewUrl) {
+      URL.revokeObjectURL(sharePreviewUrl);
+    }
+    setSharePreviewUrl(null);
+    setShareBlob(null);
+    setSharePanelOpen(false);
+  };
+
+  const downloadBlob = (objectUrl: string) => {
+    const anchor = document.createElement('a');
+    anchor.href = objectUrl;
+    anchor.download = 'remirai-snippet.png';
+    anchor.click();
+  };
+
+  const handleShareToPlatform = (platform: string) => {
+    if (!shareBlob) return;
+    const objectUrl = URL.createObjectURL(shareBlob);
+    const shareCaptions: Record<string, string> = {
+      instagram: 'Sharing my Re:MirAI reflection. Upload the saved image with this caption!',
+      twitter: 'Discovering my AI reflection with #ReMirAI',
+      tiktok: 'My Re:MirAI persona just said this 👇',
+      whatsapp: 'Help me decode myself via Re:MirAI!',
+      copy: `${window.location.origin}/chat/${id}`,
+      download: '',
+    };
+
+    if (platform === 'download') {
+      downloadBlob(objectUrl);
+    } else {
+      downloadBlob(objectUrl);
+      const caption = shareCaptions[platform] || shareCaptions.copy;
+      navigator.clipboard.writeText(caption);
+      alert(`Caption copied! Upload the downloaded snippet to ${platform}.`);
+    }
+
+    URL.revokeObjectURL(objectUrl);
+    closeSharePanel();
+  };
+
+  const handleTopicSelect = (topic: string) => {
+    setMessage(topic);
+    setRecentTopics((prev) => [topic, ...prev.filter((t) => t !== topic)].slice(0, 3));
+    inputRef.current?.focus();
+  };
+
+  const handleReact = (messageId: string, emoji: string) => {
+    setMessageReactions((prev) => {
+      const current = prev[messageId] ?? {};
+      return {
+        ...prev,
+        [messageId]: {
+          ...current,
+          [emoji]: (current[emoji] ?? 0) + 1,
+        },
+      };
+    });
+  };
+
+  const connectionStatus = isSending ? 'typing…' : 'online';
+
   return (
     <div className={styles.chat}>
-      <div className={styles.messages}>
-        {messages.map((msg) => (
-          <div
-            key={msg.id}
-            className={`${styles.message} ${styles[msg.sender.toLowerCase()]}`}
-          >
-            <div className={styles.content}>{msg.content}</div>
-            <div className={styles.timestamp}>
-              {new Date(msg.createdAt).toLocaleTimeString()}
+      {/* Left Navigation Sidebar */}
+      <NavigationSidebar currentPath="/chat" />
+
+      <div className={styles.chatMain}>
+        <div className={styles.chatHeader}>
+        <div className={styles.headerInfo}>
+          <div className={styles.personaInfo}>
+            <p className={styles.personaName}>{persona?.name ?? 'Your Persona'}</p>
+            <div className={styles.statusRow}>
+              <span
+                className={`${styles.statusDot} ${isSending ? styles.statusTyping : styles.statusOnline}`}
+              />
+              <span className={styles.statusText}>{connectionStatus}</span>
             </div>
           </div>
-        ))}
-        {isSending && (
-          <div className={`${styles.message} ${styles.ai}`}>
-            <div className={styles.typing}>Typing...</div>
-          </div>
-        )}
+          <BondLevelIndicator level={3} progress={65} />
+        </div>
+        <div className={styles.headerActions}>
+          <Button
+            variant="ghost"
+            size="sm"
+            onClick={() => {
+              if (persona) {
+                router.push(`/p/${persona.id}`);
+              }
+            }}
+            disabled={!persona}
+          >
+            View Persona Room
+          </Button>
+        </div>
       </div>
 
-      <div className={styles.inputArea}>
-        <Input
-          value={message}
-          onChange={(e) => setMessage(e.target.value)}
-          onKeyPress={(e) => {
-            if (e.key === 'Enter' && !e.shiftKey) {
-              e.preventDefault();
-              handleSend();
-            }
-          }}
-          placeholder="Type a message..."
-          className={styles.input}
-        />
-        <Button
-          variant="primary"
-          onClick={handleSend}
-          disabled={!message.trim() || isSending}
-        >
-          Send
-        </Button>
+        <div ref={messagesRef} className={styles.messages}>
+          {messages.map((msg) => (
+            <ChatMessage
+              key={msg.id}
+              message={msg}
+              persona={persona}
+              bondLevel={3} // Mock level for now
+              onReact={handleReact}
+              onShare={handleShare}
+              reactions={messageReactions[msg.id]}
+            />
+          ))}
+          {isSending && (
+            <div className={styles.typingContainer}>
+              <TypingIndicator
+                personaName={persona?.name || 'AI'}
+                estimatedTime={3}
+              />
+            </div>
+          )}
+        </div>
+
+        <div className={styles.suggestions}>
+          <TopicSuggestion
+            topics={topicSuggestions}
+            recentTopics={recentTopics}
+            onSelect={handleTopicSelect}
+          />
+        </div>
+
+        <div className={styles.inputArea}>
+          <Input
+            ref={inputRef}
+            value={message}
+            onChange={(e) => setMessage(e.target.value)}
+            onKeyPress={(e) => {
+              if (e.key === 'Enter' && !e.shiftKey) {
+                e.preventDefault();
+                handleSend();
+              }
+            }}
+            placeholder="Type a message..."
+            className={styles.input}
+            maxLength={1000}
+          />
+          <Button
+            variant="primary"
+            onClick={handleSend}
+            disabled={!message.trim() || isSending}
+            aria-label="Send message"
+          >
+            Send
+          </Button>
+        </div>
       </div>
+
+      {/* Right Persona Context Sidebar */}
+      {persona && (
+        <aside className={styles.personaSidebar}>
+          <div className={styles.personaHeader}>
+            <div className={styles.personaAvatar}>
+              {persona.avatar ? (
+                <img src={persona.avatar} alt={persona.name} />
+              ) : (
+                <span className={styles.avatarPlaceholder}>
+                  {persona.name.charAt(0).toUpperCase()}
+                </span>
+              )}
+            </div>
+            <h3 className={styles.personaName}>{persona.name}</h3>
+            <p className={styles.personaArchetype}>{persona.archetype}</p>
+          </div>
+
+          <div className={styles.personaTraits}>
+            <p className={styles.traitsLabel}>Essence Traits</p>
+            <div className={styles.traitsGrid}>
+              {persona.traits?.slice(0, 6).map((trait, idx) => (
+                <span key={idx} className={styles.traitPill}>
+                  {trait}
+                </span>
+              ))}
+            </div>
+          </div>
+
+          <div className={styles.personaStats}>
+            <BondLevelIndicator level={3} progress={65} />
+          </div>
+
+          <div className={styles.ritualLinks}>
+            <p className={styles.linksLabel}>Related Rituals</p>
+            <Button
+              variant="ghost"
+              size="sm"
+              onClick={() => router.push(`/p/${persona.id}`)}
+            >
+              Visit Persona Room
+            </Button>
+            <Button
+              variant="ghost"
+              size="sm"
+              onClick={() => router.push('/dashboard/ritual')}
+            >
+              View Survey Hub
+            </Button>
+          </div>
+        </aside>
+      )}
+
+      {sharePanelOpen && sharePreviewUrl && (
+        <div className={styles.shareSheet} role="dialog" aria-modal="true">
+          <div className={styles.shareCard}>
+            <img src={sharePreviewUrl} alt="Share preview" className={styles.sharePreview} />
+            <ShareOptions
+              platforms={['download', 'instagram', 'twitter', 'tiktok', 'whatsapp']}
+              onShare={handleShareToPlatform}
+            />
+            <Button variant="ghost" onClick={closeSharePanel}>
+              Close
+            </Button>
+          </div>
+        </div>
+      )}
     </div>
   );
 }

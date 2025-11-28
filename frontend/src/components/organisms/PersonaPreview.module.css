@@ -1,0 +1,114 @@
+.previewContainer {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 300px;
+  height: 450px;
+  perspective: 1000px;
+  z-index: var(--z-primary);
+}
+
+.card {
+  width: 100%;
+  height: 100%;
+  background: rgba(255, 255, 255, 0.1);
+  -webkit-backdrop-filter: blur(20px);
+  backdrop-filter: blur(20px);
+  border-radius: var(--radius-lg);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  box-shadow: var(--shadow-glow-dual);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: var(--space-lg);
+  overflow: hidden;
+  transform-style: preserve-3d;
+}
+
+.header {
+  width: 100%;
+  text-align: center;
+  margin-bottom: var(--space-md);
+}
+
+.name {
+  font-family: var(--font-display);
+  font-size: var(--font-size-2xl);
+  font-weight: var(--font-weight-bold);
+  color: var(--color-text-inverse);
+  margin-bottom: var(--space-xs);
+  text-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+}
+
+.badge {
+  display: inline-block;
+  padding: var(--space-xs) var(--space-sm);
+  background: linear-gradient(135deg, var(--color-primary) 0%, var(--color-accent) 100%);
+  border-radius: var(--radius-full);
+  font-size: var(--font-size-xs);
+  font-weight: var(--font-weight-bold);
+  color: var(--color-text-inverse);
+  box-shadow: var(--shadow-sm);
+}
+
+.visual {
+  width: 120px;
+  height: 120px;
+  border-radius: var(--radius-full);
+  background: var(--gradient-primary-to-accent);
+  margin-bottom: var(--space-lg);
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: var(--font-size-4xl);
+  box-shadow: var(--shadow-glow-primary);
+}
+
+.stats {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-sm);
+}
+
+.statRow {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  font-size: var(--font-size-sm);
+  color: var(--color-text-inverse);
+}
+
+.statRow span:first-child {
+  font-family: var(--font-body);
+}
+
+.statRow span:last-child {
+  font-family: var(--font-tech, 'Space Mono', monospace); /* Accent (The Tech) */
+  letter-spacing: 0.05em;
+}
+
+.statBar {
+  width: 60%;
+  height: 8px; /* 4px grid */
+  background: rgba(255, 255, 255, 0.2);
+  border-radius: var(--radius-full);
+  overflow: hidden;
+}
+
+.statFill {
+  height: 100%;
+  background: var(--color-primary);
+  border-radius: var(--radius-full);
+  width: 0%; /* Animated via JS */
+  transition: width 1s var(--easing-smooth);
+}
+
+.footer {
+  margin-top: auto;
+  font-size: var(--font-size-sm);
+  color: var(--color-text-tertiary);
+  font-style: italic;
+}

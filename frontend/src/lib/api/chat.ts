@@ -45,6 +45,17 @@ export const chatApi = {
         });
       }, 1500);
     });
+  },
+
+  // FR-003.4: React to message
+  async react(messageId: string, emoji: string): Promise<void> {
+    // Mock implementation
+    return new Promise((resolve) => {
+      setTimeout(() => {
+        console.log(`Reacted to ${messageId} with ${emoji}`);
+        resolve();
+      }, 300);
+    });
   }
 };
 
@@ -94,5 +105,7 @@ export function connectChat(personaId: string): Socket {
   return socket;
 }
 */
+
+
 
 

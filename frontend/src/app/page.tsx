@@ -1,60 +1,138 @@
 'use client';
 
-import { useRouter } from 'next/navigation';
-import { Button } from '@/components/atoms/Button';
-import { authApi } from '@/lib/api/auth';
-import { useAuthStore } from '@/stores/authStore';
-import styles from './page.module.css';
+import React, { useEffect, useRef } from 'react';
+import dynamic from 'next/dynamic';
+import gsap from 'gsap';
+import { ScrollTrigger } from 'gsap/ScrollTrigger';
+import { Hero } from '@/components/organisms/Hero';
+import { FeatureCard } from '@/components/molecules/FeatureCard';
+import { WaitlistForm } from '@/components/molecules/WaitlistForm';
+import { SkipToContent } from '@/hooks/useAccessibility';
+import { useReducedMotion } from '@/hooks/useAccessibility';
+import { staggerIn } from '@/lib/animations';
+
+if (typeof window !== 'undefined') {
+    gsap.registerPlugin(ScrollTrigger);
+}
 
 export default function LandingPage() {
-  const router = useRouter();
-  const { login } = useAuthStore();
+    const featuresRef = useRef<HTMLDivElement>(null);
+    const reducedMotion = useReducedMotion();
 
-  const handleGoogleLogin = async () => {
-    try {
-      // Demo Mode: Skip actual Google OAuth, use mock
-      // TODO: Replace with actual Google OAuth when backend is ready
-      const response = await authApi.googleLogin('mock-id-token');
-      login(response.accessToken, response.refreshToken, response.user);
-      router.push('/dashboard');
-    } catch (error) {
-      console.error('Login failed:', error);
-      alert('로그인에 실패했습니다. 다시 시도해주세요.');
-    }
-  };
+    // Scroll-triggered feature card animations
+    useEffect(() => {
+        if (reducedMotion || !featuresRef.current) return;
+
+        const cards = featuresRef.current.querySelectorAll('[data-feature-card]');
+        
+        const cleanup = staggerIn(Array.from(cards) as HTMLElement[], {
+            onComplete: undefined,
+        });
+
+        ScrollTrigger.create({
+            trigger: featuresRef.current,
+            start: 'top 80%',
+            animation: gsap.fromTo(
+                cards,
+                { opacity: 0, y: 40 },
+                {
+                    opacity: 1,
+                    y: 0,
+                    duration: 0.6,
+                    ease: 'power2.out',
+                    stagger: 0.15,
+                }
+            ),
+            toggleActions: 'play none none none',
+        });
+
+        return () => {
+            cleanup();
+            ScrollTrigger.getAll().forEach(trigger => trigger.kill());
+        };
+    }, [reducedMotion]);
 
   return (
-    <main className={styles.main}>
-      <section className={styles.hero}>
-        <h1 className={styles.headline}>Re:MirAI</h1>
-        <p className={styles.subtext}>
-          Discover how your friends see you through AI-powered persona generation
-        </p>
-        <Button variant="primary" size="lg" onClick={handleGoogleLogin}>
-          Continue with Google
-        </Button>
-      </section>
+    <>
+      <SkipToContent targetId="main-content" />
+      <main id="main-content" className="min-h-screen bg-background-dark text-text-primary selection:bg-accent/30">
+      <Hero />
 
-      <section className={styles.socialProof}>
-        <h2>How It Works</h2>
-        <div className={styles.steps}>
-          <div className={styles.step}>
-            <div className={styles.stepNumber}>1</div>
-            <h3>Create Survey</h3>
-            <p>Generate a unique survey link to share with friends</p>
+      {/* How it Works Section */}
+      <section id="how-it-works" className="py-32 relative overflow-hidden">
+        <div className="container mx-auto px-4 relative z-10">
+          <div className="text-center mb-20">
+            <h2 className="font-display text-4xl md:text-5xl font-bold mb-6">
+              The Mirror <span className="text-accent">Reveals All</span>
+            </h2>
+            <p className="text-text-muted text-lg max-w-2xl mx-auto">
+              Three simple steps to uncover the hidden patterns in your social interactions.
+            </p>
           </div>
-          <div className={styles.step}>
-            <div className={styles.stepNumber}>2</div>
-            <h3>Friends Vote</h3>
-            <p>Your friends answer questions anonymously</p>
-          </div>
-          <div className={styles.step}>
-            <div className={styles.stepNumber}>3</div>
-            <h3>Reveal Persona</h3>
-            <p>AI creates a unique persona based on their responses</p>
+
+          <div ref={featuresRef} className="grid grid-cols-1 md:grid-cols-3 gap-8">
+            <div data-feature-card>
+              <FeatureCard
+                title="Connect"
+                description="Securely link your social accounts. We analyze patterns, not private messages."
+                icon={
+                  <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13.828 10.172a4 4 0 00-5.656 0l-4 4a4 4 0 105.656 5.656l1.102-1.101m-.758-4.899a4 4 0 005.656 0l4-4a4 4 0 00-5.656-5.656l-1.1 1.1" />
+                  </svg>
+                }
+                delay={0}
+              />
+            </div>
+            <div data-feature-card>
+              <FeatureCard
+                title="Analyze"
+                description="Our AI engine processes thousands of data points to construct your digital persona."
+                icon={
+                  <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" />
+                  </svg>
+                }
+                delay={200}
+              />
+            </div>
+            <div data-feature-card>
+              <FeatureCard
+                title="Reveal"
+                description="Meet your AI twin. Chat with it, ask it questions, and see yourself through their eyes."
+                icon={
+                  <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
+                  </svg>
+                }
+                delay={400}
+              />
+            </div>
           </div>
         </div>
+
+        {/* Background Glow */}
+        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-full h-full max-w-4xl bg-primary/5 blur-[100px] rounded-full pointer-events-none" />
+      </section>
+
+      {/* Waitlist Section */}
+      <section className="py-32 relative">
+        <div className="container mx-auto px-4 relative z-10 text-center">
+          <h2 className="font-display text-4xl md:text-5xl font-bold mb-6">
+            Ready to Meet <span className="text-primary">Yourself?</span>
+          </h2>
+          <p className="text-text-muted text-lg mb-10">
+            Join the waitlist for early access to the beta.
+          </p>
+          <WaitlistForm aria-label="Join waitlist form" />
+        </div>
+
+        {/* Footer */}
+        <footer className="absolute bottom-0 w-full py-8 text-center text-text-muted/30 text-sm">
+          &copy; {new Date().getFullYear()} Re:MirAI. All rights reserved.
+        </footer>
       </section>
     </main>
+    </>
   );
 }

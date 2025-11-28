@@ -3,8 +3,9 @@
 > **"다른 사람의 눈을 통해 자신을 발견하는 플랫폼"**
 > **"A platform where you discover yourself through the eyes of others"**
 
-**Project Type:** AI-Powered Personality Discovery Platform
-**Status:** In Development (Phase 1: MVP)
+**Project Type:** AI-Powered Personality Discovery Platform  
+**Status:** In Development (Phase 1: MVP)  
+**Last Updated:** 2025-11-27
 
 ---
 
@@ -39,11 +40,13 @@ cd backend
 npm run start:dev
 # Server running at http://localhost:3000
 
-# Start Frontend (Next.js)
+# Start Frontend (Next.js) - in a separate terminal
 cd frontend
 npm run dev
-# Client running at http://localhost:3000
+# Client running at http://localhost:3001 (or next available port)
 ```
+
+**Note:** Make sure PostgreSQL is running and `DATABASE_URL` is configured in `backend/.env`. See [BACKEND_SETUP.md](BACKEND_SETUP.md) for detailed setup instructions.
 
 ---
 
@@ -80,16 +83,25 @@ Re-MirAI/
 ├── frontend/          # Next.js Application
 │   ├── src/
 │   │   ├── app/       # App Router Pages
-│   │   ├── components/# Reusable UI Components
-│   │   └── lib/       # Utilities & API Clients
+│   │   ├── components/# Reusable UI Components (atoms, molecules, organisms)
+│   │   ├── lib/       # Utilities & API Clients
+│   │   └── styles/    # Global styles & design tokens
 ├── backend/           # NestJS API Server
 │   ├── src/
-│   │   ├── modules/   # Feature Modules (Auth, Survey, Persona)
-│   │   └── prisma/    # Database Schema
+│   │   ├── modules/   # Feature Modules (Auth, Survey, Persona, Chat)
+│   │   ├── prisma/    # Database Schema & Migrations
+│   │   └── main.ts    # Application entry point
+│   └── prisma/
+│       └── schema.prisma  # Prisma schema definition
 ├── docs/              # Project Documentation
-│   ├── 01-concept/    # PRD & Concepts
-│   ├── 02-project-overview/ # Features & Roadmap
-│   └── 03-planning/   # Technical Specs & UI/UX
+│   ├── 01-concept/    # Initial PRD & Concepts
+│   ├── 02-project-overview/ # Features, Goals & Roadmap
+│   ├── 03-planning/   # Technical Specs & UI/UX Design
+│   ├── 04-user-experience/ # UX Flows & Journey Maps
+│   ├── 05-analysis/   # UX/UI Expert Analysis
+│   ├── 06-team/       # Team Roles & Competencies
+│   ├── 07-Enhancement/# ver1 / ver2 enhancement packs
+│   └── 08-Connectivity-and-Deployment/ # FE-BE connectivity & deployment
 └── README.md          # This file
 ```
 
@@ -122,14 +134,18 @@ Re-MirAI/
 ## Tech Stack
 
 ### Frontend
-- **Framework:** Next.js 14+
+- **Framework:** Next.js 14+ (App Router)
 - **Language:** TypeScript
-- **Styling:** CSS Modules (Blonix Design System)
+- **Styling:** CSS Modules + Tailwind CSS (Blonix Design System)
+- **Animations:** GSAP 3.x + Canvas API
+- **State Management:** React Context + Hooks, Zustand (planned)
 
 ### Backend
 - **Framework:** NestJS
-- **Database:** PostgreSQL
+- **Database:** PostgreSQL 15+
 - **ORM:** Prisma
+- **Authentication:** JWT (Access + Refresh tokens), Google OAuth 2.0
+- **API:** RESTful endpoints with Swagger documentation
 
 ### AI & Cloud
 - **LLM:** OpenAI GPT-4 / GPT-3.5
@@ -142,11 +158,35 @@ Re-MirAI/
 
 All detailed documentation is located in the `docs/` directory.
 
+### Core Documentation
+
+- **Project Overview:** [Project Goals & Features](docs/02-project-overview/README.md)
 - **Product Requirements:** [PRD (Project Plan)](docs/01-concept/02-Project-Plan.md)
 - **Technical Spec:** [Technical Specification](docs/03-planning/05-Technical-Specification.md)
 - **Design System:** [Design Philosophy](docs/02-project-overview/03-Design-Philosophy.md)
 - **Roadmap:** [Development Roadmap](docs/02-project-overview/04-Roadmap.md)
 - **Feature Specs:** [Core Features Index](docs/02-project-overview/02-Core-Features.md)
+
+### Enhancement Documentation
+
+- **ver2 Enhancement Pack:** [Frontend Refactoring Guide](docs/07-Enhancement/ver2/README.md)
+  - Comprehensive page-by-page enhancement specs with animation details
+  - Design system updates (color palette, typography, 4px grid)
+  - Frontend audit and compliance reports
+  - Backend engineering guide
+
+### Connectivity & Deployment
+
+- **[Frontend ↔ Backend Connectivity Test Plan](docs/08-Connectivity-and-Deployment/01-Frontend-Backend-Connectivity-Test-Plan.md)**  
+  Maps directly to F-001~F-006 requirements from `docs/02-project-overview/02-Core-Features.md`. Ensures each API flow matches the feature specifications.
+
+- **[Pipeline Strategy](docs/08-Connectivity-and-Deployment/02-Pipeline-Strategy.md)**  
+  CI/CD pipeline aligned with growth goals from `docs/02-project-overview/01-Project-Goals.md`. Includes feature flags, blue/green deployments, and rollback procedures.
+
+- **[Deployment Guide](docs/08-Connectivity-and-Deployment/03-Deployment-Guide.md)**  
+  Step-by-step instructions for deploying to Railway (Backend) and Vercel (Frontend).
+
+For complete documentation index, see [docs/README.md](docs/README.md).
 
 ---
 

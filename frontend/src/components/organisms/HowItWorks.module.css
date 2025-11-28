@@ -1,0 +1,87 @@
+.section {
+    padding: 96px 24px;
+    background: var(--color-primary-dark);
+}
+
+.sectionTitle {
+    font-family: var(--font-display);
+    font-size: 48px;
+    font-weight: var(--font-weight-bold);
+    color: #fefedf;
+    text-align: center;
+    margin-bottom: 64px;
+}
+
+.stepsGrid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 32px;
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+.step {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+}
+
+.stepNumber {
+    width: 64px;
+    height: 64px;
+    background: var(--color-accent);
+    color: #ffffff;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 32px;
+    font-weight: var(--font-weight-bold);
+    margin-bottom: 24px;
+}
+
+.stepContent {
+    flex: 1;
+}
+
+.stepTitle {
+    font-size: 24px;
+    font-weight: var(--font-weight-semibold);
+    color: var(--color-highlight);
+    margin-bottom: 12px;
+    line-height: var(--line-height-tight);
+}
+
+.stepDescription {
+    font-size: 16px;
+    color: #fefedf;
+    line-height: var(--line-height-relaxed);
+    opacity: 0.9;
+}
+
+@media (max-width: 768px) {
+    .section {
+        padding: 64px 16px;
+    }
+
+    .sectionTitle {
+        font-size: 32px;
+        margin-bottom: 48px;
+    }
+
+    .stepsGrid {
+        grid-template-columns: 1fr;
+        gap: 48px;
+    }
+
+    .stepNumber {
+        width: 56px;
+        height: 56px;
+        font-size: 28px;
+    }
+
+    .stepTitle {
+        font-size: 20px;
+    }
+}

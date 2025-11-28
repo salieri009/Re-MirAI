@@ -1,0 +1,10 @@
+.shareButton {
+  opacity: 0;
+  transition: opacity var(--transition-base);
+}
+
+.message:hover .shareButton,
+.message:focus-within .shareButton {
+  opacity: 1;
+}
+

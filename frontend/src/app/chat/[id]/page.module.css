@@ -1,10 +1,80 @@
 .chat {
   display: flex;
-  flex-direction: column;
   height: 100vh;
-  max-width: 800px;
+  background: var(--color-bg-dark);
+  position: relative;
+}
+
+.chatMain {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  max-width: 1024px;
   margin: 0 auto;
-  background-color: var(--color-bg-primary);
+  margin-left: 256px; /* Account for left sidebar */
+  background: var(--color-bg-dark);
+  position: relative;
+}
+
+.chatHeader {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: var(--space-md) var(--space-lg);
+  background: rgba(10, 1, 18, 0.8);
+  -webkit-backdrop-filter: blur(12px);
+  backdrop-filter: blur(12px);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+  position: sticky;
+  top: 0;
+  z-index: var(--z-primary);
+}
+
+.headerInfo {
+  display: flex;
+  align-items: center;
+  gap: var(--space-lg);
+}
+
+.personaInfo {
+  display: flex;
+  flex-direction: column;
+}
+
+.personaName {
+  font-family: var(--font-display);
+  font-weight: var(--font-weight-bold);
+  font-size: var(--font-size-lg);
+  margin: 0;
+}
+
+.statusRow {
+  display: flex;
+  align-items: center;
+  gap: var(--space-xs);
+}
+
+.statusDot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--color-text-secondary);
+}
+
+.statusOnline {
+  background: var(--color-accent);
+  box-shadow: 0 0 8px hsla(var(--hue-accent), 100%, 50%, 0.4);
+}
+
+.statusTyping {
+  background: var(--color-primary);
+  animation: pulse 1s infinite;
+}
+
+.statusText {
+  font-size: var(--font-size-xs);
+  color: var(--color-text-secondary);
+  text-transform: capitalize;
 }
 
 .messages {
@@ -14,50 +84,206 @@
   display: flex;
   flex-direction: column;
   gap: var(--space-md);
+  scroll-behavior: smooth;
 }
 
-.message {
-  max-width: 70%;
-  padding: var(--space-md);
-  border-radius: var(--radius-lg);
-}
-
-.message.user {
-  align-self: flex-end;
-  background-color: var(--color-primary);
-  color: var(--color-text-inverse);
-}
-
-.message.ai {
+.typingContainer {
   align-self: flex-start;
-  background-color: var(--color-bg-tertiary);
-  color: var(--color-text);
+  margin-left: var(--space-md);
+  margin-bottom: var(--space-md);
 }
 
-.content {
-  margin-bottom: var(--space-xs);
-}
-
-.timestamp {
-  font-size: var(--font-size-xs);
-  opacity: 0.7;
-}
-
-.typing {
-  font-style: italic;
-  opacity: 0.7;
+.suggestions {
+  padding: var(--space-sm) var(--space-lg);
+  background: linear-gradient(to top, var(--color-bg-dark) 80%, transparent);
 }
 
 .inputArea {
-  display: flex;
-  gap: var(--space-md);
-  padding: var(--space-lg);
+  padding: var(--space-md) var(--space-lg);
+  background: var(--color-surface);
   border-top: 1px solid var(--color-border);
-  background-color: var(--color-surface);
+  display: flex;
+  gap: var(--space-sm);
+  align-items: flex-end;
 }
 
 .input {
   flex: 1;
+  min-height: 44px;
 }
 
+.shareSheet {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: var(--z-overlay);
+  backdrop-filter: blur(4px);
+}
 
+.shareCard {
+  background: var(--color-surface);
+  padding: var(--space-lg);
+  border-radius: var(--radius-xl);
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-md);
+  max-width: 90vw;
+  width: 400px;
+  box-shadow: var(--shadow-2xl);
+}
+
+.sharePreview {
+  width: 100%;
+  border-radius: var(--radius-lg);
+  border: 1px solid var(--color-border);
+}
+
+@keyframes pulse {
+  0% {
+    opacity: 0.5;
+    transform: scale(0.9);
+  }
+
+  50% {
+    opacity: 1;
+    transform: scale(1.1);
+  }
+
+  100% {
+    opacity: 0.5;
+    transform: scale(0.9);
+  }
+}
+
+.personaSidebar {
+  width: 320px;
+  height: 100vh;
+  padding: var(--space-2xl) var(--space-xl);
+  background: rgba(10, 1, 18, 0.8);
+  border-left: 1px solid rgba(255, 255, 255, 0.08);
+  position: sticky;
+  top: 0;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2xl);
+}
+
+.personaHeader {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--space-sm);
+  text-align: center;
+}
+
+.personaAvatar {
+  width: 80px;
+  height: 80px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, var(--color-primary), var(--color-accent));
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  box-shadow: 0 0 24px hsla(var(--hue-primary), 100%, 50%, 0.3);
+}
+
+.personaAvatar img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.avatarPlaceholder {
+  font-size: 2rem;
+  font-weight: var(--font-weight-bold);
+  color: white;
+}
+
+.personaName {
+  font-family: var(--font-display);
+  font-size: 1.5rem;
+  font-weight: var(--font-weight-bold);
+  margin: 0;
+}
+
+.personaArchetype {
+  color: var(--color-text-secondary);
+  font-size: 0.875rem;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+}
+
+.personaTraits {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-sm);
+}
+
+.traitsLabel {
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  font-size: 0.75rem;
+  color: var(--color-text-muted);
+}
+
+.traitsGrid {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-xs);
+}
+
+.traitPill {
+  padding: var(--space-xs) var(--space-sm);
+  border-radius: var(--radius-pill);
+  background: hsla(var(--hue-highlight), 100%, 50%, 0.15);
+  color: var(--color-highlight);
+  border: 1px solid hsla(var(--hue-highlight), 100%, 50%, 0.3);
+  font-size: 0.75rem;
+  font-weight: var(--font-weight-medium);
+}
+
+.personaStats {
+  padding: var(--space-lg);
+  border-radius: var(--radius-lg);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  background: rgba(255, 255, 255, 0.02);
+}
+
+.ritualLinks {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-sm);
+}
+
+.linksLabel {
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  font-size: 0.75rem;
+  color: var(--color-text-muted);
+  margin-bottom: var(--space-xs);
+}
+
+@media (max-width: 1024px) {
+  .chatMain {
+    margin-left: 0;
+  }
+
+  .personaSidebar {
+    display: none; /* Hide on tablet/mobile, use drawer instead */
+  }
+}
+
+@media (max-width: 640px) {
+  .chatHeader {
+    padding: var(--space-sm) var(--space-md);
+  }
+
+  .headerInfo {
+    gap: var(--space-md);
+  }
+}

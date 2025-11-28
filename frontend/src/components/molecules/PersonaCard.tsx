@@ -1,4 +1,6 @@
-import React from 'react';
+import React, { useEffect, useRef } from 'react';
+import gsap from 'gsap';
+import { useReducedMotion } from '@/hooks/useAccessibility';
 import styles from './PersonaCard.module.css';
 import { Persona } from '@/lib/mock-data/personas';
 import { Badge } from '@/components/atoms/Badge';
@@ -9,8 +11,58 @@ interface PersonaCardProps {
 }
 
 export function PersonaCard({ persona, readOnly = false }: PersonaCardProps) {
+  const cardRef = useRef<HTMLDivElement>(null);
+  const reducedMotion = useReducedMotion();
+
+  useEffect(() => {
+    if (reducedMotion || !cardRef.current || readOnly) return;
+
+    const card = cardRef.current;
+
+    const handleMouseMove = (e: MouseEvent) => {
+      const rect = card.getBoundingClientRect();
+      const x = e.clientX - rect.left;
+      const y = e.clientY - rect.top;
+
+      const centerX = rect.width / 2;
+      const centerY = rect.height / 2;
+
+      const rotateX = ((y - centerY) / centerY) * -10; // Max 10deg rotation
+      const rotateY = ((x - centerX) / centerX) * 10;
+
+      gsap.to(card, {
+        rotateX,
+        rotateY,
+        duration: 0.5,
+        ease: 'power2.out',
+        transformPerspective: 1000,
+      });
+    };
+
+    const handleMouseLeave = () => {
+      gsap.to(card, {
+        rotateX: 0,
+        rotateY: 0,
+        duration: 0.5,
+        ease: 'power2.out',
+      });
+    };
+
+    card.addEventListener('mousemove', handleMouseMove);
+    card.addEventListener('mouseleave', handleMouseLeave);
+
+    return () => {
+      card.removeEventListener('mousemove', handleMouseMove);
+      card.removeEventListener('mouseleave', handleMouseLeave);
+    };
+  }, [reducedMotion, readOnly]);
+
   return (
-    <div className={styles.card}>
+    <div
+      ref={cardRef}
+      className={styles.card}
+      data-rarity={persona.rarity}
+    >
       <div className={styles.header}>
         <h2 className={styles.name}>{persona.name}</h2>
         {persona.rarity && (
@@ -20,55 +72,31 @@ export function PersonaCard({ persona, readOnly = false }: PersonaCardProps) {
         )}
       </div>
       <div className={styles.archetype}>{persona.archetype}</div>
-      
+
       <div className={styles.stats}>
-        <div className={styles.stat}>
-          <span className={styles.statLabel}>Charisma</span>
-          <div className={styles.statBar}>
-            <div
-              className={styles.statFill}
-              style={{ width: `${persona.stats.charisma}%` }}
-            />
+        {Object.entries(persona.stats).map(([key, value]) => (
+          <div key={key} className={styles.stat}>
+            <span className={styles.statLabel}>
+              {key.charAt(0).toUpperCase() + key.slice(1)}
+            </span>
+            <div className={styles.statBar}>
+              <div
+                className={styles.statFill}
+                style={{ width: `${value}%` }}
+              />
+            </div>
+            <span className={styles.statValue}>{value}</span>
           </div>
-          <span className={styles.statValue}>{persona.stats.charisma}</span>
-        </div>
-        <div className={styles.stat}>
-          <span className={styles.statLabel}>Intellect</span>
-          <div className={styles.statBar}>
-            <div
-              className={styles.statFill}
-              style={{ width: `${persona.stats.intellect}%` }}
-            />
-          </div>
-          <span className={styles.statValue}>{persona.stats.intellect}</span>
-        </div>
-        <div className={styles.stat}>
-          <span className={styles.statLabel}>Kindness</span>
-          <div className={styles.statBar}>
-            <div
-              className={styles.statFill}
-              style={{ width: `${persona.stats.kindness}%` }}
-            />
-          </div>
-          <span className={styles.statValue}>{persona.stats.kindness}</span>
-        </div>
-        <div className={styles.stat}>
-          <span className={styles.statLabel}>Energy</span>
-          <div className={styles.statBar}>
-            <div
-              className={styles.statFill}
-              style={{ width: `${persona.stats.energy}%` }}
-            />
-          </div>
-          <span className={styles.statValue}>{persona.stats.energy}</span>
-        </div>
+        ))}
       </div>
-      
+
       {persona.greeting && (
         <div className={styles.greeting}>"{persona.greeting}"</div>
       )}
     </div>
   );
 }
+
+
 
 

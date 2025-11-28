@@ -1,0 +1,78 @@
+.wrapper {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.spinner {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.ring {
+  position: absolute;
+  inset: 0;
+  border-radius: 50%;
+  border: 2px solid transparent;
+  background: conic-gradient(from 0deg, var(--color-primary), var(--color-accent), var(--color-highlight), var(--color-primary));
+  mask: radial-gradient(circle, transparent calc(50% - 6px), #000 calc(50% - 5px));
+  animation: spinOuter 5s linear infinite;
+}
+
+.ringInner {
+  width: 70%;
+  height: 70%;
+  background: conic-gradient(from 180deg, var(--color-accent), var(--color-highlight), var(--color-primary));
+  animation: spinInner 6s linear infinite reverse;
+}
+
+.core {
+  position: relative;
+  width: 40%;
+  height: 40%;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(255, 255, 255, 0.9), rgba(132, 94, 194, 0.35));
+  box-shadow: 0 0 32px rgba(132, 94, 194, 0.4);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.5rem;
+}
+
+.caption {
+  margin-top: var(--space-sm);
+  text-align: center;
+  font-size: 0.9rem;
+  color: var(--color-text-secondary);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .ring,
+  .ringInner {
+    animation: none;
+  }
+}
+
+@keyframes spinOuter {
+  from {
+    transform: rotate(0deg);
+  }
+
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@keyframes spinInner {
+  from {
+    transform: rotate(0deg);
+  }
+
+  to {
+    transform: rotate(-360deg);
+  }
+}
+

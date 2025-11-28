@@ -1,22 +1,120 @@
 .container {
   min-height: 100vh;
-  padding: var(--space-xl);
-  background-color: var(--color-bg-secondary);
+  padding: var(--space-2xl) var(--space-xl);
+  background: var(--color-bg-secondary);
   display: flex;
-  align-items: center;
   justify-content: center;
 }
 
-.content {
-  max-width: 600px;
-  width: 100%;
+.room {
+  width: min(1100px, 100%);
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-xl);
 }
 
-.actions {
+.heroSection {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+  gap: var(--space-xl);
+  align-items: center;
+}
+
+.heroActions {
   display: flex;
   flex-direction: column;
   gap: var(--space-md);
-  margin-top: var(--space-xl);
 }
 
+.section {
+  background: rgba(255, 255, 255, 0.04);
+  border-radius: var(--radius-xl);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  padding: var(--space-xl);
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-md);
+}
 
+.sectionHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  gap: var(--space-md);
+  flex-wrap: wrap;
+}
+
+.sectionSubtitle {
+  color: var(--color-text-secondary);
+  font-size: var(--font-size-sm);
+}
+
+.bondingGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: var(--space-lg);
+}
+
+.bondCard,
+.memoryBoard {
+  padding: var(--space-lg);
+  border-radius: var(--radius-lg);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  background: rgba(255, 255, 255, 0.02);
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-md);
+}
+
+.label {
+  text-transform: uppercase;
+  letter-spacing: 0.3em;
+  font-size: 0.75rem;
+  color: var(--color-text-secondary);
+}
+
+.memoryBoard ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-sm);
+}
+
+.memoryBoard li {
+  padding-left: var(--space-lg);
+  position: relative;
+}
+
+.memoryBoard li::before {
+  content: '◆';
+  position: absolute;
+  left: 0;
+  color: var(--color-accent);
+}
+
+.helper {
+  font-size: 0.9rem;
+  color: var(--color-text-secondary);
+}
+
+.questGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  gap: var(--space-md);
+}
+
+@media (max-width: 768px) {
+  .container {
+    padding: var(--space-xl) var(--space-md);
+  }
+
+  .heroSection {
+    grid-template-columns: 1fr;
+  }
+
+  .heroActions {
+    flex-direction: column;
+  }
+}

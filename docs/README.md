@@ -69,6 +69,14 @@ Re:MirAI는 AI 기반 성격 발견 플랫폼으로, 친구들의 익명 피드�
 
 - **[01-Glossary.md](01-Glossary.md)** - 프로젝트 용어 정의
 
+### 연결 및 배포 전략
+
+**[08-Connectivity-and-Deployment/](08-Connectivity-and-Deployment/)** - 프론트엔드/백엔드 연결과 배포 파이프라인 문서  
+- **[01-Frontend-Backend-Connectivity-Test-Plan.md](08-Connectivity-and-Deployment/01-Frontend-Backend-Connectivity-Test-Plan.md)**  
+  - `02-Core-Features.md`에 정의된 F-001~F-006 기능을 직접 인용하여 각 테스트 케이스와 연결.  
+- **[02-Pipeline-Strategy.md](08-Connectivity-and-Deployment/02-Pipeline-Strategy.md)**  
+  - `01-Project-Goals.md`의 “Create an engaging and shareable experience…” 목표를 기반으로 배포/롤백 전략을 정렬.
+
 ---
 
 ## 🎯 빠른 네비게이션

@@ -75,4 +75,19 @@
   color: var(--color-text-inverse);
 }
 
+.summonButton {
+  font-size: var(--font-size-xl);
+  padding: var(--space-lg) var(--space-2xl);
+  animation: glowPulse 2s ease-in-out infinite;
+}
+
+@keyframes glowPulse {
+  0%, 100% {
+    box-shadow: 0 0 20px rgba(217, 70, 239, 0.5);
+  }
+  50% {
+    box-shadow: 0 0 40px rgba(217, 70, 239, 0.8), 0 0 60px rgba(240, 147, 251, 0.4);
+  }
+}
+
 

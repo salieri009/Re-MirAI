@@ -1,6 +1,21 @@
 import type { Metadata } from 'next'
-import '../styles/globals.css'
+import { Space_Grotesk, Plus_Jakarta_Sans } from 'next/font/google'
+import '../styles/tokens.css'
+import '../global.css'
 import { QueryProvider } from '@/lib/providers/QueryProvider'
+
+const spaceGrotesk = Space_Grotesk({
+  subsets: ['latin'],
+  variable: '--font-display',
+  display: 'swap',
+  weight: ['500', '700'], // Medium (500) and Bold (700) per ver2 spec
+})
+
+const plusJakarta = Plus_Jakarta_Sans({
+  subsets: ['latin'],
+  variable: '--font-sans',
+  display: 'swap',
+})
 
 export const metadata: Metadata = {
   title: 'Re:MirAI - Discover How Your Friends See You',
@@ -13,8 +28,8 @@ export default function RootLayout({
   children: React.ReactNode
 }) {
   return (
-    <html lang="en">
-      <body>
+    <html lang="en" suppressHydrationWarning className={`${spaceGrotesk.variable} ${plusJakarta.variable}`}>
+      <body suppressHydrationWarning className="bg-background-dark text-text-primary font-sans antialiased">
         <QueryProvider>
           {children}
         </QueryProvider>

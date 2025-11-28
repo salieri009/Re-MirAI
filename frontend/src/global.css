@@ -1,0 +1,221 @@
+/**
+ * Global Styles
+ * NOTE: Core tokens are defined in styles/tokens.css
+ */
+
+/* Base Reset & Typography */
+*,
+*::before,
+*::after {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+html {
+    font-size: 16px;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+}
+
+body {
+    font-family: var(--font-sans, 'Plus Jakarta Sans', sans-serif);
+    font-weight: var(--font-weight-regular);
+    line-height: var(--line-height-loose, 1.6);
+    color: var(--color-text-primary);
+    background-color: var(--color-bg-dark);
+    letter-spacing: 0.01em;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+    font-family: var(--font-display);
+    font-weight: var(--font-weight-bold, 700);
+    line-height: var(--line-height-tight, 1.2);
+    color: var(--color-text-primary);
+}
+
+/* Utility Classes */
+.z-background {
+    z-index: var(--z-base);
+}
+
+.z-tertiary {
+    z-index: 10;
+}
+
+.z-secondary {
+    z-index: 30;
+}
+
+.z-primary {
+    z-index: var(--z-dropdown);
+}
+
+.z-overlay {
+    z-index: var(--z-modal-backdrop);
+}
+
+/* Emotional State Classes (Updated to 3-color system) */
+.emotional-curiosity {
+    background: linear-gradient(135deg, var(--color-primary), var(--color-highlight));
+}
+
+.emotional-trust {
+    background: linear-gradient(135deg, var(--color-accent), var(--color-accent-light));
+}
+
+.emotional-progress {
+    background: linear-gradient(90deg, var(--color-accent), var(--color-primary));
+}
+
+/* Glassmorphism Effect */
+.glass {
+    background: rgba(10, 1, 18, 0.6);
+    -webkit-backdrop-filter: blur(12px);
+    backdrop-filter: blur(12px);
+    border: 1px solid var(--color-border);
+}
+
+/* Card Component Base */
+.card {
+    background: var(--color-surface);
+    border-radius: var(--radius-lg);
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.15);
+    padding: var(--space-lg);
+    border: 1px solid var(--color-border);
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.card:hover {
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-glow-primary);
+    border-color: var(--color-highlight);
+}
+
+/* Button Base Styles */
+.btn {
+    font-family: var(--font-display);
+    font-weight: var(--font-weight-semibold, 600);
+    padding: var(--space-md) var(--space-xl);
+    border-radius: var(--radius-sm);
+    border: none;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: var(--space-sm);
+}
+
+.btn-primary {
+    background: var(--color-primary);
+    color: #ffffff;
+}
+
+.btn-primary:hover {
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-glow-primary);
+    background: var(--color-primary-light);
+}
+
+.btn-primary:active {
+    transform: translateY(0) scale(0.98);
+}
+
+/* Animation Utilities */
+.animate-fade-in {
+    animation: fadeIn 0.3s ease-out;
+}
+
+.animate-slide-up {
+    animation: slideUp 0.4s ease-out;
+}
+
+.animate-bounce {
+    animation: bounce 2s infinite;
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+    }
+
+    to {
+        opacity: 1;
+    }
+}
+
+@keyframes slideUp {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@keyframes bounce {
+
+    0%,
+    100% {
+        transform: translateY(0);
+    }
+
+    50% {
+        transform: translateY(-10px);
+    }
+}
+
+/* Accessibility */
+@media (prefers-reduced-motion: reduce) {
+
+    *,
+    *::before,
+    *::after {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+    }
+}
+
+/* Focus States */
+*:focus-visible {
+    outline: 2px solid var(--color-highlight);
+    outline-offset: 2px;
+}
+
+/* Skip to Content Link */
+.skip-link-hidden {
+    position: absolute;
+    left: -10000px;
+    top: auto;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+}
+
+.skip-link-visible {
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: 9999;
+    padding: 0.75rem 1.5rem;
+    background: var(--color-accent);
+    color: #000;
+    font-weight: 700;
+    border-bottom-right-radius: 0.5rem;
+    text-decoration: none;
+}
+
+.skip-link-visible:focus {
+    outline: 2px solid #fff;
+    outline-offset: 2px;
+}

@@ -1,29 +1,46 @@
-import React from 'react';
 import styles from './ProgressBar.module.css';
 
-interface ProgressBarProps {
-  current: number;
-  total: number;
+type ProgressBarProps = {
+  value: number;
   label?: string;
-}
+  showValue?: boolean;
+  accent?: boolean;
+  ariaLabel?: string;
+  className?: string;
+};
 
-export function ProgressBar({ current, total, label }: ProgressBarProps) {
-  const percentage = Math.min((current / total) * 100, 100);
+export function ProgressBar({
+  value,
+  label,
+  showValue = true,
+  accent = false,
+  ariaLabel,
+  className = '',
+}: ProgressBarProps) {
+  const clamped = Math.max(0, Math.min(100, value));
 
   return (
-    <div className={styles.wrapper}>
-      {label && <div className={styles.label}>{label}</div>}
-      <div className={styles.container}>
+    <div className={`${styles.wrapper} ${className}`}>
+      {label ? (
+        <div className={styles.header}>
+          <span>{label}</span>
+          {showValue ? <span>{clamped}%</span> : null}
+        </div>
+      ) : null}
+
+      <div
+        className={styles.track}
+        role="progressbar"
+        aria-valuemin={0}
+        aria-valuemax={100}
+        aria-valuenow={clamped}
+        aria-label={ariaLabel ?? label}
+      >
         <div
-          className={styles.bar}
-          style={{ width: `${percentage}%` }}
+          className={`${styles.fill} ${accent ? styles.fillAccent : ''}`}
+          style={{ width: `${clamped}%` }}
         />
-        <span className={styles.text}>
-          {current} / {total}
-        </span>
       </div>
     </div>
   );
 }
-
-
