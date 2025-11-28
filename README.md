@@ -3,9 +3,13 @@
 > **"다른 사람의 눈을 통해 자신을 발견하는 플랫폼"**
 > **"A platform where you discover yourself through the eyes of others"**
 
+![Status](https://img.shields.io/badge/status-in%20development-yellow)
+![Node.js](https://img.shields.io/badge/Node.js-%3E%3D18.0.0-brightgreen?logo=node.js&logoColor=white)
+![TypeScript](https://img.shields.io/badge/TypeScript-5.5-blue?logo=typescript&logoColor=white)
+
 **Project Type:** AI-Powered Personality Discovery Platform  
-**Status:** In Development (Phase 1: MVP)  
-**Last Updated:** 2025-11-27
+**Status:** In Development (Phase 1: MVP - ver2 Design Complete)  
+**Last Updated:** 2025-11-28
 
 ---
 
@@ -56,18 +60,18 @@ npm run dev
 
 ```mermaid
 graph TD
-    Client[Client (Next.js)] -->|HTTPS| API[API Gateway (NestJS)]
-    API -->|Auth| Auth[Google OAuth]
-    API -->|Read/Write| DB[(PostgreSQL)]
-    API -->|Generate| AI[OpenAI API]
+    Client["Client<br/>Next.js"] -->|HTTPS| API["API Gateway<br/>NestJS"]
+    API -->|Auth| Auth["Google OAuth"]
+    API -->|Read/Write| DB[("PostgreSQL")]
+    API -->|Generate| AI["OpenAI API"]
 ```
 
 ### Core Components
 
 #### Frontend (Next.js)
 - **App Router:** Server Components for performance.
-- **Design System:** Custom "Blonix" system (Light theme, Fuchsia/Pink).
-- **State Management:** React Context + Hooks.
+- **Design System:** ver2 "Digital Mirror" system (Dark theme, 3-color palette).
+- **State Management:** React Context + Hooks, Zustand.
 
 #### Backend (NestJS)
 - **API:** RESTful endpoints for Surveys, Personas, and Chat.
@@ -136,7 +140,7 @@ Re-MirAI/
 ### Frontend
 - **Framework:** Next.js 14+ (App Router)
 - **Language:** TypeScript
-- **Styling:** CSS Modules + Tailwind CSS (Blonix Design System)
+- **Styling:** CSS Modules + Tailwind CSS (ver2 Digital Mirror Design System)
 - **Animations:** GSAP 3.x + Canvas API
 - **State Management:** React Context + Hooks, Zustand (planned)
 
@@ -194,5 +198,3 @@ For complete documentation index, see [docs/README.md](docs/README.md).
 
 **Re:MirAI Team**
 - **Contact:** kordalek@naver.com
-
-This project is licensed under the MIT License. See [LICENSE](LICENSE) for details.
