@@ -50,7 +50,7 @@ export function WaitlistForm({ campaign, source = 'landing' }: WaitlistFormProps
                         navigator.clipboard.writeText(shareUrl);
                         alert('Referral link copied!');
                     }}
-                    variant="outline"
+                    variant="ghost"
                     className="w-full"
                 >
                     Copy Your Referral Link

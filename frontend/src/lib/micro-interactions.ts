@@ -99,6 +99,54 @@ export const conversionInteractions = {
             ease: 'sine.inOut',
         });
     },
+
+    /**
+     * Hero Entrance - Grand Reveal
+     * Emotion: Anticipation → Awe
+     */
+    heroEntrance: (elements: { title: HTMLElement, subtitle: HTMLElement, cta: HTMLElement }) => {
+        const tl = gsap.timeline();
+
+        tl.from(elements.title, {
+            y: 50,
+            opacity: 0,
+            duration: 1,
+            ease: tokens.easing.smooth,
+        })
+            .from(elements.subtitle, {
+                y: 30,
+                opacity: 0,
+                duration: 1,
+                ease: tokens.easing.smooth,
+            }, "-=0.6")
+            .from(elements.cta, {
+                y: 20,
+                opacity: 0,
+                duration: 0.8,
+                ease: tokens.easing.bounce,
+            }, "-=0.6");
+
+        return tl;
+    },
+
+    /**
+     * Scroll Reveal - Smooth Entry
+     */
+    scrollReveal: (element: HTMLElement, delay: number = 0) => {
+        gsap.fromTo(element,
+            {
+                y: 50,
+                opacity: 0,
+            },
+            {
+                y: 0,
+                opacity: 1,
+                duration: 0.8,
+                delay: delay,
+                ease: tokens.easing.calm,
+            }
+        );
+    },
 };
 
 /**

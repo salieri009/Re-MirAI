@@ -54,7 +54,7 @@ export function StatusCard({
       case 'collecting':
         return {
           title: '🔮 Echoes Collected',
-          subtitle: progress 
+          subtitle: progress
             ? `${progress.current} of ${progress.target} responses received`
             : 'Collecting feedback...',
           variant: 'secondary' as const,
@@ -94,9 +94,8 @@ export function StatusCard({
       {progress && status === 'collecting' && (
         <div className={styles.progressSection}>
           <ProgressBar
-            current={progress.current}
-            total={progress.target}
-            label={`${progress.percentage}% Complete`}
+            value={progress.percentage}
+            label={`${progress.current} of ${progress.target} responses`}
           />
         </div>
       )}
@@ -104,9 +103,8 @@ export function StatusCard({
       {status === 'ready' && progress && (
         <div className={styles.progressSection}>
           <ProgressBar
-            current={progress.target}
-            total={progress.target}
-            label="100% Complete ✓"
+            value={100}
+            label="All responses collected ✓"
             className={styles.completeBar}
           />
         </div>

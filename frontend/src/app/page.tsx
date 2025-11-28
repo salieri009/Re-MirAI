@@ -1,126 +1,81 @@
-'use client';
-
-import { useRouter } from 'next/navigation';
-import { Button } from '@/components/atoms/Button';
-import { LivePreview } from '@/components/molecules/LivePreview';
-import { ProgressBar } from '@/components/molecules/ProgressBar';
-import { SynthesisSpinner } from '@/components/molecules/SynthesisSpinner';
-import { RitualTimeline } from '@/components/organisms/RitualTimeline';
-import { FeatureShowcase } from '@/components/organisms/FeatureShowcase';
-import { HowItWorks } from '@/components/organisms/HowItWorks';
-import { Footer } from '@/components/organisms/Footer';
-import { Header } from '@/components/organisms/Header';
-import styles from './page.module.css';
-
-const HERO_HIGHLIGHTS = [
-  { label: 'Personas Forged', value: '12,482' },
-  { label: 'Avg. Ritual Time', value: '4m 12s' },
-  { label: 'Alchemic Modes', value: '4 archetypes' },
-];
-
-const TIMELINE_STAGES = [
-  {
-    id: 'survey',
-    name: 'Survey Constellation',
-    description: 'Collect 12 resonant answers to unlock synthesis.',
-    status: 'completed' as const,
-    icon: '📋',
-  },
-  {
-    id: 'alchemic',
-    name: 'Alchemic Mode',
-    description: 'Select an archetype to guide your persona’s birth.',
-    status: 'active' as const,
-    icon: '🜂',
-  },
-  {
-    id: 'reveal',
-    name: 'Persona Reveal',
-    description: 'Celebrate with the Summoning Page’s three-act reveal.',
-    status: 'upcoming' as const,
-    icon: '✨',
-  },
-];
+import React from 'react';
+import { Hero } from '@/components/organisms/Hero';
+import { FeatureCard } from '@/components/molecules/FeatureCard';
+import { WaitlistForm } from '@/components/molecules/WaitlistForm';
 
 export default function LandingPage() {
-  const router = useRouter();
-
   return (
-    <main className={styles.main}>
-      <Header />
+    <main className="min-h-screen bg-background-dark text-text-primary selection:bg-accent/30">
+      <Hero />
 
-      <section className={styles.hero}>
-        <div className={styles.heroGrid}>
-          <div className={styles.heroContent}>
-            <p className={styles.kicker}>ver2 ritual experience</p>
-            <h1 className={styles.title}>Summon the persona that understands you.</h1>
-            <p className={styles.subtitle}>
-              Complete cinematic surveys, enter Alchemic Mode, and unveil your AI counterpart
-              with a three-stage summoning ritual crafted for awe.
+      {/* How it Works Section */}
+      <section id="how-it-works" className="py-32 relative overflow-hidden">
+        <div className="container mx-auto px-4 relative z-10">
+          <div className="text-center mb-20">
+            <h2 className="font-display text-4xl md:text-5xl font-bold mb-6">
+              The Mirror <span className="text-accent">Reveals All</span>
+            </h2>
+            <p className="text-text-muted text-lg max-w-2xl mx-auto">
+              Three simple steps to uncover the hidden patterns in your social interactions.
             </p>
-
-            <div className={styles.actions}>
-              <Button size="lg" onClick={() => router.push('/login')}>
-                Begin Summoning
-              </Button>
-              <Button
-                variant="ghost"
-                size="lg"
-                onClick={() => router.push('/dashboard/ritual')}
-              >
-                Explore Ritual Hub
-              </Button>
-            </div>
-
-            <div className={styles.heroStats}>
-              {HERO_HIGHLIGHTS.map((highlight) => (
-                <div key={highlight.label} className={styles.statCard}>
-                  <span className={styles.statValue}>{highlight.value}</span>
-                  <span className={styles.statLabel}>{highlight.label}</span>
-                </div>
-              ))}
-            </div>
           </div>
 
-          <div className={styles.heroVisual}>
-            <SynthesisSpinner caption="Ritual circle calibrating" />
-            <div className={styles.heroMeter}>
-              <ProgressBar label="Synthesis readiness" value={68} />
-            </div>
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+            <FeatureCard
+              title="Connect"
+              description="Securely link your social accounts. We analyze patterns, not private messages."
+              icon={
+                <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13.828 10.172a4 4 0 00-5.656 0l-4 4a4 4 0 105.656 5.656l1.102-1.101m-.758-4.899a4 4 0 005.656 0l4-4a4 4 0 00-5.656-5.656l-1.1 1.1" />
+                </svg>
+              }
+              delay={0}
+            />
+            <FeatureCard
+              title="Analyze"
+              description="Our AI engine processes thousands of data points to construct your digital persona."
+              icon={
+                <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" />
+                </svg>
+              }
+              delay={200}
+            />
+            <FeatureCard
+              title="Reveal"
+              description="Meet your AI twin. Chat with it, ask it questions, and see yourself through their eyes."
+              icon={
+                <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
+                </svg>
+              }
+              delay={400}
+            />
           </div>
         </div>
+
+        {/* Background Glow */}
+        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-full h-full max-w-4xl bg-accent-purple/5 blur-[100px] rounded-full pointer-events-none" />
       </section>
 
-      <section className={styles.previewSection}>
-        <div className={styles.sectionHeader}>
-          <p className={styles.kicker}>survey resonance</p>
-          <h2>See your data breathe before the summon.</h2>
-          <p>
-            Live Preview mirrors each response into traits that fuel the Alchemic Mode, so you
-            always understand what’s being synthesized.
+      {/* Waitlist Section */}
+      <section className="py-32 relative">
+        <div className="container mx-auto px-4 relative z-10 text-center">
+          <h2 className="font-display text-4xl md:text-5xl font-bold mb-6">
+            Ready to Meet <span className="text-primary">Yourself?</span>
+          </h2>
+          <p className="text-text-muted text-lg mb-10">
+            Join the waitlist for early access to the beta.
           </p>
+          <WaitlistForm />
         </div>
-        <LivePreview answersCount={5} isAnalyzing />
-      </section>
 
-      <section className={styles.timelineSection}>
-        <div className={styles.sectionHeader}>
-          <p className={styles.kicker}>three-act ceremony</p>
-          <h2>Every step follows the ver2 Summoning Page blueprint.</h2>
-          <p>
-            Ceremony, agency, and emotional payoff—exactly as defined in the enhancement
-            document.
-          </p>
-        </div>
-        <RitualTimeline stages={TIMELINE_STAGES} />
+        {/* Footer */}
+        <footer className="absolute bottom-0 w-full py-8 text-center text-text-muted/30 text-sm">
+          &copy; {new Date().getFullYear()} Re:MirAI. All rights reserved.
+        </footer>
       </section>
-
-      <section className={styles.featuresSection}>
-        <FeatureShowcase />
-        <HowItWorks />
-      </section>
-
-      <Footer />
     </main>
   );
 }

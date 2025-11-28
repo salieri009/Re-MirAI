@@ -10,8 +10,8 @@ interface QuestCardProps {
 
 export function QuestCard({ quest, onClaim }: QuestCardProps) {
   const progressPercentage = Math.min(100, (quest.progress / quest.requirement) * 100);
-  const canClaim = quest.progress >= quest.requirement && quest.status === 'COMPLETED';
-  const isLocked = quest.status === 'LOCKED';
+  const canClaim = quest.progress >= quest.requirement && quest.status !== 'CLAIMED';
+  const isLocked = quest.status === 'CLAIMED';
 
   const radius = 20;
   const circumference = 2 * Math.PI * radius;

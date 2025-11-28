@@ -61,11 +61,10 @@ export function SurveyWizard({ surveyId, questions }: SurveyWizardProps) {
   return (
     <div className={styles.wizard}>
       <ProgressBar
-        current={currentIndex + 1}
-        total={questions.length}
+        value={progress}
         label={`Question ${currentIndex + 1} of ${questions.length}`}
       />
-      
+
       <div className={styles.questionContainer}>
         <QuestionCard
           question={currentQuestion}
@@ -82,7 +81,7 @@ export function SurveyWizard({ surveyId, questions }: SurveyWizardProps) {
         >
           Previous
         </Button>
-        
+
         {isLastQuestion ? (
           <Button
             variant="primary"

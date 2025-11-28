@@ -8,14 +8,21 @@ module.exports = {
         extend: {
             colors: {
                 // Core Palette (Mapped to HSL variables)
+                // Primary: Mint Green
                 "primary": "var(--color-primary)",
                 "primary-dark": "var(--color-primary-dark)",
                 "primary-light": "var(--color-primary-light)",
 
-                "accent": "var(--color-accent)",
-                "accent-dark": "var(--color-accent-dark)",
-                "accent-light": "var(--color-accent-light)",
+                // Accent: Amethyst Purple
+                "accent-purple": "var(--color-accent)",
+                "accent-purple-dark": "var(--color-accent-dark)",
+                "accent-purple-light": "var(--color-highlight)", // Light Lavender
 
+                // Extra
+                "accent-green-dark": "var(--color-accent-green-dark)",
+
+                // Legacy/Semantic mappings
+                "accent": "var(--color-accent)",
                 "highlight": "var(--color-highlight)",
 
                 // Backgrounds
@@ -61,6 +68,10 @@ module.exports = {
                 "2xl": ["1.5rem", { lineHeight: "1.35" }],
                 "3xl": ["1.875rem", { lineHeight: "1.3" }],
                 "4xl": ["2.5rem", { lineHeight: "1.2" }],
+            },
+            boxShadow: {
+                "glow-primary": "var(--shadow-glow-primary)",
+                "glow-accent": "var(--shadow-glow-accent)",
             },
         },
     },

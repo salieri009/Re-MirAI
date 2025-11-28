@@ -145,7 +145,6 @@ export function useAccessibility() {
         shouldAnimate: !reducedMotion,
         shouldUseHighContrast: highContrast,
         accentColor: tokens.palette.accent,
-        accentColorLight: tokens.palette.accentLight,
     };
 }
 

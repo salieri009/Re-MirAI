@@ -6,6 +6,7 @@ type ProgressBarProps = {
   showValue?: boolean;
   accent?: boolean;
   ariaLabel?: string;
+  className?: string;
 };
 
 export function ProgressBar({
@@ -14,11 +15,12 @@ export function ProgressBar({
   showValue = true,
   accent = false,
   ariaLabel,
+  className = '',
 }: ProgressBarProps) {
   const clamped = Math.max(0, Math.min(100, value));
 
   return (
-    <div className={styles.wrapper}>
+    <div className={`${styles.wrapper} ${className}`}>
       {label ? (
         <div className={styles.header}>
           <span>{label}</span>
