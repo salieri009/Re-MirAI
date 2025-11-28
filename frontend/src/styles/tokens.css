@@ -1,14 +1,14 @@
 :root {
   /* === CORE 3-COLOR PALETTE (HSL) === */
-  /* Primary: Mint Green #00C9A7 */
-  --hue-primary: 170;
-  --sat-primary: 100%;
-  --lig-primary: 39%;
+  /* Primary: Amethyst Purple #845EC2 */
+  --hue-primary: 263;
+  --sat-primary: 48%;
+  --lig-primary: 56%;
 
-  /* Accent: Amethyst Purple #845EC2 */
-  --hue-accent: 263;
-  --sat-accent: 48%;
-  --lig-accent: 56%;
+  /* Accent: Mint Green #00C9A7 */
+  --hue-accent: 170;
+  --sat-accent: 100%;
+  --lig-accent: 39%;
 
   /* Highlight: Light Lavender #C197FF */
   --hue-highlight: 264;
@@ -22,15 +22,14 @@
 
   /* === SEMANTIC COLORS === */
   --color-primary: hsl(var(--hue-primary), var(--sat-primary), var(--lig-primary));
-  --color-primary-dark: hsl(var(--hue-green-dark), var(--sat-green-dark), var(--lig-green-dark));
-  --color-primary-light: hsl(var(--hue-primary), var(--sat-primary), 50%);
+  --color-primary-dark: hsl(var(--hue-primary), var(--sat-primary), 40%);
+  --color-primary-light: hsl(var(--hue-primary), var(--sat-primary), 70%);
 
   --color-accent: hsl(var(--hue-accent), var(--sat-accent), var(--lig-accent));
-  --color-accent-dark: hsl(var(--hue-accent), var(--sat-accent), 40%);
-  --color-accent-light: hsl(var(--hue-highlight), var(--sat-highlight), var(--lig-highlight));
+  --color-accent-dark: hsl(var(--hue-accent), var(--sat-accent), 30%);
+  --color-accent-light: hsl(var(--hue-accent), var(--sat-accent), 50%);
 
   --color-highlight: hsl(var(--hue-highlight), var(--sat-highlight), var(--lig-highlight));
-  --color-accent-green-dark: hsl(var(--hue-green-dark), var(--sat-green-dark), var(--lig-green-dark));
 
   /* === BACKGROUNDS & SURFACES === */
   /* Dark Mode Default */
@@ -38,6 +37,9 @@
   --color-surface: hsla(var(--hue-primary), 30%, 20%, 0.4);
   --color-surface-elevated: hsla(var(--hue-primary), 30%, 30%, 0.6);
   --color-border: hsla(var(--hue-highlight), 100%, 80%, 0.2);
+  
+  /* Legacy: Keep green-dark for backward compatibility if needed */
+  --color-accent-green-dark: hsl(var(--hue-green-dark), var(--sat-green-dark), var(--lig-green-dark));
 
   /* === TEXT COLORS === */
   --color-text-primary: #f8f6f7;
@@ -67,7 +69,7 @@
   /* 64px */
 
   /* === TYPOGRAPHY === */
-  --font-display: 'Plus Jakarta Sans', sans-serif;
+  --font-display: 'Space Grotesk', sans-serif;
   --font-sans: 'Plus Jakarta Sans', sans-serif;
   --font-mono: 'Space Mono', monospace;
   --font-weight-regular: 400;

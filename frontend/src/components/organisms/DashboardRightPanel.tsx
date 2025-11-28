@@ -4,6 +4,7 @@ import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { ProgressBar } from '@/components/molecules/ProgressBar';
 import { Button } from '@/components/atoms/Button';
+import { StageBadge, type SurveyStage } from '@/components/molecules/StageBadge';
 import { useAuthStore } from '@/stores/authStore';
 import styles from './DashboardRightPanel.module.css';
 
@@ -21,6 +22,7 @@ const ACTIONS = [
 export function DashboardRightPanel() {
     const router = useRouter();
     const { user } = useAuthStore();
+    const surveyStage: SurveyStage = 'COLLECTING' as SurveyStage; // TODO: Get from actual survey state
 
     return (
         <aside className={styles.rightPanel}>
@@ -40,10 +42,17 @@ export function DashboardRightPanel() {
                     <div className={styles.surveyCard}>
                         <div className={styles.cardRow}>
                             <span>Active constellation</span>
-                            <span className={styles.badge}>12 / 14</span>
+                            <div className={styles.cardRowRight}>
+                                <span className={styles.badge}>12 / 14</span>
+                                <StageBadge stage={surveyStage} />
+                            </div>
                         </div>
-                        <ProgressBar value={86} showValue />
-                        <p className={styles.cardHint}>Collect 2 more echoes to unlock reveal.</p>
+                        <ProgressBar value={86} showValue accent={(surveyStage as string) === 'READY'} />
+                        <p className={styles.cardHint}>
+                            {surveyStage === 'READY' 
+                                ? 'Ready to begin synthesis!' 
+                                : 'Collect 2 more echoes to unlock reveal.'}
+                        </p>
                     </div>
                 </div>
 

@@ -24,7 +24,7 @@
 
 /* User Message Styles */
 .user .bubble {
-    background: linear-gradient(135deg, var(--color-primary) 0%, #ec4899 100%);
+    background: linear-gradient(135deg, var(--color-primary) 0%, var(--color-highlight) 100%);
     color: white;
     border-bottom-right-radius: var(--radius-sm);
     box-shadow: 0 4px 12px rgba(217, 70, 239, 0.2);

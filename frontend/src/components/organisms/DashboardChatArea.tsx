@@ -1,10 +1,15 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
+import gsap from 'gsap';
 import { Button } from '@/components/atoms/Button';
 import { ProgressBar } from '@/components/molecules/ProgressBar';
+import { StageBadge, type SurveyStage } from '@/components/molecules/StageBadge';
+import { TypingIndicator } from '@/components/molecules/TypingIndicator';
+import { useReducedMotion } from '@/hooks/useAccessibility';
+import { slideIn } from '@/lib/animations';
 import styles from './DashboardChatArea.module.css';
 
 interface Message {
@@ -43,6 +48,8 @@ const PROMPTS = [
 
 export function DashboardChatArea() {
     const router = useRouter();
+    const reducedMotion = useReducedMotion();
+    const messagesRef = useRef<HTMLDivElement>(null);
     const [messages, setMessages] = useState<Message[]>([
         {
             id: '1',
@@ -52,9 +59,21 @@ export function DashboardChatArea() {
         },
     ]);
     const [inputValue, setInputValue] = useState('');
+    const [isTyping, setIsTyping] = useState(false);
+    const [surveyStage, setSurveyStage] = useState<SurveyStage>('COLLECTING');
+
+    // Animate new messages
+    useEffect(() => {
+        if (!messagesRef.current || reducedMotion) return;
+
+        const lastMessage = messagesRef.current.lastElementChild as HTMLElement;
+        if (lastMessage) {
+            slideIn(lastMessage, 'up');
+        }
+    }, [messages, reducedMotion]);
 
     const handleSend = () => {
-        if (!inputValue.trim()) return;
+        if (!inputValue.trim() || isTyping) return;
 
         const newMessage: Message = {
             id: Date.now().toString(),
@@ -65,6 +84,19 @@ export function DashboardChatArea() {
 
         setMessages((prev) => [...prev, newMessage]);
         setInputValue('');
+        setIsTyping(true);
+
+        // Simulate AI typing
+        setTimeout(() => {
+            const aiResponse: Message = {
+                id: (Date.now() + 1).toString(),
+                type: 'persona',
+                content: 'I understand. Let me reflect on that...',
+                timestamp: new Date(),
+            };
+            setMessages((prev) => [...prev, aiResponse]);
+            setIsTyping(false);
+        }, 1500);
     };
 
     return (
@@ -72,12 +104,15 @@ export function DashboardChatArea() {
             <header className={styles.statusHeader}>
                 <div>
                     <p className={styles.kicker}>dashboard ritual state</p>
-                    <h2>Summoning pipeline overview</h2>
+                    <div className={styles.headerTitleRow}>
+                        <h2>Summoning pipeline overview</h2>
+                        <StageBadge stage={surveyStage} />
+                    </div>
                 </div>
                 <div className={styles.headerActions}>
-                    <ProgressBar value={72} label="Survey completion" />
+                    <ProgressBar value={72} label="Survey completion" accent />
                     <Button size="sm" variant="secondary" onClick={() => router.push('/summon')}>
-                        Enter Summoning Page
+                        {surveyStage === 'READY' ? 'Begin Synthesis' : 'Enter Summoning Page'}
                     </Button>
                 </div>
             </header>
@@ -95,7 +130,7 @@ export function DashboardChatArea() {
             </div>
 
             <div className={styles.chatLayout}>
-                <div className={styles.messagesContainer}>
+                <div ref={messagesRef} className={styles.messagesContainer}>
                     {messages.map((message) => (
                         <div
                             key={message.id}
@@ -107,6 +142,11 @@ export function DashboardChatArea() {
                             </time>
                         </div>
                     ))}
+                    {isTyping && (
+                        <div className={`${styles.message} ${styles.persona}`}>
+                            <TypingIndicator />
+                        </div>
+                    )}
                 </div>
 
                 <aside className={styles.personaPanel}>

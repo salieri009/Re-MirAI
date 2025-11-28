@@ -1,23 +1,30 @@
 'use client';
 
-import { use, useMemo, useState } from 'react';
+import { use, useMemo, useState, useEffect, useRef } from 'react';
 import { useQuery } from '@tanstack/react-query';
 import { useRouter } from 'next/navigation';
+import gsap from 'gsap';
 import { personaApi } from '@/lib/api/persona';
 import { questApi } from '@/lib/api/quest';
 import { PersonaCard } from '@/components/molecules/PersonaCard';
 import { ShareModal } from '@/components/organisms/ShareModal';
 import { Button } from '@/components/atoms/Button';
 import { StatsPanel } from '@/components/molecules/StatsPanel';
+import { PersonaRadarChart } from '@/components/molecules/PersonaRadarChart';
 import { QuestCard } from '@/components/molecules/QuestCard';
 import { ActivityFeed, ActivityItem } from '@/components/molecules/ActivityFeed';
 import { ProgressBar } from '@/components/molecules/ProgressBar';
+import { useReducedMotion } from '@/hooks/useAccessibility';
+import { fadeIn, staggerIn } from '@/lib/animations';
 import { Quest } from '@/lib/mock-data/quests';
 import styles from './page.module.css';
 
 export default function PersonaPage({ params }: { params: Promise<{ id: string }> }) {
   const { id } = use(params);
   const router = useRouter();
+  const reducedMotion = useReducedMotion();
+  const radarRef = useRef<HTMLDivElement>(null);
+  const questsRef = useRef<HTMLDivElement>(null);
   const [showShareModal, setShowShareModal] = useState(false);
   const [shareCount, setShareCount] = useState(0);
 
@@ -44,9 +51,60 @@ export default function PersonaPage({ params }: { params: Promise<{ id: string }
     setShowShareModal(false);
   };
 
+  // Radar chart bloom animation
+  useEffect(() => {
+    if (reducedMotion || !radarRef.current || !persona) return;
+
+    const cleanup = fadeIn(radarRef.current, {
+      onComplete: () => {
+        // Bloom effect - scale up then settle
+        if (radarRef.current) {
+          gsap.to(radarRef.current, {
+            scale: 1.05,
+            duration: 0.3,
+            ease: 'power2.out',
+            yoyo: true,
+            repeat: 1,
+          });
+        }
+      },
+    });
+
+    return () => {
+      if (cleanup) cleanup();
+    };
+  }, [persona, reducedMotion]);
+
+  // Quest cards stagger animation
+  useEffect(() => {
+    if (reducedMotion || !questsRef.current || !quests) return;
+
+    const questCards = questsRef.current.querySelectorAll('[data-quest-card]');
+    if (questCards.length > 0) {
+      staggerIn(Array.from(questCards) as HTMLElement[]);
+    }
+  }, [quests, reducedMotion]);
+
   const handleClaimQuest = async (questId: string) => {
     await questApi.claim(questId);
-    window.location.reload();
+    
+    // Celebration animation
+    if (!reducedMotion) {
+      const questElement = document.querySelector(`[data-quest-id="${questId}"]`) as HTMLElement;
+      if (questElement) {
+        gsap.to(questElement, {
+          scale: 1.1,
+          boxShadow: '0 0 32px rgba(0, 201, 167, 0.6)',
+          duration: 0.5,
+          ease: 'power2.out',
+          yoyo: true,
+          repeat: 1,
+        });
+      }
+    }
+    
+    // Reload after animation
+    setTimeout(() => window.location.reload(), 1000);
   };
 
   const activityItems: ActivityItem[] = useMemo(() => {
@@ -134,7 +192,9 @@ export default function PersonaPage({ params }: { params: Promise<{ id: string }
               <p className={styles.sectionSubtitle}>Emotion-driven attributes</p>
             </div>
           </div>
-          <StatsPanel stats={persona.stats} />
+          <div ref={radarRef}>
+            <PersonaRadarChart stats={persona.stats} />
+          </div>
         </section>
 
         <section className={styles.section}>
@@ -174,9 +234,11 @@ export default function PersonaPage({ params }: { params: Promise<{ id: string }
                 <p className={styles.sectionSubtitle}>Complete quests to earn crystals</p>
               </div>
             </div>
-            <div className={styles.questGrid}>
+            <div ref={questsRef} className={styles.questGrid}>
               {quests.map((quest) => (
-                <QuestCard key={quest.id} quest={quest} onClaim={handleClaimQuest} />
+                <div key={quest.id} data-quest-card data-quest-id={quest.id}>
+                  <QuestCard quest={quest} onClaim={handleClaimQuest} />
+                </div>
               ))}
             </div>
           </section>

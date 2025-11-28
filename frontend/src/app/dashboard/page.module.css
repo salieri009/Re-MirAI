@@ -3,4 +3,14 @@
   width: 100vw;
   height: 100vh;
   overflow: hidden;
+  position: relative;
+  background: var(--color-bg-dark);
+}
+
+.background {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  opacity: 0.4;
 }

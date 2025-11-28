@@ -24,10 +24,20 @@ export function MirrorCanvas({ variant = 'background', intensity = 1, interactio
         const ctx = canvas.getContext('2d');
         if (!ctx) return;
 
-        // Set canvas size
+        // Set canvas size with DPR optimization for performance
         const resizeCanvas = () => {
-            canvas.width = canvas.offsetWidth;
-            canvas.height = canvas.offsetHeight;
+            const dpr = Math.min(window.devicePixelRatio || 1, 2); // Cap at 2x for performance
+            const rect = canvas.getBoundingClientRect();
+            
+            canvas.width = rect.width * dpr;
+            canvas.height = rect.height * dpr;
+            
+            // Scale context to match DPR
+            ctx.scale(dpr, dpr);
+            
+            // Set CSS size to actual display size
+            canvas.style.width = `${rect.width}px`;
+            canvas.style.height = `${rect.height}px`;
         };
 
         resizeCanvas();
@@ -37,7 +47,7 @@ export function MirrorCanvas({ variant = 'background', intensity = 1, interactio
         if (variant === 'background') {
             cleanupRef.current = delightInteractions.particleSystem(canvas, ctx, {
                 count: 100 * intensity,
-                color: '#845ec2', // Purple fire
+                color: tokens.palette.primary, // Primary Purple
                 speed: 1.5 * intensity,
                 connectDistance: 180,
                 showConnections: true,
@@ -47,7 +57,7 @@ export function MirrorCanvas({ variant = 'background', intensity = 1, interactio
             // Mirror specific effects with reflection and fire-like connections
             cleanupRef.current = delightInteractions.particleSystem(canvas, ctx, {
                 count: 80 * intensity,
-                color: '#f3c5ff', // Light pink fire glow
+                color: tokens.palette.highlight, // Highlight Lavender
                 speed: 2.0 * intensity,
                 connectDistance: 140,
                 showConnections: true,

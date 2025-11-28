@@ -1,15 +1,21 @@
 'use client';
 
-import { useEffect, useMemo, useState } from 'react';
+import { useEffect, useMemo, useState, useRef } from 'react';
+import dynamic from 'next/dynamic';
 import { useRouter } from 'next/navigation';
 import { Button } from '@/components/atoms/Button';
 import { ProgressBar } from '@/components/molecules/ProgressBar';
 import { SynthesisSpinner } from '@/components/molecules/SynthesisSpinner';
 import { ArchetypeCard } from '@/components/atoms/ArchetypeCard';
-import { useAnnouncement } from '@/hooks/useAccessibility';
+import { SkipToContent, useAnnouncement } from '@/hooks/useAccessibility';
+import { useSummoningAnimation, type SummoningStage } from '@/hooks/useSummoningAnimation';
 import styles from './page.module.css';
 
-type SummoningStage = 'PRE_SYNTHESIS' | 'ALCHEMIC_MODE' | 'REVEAL';
+// Lazy load canvas for summoning animation
+const SummoningCanvas = dynamic(() => import('@/components/organisms/MirrorCanvas/MirrorCanvas').then(mod => ({ default: mod.MirrorCanvas })), {
+  loading: () => <canvas aria-hidden="true" className={styles.backgroundCanvas} />,
+  ssr: false,
+});
 
 const ARCHETYPES = [
     {
@@ -41,39 +47,29 @@ const ARCHETYPES = [
 export default function SummonPage() {
     const router = useRouter();
     const announce = useAnnouncement();
-    const [stage, setStage] = useState<SummoningStage>('PRE_SYNTHESIS');
+    const canvasRef = useRef<HTMLCanvasElement>(null);
     const [selectedArchetype, setSelectedArchetype] = useState<string | null>(null);
-    const [progress, setProgress] = useState(0);
     const [personaId, setPersonaId] = useState('p-123');
 
-    useEffect(() => {
-        if (stage === 'PRE_SYNTHESIS') {
-            announce('Ready to begin synthesis ritual.', 'polite');
-            const timer = setTimeout(() => setStage('ALCHEMIC_MODE'), 4000);
-            return () => clearTimeout(timer);
-        }
-
-        if (stage === 'ALCHEMIC_MODE' && selectedArchetype) {
-            announce(`Alchemic Mode engaged with ${selectedArchetype}`, 'polite');
-            setProgress(0);
-            const interval = setInterval(() => {
-                setProgress((prev) => {
-                    if (prev >= 100) {
-                        clearInterval(interval);
-                        setStage('REVEAL');
-                        return 100;
-                    }
-                    return prev + 5;
-                });
-            }, 250);
-
-            return () => clearInterval(interval);
-        }
-
-        if (stage === 'REVEAL') {
-            announce('Persona revealed. Explore your new companion.', 'assertive');
-        }
-    }, [stage, selectedArchetype, announce]);
+    const {
+        stage,
+        progress,
+        transitionToAlchemicMode,
+        transitionToReveal,
+        skipToReveal,
+    } = useSummoningAnimation({
+        canvasRef,
+        onStageChange: (newStage) => {
+            if (newStage === 'PRE_SYNTHESIS') {
+                announce('Ready to begin synthesis ritual.', 'polite');
+            } else if (newStage === 'ALCHEMIC_MODE') {
+                announce(`Alchemic Mode engaged${selectedArchetype ? ` with ${selectedArchetype}` : ''}`, 'polite');
+            } else if (newStage === 'REVEAL') {
+                announce('Persona revealed. Explore your new companion.', 'assertive');
+            }
+        },
+        autoStart: false,
+    });
 
     const personaSummary = useMemo(() => {
         if (!selectedArchetype) {
@@ -93,8 +89,19 @@ export default function SummonPage() {
     }, [selectedArchetype]);
 
     const handleSkip = () => {
-        setStage('REVEAL');
-        setProgress(100);
+        skipToReveal();
+    };
+
+    const handleBeginSynthesis = () => {
+        transitionToAlchemicMode();
+    };
+
+    const handleArchetypeSelect = (id: string) => {
+        setSelectedArchetype(id);
+        // Auto-transition to reveal after archetype selection
+        setTimeout(() => {
+            transitionToReveal();
+        }, 500);
     };
 
     const handleExplore = () => {
@@ -102,9 +109,11 @@ export default function SummonPage() {
     };
 
     return (
-        <main className={styles.page}>
-            <div className={styles.backdrop} />
-            <section className={styles.stage}>
+        <>
+            <SkipToContent targetId="summon-main" />
+            <main id="summon-main" className={styles.page} role="main" aria-label="Summoning ritual">
+                <div className={styles.backdrop} aria-hidden="true" />
+                <section className={styles.stage}>
                 <header className={styles.header}>
                     <p className={styles.kicker}>Summoning Ritual ver2</p>
                     <h1>The ceremony that births your Persona.</h1>
@@ -115,8 +124,8 @@ export default function SummonPage() {
                     <div className={styles.stagePanel}>
                         <SynthesisSpinner caption="Calibrating data threads..." />
                         <p className={styles.helper}>Gathering resonance from your survey responses.</p>
-                        <Button variant="secondary" onClick={() => setStage('ALCHEMIC_MODE')}>
-                            Skip to Alchemic Mode
+                        <Button variant="secondary" onClick={handleBeginSynthesis}>
+                            Begin Synthesis
                         </Button>
                     </div>
                 )}
@@ -142,7 +151,7 @@ export default function SummonPage() {
                                     description={archetype.description}
                                     icon={archetype.icon}
                                     selected={selectedArchetype === archetype.id}
-                                    onSelect={setSelectedArchetype}
+                                    onSelect={handleArchetypeSelect}
                                 />
                             ))}
                         </div>
@@ -164,7 +173,8 @@ export default function SummonPage() {
                         </div>
                     </div>
                 )}
-            </section>
-        </main>
+                </section>
+            </main>
+        </>
     );
 }

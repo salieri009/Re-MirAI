@@ -1,6 +1,6 @@
 .section {
     padding: 96px 24px;
-    background: #6b4a9e;
+    background: var(--color-primary-dark);
 }
 
 .sectionTitle {
@@ -30,7 +30,7 @@
 .stepNumber {
     width: 64px;
     height: 64px;
-    background: #00c9a7;
+    background: var(--color-accent);
     color: #ffffff;
     border-radius: 50%;
     display: flex;
@@ -48,7 +48,7 @@
 .stepTitle {
     font-size: 24px;
     font-weight: var(--font-weight-semibold);
-    color: #f3c5ff;
+    color: var(--color-highlight);
     margin-bottom: 12px;
     line-height: var(--line-height-tight);
 }

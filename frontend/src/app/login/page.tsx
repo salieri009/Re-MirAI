@@ -11,11 +11,13 @@ import { TrustBadge } from '@/components/molecules/TrustBadge';
 import { Button } from '@/components/atoms/Button';
 import { MirrorCanvas } from '@/components/organisms/MirrorCanvas/MirrorCanvas';
 import { ProgressBar } from '@/components/molecules/ProgressBar';
+import { ProgressTracker } from '@/components/molecules/ProgressTracker';
 import { trustInteractions } from '@/lib/micro-interactions';
 import { useReducedMotion, useAnnouncement } from '@/hooks/useAccessibility';
 import styles from './page.module.css';
 
 type AuthState = 'idle' | 'loading' | 'success' | 'error';
+type ProgressStep = 'authenticate' | 'verify' | 'welcome';
 
 const TRUST_BADGES = [
   {
@@ -53,6 +55,7 @@ export default function LoginPage() {
   const [authState, setAuthState] = useState<AuthState>('idle');
   const [statusMessage, setStatusMessage] = useState('Connecting to Google...');
   const [error, setError] = useState<string | null>(null);
+  const [progressStep, setProgressStep] = useState<ProgressStep>('authenticate');
 
   const cardRef = useRef<HTMLDivElement>(null);
 
@@ -96,12 +99,18 @@ export default function LoginPage() {
 
     setAuthState('loading');
     setError(null);
+    setProgressStep('authenticate');
     trackEvent('auth.start', { provider: 'google' });
     announce('Authenticating with Google', 'polite');
 
     try {
+      // Simulate progress steps
+      setTimeout(() => setProgressStep('verify'), 1000);
+      
       const response = await authApi.googleLogin('mock-id-token');
       login(response.accessToken, response.refreshToken, response.user);
+      
+      setProgressStep('welcome');
       setStatusMessage('Welcome back. Redirecting to your dashboard...');
       setAuthState('success');
       announce('Login successful! Redirecting…', 'polite');
@@ -113,6 +122,7 @@ export default function LoginPage() {
       setError(errorMsg);
       setStatusMessage('We hit a snag. Try again.');
       setAuthState('error');
+      setProgressStep('authenticate'); // Reset on error
       announce(errorMsg, 'assertive');
       trackEvent('auth.error', { provider: 'google', message: errorMsg });
     }
@@ -158,6 +168,9 @@ export default function LoginPage() {
           </div>
 
           <div className={styles.content}>
+            {authState === 'loading' && (
+              <ProgressTracker currentStep={progressStep} className={styles.progressTracker} />
+            )}
             <GoogleAuthButton
               onAuth={handleGoogleAuth}
               onRetry={handleRetry}

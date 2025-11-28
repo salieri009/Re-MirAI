@@ -42,7 +42,7 @@ export const tokens = {
 
     typography: {
         family: {
-            display: '\'Plus Jakarta Sans\', sans-serif',
+            display: '\'Space Grotesk\', sans-serif',
             body: '\'Plus Jakarta Sans\', sans-serif',
             mono: '\'Space Mono\', monospace',
         },

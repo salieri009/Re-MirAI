@@ -53,6 +53,12 @@
   align-items: center;
 }
 
+.cardRowRight {
+  display: flex;
+  align-items: center;
+  gap: var(--space-sm);
+}
+
 .badge {
   padding: 0.2rem 0.7rem;
   border-radius: var(--radius-pill);

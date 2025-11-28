@@ -3,7 +3,7 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    background: linear-gradient(135deg, #6b4a9e 0%, #845ec2 100%) !important;
+    background: linear-gradient(135deg, var(--color-primary-dark) 0%, var(--color-primary) 100%) !important;
     position: relative;
     overflow: hidden;
     z-index: 1 !important;
@@ -29,7 +29,7 @@
 .tagline {
     font-size: 32px;
     font-weight: var(--font-weight-semibold);
-    color: #f3c5ff;
+    color: var(--color-highlight);
     margin-bottom: var(--space-xl);
     line-height: var(--line-height-normal);
 }
@@ -47,7 +47,7 @@
     font-size: 20px;
     font-weight: var(--font-weight-semibold);
     padding: 20px 48px;
-    background: #00c9a7;
+    background: var(--color-accent);
     color: #ffffff;
     border-radius: 8px;
     text-decoration: none;
@@ -55,9 +55,9 @@
 }
 
 .ctaButton:hover {
-    background: #00a285;
+    background: var(--color-accent-dark);
     transform: translateY(-4px);
-    box-shadow: 0 8px 16px rgba(0, 201, 167, 0.3);
+    box-shadow: 0 8px 16px hsla(var(--hue-accent), 100%, 50%, 0.3);
 }
 
 .ctaButton:active {
@@ -66,7 +66,7 @@
 
 /* WCAG Focus States */
 .ctaButton:focus-visible {
-    outline: 4px solid #f3c5ff;
+    outline: 4px solid var(--color-highlight);
     outline-offset: 4px;
 }
 

@@ -7,23 +7,22 @@ module.exports = {
     theme: {
         extend: {
             colors: {
-                // Core Palette (Mapped to HSL variables)
-                // Primary: Mint Green
+                // Core Palette (Mapped to HSL variables) - ver2 aligned
+                // Primary: Amethyst Purple #845EC2
                 "primary": "var(--color-primary)",
                 "primary-dark": "var(--color-primary-dark)",
                 "primary-light": "var(--color-primary-light)",
 
-                // Accent: Amethyst Purple
-                "accent-purple": "var(--color-accent)",
-                "accent-purple-dark": "var(--color-accent-dark)",
-                "accent-purple-light": "var(--color-highlight)", // Light Lavender
-
-                // Extra
-                "accent-green-dark": "var(--color-accent-green-dark)",
-
-                // Legacy/Semantic mappings
+                // Accent: Mint Green #00C9A7
                 "accent": "var(--color-accent)",
+                "accent-dark": "var(--color-accent-dark)",
+                "accent-light": "var(--color-accent-light)",
+
+                // Highlight: Light Lavender #C197FF
                 "highlight": "var(--color-highlight)",
+
+                // Legacy/Extra (for backward compatibility)
+                "accent-green-dark": "var(--color-accent-green-dark)",
 
                 // Backgrounds
                 "background-dark": "var(--color-bg-dark)",

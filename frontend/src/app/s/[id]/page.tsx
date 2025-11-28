@@ -1,23 +1,34 @@
 'use client';
 
-import { use } from 'react';
+import { use, useEffect, useRef } from 'react';
 import { useQuery } from '@tanstack/react-query';
 import { surveyApi } from '@/lib/api/survey';
 import { SurveyWizard } from '@/components/organisms/SurveyWizard';
 import { PrivacyNotice } from '@/components/molecules/PrivacyNotice';
 import { ProgressBar } from '@/components/molecules/ProgressBar';
 import { SynthesisSpinner } from '@/components/molecules/SynthesisSpinner';
+import { Button } from '@/components/atoms/Button';
+import { useReducedMotion } from '@/hooks/useAccessibility';
+import { fadeIn } from '@/lib/animations';
 import styles from './page.module.css';
 
 const STAGES = ['Warm-up', 'Deep Dive', 'Reflection'];
 
 export default function SurveyPage({ params }: { params: Promise<{ id: string }> }) {
   const { id } = use(params);
+  const reducedMotion = useReducedMotion();
+  const previewRef = useRef<HTMLDivElement>(null);
 
   const { data: survey, isLoading } = useQuery({
     queryKey: ['survey', id],
     queryFn: () => surveyApi.get(id),
   });
+
+  // Animate preview panel
+  useEffect(() => {
+    if (reducedMotion || !previewRef.current) return;
+    fadeIn(previewRef.current);
+  }, [reducedMotion]);
 
   if (isLoading) {
     return (
@@ -61,7 +72,26 @@ export default function SurveyPage({ params }: { params: Promise<{ id: string }>
           <div className={styles.wizardPanel}>
             <SurveyWizard surveyId={id} questions={survey.questions} />
           </div>
-          <aside className={styles.preview}>
+          <aside ref={previewRef} className={styles.preview}>
+            <div className={styles.previewCard}>
+              <h3 className={styles.previewTitle}>Live URL Preview</h3>
+              <div className={styles.urlPreview}>
+                <code className={styles.urlCode}>
+                  {typeof window !== 'undefined' ? window.location.href : `/s/${id}`}
+                </code>
+                <Button
+                  variant="ghost"
+                  size="sm"
+                  onClick={() => {
+                    if (typeof window !== 'undefined') {
+                      navigator.clipboard.writeText(window.location.href);
+                    }
+                  }}
+                >
+                  Copy
+                </Button>
+              </div>
+            </div>
             <SynthesisSpinner size={180} caption="Summoning energy building" />
             <p className={styles.previewHint}>
               Every answer charges the ritual. Once complete, jump to the Summoning Page for the

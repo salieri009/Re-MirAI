@@ -6,6 +6,7 @@ export interface PersonaStats {
   intellect: number;
   kindness: number;
   energy: number;
+  [key: string]: number; // Index signature for dynamic access
 }
 
 export interface Persona {
@@ -16,6 +17,8 @@ export interface Persona {
   stats: PersonaStats;
   greeting?: string;
   createdAt: string;
+  avatar?: string; // Optional avatar URL
+  traits?: string[]; // Optional persona traits/essence
 }
 
 export interface PersonaSynthesisRequest {

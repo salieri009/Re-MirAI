@@ -8,6 +8,7 @@ const spaceGrotesk = Space_Grotesk({
   subsets: ['latin'],
   variable: '--font-display',
   display: 'swap',
+  weight: ['500', '700'], // Medium (500) and Bold (700) per ver2 spec
 })
 
 const plusJakarta = Plus_Jakarta_Sans({

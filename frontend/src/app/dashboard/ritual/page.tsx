@@ -6,6 +6,7 @@ import { useRouter } from 'next/navigation';
 import { useAuthStore } from '@/stores/authStore';
 import { surveyApi } from '@/lib/api/survey';
 import { Button } from '@/components/atoms/Button';
+import { StageBadge, type SurveyStage } from '@/components/molecules/StageBadge';
 import { SurveyLinkCard } from '@/components/molecules/SurveyLinkCard';
 import { ShareOptions } from '@/components/molecules/ShareOptions';
 import { guidanceInteractions } from '@/lib/micro-interactions';
@@ -66,6 +67,12 @@ export default function RitualHubPage() {
     );
   }, [surveyStatus]);
 
+  const surveyStage: SurveyStage = useMemo(() => {
+    if (surveyStatus?.canCreatePersona) return 'READY';
+    if (surveyStatus?.responsesCount && surveyStatus.responsesCount > 0) return 'COLLECTING';
+    return 'COLLECTING';
+  }, [surveyStatus]);
+
   const handleShare = (platform: string) => {
     if (platform === 'copy' && surveyUrl) {
       navigator.clipboard.writeText(surveyUrl);
@@ -101,7 +108,7 @@ export default function RitualHubPage() {
       <div className={styles.rhub}>
         <header className={styles.header}>
           <div>
-            <p className={styles.kicker}>Ritual Hub</p>
+            <p className={styles.kicker}>Survey Hub</p>
             <h1>Gather anonymous echoes</h1>
             <p className={styles.subtitle}>
               Track progress, share your ritual link, and nudge friends for more feedback.
@@ -118,9 +125,7 @@ export default function RitualHubPage() {
                   {surveyStatus?.responsesCount ?? 0}/{surveyStatus?.threshold ?? 3}
                 </h2>
               </div>
-              <span className={styles.badge}>
-                {surveyStatus?.canCreatePersona ? 'Ready to Summon' : 'Collecting'}
-              </span>
+              <StageBadge stage={surveyStage} />
             </div>
             <div className={styles.progressTrack}>
               <div

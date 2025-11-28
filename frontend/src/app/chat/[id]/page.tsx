@@ -3,6 +3,7 @@
 import { use, useState, useEffect, useRef, useMemo } from 'react';
 import { useQuery } from '@tanstack/react-query';
 import { useRouter } from 'next/navigation';
+import gsap from 'gsap';
 import { chatApi } from '@/lib/api/chat';
 import { personaApi } from '@/lib/api/persona';
 import { Button } from '@/components/atoms/Button';
@@ -12,6 +13,9 @@ import { BondLevelIndicator } from '@/components/molecules/BondLevelIndicator';
 import { ChatMessage } from '@/components/organisms/ChatMessage';
 import { ShareOptions } from '@/components/molecules/ShareOptions';
 import { TopicSuggestion } from '@/components/molecules/TopicSuggestion';
+import { NavigationSidebar } from '@/components/organisms/NavigationSidebar';
+import { useReducedMotion } from '@/hooks/useAccessibility';
+import { slideIn } from '@/lib/animations';
 import { ChatMessage as ChatMessageType } from '@/lib/mock-data/chat';
 import styles from './page.module.css';
 
@@ -27,6 +31,8 @@ export default function ChatPage({ params }: { params: Promise<{ id: string }> }
   const [sharePanelOpen, setSharePanelOpen] = useState(false);
   const [messageReactions, setMessageReactions] = useState<Record<string, Record<string, number>>>({});
   const inputRef = useRef<HTMLInputElement>(null);
+  const messagesRef = useRef<HTMLDivElement>(null);
+  const reducedMotion = useReducedMotion();
 
   const { data: history } = useQuery({
     queryKey: ['chat-history', id],
@@ -44,6 +50,16 @@ export default function ChatPage({ params }: { params: Promise<{ id: string }> }
       setMessages(history.messages);
     }
   }, [history]);
+
+  // Animate new messages
+  useEffect(() => {
+    if (!messagesRef.current || reducedMotion) return;
+
+    const lastMessage = messagesRef.current.lastElementChild as HTMLElement;
+    if (lastMessage) {
+      slideIn(lastMessage, 'up');
+    }
+  }, [messages, reducedMotion]);
 
   useEffect(() => {
     return () => {
@@ -164,7 +180,11 @@ export default function ChatPage({ params }: { params: Promise<{ id: string }> }
 
   return (
     <div className={styles.chat}>
-      <div className={styles.chatHeader}>
+      {/* Left Navigation Sidebar */}
+      <NavigationSidebar currentPath="/chat" />
+
+      <div className={styles.chatMain}>
+        <div className={styles.chatHeader}>
         <div className={styles.headerInfo}>
           <div className={styles.personaInfo}>
             <p className={styles.personaName}>{persona?.name ?? 'Your Persona'}</p>
@@ -193,60 +213,113 @@ export default function ChatPage({ params }: { params: Promise<{ id: string }> }
         </div>
       </div>
 
-      <div className={styles.messages}>
-        {messages.map((msg) => (
-          <ChatMessage
-            key={msg.id}
-            message={msg}
-            persona={persona}
-            bondLevel={3} // Mock level for now
-            onReact={handleReact}
-            onShare={handleShare}
-            reactions={messageReactions[msg.id]}
-          />
-        ))}
-        {isSending && (
-          <div className={styles.typingContainer}>
-            <TypingIndicator
-              personaName={persona?.name || 'AI'}
-              estimatedTime={3}
+        <div ref={messagesRef} className={styles.messages}>
+          {messages.map((msg) => (
+            <ChatMessage
+              key={msg.id}
+              message={msg}
+              persona={persona}
+              bondLevel={3} // Mock level for now
+              onReact={handleReact}
+              onShare={handleShare}
+              reactions={messageReactions[msg.id]}
             />
+          ))}
+          {isSending && (
+            <div className={styles.typingContainer}>
+              <TypingIndicator
+                personaName={persona?.name || 'AI'}
+                estimatedTime={3}
+              />
+            </div>
+          )}
+        </div>
+
+        <div className={styles.suggestions}>
+          <TopicSuggestion
+            topics={topicSuggestions}
+            recentTopics={recentTopics}
+            onSelect={handleTopicSelect}
+          />
+        </div>
+
+        <div className={styles.inputArea}>
+          <Input
+            ref={inputRef}
+            value={message}
+            onChange={(e) => setMessage(e.target.value)}
+            onKeyPress={(e) => {
+              if (e.key === 'Enter' && !e.shiftKey) {
+                e.preventDefault();
+                handleSend();
+              }
+            }}
+            placeholder="Type a message..."
+            className={styles.input}
+            maxLength={1000}
+          />
+          <Button
+            variant="primary"
+            onClick={handleSend}
+            disabled={!message.trim() || isSending}
+            aria-label="Send message"
+          >
+            Send
+          </Button>
+        </div>
+      </div>
+
+      {/* Right Persona Context Sidebar */}
+      {persona && (
+        <aside className={styles.personaSidebar}>
+          <div className={styles.personaHeader}>
+            <div className={styles.personaAvatar}>
+              {persona.avatar ? (
+                <img src={persona.avatar} alt={persona.name} />
+              ) : (
+                <span className={styles.avatarPlaceholder}>
+                  {persona.name.charAt(0).toUpperCase()}
+                </span>
+              )}
+            </div>
+            <h3 className={styles.personaName}>{persona.name}</h3>
+            <p className={styles.personaArchetype}>{persona.archetype}</p>
           </div>
-        )}
-      </div>
 
-      <div className={styles.suggestions}>
-        <TopicSuggestion
-          topics={topicSuggestions}
-          recentTopics={recentTopics}
-          onSelect={handleTopicSelect}
-        />
-      </div>
+          <div className={styles.personaTraits}>
+            <p className={styles.traitsLabel}>Essence Traits</p>
+            <div className={styles.traitsGrid}>
+              {persona.traits?.slice(0, 6).map((trait, idx) => (
+                <span key={idx} className={styles.traitPill}>
+                  {trait}
+                </span>
+              ))}
+            </div>
+          </div>
 
-      <div className={styles.inputArea}>
-        <Input
-          ref={inputRef}
-          value={message}
-          onChange={(e) => setMessage(e.target.value)}
-          onKeyPress={(e) => {
-            if (e.key === 'Enter' && !e.shiftKey) {
-              e.preventDefault();
-              handleSend();
-            }
-          }}
-          placeholder="Type a message..."
-          className={styles.input}
-          maxLength={1000}
-        />
-        <Button
-          variant="primary"
-          onClick={handleSend}
-          disabled={!message.trim() || isSending}
-          aria-label="Send message"
-        >
-          Send
-        </Button>
-      </div>
+          <div className={styles.personaStats}>
+            <BondLevelIndicator level={3} progress={65} />
+          </div>
+
+          <div className={styles.ritualLinks}>
+            <p className={styles.linksLabel}>Related Rituals</p>
+            <Button
+              variant="ghost"
+              size="sm"
+              onClick={() => router.push(`/p/${persona.id}`)}
+            >
+              Visit Persona Room
+            </Button>
+            <Button
+              variant="ghost"
+              size="sm"
+              onClick={() => router.push('/dashboard/ritual')}
+            >
+              View Survey Hub
+            </Button>
+          </div>
+        </aside>
+      )}
 
       {sharePanelOpen && sharePreviewUrl && (
         <div className={styles.shareSheet} role="dialog" aria-modal="true">

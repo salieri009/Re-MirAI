@@ -3,10 +3,15 @@
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 
-export function NavigationSidebar() {
-    const pathname = usePathname();
+interface NavigationSidebarProps {
+    currentPath?: string;
+}
 
-    const isActive = (path: string) => pathname?.startsWith(path);
+export function NavigationSidebar({ currentPath }: NavigationSidebarProps) {
+    const pathname = usePathname();
+    const activePath = currentPath || pathname;
+
+    const isActive = (path: string) => activePath?.startsWith(path);
 
     const navItems = [
         {
@@ -71,7 +76,7 @@ export function NavigationSidebar() {
                             </span>
                             <span className="font-medium">{item.label}</span>
                             {active && (
-                                <div className="ml-auto w-1.5 h-1.5 rounded-full bg-primary shadow-[0_0_8px_rgba(0,201,167,0.6)]" />
+                                <div className="ml-auto w-1 h-1 rounded-full bg-primary shadow-[0_0_8px_rgba(0,201,167,0.6)]" />
                             )}
                         </Link>
                     );

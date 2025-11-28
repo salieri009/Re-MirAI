@@ -19,6 +19,13 @@
   font-size: 1.5rem;
 }
 
+.headerTitleRow {
+  display: flex;
+  align-items: center;
+  gap: var(--space-md);
+  margin-top: var(--space-xs);
+}
+
 .headerActions {
   display: flex;
   align-items: center;
