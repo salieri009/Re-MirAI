@@ -2,9 +2,9 @@
 
 > **Re:MirAI 프로젝트 기획 단계 문서 모음**
 
-**최종 업데이트:** 2025-11-23  
-**버전:** 1.0.0  
-**상태:** 기획 단계
+**최종 업데이트:** 2025-11-28  
+**버전:** 1.1.0  
+**상태:** 개발 진행 중 (ver2 디자인 시스템 적용 완료)
 
 ---
 
@@ -69,13 +69,46 @@ Re:MirAI는 AI 기반 성격 발견 플랫폼으로, 친구들의 익명 피드�
 
 - **[01-Glossary.md](01-Glossary.md)** - 프로젝트 용어 정의
 
+### 디자인 개선 문서
+
+**[07-Enhancement/](07-Enhancement/)** - 디자인 시스템 개선 문서
+
+#### ver2 (현재 적용 중)
+**[ver2/](07-Enhancement/ver2/)** - Version 2 "Digital Mirror" 디자인 시스템
+
+- **[README.md](07-Enhancement/ver2/README.md)** - ver2 개선 사항 개요 및 구현 상태
+- **[00-FRONTEND-REFACTORING-MASTER-PLAN.md](07-Enhancement/ver2/00-FRONTEND-REFACTORING-MASTER-PLAN.md)** - 프론트엔드 리팩토링 마스터 플랜
+- **페이지별 개선 문서:**
+  - 01-Landing-Page-Enhancement.md
+  - 02-Login-Page-Enhancement.md
+  - 03-Dashboard-Page-Enhancement.md
+  - 04-Chat-Page-Enhancement.md
+  - 05-Persona-Room-Page-Enhancement.md
+  - 06-Survey-Hub-Page-Enhancement.md
+  - 07-Summoning-Page-Enhancement.md
+  - 08-Survey-Page-Enhancement.md
+- **디자인 시스템:**
+  - 09-Color-Palette-Plan.md (3-color system)
+  - 10-4px-Baseline-Grid-System.md
+  - 11-Typography-System.md (Space Grotesk)
+- **기술 문서:**
+  - 13-Frontend-Audit.md
+  - 14-Frontend-Compliance-Report.md
+  - 15-Backend-Engineering-Guide.md
+
+#### ver1 (레거시)
+**[ver1/](07-Enhancement/ver1/)** - Version 1 개선 문서 (참고용)
+
 ### 연결 및 배포 전략
 
-**[08-Connectivity-and-Deployment/](08-Connectivity-and-Deployment/)** - 프론트엔드/백엔드 연결과 배포 파이프라인 문서  
+**[08-Connectivity-and-Deployment/](08-Connectivity-and-Deployment/)** - 프론트엔드/백엔드 연결과 배포 파이프라인 문서
+
+- **[README.md](08-Connectivity-and-Deployment/README.md)** - 연결 및 배포 문서 개요
 - **[01-Frontend-Backend-Connectivity-Test-Plan.md](08-Connectivity-and-Deployment/01-Frontend-Backend-Connectivity-Test-Plan.md)**  
-  - `02-Core-Features.md`에 정의된 F-001~F-006 기능을 직접 인용하여 각 테스트 케이스와 연결.  
+  - `02-Core-Features.md`에 정의된 F-001~F-006 기능을 직접 인용하여 각 테스트 케이스와 연결
 - **[02-Pipeline-Strategy.md](08-Connectivity-and-Deployment/02-Pipeline-Strategy.md)**  
-  - `01-Project-Goals.md`의 “Create an engaging and shareable experience…” 목표를 기반으로 배포/롤백 전략을 정렬.
+  - `01-Project-Goals.md`의 "Create an engaging and shareable experience…" 목표를 기반으로 배포/롤백 전략을 정렬
+- **[03-Deployment-Guide.md](08-Connectivity-and-Deployment/03-Deployment-Guide.md)** - 배포 가이드
 
 ---
 
@@ -102,10 +135,11 @@ Re:MirAI는 AI 기반 성격 발견 플랫폼으로, 친구들의 익명 피드�
 
 ## 📊 프로젝트 현황
 
-**현재 단계:** 기획 완료  
-**다음 단계:** 개발 시작 준비  
+**현재 단계:** 개발 진행 중 (ver2 디자인 시스템 적용 완료)  
+**다음 단계:** 프론트엔드-백엔드 통합 테스트  
 **타겟 사용자:** 1,000명 (베타)  
-**핵심 기능:** 80% 정의 완료
+**핵심 기능:** 100% 정의 완료  
+**ver2 디자인:** ✅ 완료 (모든 페이지 구현 완료)
 
 ---
 
@@ -127,21 +161,25 @@ Re:MirAI는 AI 기반 성격 발견 플랫폼으로, 친구들의 익명 피드�
 
 ## 🎨 디자인 원칙
 
-Re:MirAI는 **Blonix Branch** 철학을 따릅니다:
+Re:MirAI는 **ver2 "Digital Mirror"** 디자인 시스템을 적용합니다:
 
-- **라이트 테마 우선** - 접근성, 전문성, 주간 사용 최적화
-- **모던 컬러** - Fuchsia/Pink 주색상, Blue 보조색상
-- **사용자 중심** - 몰입감보다 명확성 우선
-- **접근성** - WCAG 2.1 AA 준수
-- **폭넓은 호소력** - 서브컬처 지식 불필요
+- **다크 테마** - Deep Space (#0A0112) 배경, 몰입감 있는 경험
+- **3-Color System** - Primary: Amethyst Purple (#845EC2), Accent: Mint Green (#00C9A7), Highlight: Light Lavender (#C197FF)
+- **타이포그래피** - Space Grotesk (Display), Plus Jakarta Sans (Body)
+- **4px Grid System** - 모든 간격이 4px의 배수
+- **Glassmorphism** - 반투명 효과와 블러를 활용한 현대적 UI
+- **접근성** - WCAG 2.1 AA 준수, reduced motion 지원
 
-자세한 내용: [디자인 철학](02-project-overview/design-philosophy.md)
+자세한 내용: 
+- [디자인 철학](02-project-overview/03-Design-Philosophy.md)
+- [ver2 디자인 시스템](07-Enhancement/ver2/README.md)
 
 ---
 
 ## 📝 문서 관리
 
 **버전 이력:**
+- 1.1.0 (2025-11-28) - ver2 디자인 시스템 문서 추가, 연결 및 배포 문서 추가
 - 1.0.0 (2025-11-23) - 기획 단계 문서 정리 완료
 
 **유지보수:**

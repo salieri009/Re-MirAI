@@ -2,7 +2,7 @@
 # 문서 읽기 가이드 (독자별 맞춤형)
 
 **Version:** 1.0.0  
-**Last Updated:** 2025-11-25  
+**Last Updated:** 2025-11-28  
 **작성자:** Technical Documentation Team
 
 ---
@@ -11,12 +11,18 @@
 
 ```
 docs/
+├── 00-NAVIGATION-GUIDE.md   # 문서 읽기 가이드 (이 파일)
+├── 01-Glossary.md           # 프로젝트 용어 정의
 ├── 01-concept/              # 개념 및 비전
 ├── 02-project-overview/     # 프로젝트 전체 개요 및 기능 명세
 ├── 03-planning/             # 기획 및 설계
 ├── 04-user-experience/      # UX 설계
 ├── 05-analysis/             # 분석 자료
-└── 06-team/                 # 팀 구성
+├── 06-team/                 # 팀 구성
+├── 07-Enhancement/          # 디자인 개선 문서
+│   ├── ver1/                # 버전 1 개선 사항
+│   └── ver2/                # 버전 2 개선 사항 (현재 적용 중)
+└── 08-Connectivity-and-Deployment/  # 연결 및 배포 전략
 ```
 
 ---
@@ -136,7 +142,12 @@ docs/
    - 컴포넌트 디자인 의도 이해
    - 10분 읽기
 
-**총 소요 시간:** 약 2시간 30분
+7. **`07-Enhancement/ver2/README.md`** (권장)
+   - ver2 디자인 시스템 개요
+   - 페이지별 개선 사항 요약
+   - 15분 읽기
+
+**총 소요 시간:** 약 2시간 45분
 
 **개발 시작 전 체크리스트:**
 - [ ] `.env.example` 파일 확인
@@ -179,7 +190,17 @@ docs/
    - Secrets 관리
    - 15분 읽기
 
-**총 소요 시간:** 약 3시간 15분
+6. **`07-Enhancement/ver2/15-Backend-Engineering-Guide.md`** (권장)
+   - ver2 백엔드 아키텍처 가이드
+   - API 명세 및 데이터 모델
+   - 30분 읽기
+
+7. **`08-Connectivity-and-Deployment/01-Frontend-Backend-Connectivity-Test-Plan.md`** (권장)
+   - 프론트엔드-백엔드 연결 테스트 계획
+   - API 통합 검증 방법
+   - 20분 읽기
+
+**총 소요 시간:** 약 4시간 5분
 
 **개발 시작 전 체크리스트:**
 - [ ] PostgreSQL 설치 및 DB 생성
@@ -215,7 +236,12 @@ docs/
    - 감정 변화 포인트 (UX 검증)
    - 15분 읽기
 
-**총 소요 시간:** 약 2시간 5분
+5. **`08-Connectivity-and-Deployment/01-Frontend-Backend-Connectivity-Test-Plan.md`**
+   - 통합 테스트 케이스 작성
+   - API 테스트 시나리오
+   - 20분 읽기
+
+**총 소요 시간:** 약 2시간 25분
 
 **테스트 시작 전 준비:**
 - [ ] 각 Feature별 Test Plan 작성
@@ -256,7 +282,17 @@ docs/
    - 외부 의존성 확인 (OpenAI, Google OAuth)
    - 10분 읽기
 
-**총 소요 시간:** 약 1시간 30분
+7. **`07-Enhancement/ver2/README.md`** (개요만)
+   - ver2 개선 사항 요약
+   - 현재 구현 상태 확인
+   - 10분 읽기
+
+8. **`08-Connectivity-and-Deployment/02-Pipeline-Strategy.md`** (개요만)
+   - CI/CD 파이프라인 전략
+   - 배포 및 롤백 계획
+   - 10분 읽기
+
+**총 소요 시간:** 약 1시간 50분
 
 ---
 
@@ -326,7 +362,30 @@ docs/
 3. **`03-planning/08-Environment-Config.md`**
    - 환경 변수 확인 (5분)
 
-**총 소요 시간:** 20분
+4. **`08-Connectivity-and-Deployment/01-Frontend-Backend-Connectivity-Test-Plan.md`**
+   - 해당 기능의 테스트 케이스 확인 (5분)
+
+**총 소요 시간:** 25분
+
+---
+
+### 맥락 5: ver2 디자인 시스템 적용
+
+**예시: ver2 Landing Page 구현**
+
+1. **`07-Enhancement/ver2/01-Landing-Page-Enhancement.md`**
+   - 페이지별 상세 개선 사항 (20분)
+
+2. **`07-Enhancement/ver2/09-Color-Palette-Plan.md`**
+   - 3-color 시스템 명세 (10분)
+
+3. **`07-Enhancement/ver2/11-Typography-System.md`**
+   - Space Grotesk 폰트 시스템 (5분)
+
+4. **`07-Enhancement/ver2/10-4px-Baseline-Grid-System.md`**
+   - 4px 그리드 시스템 (5분)
+
+**총 소요 시간:** 40분
 
 ---
 
@@ -393,6 +452,6 @@ docs/
 
 ---
 
-**마지막 업데이트:** 2025-11-25  
-**문서 버전:** 1.0.0  
-**다음 리뷰:** 2025-12-25
+**마지막 업데이트:** 2025-11-28  
+**문서 버전:** 1.1.0  
+**다음 리뷰:** 2025-12-28

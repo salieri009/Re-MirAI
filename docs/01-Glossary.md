@@ -2,8 +2,8 @@
 
 > **Standard terminology for the Re:MirAI project**
 
-**Last Updated:** 2025-11-18  
-**Version:** 1.0.0  
+**Last Updated:** 2025-11-28  
+**Version:** 1.1.0  
 **Status:** Active
 
 ---
@@ -20,16 +20,22 @@
 
 ## Design System Terms
 
-### Blonix Branch
-- **Definition:** The top-priority design system for Re:MirAI
+### ver2 "Digital Mirror" Design System
+- **Definition:** The current design system for Re:MirAI (Version 2)
 - **Characteristics:**
-  - Light theme (`#f8fafc` background)
-  - Fuchsia/Pink Primary (`#d946ef`)
-  - Blue Secondary (`#3b82f6`)
-  - Inter + Poppins typography
-  - Modern, accessible, user-friendly
-- **Usage:** Always reference when discussing design decisions
-- **See Also:** [Blonix Branch Priority](concept/BLONIX_PRIORITY.md)
+  - Dark theme (`#0A0112` Deep Space background)
+  - 3-Color System: Primary (Amethyst Purple #845EC2), Accent (Mint Green #00C9A7), Highlight (Light Lavender #C197FF)
+  - Space Grotesk (Display) + Plus Jakarta Sans (Body) typography
+  - 4px grid system for spacing
+  - Glassmorphism effects
+  - Modern, immersive, accessible
+- **Usage:** Current design system for all new implementations
+- **See Also:** [ver2 Enhancement Documentation](07-Enhancement/ver2/README.md)
+
+### Blonix Branch
+- **Definition:** Legacy design system (deprecated)
+- **Status:** ⚠️ Deprecated - Replaced by ver2 "Digital Mirror"
+- **Note:** Only for historical reference
 
 ### Light Theme
 - **Definition:** The primary theme for Re:MirAI (Blonix Branch)
@@ -47,22 +53,37 @@
 
 ## Color System Terms
 
-### Primary Color
+### 3-Color System (ver2)
+- **Definition:** The unified color palette for ver2 design system
+- **Colors:**
+  - **Primary:** Amethyst Purple (`#845EC2`) - Primary actions, main brand elements
+  - **Accent:** Mint Green (`#00C9A7`) - Secondary actions, highlights
+  - **Highlight:** Light Lavender (`#C197FF`) - Accents, borders, subtle highlights
+- **Usage:** All UI elements must use only these three colors (with opacity variations)
+- **See Also:** [Color Palette Plan](07-Enhancement/ver2/09-Color-Palette-Plan.md)
+
+### Primary Color (ver2)
 - **Definition:** Main brand color for primary actions
-- **Blonix Branch:** Fuchsia/Pink (`#d946ef`)
+- **ver2:** Amethyst Purple (`#845EC2`)
 - **Usage:** Primary CTA buttons, main actions, brand elements
 
-### Secondary Color
+### Accent Color (ver2)
 - **Definition:** Supporting brand color for secondary actions
-- **Blonix Branch:** Blue (`#3b82f6`)
-- **Usage:** Secondary buttons, supporting elements
+- **ver2:** Mint Green (`#00C9A7`)
+- **Usage:** Secondary buttons, supporting elements, progress indicators
 
-### Surface Colors
+### Highlight Color (ver2)
+- **Definition:** Accent color for subtle highlights and borders
+- **ver2:** Light Lavender (`#C197FF`)
+- **Usage:** Borders, subtle highlights, text accents
+
+### Surface Colors (ver2)
 - **Definition:** Background and container colors
-- **Blonix Branch:**
-  - `surface-ground`: `#f8fafc` (page background)
-  - `surface-card`: `#ffffff` (card background)
-  - `surface-border`: `#e2e8f0` (border color)
+- **ver2:**
+  - `background-dark`: `#0A0112` (Deep Space - page background)
+  - `surface`: `rgba(132, 94, 194, 0.2)` (Purple tint - card background)
+  - `surface-elevated`: `rgba(132, 94, 194, 0.4)` (Elevated cards)
+  - `border`: `rgba(193, 151, 255, 0.2)` (Border color)
 
 ---
 
@@ -133,9 +154,16 @@
 - **Definition:** UI that changes based on application state
 - **Usage:** "State-driven dashboard", "State-based UI components"
 
-### 4px Grid System
-- **Definition:** Spacing system where all measurements are multiples of 4px
-- **Usage:** "Follow 4px grid", "4px grid compliant spacing"
+### Glassmorphism (ver2)
+- **Definition:** UI design technique using semi-transparent backgrounds with blur effects
+- **ver2:** Applied to cards, modals, and elevated surfaces
+- **Usage:** "Glassmorphism effect", "glass card"
+- **Characteristics:** `backdrop-filter: blur()`, semi-transparent backgrounds
+
+### Material Symbols (ver2)
+- **Definition:** Google Material Symbols icon font library
+- **ver2:** Used for feature icons (link, neurology, auto_awesome)
+- **Usage:** "Material Symbols icons", "material-symbols-outlined class"
 
 ---
 
@@ -156,8 +184,13 @@
 - **Exception:** Technical/backend contexts
 
 ### ❌ Mystical (Design Context)
-- **Replacement:** Modern / Clean
-- **Reason:** Aligns with Blonix Branch philosophy
+- **Replacement:** Digital Mirror / Modern
+- **Reason:** Aligns with ver2 "Digital Mirror" philosophy
+- **Exception:** Historical references only
+
+### ❌ Blonix Branch (Current Use)
+- **Replacement:** ver2 "Digital Mirror" Design System
+- **Reason:** Current design system is ver2, not Blonix Branch
 - **Exception:** Historical references only
 
 ### ❌ Akashic
@@ -200,13 +233,23 @@
 
 ## Typography Terms
 
-### Inter
-- **Definition:** Primary font family
-- **Usage:** "Inter font family", "Inter typography"
+### Space Grotesk (ver2)
+- **Definition:** Display font family for headings and titles
+- **ver2:** Primary display font
+- **Usage:** "Space Grotesk font", "Space Grotesk typography"
+- **Weights:** Medium (500), Bold (700)
+- **See Also:** [Typography System](07-Enhancement/ver2/11-Typography-System.md)
 
-### Poppins
-- **Definition:** Secondary font family (Blonix Branch)
-- **Usage:** "Inter + Poppins font combination"
+### Plus Jakarta Sans (ver2)
+- **Definition:** Body font family for content text
+- **ver2:** Primary body font
+- **Usage:** "Plus Jakarta Sans font", "body typography"
+
+### 4px Grid System (ver2)
+- **Definition:** Spacing system where all measurements are multiples of 4px
+- **ver2:** Standard spacing values: 4px, 8px, 12px, 16px, 24px, 32px, 40px, 48px, 64px
+- **Usage:** "Follow 4px grid", "4px grid compliant spacing"
+- **See Also:** [4px Baseline Grid System](07-Enhancement/ver2/10-4px-Baseline-Grid-System.md)
 
 ---
 
