@@ -6,6 +6,19 @@
 ## 1. Overview
 Persona Synthesis is the AI-driven process that transforms aggregated survey responses into a unique personality profile. It uses LLMs to analyze the data and generate a consistent character with specific traits, archetypes, and dialogue styles.
 
+```mermaid
+flowchart TD
+    A[Survey Responses] --> B[Data Aggregation]
+    B --> C[LLM Analysis]
+    C --> D{Mode Selection}
+    D -->|Fated| E[Auto Archetype]
+    D -->|Alchemic| F[User Selected Archetype]
+    E --> G[Generate Stats]
+    F --> G
+    G --> H[Create System Prompt]
+    H --> I[Persona Created]
+```
+
 ## 2. Use Cases
 
 ### UC-01: Create Persona (Fated Mode)

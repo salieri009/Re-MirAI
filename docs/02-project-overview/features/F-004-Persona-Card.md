@@ -6,6 +6,17 @@
 ## 1. Overview
 The Persona Card is a shareable visual asset that summarizes a Persona's key attributes. It is designed for social media sharing (Instagram, Twitter) to drive viral growth and user acquisition.
 
+```mermaid
+flowchart LR
+    A[Persona Data] --> B[Satori Render]
+    B --> C[PNG Generation]
+    C --> D[CDN Upload]
+    D --> E{Share Target}
+    E -->|Download| F[Save to Device]
+    E -->|Twitter| G[Post with Link]
+    E -->|Instagram| H[Story Share]
+```
+
 ## 2. Use Cases
 
 ### UC-01: Generate Persona Card

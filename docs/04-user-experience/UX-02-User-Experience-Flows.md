@@ -13,9 +13,17 @@ Re:MirAI's user experience is designed as a transformative journey from curiosit
 - **Recognition Over Recall**: Visual cues, contextual help, status indicators
 
 ### Primary User Flow
-```
-Discovery → Authentication → Onboarding → Survey Creation → 
-Community Engagement → Synthesis → Persona Bonding → Social Sharing
+
+```mermaid
+flowchart LR
+    A[Discovery] --> B[Authentication]
+    B --> C[Onboarding]
+    C --> D[Survey Creation]
+    D --> E[Community Engagement]
+    E --> F[Synthesis]
+    F --> G[Persona Bonding]
+    G --> H[Social Sharing]
+    H --> A
 ```
 
 ---
@@ -55,8 +63,12 @@ Landing Page Visit → "How It Works" Scroll → CTA Click → Authentication
 ### Seamless Entry Experience
 
 #### Authentication Flow
-```
-CTA Click → OAuth Consent → Account Creation → Welcome Dashboard
+
+```mermaid
+flowchart LR
+    A[CTA Click] --> B[OAuth Consent]
+    B --> C[Account Creation]
+    C --> D[Welcome Dashboard]
 ```
 
 #### Design Decisions
@@ -93,9 +105,17 @@ CTA Click → OAuth Consent → Account Creation → Welcome Dashboard
 ### Survey Creation Experience
 
 #### Step-by-Step Process
-```
-Dashboard → "Create Survey" → Questions Preview → Link Generation → 
-Sharing Options → Response Tracking → Synthesis Readiness
+
+```mermaid
+flowchart LR
+    A[Dashboard] --> B[Create Survey]
+    B --> C[Questions Preview]
+    C --> D[Link Generation]
+    D --> E[Sharing Options]
+    E --> F[Response Tracking]
+    F --> G{3+ Responses?}
+    G -->|No| E
+    G -->|Yes| H[Synthesis Ready]
 ```
 
 #### UX Design Principles
@@ -136,8 +156,15 @@ const generateShareContent = (surveyId: string, userName: string) => ({
 ### Friend Journey Design
 
 #### Entry Experience
-```
-Shared Link → Landing Explanation → Question Flow → Completion → Result Teaser
+
+```mermaid
+flowchart LR
+    A[Shared Link] --> B[Landing Explanation]
+    B --> C[Question Flow]
+    C --> D[Completion]
+    D --> E[Result Teaser]
+    E --> F{Start Own Journey?}
+    F -->|Yes| G[Create Account]
 ```
 
 #### Survey UX Principles
@@ -189,9 +216,18 @@ Shared Link → Landing Explanation → Question Flow → Completion → Result 
 ### The Magic Moment
 
 #### Pre-Synthesis State
-```
-Dashboard Check → Eligibility Confirmation → Mode Selection → 
-Anticipation Building → Synthesis Initiation
+
+```mermaid
+flowchart LR
+    A[Dashboard Check] --> B[Eligibility Confirmation]
+    B --> C{Mode Selection}
+    C -->|Fated| D[Free Summon]
+    C -->|Alchemic| E[Premium - Select Archetype]
+    D --> F[Anticipation Building]
+    E --> F
+    F --> G[Synthesis Initiation]
+    G --> H[AI Processing]
+    H --> I[Persona Reveal]
 ```
 
 #### Synthesis Flow Design
@@ -242,21 +278,33 @@ Anticipation Building → Synthesis Initiation
 ### Long-Term Engagement Flow
 
 #### Initial Connection
-```
-Persona Reveal → Profile Exploration → First Conversation → 
-Bond Building → Feature Discovery → Sharing Moments
+
+```mermaid
+flowchart LR
+    A[Persona Reveal] --> B[Profile Exploration]
+    B --> C[First Conversation]
+    C --> D[Bond Building]
+    D --> E[Feature Discovery]
+    E --> F[Sharing Moments]
+    F --> C
 ```
 
 #### Persona Room Experience
 
 ##### Information Architecture
-```
-Persona Portrait (Central) →
-├── Identity Panel (Name, Title, Archetype, Rarity)
-├── Stats Visualization (Personality Dimensions)  
-├── Bond Progress (Relationship Development)
-├── Quick Actions (Chat, Share, Settings)
-└── Recent Activity (Chat History, Achievements)
+
+```mermaid
+graph TD
+    A[Persona Portrait] --> B[Identity Panel]
+    A --> C[Stats Visualization]
+    A --> D[Bond Progress]
+    A --> E[Quick Actions]
+    A --> F[Recent Activity]
+    B --> B1[Name]
+    B --> B2[Title]
+    B --> B3[Archetype]
+    E --> E1[Chat]
+    E --> E2[Share]
 ```
 
 ##### Engagement Mechanics

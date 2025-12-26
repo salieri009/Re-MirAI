@@ -6,6 +6,24 @@
 ## 1. Overview
 Gamification elements are designed to increase user retention and engagement. This includes a Quest System, Daily Login rewards, and the "Memory Crystal" currency system.
 
+```mermaid
+sequenceDiagram
+    participant U as User
+    participant S as System
+    participant W as Wallet
+
+    U->>S: Complete Action
+    S->>S: Check Quest Progress
+    alt Quest Complete
+        S->>U: Show Completion
+        U->>S: Claim Reward
+        S->>W: Add Crystals
+        W-->>U: New Balance
+    else Not Complete
+        S-->>U: Update Progress
+    end
+```
+
 ## 2. Use Cases
 
 ### UC-01: Complete Quest

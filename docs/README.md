@@ -2,9 +2,9 @@
 
 > **Re:MirAI 프로젝트 기획 단계 문서 모음**
 
-**최종 업데이트:** 2025-11-23  
-**버전:** 1.0.0  
-**상태:** 기획 단계
+**최종 업데이트:** 2025-12-26  
+**버전:** 2.0.0  
+**상태:** 개발 단계
 
 ---
 
@@ -30,26 +30,28 @@ Re:MirAI는 AI 기반 성격 발견 플랫폼으로, 친구들의 익명 피드�
 
 **[04-user-experience/](04-user-experience/)** - 사용자 경험 기획
 
-- **[01-User-Journey-Map.md](04-user-experience/01-User-Journey-Map.md)** - 사용자 여정 맵
-- **[02-User-Experience-Flows.md](04-user-experience/02-User-Experience-Flows.md)** - UX 플로우 다이어그램
-- **[03-Page-Concepts.md](04-user-experience/03-Page-Concepts.md)** - 페이지별 컨셉 정의
-- **[04-Heuristic-Improvements.md](04-user-experience/04-Heuristic-Improvements.md)** - UX 휴리스틱 개선사항
+- **[UX-01-User-Journey-Map.md](04-user-experience/UX-01-User-Journey-Map.md)** - 사용자 여정 맵
+- **[UX-02-User-Experience-Flows.md](04-user-experience/UX-02-User-Experience-Flows.md)** - UX 플로우 다이어그램
+- **[UX-03-Page-Concepts.md](04-user-experience/UX-03-Page-Concepts.md)** - 페이지별 컨셉 정의
+- **[UX-04-Heuristic-Improvements.md](04-user-experience/UX-04-Heuristic-Improvements.md)** - UX 휴리스틱 개선사항
 
 ### 디자인 및 마케팅 기획
 
 **[03-planning/](03-planning/)** - 디자인 및 마케팅 전략
 
-- **[01-UI-UX-Design.md](03-planning/01-UI-UX-Design.md)** - UI/UX 디자인 기획
-- **[02-Experience-Design-Document.md](03-planning/02-Experience-Design-Document.md)** - 경험 디자인 문서
-- **[03-Viral-Marketing-Strategy.md](03-planning/03-Viral-Marketing-Strategy.md)** - 바이럴 마케팅 전략
-- **[04-Asset-Specification.md](03-planning/04-Asset-Specification.md)** - 디자인 에셋 사양
+- **[DS-01-UI-UX-Design.md](03-planning/DS-01-UI-UX-Design.md)** - UI/UX 디자인 기획
+- **[DS-02-Experience-Design.md](03-planning/DS-02-Experience-Design.md)** - 경험 디자인 문서
+- **[DS-04-Viral-Marketing-Strategy.md](03-planning/DS-04-Viral-Marketing-Strategy.md)** - 바이럴 마케팅 전략
+- **[DS-05-Asset-Specification.md](03-planning/DS-05-Asset-Specification.md)** - 디자인 에셋 사양
+- **[TC-01-Technical-Specification.md](03-planning/TC-01-Technical-Specification.md)** - 기술 사양
+- **[TC-02-API-Specification.md](03-planning/TC-02-API-Specification.md)** - API 명세
 
 ### UX 분석 문서
 
 **[05-analysis/](05-analysis/)** - UX/UI 전문가 분석
 
-- **[01-Nielsen-Heuristics-Audit.md](05-analysis/01-Nielsen-Heuristics-Audit.md)** - Nielsen 휴리스틱 감사
-- **[02-UX-UI-Expert-Analysis.md](05-analysis/02-UX-UI-Expert-Analysis.md)** - UX/UI 전문가 분석
+- **[AN-01-Nielsen-Heuristics-Audit.md](05-analysis/AN-01-Nielsen-Heuristics-Audit.md)** - Nielsen 휴리스틱 감사
+- **[AN-02-UX-UI-Expert-Analysis.md](05-analysis/AN-02-UX-UI-Expert-Analysis.md)** - UX/UI 전문가 분석
 - **[page-analysis/](05-analysis/page-analysis/)** - 페이지별 상세 분석 (8개 파일)
 
 ### 팀 구성
@@ -84,19 +86,19 @@ Re:MirAI는 AI 기반 성격 발견 플랫폼으로, 친구들의 익명 피드�
 ### 역할별 문서
 
 **프로덕트 매니저**
-1. [프로젝트 목표](02-project-overview/project-goals.md) - 비전 및 전략
-2. [핵심 기능](02-project-overview/core-features.md) - 기능 명세
-3. [로드맵](02-project-overview/roadmap.md) - 타임라인 및 마일스톤
+1. [프로젝트 목표](02-project-overview/01-Project-Goals.md) - 비전 및 전략
+2. [핵심 기능](02-project-overview/02-Core-Features.md) - 기능 명세
+3. [로드맵](02-project-overview/04-Roadmap.md) - 타임라인 및 마일스톤
 
 **디자이너**
-1. [디자인 철학](02-project-overview/design-philosophy.md) - Blonix Branch 원칙
-2. [UI/UX 디자인](plan/ui_ux_design.md) - 디자인 기획
-3. [사용자 여정](frontend/user_journey_map.md) - 사용자 플로우
+1. [디자인 철학](02-project-overview/03-Design-Philosophy.md) - Blonix Branch 원칙
+2. [UI/UX 디자인](03-planning/DS-01-UI-UX-Design.md) - 디자인 기획
+3. [사용자 여정](04-user-experience/UX-01-User-Journey-Map.md) - 사용자 플로우
 
 **기획자**
 1. [프로젝트 개요](02-project-overview/README.md) - 전체 개요
-2. [핵심 기능](02-project-overview/core-features.md) - 기능 정의
-3. [마케팅 전략](plan/viral_marketing_strategy.md) - 성장 전략
+2. [핵심 기능](02-project-overview/02-Core-Features.md) - 기능 정의
+3. [마케팅 전략](03-planning/DS-04-Viral-Marketing-Strategy.md) - 성장 전략
 
 ---
 
@@ -135,13 +137,14 @@ Re:MirAI는 **Blonix Branch** 철학을 따릅니다:
 - **접근성** - WCAG 2.1 AA 준수
 - **폭넓은 호소력** - 서브컬처 지식 불필요
 
-자세한 내용: [디자인 철학](02-project-overview/design-philosophy.md)
+자세한 내용: [디자인 철학](02-project-overview/03-Design-Philosophy.md)
 
 ---
 
 ## 📝 문서 관리
 
 **버전 이력:**
+- 2.0.0 (2025-12-26) - CODE-PRIORITY-TITLE 명명 규칙 적용
 - 1.0.0 (2025-11-23) - 기획 단계 문서 정리 완료
 
 **유지보수:**

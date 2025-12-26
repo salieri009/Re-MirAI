@@ -6,6 +6,22 @@
 ## 1. Overview
 The AI Chat Interface is the primary engagement layer where users interact with their created Persona. It provides a real-time conversational experience that reflects the synthesized personality, maintaining context and emotional continuity.
 
+```mermaid
+sequenceDiagram
+    participant U as User
+    participant WS as WebSocket
+    participant AI as OpenAI
+    participant DB as Database
+
+    U->>WS: Send Message
+    WS->>DB: Load Context (last 10 msgs)
+    DB-->>WS: Chat History
+    WS->>AI: Generate Response
+    AI-->>WS: AI Reply
+    WS->>DB: Save Message + Update Bond
+    WS-->>U: Display Response
+```
+
 ## 2. Use Cases
 
 ### UC-01: Chat with Persona

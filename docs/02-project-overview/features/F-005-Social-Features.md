@@ -6,6 +6,18 @@
 ## 1. Overview
 Social Features extend the solitary experience of chatting with a Persona into a community experience. This includes public profiles, compatibility matching between friends' Personas, and visiting friends' rooms.
 
+```mermaid
+flowchart LR
+    A[My Persona] --> B[Compatibility Check]
+    C[Friend Persona] --> B
+    B --> D[Calculate Score]
+    D --> E[Generate Description]
+    E --> F[Display Result]
+    F --> G{Actions}
+    G --> H[Share Result]
+    G --> I[Visit Room]
+```
+
 ## 2. Use Cases
 
 ### UC-01: Check Compatibility

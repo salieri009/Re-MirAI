@@ -5,9 +5,9 @@ Welcome to the Re:MirAI project documentation. This section provides a comprehen
 ## Navigation
 
 - [README](README.md) - Project goals, vision, and target audience
-- [Core Features](core-features.md) - Detailed feature breakdown
-- [Design Philosophy](design-philosophy.md) - Blonix Branch design principles
-- [Roadmap](roadmap.md) - Development phases and timeline
+- [Core Features](02-Core-Features.md) - Detailed feature breakdown
+- [Design Philosophy](03-Design-Philosophy.md) - Blonix Branch design principles
+- [Roadmap](04-Roadmap.md) - Development phases and timeline
 
 ## What is Re:MirAI?
 
@@ -19,9 +19,9 @@ By collecting anonymous feedback from friends through shareable surveys (called 
 
 | Document | Purpose | Audience |
 |----------|---------|----------|
-| [Core Features](core-features.md) | Feature specifications | Product, Development |
-| [Design Philosophy](design-philosophy.md) | Blonix Branch principles | Design, Frontend |
-| [Roadmap](roadmap.md) | Development timeline | All stakeholders |
+| [Core Features](02-Core-Features.md) | Feature specifications | Product, Development |
+| [Design Philosophy](03-Design-Philosophy.md) | Blonix Branch principles | Design, Frontend |
+| [Roadmap](04-Roadmap.md) | Development timeline | All stakeholders |
 
 ## Key Differentiators
 
@@ -43,10 +43,10 @@ By collecting anonymous feedback from friends through shareable surveys (called 
 ## Project Status
 
 **Current Phase:** MVP Development (Phase 1)  
-**Version:** 1.0.0  
-**Last Updated:** 2025-11-23
+**Version:** 2.0.0  
+**Last Updated:** 2025-12-26
 
 ---
 
-**For Technical Details:** See [Architecture](../03-architecture/README.md)  
-**For User Experience:** See [User Experience](../05-user-experience/README.md)
+**For Technical Details:** See [Technical Specification](../03-planning/TC-01-Technical-Specification.md)  
+**For User Experience:** See [User Journey Map](../04-user-experience/UX-01-User-Journey-Map.md)

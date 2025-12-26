@@ -6,6 +6,23 @@
 ## 1. Overview
 The Survey System is the core data collection mechanism of Re:MirAI. It allows users to create personalized surveys ("Surveys") and share them with friends to collect anonymous feedback, which serves as the foundation for Persona synthesis.
 
+```mermaid
+sequenceDiagram
+    participant U as User
+    participant S as System
+    participant F as Friend
+
+    U->>S: Create Survey
+    S-->>U: Survey URL
+    U->>F: Share Link
+    F->>S: Open Survey
+    S-->>F: Display Questions
+    F->>S: Submit Answers
+    S-->>U: Update Progress
+    Note over U,S: After 3+ responses
+    U->>S: Create Persona
+```
+
 ## 2. Use Cases
 
 ### UC-01: Create Survey
