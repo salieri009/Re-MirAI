@@ -2,7 +2,7 @@
 
 import { useEffect, useRef } from 'react';
 import gsap from 'gsap';
-import { Persona } from '@/lib/mock-data/personas';
+import { Persona } from '@/lib/api/persona';
 import { PersonaCard } from '@/components/molecules/PersonaCard';
 import { useReducedMotion } from '@/hooks/useAccessibility';
 import styles from './PersonaGallery.module.css';

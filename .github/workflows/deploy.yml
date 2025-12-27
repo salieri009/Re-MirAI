@@ -1,0 +1,168 @@
+name: Build and Deploy
+
+on:
+  push:
+    branches: [main, develop]
+  pull_request:
+    branches: [main]
+
+env:
+  NODE_VERSION: '20'
+  REGISTRY: ghcr.io
+  IMAGE_NAME: ${{ github.repository }}
+
+jobs:
+  # ============================================
+  # Test Backend
+  # ============================================
+  test-backend:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: ./backend
+    
+    services:
+      postgres:
+        image: postgres:15
+        env:
+          POSTGRES_USER: postgres
+          POSTGRES_PASSWORD: postgres
+          POSTGRES_DB: remirai_test
+        ports:
+          - 5432:5432
+        options: >-
+          --health-cmd pg_isready
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+    
+    steps:
+      - uses: actions/checkout@v4
+      
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: 'npm'
+          cache-dependency-path: './backend/package-lock.json'
+      
+      - name: Install dependencies
+        run: npm ci
+      
+      - name: Generate Prisma Client
+        run: npx prisma generate
+        env:
+          DATABASE_URL: postgresql://postgres:postgres@localhost:5432/remirai_test
+      
+      - name: Run database migrations
+        run: npx prisma db push
+        env:
+          DATABASE_URL: postgresql://postgres:postgres@localhost:5432/remirai_test
+      
+      - name: Run tests
+        run: npm test
+        env:
+          DATABASE_URL: postgresql://postgres:postgres@localhost:5432/remirai_test
+          JWT_SECRET: test-jwt-secret
+          JWT_REFRESH_SECRET: test-refresh-secret
+      
+      - name: Build
+        run: npm run build
+
+  # ============================================
+  # Test Frontend
+  # ============================================
+  test-frontend:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: ./frontend
+    
+    steps:
+      - uses: actions/checkout@v4
+      
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: 'npm'
+          cache-dependency-path: './frontend/package-lock.json'
+      
+      - name: Install dependencies
+        run: npm ci
+      
+      - name: Run linting
+        run: npm run lint
+      
+      - name: Build
+        run: npm run build
+        env:
+          NEXT_PUBLIC_API_URL: https://api.remirai.app
+
+  # ============================================
+  # Build Docker Images (on main only)
+  # ============================================
+  build-images:
+    needs: [test-backend, test-frontend]
+    if: github.ref == 'refs/heads/main'
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      packages: write
+    
+    steps:
+      - uses: actions/checkout@v4
+      
+      - name: Login to Container Registry
+        uses: docker/login-action@v3
+        with:
+          registry: ${{ env.REGISTRY }}
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+      
+      - name: Build and push Backend
+        uses: docker/build-push-action@v5
+        with:
+          context: ./backend
+          push: true
+          tags: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}/backend:latest
+      
+      - name: Build and push Frontend
+        uses: docker/build-push-action@v5
+        with:
+          context: ./frontend
+          push: true
+          tags: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}/frontend:latest
+
+  # ============================================
+  # Deploy to Azure (on main only)
+  # ============================================
+  deploy:
+    needs: build-images
+    if: github.ref == 'refs/heads/main'
+    runs-on: ubuntu-latest
+    environment: production
+    
+    steps:
+      - uses: actions/checkout@v4
+      
+      - name: Login to Azure
+        uses: azure/login@v1
+        with:
+          creds: ${{ secrets.AZURE_CREDENTIALS }}
+      
+      - name: Deploy Backend to Azure Container Apps
+        uses: azure/container-apps-deploy-action@v1
+        with:
+          resourceGroup: remirai-rg
+          containerAppName: remirai-backend
+          imageToDeploy: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}/backend:latest
+      
+      - name: Deploy Frontend to Azure Static Web Apps
+        uses: azure/static-web-apps-deploy@v1
+        with:
+          azure_static_web_apps_api_token: ${{ secrets.AZURE_STATIC_WEB_APPS_API_TOKEN }}
+          repo_token: ${{ secrets.GITHUB_TOKEN }}
+          action: "upload"
+          app_location: "/frontend"
+          output_location: ".next"

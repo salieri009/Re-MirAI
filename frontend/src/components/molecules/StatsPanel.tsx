@@ -1,6 +1,6 @@
 'use client';
 
-import { PersonaStats } from '@/lib/mock-data/personas';
+import { PersonaStats } from '@/lib/api/persona';
 import styles from './StatsPanel.module.css';
 
 interface StatsPanelProps {

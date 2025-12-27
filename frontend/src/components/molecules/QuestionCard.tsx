@@ -1,6 +1,6 @@
 import React from 'react';
 import styles from './QuestionCard.module.css';
-import { SurveyQuestion } from '@/lib/mock-data/surveys';
+import { SurveyQuestion } from '@/lib/api/survey';
 
 interface QuestionCardProps {
   question: SurveyQuestion;

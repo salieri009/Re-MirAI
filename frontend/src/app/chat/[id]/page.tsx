@@ -17,7 +17,7 @@ import { NavigationSidebar } from '@/components/organisms/NavigationSidebar';
 import { useReducedMotion } from '@/hooks/useAccessibility';
 import { slideIn } from '@/lib/animations';
 import { moderateContent, type ModerationResult } from '@/lib/moderation';
-import { ChatMessage as ChatMessageType } from '@/lib/mock-data/chat';
+import { ChatMessage as ChatMessageType } from '@/lib/api/chat';
 import styles from './page.module.css';
 
 export default function ChatPage({ params }: { params: Promise<{ id: string }> }) {

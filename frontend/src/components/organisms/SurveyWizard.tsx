@@ -6,7 +6,7 @@ import { QuestionCard } from '@/components/molecules/QuestionCard';
 import { ProgressBar } from '@/components/molecules/ProgressBar';
 import { Button } from '@/components/atoms/Button';
 import { surveyApi } from '@/lib/api/survey';
-import { SurveyQuestion } from '@/lib/mock-data/surveys';
+import { SurveyQuestion } from '@/lib/api/survey';
 import styles from './SurveyWizard.module.css';
 
 interface SurveyWizardProps {

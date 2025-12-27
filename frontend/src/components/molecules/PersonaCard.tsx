@@ -2,7 +2,7 @@ import React, { useEffect, useRef } from 'react';
 import gsap from 'gsap';
 import { useReducedMotion } from '@/hooks/useAccessibility';
 import styles from './PersonaCard.module.css';
-import { Persona } from '@/lib/mock-data/personas';
+import { Persona } from '@/lib/api/persona';
 import { Badge } from '@/components/atoms/Badge';
 import { QRCode } from '@/components/atoms/QRCode';
 

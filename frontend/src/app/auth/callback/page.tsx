@@ -21,8 +21,8 @@ export default function AuthCallbackPage() {
 
     useEffect(() => {
         const handleCallback = async () => {
-            const accessToken = searchParams.get('access_token');
-            const refreshToken = searchParams.get('refresh_token');
+            const accessToken = searchParams.get('accessToken');
+            const refreshToken = searchParams.get('refreshToken');
             const provider = searchParams.get('provider');
             const error = searchParams.get('error');
 

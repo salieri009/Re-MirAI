@@ -8,9 +8,9 @@ import { QuestCard } from '@/components/molecules/QuestCard';
 import { SurveyLinkCard } from '@/components/molecules/SurveyLinkCard';
 import { guidanceInteractions } from '@/lib/micro-interactions';
 import { useAnnouncement, useReducedMotion } from '@/hooks/useAccessibility';
-import type { SurveyStatus } from '@/lib/mock-data/surveys';
-import type { Persona } from '@/lib/mock-data/personas';
-import type { Quest } from '@/lib/mock-data/quests';
+import type { SurveyStatus } from '@/lib/api/survey';
+import type { Persona } from '@/lib/api/persona';
+import type { Quest } from '@/lib/api/quest';
 import styles from './DashboardStateView.module.css';
 
 export type DashboardState = 'empty' | 'collecting' | 'ready' | 'active';
@@ -160,8 +160,8 @@ export function DashboardStateView({
           <span className={styles.badge}>Need {responsesNeeded || 0} more</span>
         </div>
 
-        <div 
-          className={styles.progressTrack} 
+        <div
+          className={styles.progressTrack}
           role="progressbar"
           aria-label={`Survey progress: ${progressPercentage}%`}
           aria-valuenow={progressPercentage}

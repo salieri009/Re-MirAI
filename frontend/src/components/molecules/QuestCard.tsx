@@ -1,6 +1,6 @@
 import React from 'react';
 import styles from './QuestCard.module.css';
-import { Quest } from '@/lib/mock-data/quests';
+import { Quest } from '@/lib/api/quest';
 import { Button } from '@/components/atoms/Button';
 
 interface QuestCardProps {

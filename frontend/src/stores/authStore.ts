@@ -1,6 +1,6 @@
 // Authentication Store (Zustand)
 import { create } from 'zustand';
-import { User } from '@/lib/mock-data/auth';
+import { User } from '@/lib/api/auth';
 
 interface AuthState {
   user: User | null;

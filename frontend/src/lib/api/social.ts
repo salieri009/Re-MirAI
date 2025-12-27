@@ -1,45 +1,36 @@
-// Social API (F-005)
-// TODO: Uncomment actual API calls when backend is ready
+// Social API (F-005) - Production Ready
+// Note: Backend endpoints not yet implemented (F-005 is P2 priority)
 import apiClient from './client';
-import {
-  Compatibility,
-  RoomVisit,
-  MOCK_COMPATIBILITY,
-  MOCK_ROOM_VISIT
-} from '@/lib/mock-data/social';
+
+export interface Compatibility {
+  score: number;
+  label: string;
+  description: string;
+}
+
+export interface RoomVisit {
+  userId: string;
+  username: string;
+  personas: Array<{
+    id: string;
+    name: string;
+    archetype: string;
+  }>;
+  compatibility?: Compatibility;
+}
 
 export const socialApi = {
   // FR-005.1: Calculate compatibility score
   async getCompatibility(targetPersonaId: string): Promise<Compatibility> {
-    // TODO: Uncomment when backend is ready
-    /*
-    const response = await apiClient.get('/v1/social/compatibility', {
+    const response = await apiClient.get('/social/compatibility', {
       params: { targetPersonaId }
     });
     return response.data;
-    */
-    
-    // Mock implementation
-    return new Promise((resolve) => {
-      setTimeout(() => resolve(MOCK_COMPATIBILITY), 500);
-    });
   },
 
   // FR-005.3: Visit friend's room
   async visitRoom(userId: string): Promise<RoomVisit> {
-    // TODO: Uncomment when backend is ready
-    /*
-    const response = await apiClient.get(`/v1/social/rooms/${userId}`);
+    const response = await apiClient.get(`/social/rooms/${userId}`);
     return response.data;
-    */
-    
-    // Mock implementation
-    return new Promise((resolve) => {
-      setTimeout(() => resolve(MOCK_ROOM_VISIT), 300);
-    });
   }
 };
-
-
-
-

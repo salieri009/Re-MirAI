@@ -16,7 +16,7 @@ import { ActivityFeed, ActivityItem } from '@/components/molecules/ActivityFeed'
 import { ProgressBar } from '@/components/molecules/ProgressBar';
 import { useReducedMotion } from '@/hooks/useAccessibility';
 import { fadeIn, staggerIn } from '@/lib/animations';
-import { Quest } from '@/lib/mock-data/quests';
+import { Quest } from '@/lib/api/quest';
 import styles from './page.module.css';
 
 export default function PersonaPage({ params }: { params: Promise<{ id: string }> }) {
@@ -87,7 +87,7 @@ export default function PersonaPage({ params }: { params: Promise<{ id: string }
 
   const handleClaimQuest = async (questId: string) => {
     await questApi.claim(questId);
-    
+
     // Celebration animation
     if (!reducedMotion) {
       const questElement = document.querySelector(`[data-quest-id="${questId}"]`) as HTMLElement;
@@ -102,7 +102,7 @@ export default function PersonaPage({ params }: { params: Promise<{ id: string }
         });
       }
     }
-    
+
     // Reload after animation
     setTimeout(() => window.location.reload(), 1000);
   };

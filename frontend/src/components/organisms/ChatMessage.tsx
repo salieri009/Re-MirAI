@@ -3,8 +3,8 @@
 import { useEffect, useRef } from 'react';
 import { connectionInteractions } from '@/lib/micro-interactions';
 import { useReducedMotion } from '@/hooks/useAccessibility';
-import { ChatMessage as ChatMessageType } from '@/lib/mock-data/chat';
-import { Persona } from '@/lib/mock-data/personas';
+import { ChatMessage as ChatMessageType } from '@/lib/api/chat';
+import { Persona } from '@/lib/api/persona';
 import { ReactionButton } from '@/components/molecules/ReactionButton';
 import { ShareableSnippet } from '@/components/molecules/ShareableSnippet';
 import styles from './ChatMessage.module.css';
