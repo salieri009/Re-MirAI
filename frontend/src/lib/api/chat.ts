@@ -19,7 +19,7 @@ export const chatApi = {
     });
     return response.data;
     */
-    
+
     // Mock implementation
     return new Promise((resolve) => {
       setTimeout(() => resolve(MOCK_CHAT_HISTORY), 300);
@@ -33,7 +33,7 @@ export const chatApi = {
     // Real implementation would use WebSocket:
     // socket.emit('chat:message', { sessionId: personaId, content });
     */
-    
+
     // Mock implementation - simulates AI response
     return new Promise((resolve) => {
       setTimeout(() => {
@@ -55,6 +55,29 @@ export const chatApi = {
         console.log(`Reacted to ${messageId} with ${emoji}`);
         resolve();
       }, 300);
+    });
+  },
+
+  // FR-003.4: Get bond level (dynamic tracking)
+  async getBondLevel(personaId: string): Promise<{ level: number; progress: number; nextLevelAt: number }> {
+    // TODO: Uncomment when backend is ready
+    /*
+    const response = await apiClient.get(`/v1/personas/${personaId}/bond`);
+    return response.data;
+    */
+
+    // Mock implementation - simulates progressive bonding
+    return new Promise((resolve) => {
+      // Generate mock bond level based on persona ID hash
+      const hash = personaId.split('').reduce((a, b) => a + b.charCodeAt(0), 0);
+      const level = Math.min(10, 1 + (hash % 5));
+      const progress = (hash * 17) % 100;
+
+      setTimeout(() => resolve({
+        level,
+        progress,
+        nextLevelAt: level * 100 + 100
+      }), 200);
     });
   }
 };

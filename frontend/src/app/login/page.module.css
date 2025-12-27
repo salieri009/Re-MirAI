@@ -135,6 +135,24 @@
   margin-bottom: var(--space-lg);
 }
 
+.authButtons {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-md);
+  width: 100%;
+  max-width: 320px;
+}
+
+.errorMessage {
+  color: #ef4444;
+  font-size: 0.9rem;
+  text-align: center;
+  padding: var(--space-sm) var(--space-md);
+  background: rgba(239, 68, 68, 0.1);
+  border-radius: var(--radius-md);
+  border: 1px solid rgba(239, 68, 68, 0.3);
+}
+
 @media (max-width: 1024px) {
   .main {
     grid-template-columns: 1fr;

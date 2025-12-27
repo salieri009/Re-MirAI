@@ -12,9 +12,13 @@ import styles from './SurveyWizard.module.css';
 interface SurveyWizardProps {
   surveyId: string;
   questions: SurveyQuestion[];
+  /** Optional callback when survey is completed (used for Practice Mode) */
+  onComplete?: () => void;
+  /** If true, this is Practice Mode (self-survey) */
+  isPracticeMode?: boolean;
 }
 
-export function SurveyWizard({ surveyId, questions }: SurveyWizardProps) {
+export function SurveyWizard({ surveyId, questions, onComplete, isPracticeMode }: SurveyWizardProps) {
   const router = useRouter();
   const [currentIndex, setCurrentIndex] = useState(0);
   const [answers, setAnswers] = useState<Record<string, number>>({});
@@ -46,10 +50,17 @@ export function SurveyWizard({ surveyId, questions }: SurveyWizardProps) {
     setIsSubmitting(true);
     try {
       await surveyApi.submitResponse(surveyId, answers);
-      router.push(`/s/${surveyId}/thank-you`);
+
+      // Practice Mode: call onComplete callback to handle persona generation
+      if (isPracticeMode && onComplete) {
+        onComplete();
+      } else {
+        // Normal mode: redirect to thank-you page
+        router.push(`/s/${surveyId}/thank-you`);
+      }
     } catch (error) {
       console.error('Failed to submit survey:', error);
-      alert('제출에 실패했습니다. 다시 시도해주세요.');
+      alert('Submission failed. Please try again.');
     } finally {
       setIsSubmitting(false);
     }

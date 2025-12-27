@@ -18,9 +18,9 @@ interface AuthenticatedRequest extends Request {
   };
 }
 
-@Controller('v1/surveys')
+@Controller('surveys')
 export class SurveyController {
-  constructor(private readonly surveyService: SurveyService) {}
+  constructor(private readonly surveyService: SurveyService) { }
 
   // Create new survey (ritual)
   @Post()

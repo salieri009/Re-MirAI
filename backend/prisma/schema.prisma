@@ -16,6 +16,8 @@ model User {
   email     String   @unique
   name      String?
   googleId  String?  @unique
+  kakaoId   String?  @unique  // Kakao OAuth
+  appleId   String?  @unique  // Apple Sign-In
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 

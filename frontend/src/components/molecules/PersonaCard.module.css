@@ -31,6 +31,7 @@
   font-weight: var(--font-weight-bold);
   margin: 0;
   background: var(--gradient-primary-to-accent);
+  background-clip: text;
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
 }
@@ -64,7 +65,8 @@
 
 .statBar {
   flex: 1;
-  height: 8px; /* 4px grid */
+  height: 8px;
+  /* 4px grid */
   background: rgba(255, 255, 255, 0.1);
   border-radius: var(--radius-full);
   overflow: hidden;
@@ -78,9 +80,11 @@
 }
 
 .statValue {
-  width: 32px; /* 4px grid */
+  width: 32px;
+  /* 4px grid */
   text-align: right;
-  font-family: var(--font-tech, 'Space Mono', monospace); /* Accent (The Tech) */
+  font-family: var(--font-tech, 'Space Mono', monospace);
+  /* Accent (The Tech) */
   font-size: var(--font-size-sm);
   font-weight: var(--font-weight-bold);
   color: var(--color-text);
@@ -105,4 +109,22 @@
 .card[data-rarity="Epic"] {
   border-color: #d946ef;
   box-shadow: 0 0 30px rgba(217, 70, 239, 0.2);
+}
+
+/* FR-004.2: QR Code Section */
+.qrSection {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--space-xs);
+  padding-top: var(--space-md);
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
+  transform: translateZ(10px);
+}
+
+.qrLabel {
+  font-size: var(--font-size-xs);
+  color: var(--color-text-secondary);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
 }

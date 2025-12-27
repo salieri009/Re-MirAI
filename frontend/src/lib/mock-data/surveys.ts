@@ -38,73 +38,73 @@ export const MOCK_SURVEY_QUESTIONS: SurveyQuestion[] = [
   {
     id: 1,
     type: 'likert',
-    text: '이 사람은 사교적인가요?',
+    text: 'Is this person sociable?',
     scale: { min: 1, max: 5 }
   },
   {
     id: 2,
     type: 'likert',
-    text: '이 사람은 신뢰할 수 있나요?',
+    text: 'Is this person trustworthy?',
     scale: { min: 1, max: 5 }
   },
   {
     id: 3,
     type: 'likert',
-    text: '이 사람은 창의적인가요?',
+    text: 'Is this person creative?',
     scale: { min: 1, max: 5 }
   },
   {
     id: 4,
     type: 'likert',
-    text: '이 사람은 리더십이 있나요?',
+    text: 'Does this person have leadership qualities?',
     scale: { min: 1, max: 5 }
   },
   {
     id: 5,
     type: 'likert',
-    text: '이 사람은 공감 능력이 뛰어난가요?',
+    text: 'Is this person empathetic?',
     scale: { min: 1, max: 5 }
   },
   {
     id: 6,
     type: 'likert',
-    text: '이 사람은 유머 감각이 있나요?',
+    text: 'Does this person have a good sense of humor?',
     scale: { min: 1, max: 5 }
   },
   {
     id: 7,
     type: 'likert',
-    text: '이 사람은 책임감이 강한가요?',
+    text: 'Is this person responsible?',
     scale: { min: 1, max: 5 }
   },
   {
     id: 8,
     type: 'likert',
-    text: '이 사람은 적극적인가요?',
+    text: 'Is this person proactive?',
     scale: { min: 1, max: 5 }
   },
   {
     id: 9,
     type: 'likert',
-    text: '이 사람은 배려심이 깊은가요?',
+    text: 'Is this person considerate?',
     scale: { min: 1, max: 5 }
   },
   {
     id: 10,
     type: 'likert',
-    text: '이 사람은 열정적인가요?',
+    text: 'Is this person passionate?',
     scale: { min: 1, max: 5 }
   },
   {
     id: 11,
     type: 'likert',
-    text: '이 사람은 차분한가요?',
+    text: 'Is this person calm?',
     scale: { min: 1, max: 5 }
   },
   {
     id: 12,
     type: 'likert',
-    text: '이 사람은 솔직한가요?',
+    text: 'Is this person honest?',
     scale: { min: 1, max: 5 }
   }
 ];

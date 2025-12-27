@@ -4,13 +4,16 @@ import { useReducedMotion } from '@/hooks/useAccessibility';
 import styles from './PersonaCard.module.css';
 import { Persona } from '@/lib/mock-data/personas';
 import { Badge } from '@/components/atoms/Badge';
+import { QRCode } from '@/components/atoms/QRCode';
 
 interface PersonaCardProps {
   persona: Persona;
   readOnly?: boolean;
+  /** Show QR code for public profile link (FR-004.2) */
+  showQRCode?: boolean;
 }
 
-export function PersonaCard({ persona, readOnly = false }: PersonaCardProps) {
+export function PersonaCard({ persona, readOnly = false, showQRCode = false }: PersonaCardProps) {
   const cardRef = useRef<HTMLDivElement>(null);
   const reducedMotion = useReducedMotion();
 
@@ -57,6 +60,11 @@ export function PersonaCard({ persona, readOnly = false }: PersonaCardProps) {
     };
   }, [reducedMotion, readOnly]);
 
+  // FR-004.3: Generate public profile URL
+  const publicProfileUrl = typeof window !== 'undefined'
+    ? `${window.location.origin}/p/${persona.id}`
+    : `https://remirai.app/p/${persona.id}`;
+
   return (
     <div
       ref={cardRef}
@@ -92,6 +100,18 @@ export function PersonaCard({ persona, readOnly = false }: PersonaCardProps) {
 
       {persona.greeting && (
         <div className={styles.greeting}>"{persona.greeting}"</div>
+      )}
+
+      {/* FR-004.2: QR Code for shareable persona link */}
+      {showQRCode && (
+        <div className={styles.qrSection}>
+          <QRCode
+            value={publicProfileUrl}
+            size={80}
+            alt={`QR code for ${persona.name}'s profile`}
+          />
+          <span className={styles.qrLabel}>Scan to view profile</span>
+        </div>
       )}
     </div>
   );

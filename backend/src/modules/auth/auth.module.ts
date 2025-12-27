@@ -5,6 +5,8 @@ import { AuthService } from './auth.service';
 import { AuthController } from './auth.controller';
 import { JwtStrategy } from './strategies/jwt.strategy';
 import { GoogleStrategy } from './strategies/google.strategy';
+import { KakaoStrategy } from './strategies/kakao.strategy';
+import { AppleStrategy } from './strategies/apple.strategy';
 import { PrismaModule } from '../../prisma/prisma.module';
 
 @Module({
@@ -17,7 +19,8 @@ import { PrismaModule } from '../../prisma/prisma.module';
     PrismaModule,
   ],
   controllers: [AuthController],
-  providers: [AuthService, JwtStrategy, GoogleStrategy],
+  providers: [AuthService, JwtStrategy, GoogleStrategy, KakaoStrategy, AppleStrategy],
   exports: [AuthService],
 })
-export class AuthModule {}
+export class AuthModule { }
+

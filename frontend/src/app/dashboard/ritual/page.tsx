@@ -180,6 +180,23 @@ export default function RitualHubPage() {
           </div>
         </section>
 
+        {/* Practice Mode Section (FR-001.5) */}
+        <section className={styles.practiceSection}>
+          <div>
+            <h2>🎭 Try Practice Mode</h2>
+            <p>
+              Can&apos;t wait for friend responses? Answer the questions yourself to create a
+              <strong> Proto-Persona</strong> based on self-perception.
+            </p>
+          </div>
+          <Button
+            variant="secondary"
+            onClick={() => router.push('/dashboard/practice')}
+          >
+            Start Practice Mode
+          </Button>
+        </section>
+
         <section className={styles.templateSection}>
           <div>
             <p className={styles.kicker}>Templates</p>

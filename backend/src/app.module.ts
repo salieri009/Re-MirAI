@@ -5,14 +5,13 @@ import { AppService } from './app.service';
 import { PrismaModule } from './prisma/prisma.module';
 import { AuthModule } from './modules/auth/auth.module';
 import { SurveyModule } from './modules/survey/survey.module';
-import databaseConfig from './config/database.config';
-import jwtConfig from './config/jwt.config';
+import appConfig from './config/app.config';
 
 @Module({
   imports: [
     ConfigModule.forRoot({
       isGlobal: true,
-      load: [databaseConfig, jwtConfig],
+      load: [appConfig],
     }),
     PrismaModule,
     AuthModule,
@@ -21,4 +20,5 @@ import jwtConfig from './config/jwt.config';
   controllers: [AppController],
   providers: [AppService],
 })
-export class AppModule {}
+export class AppModule { }
+

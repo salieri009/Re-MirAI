@@ -16,6 +16,7 @@ import { TopicSuggestion } from '@/components/molecules/TopicSuggestion';
 import { NavigationSidebar } from '@/components/organisms/NavigationSidebar';
 import { useReducedMotion } from '@/hooks/useAccessibility';
 import { slideIn } from '@/lib/animations';
+import { moderateContent, type ModerationResult } from '@/lib/moderation';
 import { ChatMessage as ChatMessageType } from '@/lib/mock-data/chat';
 import styles from './page.module.css';
 
@@ -30,6 +31,7 @@ export default function ChatPage({ params }: { params: Promise<{ id: string }> }
   const [sharePreviewUrl, setSharePreviewUrl] = useState<string | null>(null);
   const [sharePanelOpen, setSharePanelOpen] = useState(false);
   const [messageReactions, setMessageReactions] = useState<Record<string, Record<string, number>>>({});
+  const [moderationWarning, setModerationWarning] = useState<string | null>(null);
   const inputRef = useRef<HTMLInputElement>(null);
   const messagesRef = useRef<HTMLDivElement>(null);
   const reducedMotion = useReducedMotion();
@@ -44,6 +46,18 @@ export default function ChatPage({ params }: { params: Promise<{ id: string }> }
     queryFn: () => personaApi.get(id),
     enabled: !!id
   });
+
+  // FR-003.4: Dynamic Bond Level
+  const { data: bondData } = useQuery({
+    queryKey: ['bond-level', id],
+    queryFn: () => chatApi.getBondLevel(id),
+    enabled: !!id,
+    refetchInterval: 30000, // Refresh every 30s
+  });
+
+  // Extract bond level with fallback
+  const bondLevel = bondData?.level ?? 1;
+  const bondProgress = bondData?.progress ?? 0;
 
   useEffect(() => {
     if (history?.messages) {
@@ -84,6 +98,23 @@ export default function ChatPage({ params }: { params: Promise<{ id: string }> }
 
   const handleSend = async () => {
     if (!message.trim() || isSending) return;
+
+    // FR-003.5: Content Moderation
+    const moderation = moderateContent(message);
+
+    if (!moderation.isAllowed) {
+      setModerationWarning(moderation.message);
+      return;
+    }
+
+    if (moderation.showWarning && moderation.message) {
+      // Show warning but allow sending
+      setModerationWarning(moderation.message);
+      // Clear warning after 5 seconds
+      setTimeout(() => setModerationWarning(null), 5000);
+    } else {
+      setModerationWarning(null);
+    }
 
     const userMessage: ChatMessageType = {
       id: `msg-${Date.now()}`,
@@ -185,33 +216,33 @@ export default function ChatPage({ params }: { params: Promise<{ id: string }> }
 
       <div className={styles.chatMain}>
         <div className={styles.chatHeader}>
-        <div className={styles.headerInfo}>
-          <div className={styles.personaInfo}>
-            <p className={styles.personaName}>{persona?.name ?? 'Your Persona'}</p>
-            <div className={styles.statusRow}>
-              <span
-                className={`${styles.statusDot} ${isSending ? styles.statusTyping : styles.statusOnline}`}
-              />
-              <span className={styles.statusText}>{connectionStatus}</span>
+          <div className={styles.headerInfo}>
+            <div className={styles.personaInfo}>
+              <p className={styles.personaName}>{persona?.name ?? 'Your Persona'}</p>
+              <div className={styles.statusRow}>
+                <span
+                  className={`${styles.statusDot} ${isSending ? styles.statusTyping : styles.statusOnline}`}
+                />
+                <span className={styles.statusText}>{connectionStatus}</span>
+              </div>
             </div>
+            <BondLevelIndicator level={bondLevel} progress={bondProgress} />
           </div>
-          <BondLevelIndicator level={3} progress={65} />
+          <div className={styles.headerActions}>
+            <Button
+              variant="ghost"
+              size="sm"
+              onClick={() => {
+                if (persona) {
+                  router.push(`/p/${persona.id}`);
+                }
+              }}
+              disabled={!persona}
+            >
+              View Persona Room
+            </Button>
+          </div>
         </div>
-        <div className={styles.headerActions}>
-          <Button
-            variant="ghost"
-            size="sm"
-            onClick={() => {
-              if (persona) {
-                router.push(`/p/${persona.id}`);
-              }
-            }}
-            disabled={!persona}
-          >
-            View Persona Room
-          </Button>
-        </div>
-      </div>
 
         <div ref={messagesRef} className={styles.messages}>
           {messages.map((msg) => (
@@ -244,6 +275,20 @@ export default function ChatPage({ params }: { params: Promise<{ id: string }> }
         </div>
 
         <div className={styles.inputArea}>
+          {/* FR-003.5: Moderation Warning Display */}
+          {moderationWarning && (
+            <div className={styles.moderationWarning} role="alert">
+              <span className={styles.warningIcon}>⚠️</span>
+              <p>{moderationWarning}</p>
+              <button
+                onClick={() => setModerationWarning(null)}
+                className={styles.dismissWarning}
+                aria-label="Dismiss warning"
+              >
+                ×
+              </button>
+            </div>
+          )}
           <Input
             ref={inputRef}
             value={message}
@@ -298,7 +343,7 @@ export default function ChatPage({ params }: { params: Promise<{ id: string }> }
           </div>
 
           <div className={styles.personaStats}>
-            <BondLevelIndicator level={3} progress={65} />
+            <BondLevelIndicator level={bondLevel} progress={bondProgress} />
           </div>
 
           <div className={styles.ritualLinks}>

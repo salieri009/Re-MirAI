@@ -6,7 +6,7 @@ import gsap from 'gsap';
 import { authApi } from '@/lib/api/auth';
 import { trackEvent } from '@/lib/analytics';
 import { useAuthStore } from '@/stores/authStore';
-import { GoogleAuthButton } from '@/components/molecules/GoogleAuthButton';
+import { SocialAuthButton } from '@/components/molecules/SocialAuthButton';
 import { TrustBadge } from '@/components/molecules/TrustBadge';
 import { Button } from '@/components/atoms/Button';
 import { MirrorCanvas } from '@/components/organisms/MirrorCanvas/MirrorCanvas';
@@ -106,10 +106,10 @@ export default function LoginPage() {
     try {
       // Simulate progress steps
       setTimeout(() => setProgressStep('verify'), 1000);
-      
+
       const response = await authApi.googleLogin('mock-id-token');
       login(response.accessToken, response.refreshToken, response.user);
-      
+
       setProgressStep('welcome');
       setStatusMessage('Welcome back. Redirecting to your dashboard...');
       setAuthState('success');
@@ -171,13 +171,17 @@ export default function LoginPage() {
             {authState === 'loading' && (
               <ProgressTracker currentStep={progressStep} className={styles.progressTracker} />
             )}
-            <GoogleAuthButton
-              onAuth={handleGoogleAuth}
-              onRetry={handleRetry}
-              state={authState}
-              statusMessage={statusMessage}
-              errorMessage={error}
-            />
+
+            {/* Multi-provider Social Auth Buttons */}
+            <div className={styles.authButtons}>
+              <SocialAuthButton provider="google" />
+              <SocialAuthButton provider="kakao" />
+              <SocialAuthButton provider="apple" />
+            </div>
+
+            {error && (
+              <p className={styles.errorMessage}>{error}</p>
+            )}
 
             <p className={styles.privacyPromise}>
               We only use your email to save your progress. No data is sold.

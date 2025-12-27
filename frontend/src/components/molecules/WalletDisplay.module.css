@@ -1,0 +1,43 @@
+.wallet {
+    display: flex;
+    align-items: center;
+    gap: var(--space-xs);
+    padding: var(--space-xs) var(--space-sm);
+    background: linear-gradient(135deg, rgba(147, 51, 234, 0.15), rgba(59, 130, 246, 0.15));
+    border: 1px solid rgba(147, 51, 234, 0.3);
+    border-radius: var(--radius-pill);
+    cursor: pointer;
+    transition: all 0.2s ease;
+    font-family: inherit;
+    color: inherit;
+}
+
+.wallet:hover {
+    background: linear-gradient(135deg, rgba(147, 51, 234, 0.25), rgba(59, 130, 246, 0.25));
+    border-color: rgba(147, 51, 234, 0.5);
+    transform: translateY(-1px);
+}
+
+.icon {
+    font-size: 1rem;
+}
+
+.balance {
+    font-size: var(--font-size-sm);
+    font-weight: var(--font-weight-bold);
+    color: var(--color-text-primary);
+    font-family: var(--font-tech, 'Space Mono', monospace);
+}
+
+.label {
+    font-size: var(--font-size-xs);
+    color: var(--color-text-secondary);
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+}
+
+@media (max-width: 640px) {
+    .label {
+        display: none;
+    }
+}

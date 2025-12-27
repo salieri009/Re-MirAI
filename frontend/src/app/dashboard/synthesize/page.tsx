@@ -25,7 +25,7 @@ export default function SynthesizePage() {
       setShowAnimation(true);
     } catch (error) {
       console.error('Failed to create persona:', error);
-      alert('Persona 생성에 실패했습니다. 다시 시도해주세요.');
+      alert('Failed to generate persona. Please try again.');
       setIsGenerating(false);
     }
   };
@@ -50,7 +50,7 @@ export default function SynthesizePage() {
   return (
     <div className={styles.container}>
       <h1>Ready to summon?</h1>
-      
+
       <div className={styles.modeSelector}>
         <button
           className={`${styles.modeButton} ${mode === 'FATED' ? styles.active : ''}`}
@@ -61,7 +61,7 @@ export default function SynthesizePage() {
           <p>Let fate decide your archetype</p>
           <span className={styles.free}>Free</span>
         </button>
-        
+
         <button
           className={`${styles.modeButton} ${mode === 'ALCHEMIC' ? styles.active : ''}`}
           onClick={() => setMode('ALCHEMIC')}
