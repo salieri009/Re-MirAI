@@ -54,4 +54,15 @@ export class SurveyController {
     await this.surveyService.submitResponse(surveyId, dto);
     return { message: 'Response submitted successfully' };
   }
+
+  // Get survey status (Owner only) - matches API spec
+  @Get(':id/status')
+  @UseGuards(JwtAuthGuard)
+  async getSurveyStatus(
+    @Param('id') surveyId: string,
+    @Req() req: AuthenticatedRequest,
+  ) {
+    return this.surveyService.getSurveyStatus(surveyId, req.user.id);
+  }
 }
+

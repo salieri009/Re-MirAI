@@ -49,8 +49,8 @@ export class AuthController {
 
     // Redirect to frontend with tokens
     const callbackUrl = new URL('/auth/callback', frontendUrl);
-    callbackUrl.searchParams.set('access_token', tokens.access_token);
-    callbackUrl.searchParams.set('refresh_token', tokens.refresh_token);
+    callbackUrl.searchParams.set('accessToken', tokens.accessToken);
+    callbackUrl.searchParams.set('refreshToken', tokens.refreshToken);
     callbackUrl.searchParams.set('provider', 'google');
 
     return res.redirect(callbackUrl.toString());
@@ -72,8 +72,8 @@ export class AuthController {
 
     // Redirect to frontend with tokens
     const callbackUrl = new URL('/auth/callback', frontendUrl);
-    callbackUrl.searchParams.set('access_token', tokens.access_token);
-    callbackUrl.searchParams.set('refresh_token', tokens.refresh_token);
+    callbackUrl.searchParams.set('accessToken', tokens.accessToken);
+    callbackUrl.searchParams.set('refreshToken', tokens.refreshToken);
     callbackUrl.searchParams.set('provider', 'kakao');
 
     return res.redirect(callbackUrl.toString());
@@ -95,8 +95,8 @@ export class AuthController {
 
     // Redirect to frontend with tokens
     const callbackUrl = new URL('/auth/callback', frontendUrl);
-    callbackUrl.searchParams.set('access_token', tokens.access_token);
-    callbackUrl.searchParams.set('refresh_token', tokens.refresh_token);
+    callbackUrl.searchParams.set('accessToken', tokens.accessToken);
+    callbackUrl.searchParams.set('refreshToken', tokens.refreshToken);
     callbackUrl.searchParams.set('provider', 'apple');
 
     return res.redirect(callbackUrl.toString());
@@ -106,7 +106,7 @@ export class AuthController {
 
   @Post('refresh')
   @HttpCode(200)
-  async refreshToken(@Body('refresh_token') refreshToken: string) {
+  async refreshToken(@Body('refreshToken') refreshToken: string) {
     return this.authService.refreshAccessToken(refreshToken);
   }
 

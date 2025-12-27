@@ -157,9 +157,9 @@ export class AuthService {
     });
 
     return {
-      access_token: accessToken,
-      refresh_token: refreshToken,
-      expires_in: 3600, // 1 hour in seconds
+      accessToken: accessToken,
+      refreshToken: refreshToken,
+      expiresIn: 3600, // 1 hour in seconds
       user: {
         id: user.id,
         email: user.email,

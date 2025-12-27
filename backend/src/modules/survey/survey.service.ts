@@ -20,7 +20,7 @@ type SurveyWithResponses = Prisma.SurveyGetPayload<{
 
 @Injectable()
 export class SurveyService {
-  constructor(private prisma: PrismaService) {}
+  constructor(private prisma: PrismaService) { }
 
   // Default survey questions (hardcoded for MVP)
   private readonly defaultQuestions: SurveyQuestion[] = [
@@ -174,6 +174,31 @@ export class SurveyService {
       responseCount: survey.responses.length,
       createdAt: survey.createdAt,
       expiresAt: survey.expiresAt,
+    };
+  }
+
+  /**
+   * Get survey status for owner (matches API spec)
+   */
+  async getSurveyStatus(surveyId: string, userId: string) {
+    const survey = await this.prisma.survey.findFirst({
+      where: {
+        id: surveyId,
+        userId, // Owner only
+      },
+      include: { responses: true },
+    });
+
+    if (!survey) {
+      throw new NotFoundException('Survey not found or access denied');
+    }
+
+    return {
+      id: survey.id,
+      status: survey.status,
+      responsesCount: survey.responses.length,
+      canCreatePersona: survey.responses.length >= survey.minResponses,
+      threshold: survey.minResponses,
     };
   }
 }
