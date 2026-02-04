@@ -39,6 +39,11 @@ h6 {
     color: var(--color-text-primary);
 }
 
+/* Material Symbols Outlined settings from Design System ver2 */
+.material-symbols-outlined {
+    font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+}
+
 /* Utility Classes */
 .z-background {
     z-index: var(--z-base);

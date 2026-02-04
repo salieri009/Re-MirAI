@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useMemo, useState, useRef } from 'react';
+import { useMemo, useState, useRef, CSSProperties } from 'react';
 import dynamic from 'next/dynamic';
 import { useRouter } from 'next/navigation';
 import { Button } from '@/components/atoms/Button';
@@ -9,13 +9,15 @@ import { SynthesisSpinner } from '@/components/molecules/SynthesisSpinner';
 import { ArchetypeCard } from '@/components/atoms/ArchetypeCard';
 import { SkipToContent, useAnnouncement } from '@/hooks/useAccessibility';
 import { useSummoningAnimation, type SummoningStage } from '@/hooks/useSummoningAnimation';
-import styles from './page.module.css';
 
 // Lazy load canvas for summoning animation
-const SummoningCanvas = dynamic(() => import('@/components/organisms/MirrorCanvas/MirrorCanvas').then(mod => ({ default: mod.MirrorCanvas })), {
-  loading: () => <canvas aria-hidden="true" className={styles.backgroundCanvas} />,
-  ssr: false,
-});
+const SummoningCanvas = dynamic(
+    () => import('@/components/organisms/MirrorCanvas/MirrorCanvas').then((mod) => ({ default: mod.MirrorCanvas })),
+    {
+        loading: () => <canvas aria-hidden="true" style={{ position: 'absolute', inset: 0 }} />,
+        ssr: false,
+    }
+);
 
 const ARCHETYPES = [
     {
@@ -44,6 +46,73 @@ const ARCHETYPES = [
     },
 ];
 
+// Styles
+const styles = {
+    page: {
+        minHeight: '100vh',
+        background: `radial-gradient(circle at top, rgba(132, 94, 194, 0.45), transparent 60%),
+            radial-gradient(circle at bottom, rgba(0, 201, 167, 0.25), transparent 60%),
+            var(--color-bg-dark)`,
+        color: 'var(--color-text-primary)',
+        display: 'flex',
+        justifyContent: 'center',
+        padding: 'var(--space-3xl)',
+    } as CSSProperties,
+    stage: {
+        width: 'min(1100px, 100%)',
+        display: 'flex',
+        flexDirection: 'column',
+        gap: 'var(--space-2xl)',
+    } as CSSProperties,
+    header: {
+        textAlign: 'center',
+        display: 'flex',
+        flexDirection: 'column',
+        gap: 'var(--space-md)',
+    } as CSSProperties,
+    kicker: {
+        textTransform: 'uppercase',
+        letterSpacing: '0.35em',
+        fontSize: '0.75rem',
+        color: 'var(--color-text-secondary)',
+    } as CSSProperties,
+    stagePanel: {
+        borderRadius: 'var(--radius-xl)',
+        border: '1px solid rgba(255, 255, 255, 0.08)',
+        padding: 'var(--space-2xl)',
+        background: 'rgba(255, 255, 255, 0.02)',
+        display: 'flex',
+        flexDirection: 'column',
+        gap: 'var(--space-xl)',
+        alignItems: 'center',
+        textAlign: 'center',
+    } as CSSProperties,
+    alchemicHeader: {
+        width: '100%',
+        display: 'flex',
+        justifyContent: 'space-between',
+        gap: 'var(--space-md)',
+        flexWrap: 'wrap',
+        alignItems: 'center',
+    } as CSSProperties,
+    archetypeGrid: {
+        width: '100%',
+        display: 'grid',
+        gridTemplateColumns: 'repeat(auto-fit, minmax(220px, 1fr))',
+        gap: 'var(--space-md)',
+    } as CSSProperties,
+    helper: {
+        color: 'var(--color-text-secondary)',
+        maxWidth: '460px',
+    } as CSSProperties,
+    revealActions: {
+        display: 'flex',
+        gap: 'var(--space-md)',
+        flexWrap: 'wrap',
+        justifyContent: 'center',
+    } as CSSProperties,
+};
+
 export default function SummonPage() {
     const router = useRouter();
     const announce = useAnnouncement();
@@ -51,13 +120,7 @@ export default function SummonPage() {
     const [selectedArchetype, setSelectedArchetype] = useState<string | null>(null);
     const [personaId, setPersonaId] = useState('p-123');
 
-    const {
-        stage,
-        progress,
-        transitionToAlchemicMode,
-        transitionToReveal,
-        skipToReveal,
-    } = useSummoningAnimation({
+    const { stage, progress, transitionToAlchemicMode, transitionToReveal, skipToReveal } = useSummoningAnimation({
         canvasRef,
         onStageChange: (newStage) => {
             if (newStage === 'PRE_SYNTHESIS') {
@@ -111,68 +174,68 @@ export default function SummonPage() {
     return (
         <>
             <SkipToContent targetId="summon-main" />
-            <main id="summon-main" className={styles.page} role="main" aria-label="Summoning ritual">
-                <div className={styles.backdrop} aria-hidden="true" />
-                <section className={styles.stage}>
-                <header className={styles.header}>
-                    <p className={styles.kicker}>Summoning Ritual ver2</p>
-                    <h1>The ceremony that births your Persona.</h1>
-                    <p>Follow the three stages: anticipation, alchemic choice, and the reveal.</p>
-                </header>
+            <main id="summon-main" style={styles.page} role="main" aria-label="Summoning ritual">
+                <div aria-hidden="true" />
+                <section style={styles.stage}>
+                    <header style={styles.header}>
+                        <p style={styles.kicker}>Summoning Ritual ver2</p>
+                        <h1>The ceremony that births your Persona.</h1>
+                        <p>Follow the three stages: anticipation, alchemic choice, and the reveal.</p>
+                    </header>
 
-                {stage === 'PRE_SYNTHESIS' && (
-                    <div className={styles.stagePanel}>
-                        <SynthesisSpinner caption="Calibrating data threads..." />
-                        <p className={styles.helper}>Gathering resonance from your survey responses.</p>
-                        <Button variant="secondary" onClick={handleBeginSynthesis}>
-                            Begin Synthesis
-                        </Button>
-                    </div>
-                )}
+                    {stage === 'PRE_SYNTHESIS' && (
+                        <div style={styles.stagePanel}>
+                            <SynthesisSpinner caption="Calibrating data threads..." />
+                            <p style={styles.helper}>Gathering resonance from your survey responses.</p>
+                            <Button variant="secondary" onClick={handleBeginSynthesis}>
+                                Begin Synthesis
+                            </Button>
+                        </div>
+                    )}
 
-                {stage === 'ALCHEMIC_MODE' && (
-                    <div className={styles.stagePanel}>
-                        <div className={styles.alchemicHeader}>
-                            <div>
-                                <h2>Choose an archetype focus</h2>
-                                <p>Guide the synthesis while progress builds automatically.</p>
+                    {stage === 'ALCHEMIC_MODE' && (
+                        <div style={styles.stagePanel}>
+                            <div style={styles.alchemicHeader}>
+                                <div>
+                                    <h2>Choose an archetype focus</h2>
+                                    <p>Guide the synthesis while progress builds automatically.</p>
+                                </div>
+                                <Button variant="ghost" size="sm" onClick={handleSkip}>
+                                    Skip Animation
+                                </Button>
                             </div>
-                            <Button variant="ghost" size="sm" onClick={handleSkip}>
-                                Skip Animation
-                            </Button>
+                            <ProgressBar value={progress} label="Synthesis progress" />
+                            <div style={styles.archetypeGrid}>
+                                {ARCHETYPES.map((archetype) => (
+                                    <ArchetypeCard
+                                        key={archetype.id}
+                                        id={archetype.id}
+                                        title={archetype.title}
+                                        description={archetype.description}
+                                        icon={archetype.icon}
+                                        selected={selectedArchetype === archetype.id}
+                                        onSelect={handleArchetypeSelect}
+                                    />
+                                ))}
+                            </div>
                         </div>
-                        <ProgressBar value={progress} label="Synthesis progress" />
-                        <div className={styles.archetypeGrid}>
-                            {ARCHETYPES.map((archetype) => (
-                                <ArchetypeCard
-                                    key={archetype.id}
-                                    id={archetype.id}
-                                    title={archetype.title}
-                                    description={archetype.description}
-                                    icon={archetype.icon}
-                                    selected={selectedArchetype === archetype.id}
-                                    onSelect={handleArchetypeSelect}
-                                />
-                            ))}
-                        </div>
-                    </div>
-                )}
+                    )}
 
-                {stage === 'REVEAL' && (
-                    <div className={styles.revealPanel}>
-                        <p className={styles.kicker}>Stage 3 · Reveal</p>
-                        <h2>{personaSummary.name}</h2>
-                        <p>{personaSummary.synopsis}</p>
-                        <div className={styles.revealActions}>
-                            <Button size="lg" onClick={handleExplore}>
-                                Explore Persona Room
-                            </Button>
-                            <Button variant="ghost" onClick={() => router.push('/dashboard')}>
-                                Back to Dashboard
-                            </Button>
+                    {stage === 'REVEAL' && (
+                        <div style={styles.stagePanel}>
+                            <p style={styles.kicker}>Stage 3 · Reveal</p>
+                            <h2>{personaSummary.name}</h2>
+                            <p>{personaSummary.synopsis}</p>
+                            <div style={styles.revealActions}>
+                                <Button size="lg" onClick={handleExplore}>
+                                    Explore Persona Room
+                                </Button>
+                                <Button variant="ghost" onClick={() => router.push('/dashboard')}>
+                                    Back to Dashboard
+                                </Button>
+                            </div>
                         </div>
-                    </div>
-                )}
+                    )}
                 </section>
             </main>
         </>

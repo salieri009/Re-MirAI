@@ -1,6 +1,65 @@
 'use client';
 
-import styles from './HowItWorks.module.css';
+import { colors, spacing, radius, typography, CSSProperties } from '@/lib/styles';
+
+const sectionStyle: CSSProperties = {
+    padding: `${spacing.xxl * 2}px ${spacing.xl}px`,
+    background: colors.surface,
+};
+
+const sectionTitleStyle: CSSProperties = {
+    fontSize: typography.size['3xl'],
+    fontWeight: typography.weight.bold,
+    color: colors.text,
+    textAlign: 'center',
+    marginBottom: spacing.xxl,
+};
+
+const stepsGridStyle: CSSProperties = {
+    display: 'flex',
+    flexDirection: 'column',
+    gap: spacing.lg,
+    maxWidth: 800,
+    margin: '0 auto',
+};
+
+const stepStyle: CSSProperties = {
+    display: 'flex',
+    alignItems: 'flex-start',
+    gap: spacing.lg,
+};
+
+const stepNumberStyle: CSSProperties = {
+    width: 48,
+    height: 48,
+    borderRadius: '50%',
+    background: `linear-gradient(135deg, ${colors.primary}, ${colors.accent})`,
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center',
+    fontSize: typography.size.xl,
+    fontWeight: typography.weight.bold,
+    color: colors.text,
+    flexShrink: 0,
+};
+
+const stepContentStyle: CSSProperties = {
+    display: 'flex',
+    flexDirection: 'column',
+    gap: spacing.xs,
+};
+
+const stepTitleStyle: CSSProperties = {
+    fontSize: typography.size.xl,
+    fontWeight: typography.weight.semiBold,
+    color: colors.text,
+};
+
+const stepDescriptionStyle: CSSProperties = {
+    fontSize: typography.size.base,
+    color: colors.textMuted,
+    lineHeight: 1.6,
+};
 
 export function HowItWorks() {
     const steps = [
@@ -21,19 +80,19 @@ export function HowItWorks() {
     ];
 
     return (
-        <section className={styles.section} aria-labelledby="how-it-works-title">
-            <h2 id="how-it-works-title" className={styles.sectionTitle}>
+        <section style={sectionStyle} aria-labelledby="how-it-works-title">
+            <h2 id="how-it-works-title" style={sectionTitleStyle}>
                 How It Works
             </h2>
 
-            <div className={styles.stepsGrid}>
+            <div style={stepsGridStyle}>
                 {steps.map((step) => (
-                    <div key={step.number} className={styles.step}>
-                        <div className={styles.stepNumber}>{step.number}</div>
-                        <div className={styles.stepContent}>
-                            <h3 className={styles.stepTitle}>{step.title}</h3>
+                    <div key={step.number} style={stepStyle}>
+                        <div style={stepNumberStyle}>{step.number}</div>
+                        <div style={stepContentStyle}>
+                            <h3 style={stepTitleStyle}>{step.title}</h3>
                             {step.description && (
-                                <p className={styles.stepDescription}>{step.description}</p>
+                                <p style={stepDescriptionStyle}>{step.description}</p>
                             )}
                         </div>
                     </div>

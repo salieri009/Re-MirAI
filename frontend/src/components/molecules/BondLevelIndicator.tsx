@@ -3,13 +3,72 @@
 import { useEffect, useRef } from 'react';
 import { connectionInteractions } from '@/lib/micro-interactions';
 import { useReducedMotion } from '@/hooks/useAccessibility';
-import styles from './BondLevelIndicator.module.css';
+import { colors, spacing, typography, CSSProperties } from '@/lib/styles';
 
 interface BondLevelIndicatorProps {
     level: number;
     progress: number; // 0 to 100
     label?: string;
 }
+
+const containerStyle: CSSProperties = {
+    display: 'flex',
+    alignItems: 'center',
+    gap: spacing.sm,
+};
+
+const ringContainerStyle: CSSProperties = {
+    position: 'relative',
+    width: 40,
+    height: 40,
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center',
+};
+
+const ringSvgStyle: CSSProperties = {
+    width: '100%',
+    height: '100%',
+    transform: 'rotate(-90deg)',
+};
+
+const ringBackgroundStyle: CSSProperties = {
+    fill: 'none',
+    stroke: colors.border,
+    strokeWidth: 3,
+};
+
+const ringProgressStyle: CSSProperties = {
+    fill: 'none',
+    stroke: colors.accent,
+    strokeWidth: 3,
+    strokeLinecap: 'round',
+    transition: 'stroke-dashoffset 0.5s ease',
+};
+
+const levelBadgeStyle: CSSProperties = {
+    position: 'absolute',
+    fontSize: typography.size.sm,
+    fontWeight: typography.weight.bold,
+    color: colors.text,
+};
+
+const infoStyle: CSSProperties = {
+    display: 'flex',
+    flexDirection: 'column',
+    gap: 2,
+};
+
+const labelStyle: CSSProperties = {
+    fontSize: typography.size.xs,
+    color: colors.textMuted,
+};
+
+const statusStyle: CSSProperties = {
+    fontSize: typography.size.sm,
+    fontWeight: typography.weight.medium,
+    color: colors.text,
+};
 
 export function BondLevelIndicator({ level, progress, label = 'Bond Level' }: BondLevelIndicatorProps) {
     const ringRef = useRef<SVGCircleElement>(null);
@@ -30,18 +89,18 @@ export function BondLevelIndicator({ level, progress, label = 'Bond Level' }: Bo
     }, [level, progress, reducedMotion]);
 
     return (
-        <div ref={containerRef} className={styles.container} role="status" aria-label={`${label}: Level ${level}, ${progress}% progress`}>
-            <div className={styles.ringContainer}>
-                <svg className={styles.ringSvg} viewBox="0 0 32 32">
+        <div ref={containerRef} style={containerStyle} role="status" aria-label={`${label}: Level ${level}, ${progress}% progress`}>
+            <div style={ringContainerStyle}>
+                <svg style={ringSvgStyle} viewBox="0 0 32 32">
                     <circle
-                        className={styles.ringBackground}
+                        style={ringBackgroundStyle}
                         cx="16"
                         cy="16"
                         r={radius}
                     />
                     <circle
                         ref={ringRef}
-                        className={styles.ringProgress}
+                        style={ringProgressStyle}
                         cx="16"
                         cy="16"
                         r={radius}
@@ -49,11 +108,11 @@ export function BondLevelIndicator({ level, progress, label = 'Bond Level' }: Bo
                         strokeDashoffset={offset}
                     />
                 </svg>
-                <span className={styles.levelBadge}>{level}</span>
+                <span style={levelBadgeStyle}>{level}</span>
             </div>
-            <div className={styles.info}>
-                <span className={styles.label}>{label}</span>
-                <span className={styles.status}>
+            <div style={infoStyle}>
+                <span style={labelStyle}>{label}</span>
+                <span style={statusStyle}>
                     {getLevelTitle(level)}
                 </span>
             </div>

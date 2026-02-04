@@ -7,7 +7,7 @@ import { ProgressBar } from '@/components/molecules/ProgressBar';
 import { Button } from '@/components/atoms/Button';
 import { surveyApi } from '@/lib/api/survey';
 import { SurveyQuestion } from '@/lib/api/survey';
-import styles from './SurveyWizard.module.css';
+import { colors, spacing, radius, CSSProperties } from '@/lib/styles';
 
 interface SurveyWizardProps {
   surveyId: string;
@@ -17,6 +17,26 @@ interface SurveyWizardProps {
   /** If true, this is Practice Mode (self-survey) */
   isPracticeMode?: boolean;
 }
+
+const wizardStyle: CSSProperties = {
+  display: 'flex',
+  flexDirection: 'column',
+  gap: spacing.lg,
+  maxWidth: 600,
+  margin: '0 auto',
+  padding: spacing.lg,
+};
+
+const questionContainerStyle: CSSProperties = {
+  minHeight: 200,
+};
+
+const navigationStyle: CSSProperties = {
+  display: 'flex',
+  justifyContent: 'space-between',
+  alignItems: 'center',
+  gap: spacing.md,
+};
 
 export function SurveyWizard({ surveyId, questions, onComplete, isPracticeMode }: SurveyWizardProps) {
   const router = useRouter();
@@ -70,13 +90,13 @@ export function SurveyWizard({ surveyId, questions, onComplete, isPracticeMode }
   const hasAnswer = answers[`q${currentQuestion.id}`] !== undefined;
 
   return (
-    <div className={styles.wizard}>
+    <div style={wizardStyle}>
       <ProgressBar
         value={progress}
         label={`Question ${currentIndex + 1} of ${questions.length}`}
       />
 
-      <div className={styles.questionContainer}>
+      <div style={questionContainerStyle}>
         <QuestionCard
           question={currentQuestion}
           value={answers[`q${currentQuestion.id}`]}
@@ -84,7 +104,7 @@ export function SurveyWizard({ surveyId, questions, onComplete, isPracticeMode }
         />
       </div>
 
-      <div className={styles.navigation}>
+      <div style={navigationStyle}>
         <Button
           variant="ghost"
           onClick={handlePrev}
@@ -114,7 +134,3 @@ export function SurveyWizard({ surveyId, questions, onComplete, isPracticeMode }
     </div>
   );
 }
-
-
-
-

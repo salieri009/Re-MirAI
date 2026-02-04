@@ -5,7 +5,7 @@ import gsap from 'gsap';
 import { Button } from '@/components/atoms/Button';
 import { useReducedMotion } from '@/hooks/useAccessibility';
 import { ProgressBar } from './ProgressBar';
-import styles from './StatusCard.module.css';
+import { colors, spacing, radius, typography, shadows, mergeStyles, CSSProperties } from '@/lib/styles';
 
 interface StatusCardProps {
   status: 'empty' | 'collecting' | 'ready' | 'active';
@@ -18,6 +18,72 @@ interface StatusCardProps {
   actionLabel?: string;
   message?: string;
 }
+
+const cardBase: CSSProperties = {
+  display: 'flex',
+  flexDirection: 'column',
+  gap: spacing.md,
+  padding: spacing.lg,
+  borderRadius: radius.xl,
+  border: `1px solid ${colors.border}`,
+  background: colors.surface,
+};
+
+const statusStyles: Record<string, CSSProperties> = {
+  empty: {
+    borderColor: colors.primary,
+    background: `linear-gradient(135deg, ${colors.surface}, rgba(132, 94, 194, 0.1))`,
+  },
+  collecting: {
+    borderColor: colors.accent,
+    background: `linear-gradient(135deg, ${colors.surface}, rgba(0, 201, 167, 0.1))`,
+  },
+  ready: {
+    borderColor: colors.accent,
+    background: `linear-gradient(135deg, rgba(0, 201, 167, 0.2), rgba(132, 94, 194, 0.2))`,
+    boxShadow: shadows.glowAccent,
+  },
+  active: {
+    borderColor: colors.highlight,
+    background: `linear-gradient(135deg, ${colors.surface}, rgba(193, 151, 255, 0.1))`,
+  },
+};
+
+const headerStyle: CSSProperties = {
+  display: 'flex',
+  flexDirection: 'column',
+  gap: spacing.xs,
+};
+
+const titleStyle: CSSProperties = {
+  fontSize: typography.size['2xl'],
+  fontFamily: typography.fontDisplay,
+  fontWeight: typography.weight.bold,
+  color: colors.text,
+  margin: 0,
+};
+
+const messageStyle: CSSProperties = {
+  fontSize: typography.size.base,
+  color: colors.textSecondary,
+  margin: 0,
+};
+
+const subtitleStyle: CSSProperties = {
+  fontSize: typography.size.sm,
+  color: colors.textMuted,
+  margin: 0,
+};
+
+const progressSectionStyle: CSSProperties = {
+  paddingTop: spacing.sm,
+};
+
+const actionSectionStyle: CSSProperties = {
+  paddingTop: spacing.md,
+  display: 'flex',
+  justifyContent: 'center',
+};
 
 export function StatusCard({
   status,
@@ -42,6 +108,7 @@ export function StatusCard({
 
     return () => ctx.revert();
   }, [status, prefersReducedMotion]);
+
   const getStatusConfig = () => {
     switch (status) {
       case 'empty':
@@ -49,7 +116,6 @@ export function StatusCard({
           title: '🗺️ Your Journey Begins',
           subtitle: 'Start collecting feedback to discover your persona',
           variant: 'primary' as const,
-          pulse: true
         };
       case 'collecting':
         return {
@@ -58,41 +124,40 @@ export function StatusCard({
             ? `${progress.current} of ${progress.target} responses received`
             : 'Collecting feedback...',
           variant: 'secondary' as const,
-          shimmer: true
         };
       case 'ready':
         return {
           title: '⚡ SUMMON READY ⚡',
           subtitle: 'All responses collected! Ready to create your persona.',
           variant: 'primary' as const,
-          glow: true
         };
       case 'active':
         return {
           title: '✨ Persona Active',
           subtitle: 'Your persona is ready to chat',
-          variant: 'primary' as const
+          variant: 'primary' as const,
         };
       default:
         return {
           title: 'Status',
           subtitle: '',
-          variant: 'primary' as const
+          variant: 'primary' as const,
         };
     }
   };
 
   const config = getStatusConfig();
+  const cardStyle = mergeStyles(cardBase, statusStyles[status]);
 
   return (
-    <div ref={cardRef} className={`${styles.card} ${styles[status]}`}>
-      <div className={styles.header}>
-        <h2 className={styles.title}>{config.title}</h2>
-        {message && <p className={styles.message}>{message}</p>}
+    <div ref={cardRef} style={cardStyle}>
+      <div style={headerStyle}>
+        <h2 style={titleStyle}>{config.title}</h2>
+        {message && <p style={messageStyle}>{message}</p>}
       </div>
 
       {progress && status === 'collecting' && (
-        <div className={styles.progressSection}>
+        <div style={progressSectionStyle}>
           <ProgressBar
             value={progress.percentage}
             label={`${progress.current} of ${progress.target} responses`}
@@ -101,22 +166,21 @@ export function StatusCard({
       )}
 
       {status === 'ready' && progress && (
-        <div className={styles.progressSection}>
+        <div style={progressSectionStyle}>
           <ProgressBar
             value={100}
             label="All responses collected ✓"
-            className={styles.completeBar}
+            accent
           />
         </div>
       )}
 
       {onAction && actionLabel && (
-        <div className={styles.actionSection}>
+        <div style={actionSectionStyle}>
           <Button
             variant={config.variant}
             size="lg"
             onClick={onAction}
-            className={config.glow ? styles.glowButton : ''}
           >
             {actionLabel}
           </Button>
@@ -124,9 +188,8 @@ export function StatusCard({
       )}
 
       {config.subtitle && (
-        <p className={styles.subtitle}>{config.subtitle}</p>
+        <p style={subtitleStyle}>{config.subtitle}</p>
       )}
     </div>
   );
 }
-

@@ -1,6 +1,6 @@
 'use client';
 
-import styles from './ActivityFeed.module.css';
+import { colors, spacing, radius, typography, CSSProperties } from '@/lib/styles';
 
 export interface ActivityItem {
   id: string;
@@ -13,23 +13,68 @@ interface ActivityFeedProps {
   items: ActivityItem[];
 }
 
+const emptyStyle: CSSProperties = {
+  fontSize: typography.size.sm,
+  color: colors.textMuted,
+  textAlign: 'center',
+  padding: spacing.lg,
+};
+
+const listStyle: CSSProperties = {
+  listStyle: 'none',
+  margin: 0,
+  padding: 0,
+  display: 'flex',
+  flexDirection: 'column',
+  gap: spacing.sm,
+};
+
+const itemStyle: CSSProperties = {
+  display: 'flex',
+  justifyContent: 'space-between',
+  alignItems: 'flex-start',
+  gap: spacing.md,
+  padding: spacing.md,
+  background: colors.surface,
+  borderRadius: radius.md,
+  border: `1px solid ${colors.border}`,
+};
+
+const titleStyle: CSSProperties = {
+  fontSize: typography.size.sm,
+  fontWeight: typography.weight.medium,
+  color: colors.text,
+  margin: 0,
+};
+
+const subtitleStyle: CSSProperties = {
+  fontSize: typography.size.xs,
+  color: colors.textMuted,
+  margin: 0,
+};
+
+const timestampStyle: CSSProperties = {
+  fontSize: typography.size.xs,
+  color: colors.textMuted,
+  whiteSpace: 'nowrap',
+};
+
 export function ActivityFeed({ items }: ActivityFeedProps) {
   if (!items.length) {
-    return <p className={styles.empty}>No recent activity yet.</p>;
+    return <p style={emptyStyle}>No recent activity yet.</p>;
   }
 
   return (
-    <ul className={styles.list}>
+    <ul style={listStyle}>
       {items.map((item) => (
-        <li key={item.id} className={styles.item}>
+        <li key={item.id} style={itemStyle}>
           <div>
-            <p className={styles.title}>{item.title}</p>
-            <p className={styles.subtitle}>{item.subtitle}</p>
+            <p style={titleStyle}>{item.title}</p>
+            <p style={subtitleStyle}>{item.subtitle}</p>
           </div>
-          <span className={styles.timestamp}>{item.timestamp}</span>
+          <span style={timestampStyle}>{item.timestamp}</span>
         </li>
       ))}
     </ul>
   );
 }
-

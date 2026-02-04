@@ -6,6 +6,7 @@ export interface PersonaStats {
   intellect: number;
   kindness: number;
   energy: number;
+  [key: string]: number;
 }
 
 export interface Persona {
@@ -22,6 +23,8 @@ export interface Persona {
 export interface PersonaDetail extends Persona {
   systemPrompt: string;
   surveyId?: string;
+  avatar?: string;
+  traits?: string[];
 }
 
 export type SynthesisMode = 'FATED' | 'ALCHEMIC';

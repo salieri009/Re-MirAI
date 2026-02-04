@@ -94,22 +94,22 @@ export const Hero = () => {
             <div className="relative z-10 container mx-auto px-4 text-center">
                 <h1
                     ref={titleRef}
-                    className="font-display text-4xl md:text-5xl font-black text-white mb-4 tracking-[-0.033em] leading-tight"
+                    className="font-display text-4xl md:text-5xl font-black text-white mb-6 tracking-[-0.033em] leading-tight max-w-4xl mx-auto"
                 >
-                    The mirror reflects your soul. What image do you cast in others?
+                    See yourself through your friends&apos; eyes
                 </h1>
 
                 <p
                     ref={subtitleRef}
-                    className="text-sm md:text-base text-highlight max-w-2xl mx-auto mb-10 leading-normal"
+                    className="text-lg md:text-xl text-highlight max-w-2xl mx-auto mb-12 leading-relaxed"
                 >
-                    Summon an AI Persona forged from your relationships.
+                    Create a survey, share with friends, and discover your AI Persona — born from how others truly see you.
                 </p>
 
                 <div ref={ctaRef} className="flex flex-col sm:flex-row gap-4 justify-center items-center">
                     <Link href="/login">
-                        <Button size="lg" className="bg-accent hover:bg-accent-dark text-background-dark font-bold min-w-[192px] shadow-glow-accent transition-all hover:scale-105">
-                            Start Discovery
+                        <Button size="lg" className="bg-accent hover:bg-accent-dark text-background-dark font-bold min-w-[200px] h-14 text-lg shadow-glow-accent transition-all hover:scale-105">
+                            Create Your Persona
                         </Button>
                     </Link>
                     <Link href="#how-it-works">

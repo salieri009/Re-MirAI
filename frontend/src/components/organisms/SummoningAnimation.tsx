@@ -1,10 +1,9 @@
 'use client';
 
 import { useEffect, useMemo, useRef, useState } from 'react';
-import type { CSSProperties } from 'react';
 import { useReducedMotion } from '@/hooks/useAccessibility';
 import { MagicCircle } from './MagicCircle';
-import styles from './SummoningAnimation.module.css';
+import { colors, spacing, radius, typography, shadows, CSSProperties } from '@/lib/styles';
 
 interface Persona {
   id: string;
@@ -22,6 +21,120 @@ interface SummoningAnimationProps {
 
 type Stage = 'initial' | 'processing' | 'forming' | 'reveal';
 
+const containerBase: CSSProperties = {
+  position: 'fixed',
+  inset: 0,
+  display: 'flex',
+  alignItems: 'center',
+  justifyContent: 'center',
+  zIndex: 200,
+};
+
+const containerFated: CSSProperties = {
+  background: `radial-gradient(circle at center, ${colors.primary}20 0%, ${colors.background} 70%)`,
+};
+
+const containerCustom: CSSProperties = {
+  background: `radial-gradient(circle at center, ${colors.accent}20 0%, ${colors.background} 70%)`,
+};
+
+const stageStyle: CSSProperties = {
+  display: 'flex',
+  flexDirection: 'column',
+  alignItems: 'center',
+  justifyContent: 'center',
+  gap: spacing.lg,
+  textAlign: 'center',
+};
+
+const titleStyle: CSSProperties = {
+  fontSize: typography.size['2xl'],
+  fontWeight: typography.weight.semiBold,
+  color: colors.text,
+};
+
+const sparklesStyle: CSSProperties = {
+  fontSize: 64,
+  animation: 'pulse 2s ease-in-out infinite',
+};
+
+const particlesStyle: CSSProperties = {
+  position: 'absolute',
+  width: 200,
+  height: 200,
+};
+
+const particleStyle: CSSProperties = {
+  position: 'absolute',
+  width: 8,
+  height: 8,
+  borderRadius: '50%',
+  background: colors.accent,
+  top: '50%',
+  left: '50%',
+};
+
+const silhouetteStyle: CSSProperties = {
+  width: 150,
+  height: 200,
+  background: `linear-gradient(to top, ${colors.primary}60, transparent)`,
+  borderRadius: `${radius.xl}px ${radius.xl}px 0 0`,
+  animation: 'pulse 1.5s ease-in-out infinite',
+};
+
+const personaCardStyle: CSSProperties = {
+  padding: spacing.xxl,
+  background: colors.surface,
+  borderRadius: radius.xl,
+  border: `2px solid ${colors.accent}`,
+  boxShadow: `0 0 40px ${colors.accent}40`,
+  animation: 'scaleIn 0.5s ease-out',
+};
+
+const personaNameStyle: CSSProperties = {
+  fontSize: typography.size['3xl'],
+  fontWeight: typography.weight.bold,
+  color: colors.text,
+  marginBottom: spacing.sm,
+};
+
+const personaBadgeStyle: CSSProperties = {
+  fontSize: typography.size.lg,
+  color: colors.accent,
+  marginBottom: spacing.md,
+};
+
+const celebrationStyle: CSSProperties = {
+  fontSize: typography.size.xl,
+  color: colors.highlight,
+  fontWeight: typography.weight.bold,
+};
+
+const skipButtonStyle: CSSProperties = {
+  position: 'absolute',
+  bottom: spacing.xl,
+  right: spacing.xl,
+  padding: `${spacing.sm}px ${spacing.lg}px`,
+  background: 'transparent',
+  border: `1px solid ${colors.border}`,
+  borderRadius: radius.md,
+  color: colors.textMuted,
+  fontSize: typography.size.sm,
+  cursor: 'pointer',
+  fontFamily: typography.fontSans,
+};
+
+const keyframesStyle = `
+@keyframes pulse {
+    0%, 100% { opacity: 1; transform: scale(1); }
+    50% { opacity: 0.7; transform: scale(1.05); }
+}
+@keyframes scaleIn {
+    from { opacity: 0; transform: scale(0.8); }
+    to { opacity: 1; transform: scale(1); }
+}
+`;
+
 export function SummoningAnimation({
   persona,
   onComplete,
@@ -31,8 +144,6 @@ export function SummoningAnimation({
   const [stage, setStage] = useState<Stage>('initial');
   const completionTimeout = useRef<ReturnType<typeof setTimeout> | null>(null);
   const prefersReducedMotion = useReducedMotion();
-  const containerVariantClass =
-    variant === 'custom' ? styles.containerCustom : styles.containerFated;
 
   const particleConfigs = useMemo(
     () =>
@@ -77,67 +188,69 @@ export function SummoningAnimation({
     };
   }, [onComplete, prefersReducedMotion]);
 
+  const containerStyleFinal = {
+    ...containerBase,
+    ...(variant === 'custom' ? containerCustom : containerFated),
+  };
+
   return (
-    <div className={`${styles.container} ${containerVariantClass}`}>
-      {stage === 'initial' && (
-        <div className={`${styles.stage} ${styles.stageInitial}`}>
-          <div className={styles.sparkles}>✨</div>
-          <h2 className={styles.title}>Gathering your Echoes...</h2>
-          <div className={styles.particles} aria-hidden="true">
-            {particleConfigs.map((particle) => (
-              <span
-                key={particle.id}
-                className={styles.particle}
-                style={
-                  {
-                    '--dx': `${particle.dx}px`,
-                    '--dy': `${particle.dy}px`,
-                    '--delay': `${particle.delay}s`,
-                    '--duration': `${particle.duration}s`,
-                  } as React.CSSProperties
-                }
-              />
-            ))}
-          </div>
-        </div>
-      )}
-
-      {stage === 'processing' && (
-        <div className={`${styles.stage} ${styles.stageProcessing}`}>
-          <MagicCircle />
-          <h2 className={styles.title}>Weaving your reflection...</h2>
-        </div>
-      )}
-
-      {stage === 'forming' && (
-        <div className={`${styles.stage} ${styles.stageForming}`}>
-          <div className={styles.silhouette} />
-          <h2 className={styles.title}>Generating personality...</h2>
-        </div>
-      )}
-
-      {stage === 'reveal' && (
-        <div className={`${styles.stage} ${styles.stageReveal}`}>
-          <div className={styles.personaCard}>
-            <h1 className={styles.personaName}>{persona.name}</h1>
-            <div className={styles.personaBadge}>
-              {persona.archetype} {persona.rarity && `★ ${persona.rarity}`}
+    <>
+      <style>{keyframesStyle}</style>
+      <div style={containerStyleFinal}>
+        {stage === 'initial' && (
+          <div style={stageStyle}>
+            <div style={sparklesStyle}>✨</div>
+            <h2 style={titleStyle}>Gathering your Echoes...</h2>
+            <div style={particlesStyle} aria-hidden="true">
+              {particleConfigs.map((particle) => (
+                <span
+                  key={particle.id}
+                  style={{
+                    ...particleStyle,
+                    animation: `pulse ${particle.duration}s ease-in-out ${particle.delay}s infinite`,
+                  }}
+                />
+              ))}
             </div>
-            <div className={styles.celebration}>✨ PERSONA REVEALED ✨</div>
           </div>
-        </div>
-      )}
+        )}
 
-      {onSkip && stage !== 'reveal' && (
-        <button
-          onClick={onSkip}
-          className={styles.skipButton}
-          aria-label="Skip animation"
-        >
-          Skip
-        </button>
-      )}
-    </div>
+        {stage === 'processing' && (
+          <div style={stageStyle}>
+            <MagicCircle />
+            <h2 style={titleStyle}>Weaving your reflection...</h2>
+          </div>
+        )}
+
+        {stage === 'forming' && (
+          <div style={stageStyle}>
+            <div style={silhouetteStyle} />
+            <h2 style={titleStyle}>Generating personality...</h2>
+          </div>
+        )}
+
+        {stage === 'reveal' && (
+          <div style={stageStyle}>
+            <div style={personaCardStyle}>
+              <h1 style={personaNameStyle}>{persona.name}</h1>
+              <div style={personaBadgeStyle}>
+                {persona.archetype} {persona.rarity && `★ ${persona.rarity}`}
+              </div>
+              <div style={celebrationStyle}>✨ PERSONA REVEALED ✨</div>
+            </div>
+          </div>
+        )}
+
+        {onSkip && stage !== 'reveal' && (
+          <button
+            onClick={onSkip}
+            style={skipButtonStyle}
+            aria-label="Skip animation"
+          >
+            Skip
+          </button>
+        )}
+      </div>
+    </>
   );
 }
-

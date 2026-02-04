@@ -1,6 +1,7 @@
 'use client';
 
-import styles from './TopicSuggestion.module.css';
+import { useState } from 'react';
+import { colors, spacing, radius, typography, transitions, mergeStyles, CSSProperties } from '@/lib/styles';
 
 interface TopicSuggestionProps {
   topics: string[];
@@ -9,36 +10,95 @@ interface TopicSuggestionProps {
   label?: string;
 }
 
+const wrapperStyle: CSSProperties = {
+  display: 'flex',
+  flexDirection: 'column',
+  gap: spacing.sm,
+};
+
+const headerStyle: CSSProperties = {
+  display: 'flex',
+  alignItems: 'center',
+  justifyContent: 'space-between',
+  gap: spacing.md,
+};
+
+const labelStyle: CSSProperties = {
+  fontSize: typography.size.sm,
+  color: colors.textMuted,
+  margin: 0,
+};
+
+const recentStyle: CSSProperties = {
+  fontSize: typography.size.xs,
+  color: colors.textMuted,
+};
+
+const recentTopicStyle: CSSProperties = {
+  color: colors.highlight,
+  marginLeft: spacing.xxs,
+};
+
+const topicListStyle: CSSProperties = {
+  display: 'flex',
+  flexWrap: 'wrap',
+  gap: spacing.xs,
+};
+
+const topicButtonBase: CSSProperties = {
+  padding: `${spacing.xs}px ${spacing.md}px`,
+  fontSize: typography.size.sm,
+  color: colors.textSecondary,
+  background: colors.surface,
+  border: `1px solid ${colors.border}`,
+  borderRadius: radius.pill,
+  cursor: 'pointer',
+  transition: transitions.normal,
+  fontFamily: typography.fontSans,
+};
+
+const topicButtonHover: CSSProperties = {
+  borderColor: colors.highlight,
+  color: colors.text,
+  background: colors.surfaceElevated,
+};
+
 export function TopicSuggestion({
   topics,
   recentTopics = [],
   onSelect,
   label = 'Need inspiration?',
 }: TopicSuggestionProps) {
+  const [hoveredIndex, setHoveredIndex] = useState<number | null>(null);
   const visibleTopics = topics.slice(0, 4);
 
   return (
-    <div className={styles.wrapper} aria-label="Conversation starters">
-      <div className={styles.header}>
-        <p className={styles.label}>{label}</p>
+    <div style={wrapperStyle} aria-label="Conversation starters">
+      <div style={headerStyle}>
+        <p style={labelStyle}>{label}</p>
         {recentTopics.length > 0 && (
-          <span className={styles.recent}>
+          <span style={recentStyle}>
             Recent:{' '}
             {recentTopics.slice(0, 2).map((topic, index) => (
-              <span key={`${topic}-${index}`} className={styles.recentTopic}>
+              <span key={`${topic}-${index}`} style={recentTopicStyle}>
                 {topic}
               </span>
             ))}
           </span>
         )}
       </div>
-      <div className={styles.topicList}>
-        {visibleTopics.map((topic) => (
+      <div style={topicListStyle}>
+        {visibleTopics.map((topic, index) => (
           <button
             key={topic}
             type="button"
-            className={styles.topicButton}
+            style={mergeStyles(
+              topicButtonBase,
+              hoveredIndex === index && topicButtonHover
+            )}
             onClick={() => onSelect(topic)}
+            onMouseEnter={() => setHoveredIndex(index)}
+            onMouseLeave={() => setHoveredIndex(null)}
           >
             {topic}
           </button>
@@ -47,4 +107,3 @@ export function TopicSuggestion({
     </div>
   );
 }
-

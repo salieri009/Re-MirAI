@@ -1,7 +1,7 @@
 'use client';
 
-import React from 'react';
-import styles from './SocialAuthButton.module.css';
+import React, { useState } from 'react';
+import { colors, spacing, radius, typography, transitions, mergeStyles, CSSProperties } from '@/lib/styles';
 
 type AuthProvider = 'google' | 'kakao' | 'apple';
 
@@ -11,6 +11,70 @@ interface SocialAuthButtonProps {
     disabled?: boolean;
     loading?: boolean;
 }
+
+const buttonBase: CSSProperties = {
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center',
+    gap: spacing.sm,
+    width: '100%',
+    padding: `${spacing.md}px ${spacing.lg}px`,
+    borderRadius: radius.lg,
+    border: 'none',
+    cursor: 'pointer',
+    fontSize: typography.size.base,
+    fontWeight: typography.weight.medium,
+    fontFamily: typography.fontSans,
+    transition: transitions.normal,
+};
+
+const providerStyles: Record<AuthProvider, CSSProperties> = {
+    google: {
+        background: '#ffffff',
+        color: '#1f1f1f',
+        border: '1px solid #dadce0',
+    },
+    kakao: {
+        background: '#FEE500',
+        color: '#000000',
+    },
+    apple: {
+        background: '#000000',
+        color: '#ffffff',
+    },
+};
+
+const hoverStyles: Record<AuthProvider, CSSProperties> = {
+    google: { background: '#f8f9fa' },
+    kakao: { background: '#e6cf00' },
+    apple: { background: '#333333' },
+};
+
+const disabledStyle: CSSProperties = {
+    opacity: 0.5,
+    cursor: 'not-allowed',
+};
+
+const iconStyle: CSSProperties = {
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center',
+};
+
+const labelStyleBtn: CSSProperties = {
+    fontSize: typography.size.base,
+};
+
+const spinnerStyle: CSSProperties = {
+    width: 20,
+    height: 20,
+    border: '2px solid currentColor',
+    borderTopColor: 'transparent',
+    borderRadius: '50%',
+    animation: 'spin 1s linear infinite',
+};
+
+const keyframesStyle = `@keyframes spin { to { transform: rotate(360deg); } }`;
 
 const providerConfig = {
     google: {
@@ -23,7 +87,6 @@ const providerConfig = {
                 <path fill="#EA4335" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z" />
             </svg>
         ),
-        className: styles.google,
     },
     kakao: {
         label: 'Continue with Kakao',
@@ -32,7 +95,6 @@ const providerConfig = {
                 <path fill="#000000" d="M12 3C6.48 3 2 6.69 2 11.2c0 2.88 1.86 5.41 4.67 6.87-.15.55-.96 3.53-.99 3.76 0 0-.02.17.09.23.11.07.23.02.23.02.3-.04 3.51-2.32 4.06-2.71.62.09 1.27.14 1.94.14 5.52 0 10-3.69 10-8.2S17.52 3 12 3z" />
             </svg>
         ),
-        className: styles.kakao,
     },
     apple: {
         label: 'Continue with Apple',
@@ -41,7 +103,6 @@ const providerConfig = {
                 <path fill="currentColor" d="M17.05 20.28c-.98.95-2.05.8-3.08.35-1.09-.46-2.09-.48-3.24 0-1.44.62-2.2.44-3.06-.35C2.79 15.25 3.51 7.59 9.05 7.31c1.35.07 2.29.74 3.08.8 1.18-.24 2.31-.93 3.57-.84 1.51.12 2.65.72 3.4 1.8-3.12 1.87-2.38 5.98.48 7.13-.57 1.5-1.31 2.99-2.54 4.09zM12.03 7.25c-.15-2.23 1.66-4.07 3.74-4.25.29 2.58-2.34 4.5-3.74 4.25z" />
             </svg>
         ),
-        className: styles.apple,
     },
 };
 
@@ -57,6 +118,7 @@ export function SocialAuthButton({
     disabled = false,
     loading = false,
 }: SocialAuthButtonProps) {
+    const [isHovered, setIsHovered] = useState(false);
     const config = providerConfig[provider];
     const apiBaseUrl = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3001';
 
@@ -67,25 +129,37 @@ export function SocialAuthButton({
             onClick();
         } else {
             // Default behavior: redirect to OAuth endpoint
-            window.location.href = `${apiBaseUrl}/v1/auth/${provider}`;
+            window.location.href = `${apiBaseUrl}/auth/${provider}`;
         }
     };
 
+    const buttonStyle = mergeStyles(
+        buttonBase,
+        providerStyles[provider],
+        isHovered && !disabled && hoverStyles[provider],
+        disabled && disabledStyle
+    );
+
     return (
-        <button
-            className={`${styles.button} ${config.className} ${disabled ? styles.disabled : ''}`}
-            onClick={handleClick}
-            disabled={disabled || loading}
-            aria-label={config.label}
-        >
-            {loading ? (
-                <span className={styles.spinner}></span>
-            ) : (
-                <>
-                    <span className={styles.icon}>{config.icon}</span>
-                    <span className={styles.label}>{config.label}</span>
-                </>
-            )}
-        </button>
+        <>
+            <style>{keyframesStyle}</style>
+            <button
+                style={buttonStyle}
+                onClick={handleClick}
+                onMouseEnter={() => setIsHovered(true)}
+                onMouseLeave={() => setIsHovered(false)}
+                disabled={disabled || loading}
+                aria-label={config.label}
+            >
+                {loading ? (
+                    <span style={spinnerStyle}></span>
+                ) : (
+                    <>
+                        <span style={iconStyle}>{config.icon}</span>
+                        <span style={labelStyleBtn}>{config.label}</span>
+                    </>
+                )}
+            </button>
+        </>
     );
 }

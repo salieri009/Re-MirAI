@@ -3,12 +3,47 @@
 import { useEffect, useRef } from 'react';
 import { connectionInteractions } from '@/lib/micro-interactions';
 import { useReducedMotion } from '@/hooks/useAccessibility';
-import styles from './TypingIndicator.module.css';
+import { colors, spacing, typography, CSSProperties } from '@/lib/styles';
 
 interface TypingIndicatorProps {
   personaName?: string;
   estimatedTime?: number;
 }
+
+const containerStyle: CSSProperties = {
+  display: 'flex',
+  alignItems: 'center',
+  gap: spacing.sm,
+  padding: `${spacing.sm}px ${spacing.md}px`,
+  background: colors.surface,
+  borderRadius: 16,
+  width: 'fit-content',
+};
+
+const dotsStyle: CSSProperties = {
+  display: 'flex',
+  alignItems: 'center',
+  gap: 4,
+};
+
+const dotStyle: CSSProperties = {
+  width: 8,
+  height: 8,
+  borderRadius: '50%',
+  background: colors.highlight,
+  opacity: 0.6,
+};
+
+const textStyle: CSSProperties = {
+  fontSize: typography.size.sm,
+  color: colors.textMuted,
+};
+
+const timeStyle: CSSProperties = {
+  fontSize: typography.size.xs,
+  color: colors.textMuted,
+  opacity: 0.7,
+};
 
 export function TypingIndicator({ personaName = 'AI', estimatedTime }: TypingIndicatorProps) {
   const containerRef = useRef<HTMLDivElement>(null);
@@ -20,21 +55,20 @@ export function TypingIndicator({ personaName = 'AI', estimatedTime }: TypingInd
   }, [reducedMotion]);
 
   return (
-    <div ref={containerRef} className={styles.container} aria-live="polite" role="status">
-      <div className={styles.dots}>
+    <div ref={containerRef} style={containerStyle} aria-live="polite" role="status">
+      <div style={dotsStyle}>
         {[0, 1, 2].map((i) => (
-          <span key={i} className={`${styles.dot} dot`} />
+          <span key={i} className="dot" style={dotStyle} />
         ))}
       </div>
-      <span className={styles.text}>
+      <span style={textStyle}>
         {personaName} is typing...
       </span>
       {estimatedTime && (
-        <span className={styles.time}>
+        <span style={timeStyle}>
           ~{estimatedTime}s
         </span>
       )}
     </div>
   );
 }
-

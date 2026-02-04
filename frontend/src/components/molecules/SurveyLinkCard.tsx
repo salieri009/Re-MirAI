@@ -5,7 +5,7 @@ import gsap from 'gsap';
 import { Button } from '@/components/atoms/Button';
 import { useReducedMotion } from '@/hooks/useAccessibility';
 import { ShareOptions } from './ShareOptions';
-import styles from './SurveyLinkCard.module.css';
+import { colors, spacing, radius, typography, shadows, mergeStyles, CSSProperties } from '@/lib/styles';
 
 interface SurveyLinkCardProps {
   link: string;
@@ -13,6 +13,84 @@ interface SurveyLinkCardProps {
   shareCount?: number;
   lastShared?: string;
 }
+
+const cardStyle: CSSProperties = {
+  display: 'flex',
+  flexDirection: 'column',
+  gap: spacing.md,
+  padding: spacing.lg,
+  background: colors.surface,
+  borderRadius: radius.xl,
+  border: `1px solid ${colors.border}`,
+  boxShadow: shadows.md,
+};
+
+const headerStyle: CSSProperties = {
+  display: 'flex',
+  alignItems: 'center',
+  justifyContent: 'space-between',
+  gap: spacing.md,
+};
+
+const headerTitleStyle: CSSProperties = {
+  fontSize: typography.size.lg,
+  fontWeight: typography.weight.semiBold,
+  color: colors.text,
+  margin: 0,
+};
+
+const shareCountStyle: CSSProperties = {
+  fontSize: typography.size.xs,
+  color: colors.textMuted,
+};
+
+const linkContainerStyle: CSSProperties = {
+  display: 'flex',
+  gap: spacing.sm,
+};
+
+const linkInputStyle: CSSProperties = {
+  flex: 1,
+  padding: `${spacing.sm}px ${spacing.md}px`,
+  background: colors.background,
+  border: `1px solid ${colors.border}`,
+  borderRadius: radius.md,
+  color: colors.text,
+  fontSize: typography.size.sm,
+  fontFamily: 'monospace',
+};
+
+const actionsStyle: CSSProperties = {
+  display: 'flex',
+  gap: spacing.sm,
+  flexWrap: 'wrap',
+};
+
+const shareSectionStyle: CSSProperties = {
+  paddingTop: spacing.md,
+  borderTop: `1px solid ${colors.border}`,
+};
+
+const qrSectionStyle: CSSProperties = {
+  display: 'flex',
+  flexDirection: 'column',
+  alignItems: 'center',
+  gap: spacing.sm,
+  paddingTop: spacing.md,
+  borderTop: `1px solid ${colors.border}`,
+};
+
+const qrImageStyle: CSSProperties = {
+  maxWidth: 200,
+  borderRadius: radius.md,
+};
+
+const lastSharedStyle: CSSProperties = {
+  fontSize: typography.size.xs,
+  color: colors.textMuted,
+  textAlign: 'center',
+  margin: 0,
+};
 
 export function SurveyLinkCard({ link, onCopy, shareCount, lastShared }: SurveyLinkCardProps) {
   const [copied, setCopied] = useState(false);
@@ -94,33 +172,32 @@ export function SurveyLinkCard({ link, onCopy, shareCount, lastShared }: SurveyL
   };
 
   return (
-    <div ref={cardRef} className={styles.card}>
-      <div className={styles.header}>
-        <h3>🔗 Survey Link</h3>
+    <div ref={cardRef} style={cardStyle}>
+      <div style={headerStyle}>
+        <h3 style={headerTitleStyle}>🔗 Survey Link</h3>
         {shareCount !== undefined && (
-          <span className={styles.shareCount}>Shared {shareCount} times</span>
+          <span style={shareCountStyle}>Shared {shareCount} times</span>
         )}
       </div>
 
-      <div className={styles.linkContainer}>
+      <div style={linkContainerStyle}>
         <input
           type="text"
           value={link}
           readOnly
-          className={styles.linkInput}
+          style={linkInputStyle}
           aria-label="Survey link"
         />
         <Button
           variant="secondary"
           size="sm"
           onClick={handleCopy}
-          className={styles.copyButton}
         >
           {copied ? '✓ Copied!' : '📋 Copy'}
         </Button>
       </div>
 
-      <div className={styles.actions}>
+      <div style={actionsStyle}>
         <Button
           variant="primary"
           onClick={() => setShowShareOptions(!showShareOptions)}
@@ -136,9 +213,7 @@ export function SurveyLinkCard({ link, onCopy, shareCount, lastShared }: SurveyL
       </div>
 
       {showShareOptions && (
-        <div
-          className={`${styles.shareSection} ${styles.shareSectionVisible}`}
-        >
+        <div style={shareSectionStyle}>
           <ShareOptions
             platforms={['whatsapp', 'instagram', 'twitter', 'copy']}
             onShare={handleShare}
@@ -148,8 +223,8 @@ export function SurveyLinkCard({ link, onCopy, shareCount, lastShared }: SurveyL
       )}
 
       {showQR && qrCodeUrl && (
-        <div className={styles.qrSection}>
-          <img src={qrCodeUrl} alt="QR Code for survey" className={styles.qrImage} />
+        <div style={qrSectionStyle}>
+          <img src={qrCodeUrl} alt="QR Code for survey" style={qrImageStyle} />
           <Button variant="ghost" size="sm" onClick={downloadQRCode}>
             💾 Download QR Code
           </Button>
@@ -157,7 +232,7 @@ export function SurveyLinkCard({ link, onCopy, shareCount, lastShared }: SurveyL
       )}
 
       {lastShared && (
-        <p className={styles.lastShared}>Last shared: {new Date(lastShared).toLocaleString()}</p>
+        <p style={lastSharedStyle}>Last shared: {new Date(lastShared).toLocaleString()}</p>
       )}
     </div>
   );

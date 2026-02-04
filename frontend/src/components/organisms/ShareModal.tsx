@@ -4,7 +4,7 @@ import { useEffect, useRef, useState } from 'react';
 import gsap from 'gsap';
 import { ShareOptions } from '@/components/molecules/ShareOptions';
 import { useFocusTrap, useReducedMotion } from '@/hooks/useAccessibility';
-import styles from './ShareModal.module.css';
+import { colors, spacing, radius, typography, shadows, CSSProperties } from '@/lib/styles';
 
 interface Persona {
   id: string;
@@ -17,6 +17,74 @@ interface ShareModalProps {
   onShare: (platform: string, image?: Blob) => void;
   onClose: () => void;
 }
+
+const backdropStyle: CSSProperties = {
+  position: 'fixed',
+  inset: 0,
+  background: 'rgba(0, 0, 0, 0.7)',
+  backdropFilter: 'blur(4px)',
+  display: 'flex',
+  alignItems: 'center',
+  justifyContent: 'center',
+  zIndex: 100,
+};
+
+const modalStyle: CSSProperties = {
+  background: colors.surface,
+  borderRadius: radius.xl,
+  border: `1px solid ${colors.border}`,
+  boxShadow: shadows.xl,
+  maxWidth: 480,
+  width: '90%',
+  maxHeight: '90vh',
+  overflow: 'auto',
+};
+
+const headerStyle: CSSProperties = {
+  display: 'flex',
+  alignItems: 'center',
+  justifyContent: 'space-between',
+  padding: spacing.lg,
+  borderBottom: `1px solid ${colors.border}`,
+};
+
+const headerTitleStyle: CSSProperties = {
+  fontSize: typography.size.xl,
+  fontWeight: typography.weight.bold,
+  color: colors.text,
+  margin: 0,
+};
+
+const closeButtonStyle: CSSProperties = {
+  width: 32,
+  height: 32,
+  display: 'flex',
+  alignItems: 'center',
+  justifyContent: 'center',
+  background: 'transparent',
+  border: 'none',
+  color: colors.textMuted,
+  fontSize: typography.size['2xl'],
+  cursor: 'pointer',
+  borderRadius: radius.sm,
+};
+
+const contentStyle: CSSProperties = {
+  padding: spacing.lg,
+};
+
+const previewStyle: CSSProperties = {
+  marginTop: spacing.lg,
+  display: 'flex',
+  justifyContent: 'center',
+};
+
+const previewImageStyle: CSSProperties = {
+  maxWidth: '100%',
+  maxHeight: 300,
+  borderRadius: radius.md,
+  border: `1px solid ${colors.border}`,
+};
 
 export function ShareModal({ persona, onShare, onClose }: ShareModalProps) {
   const [preview, setPreview] = useState<Blob | null>(null);
@@ -76,23 +144,23 @@ export function ShareModal({ persona, onShare, onClose }: ShareModalProps) {
     // Generate persona card image
     const canvas = document.createElement('canvas');
     const ctx = canvas.getContext('2d');
-    
+
     if (!ctx) return;
 
     const dimensions = getPlatformDimensions(platform);
     canvas.width = dimensions.width;
     canvas.height = dimensions.height;
-    
+
     // Draw background
     ctx.fillStyle = '#f8fafc';
     ctx.fillRect(0, 0, canvas.width, canvas.height);
-    
+
     // Draw persona card
     drawPersonaCard(ctx, persona, dimensions);
-    
+
     // Draw branding
     drawBranding(ctx, dimensions);
-    
+
     canvas.toBlob((blob) => {
       if (blob) {
         setPreview(blob);
@@ -114,26 +182,26 @@ export function ShareModal({ persona, onShare, onClose }: ShareModalProps) {
   return (
     <div
       ref={backdropRef}
-      className={styles.backdrop}
+      style={backdropStyle}
       onClick={handleClose}
       role="presentation"
     >
       <div
         ref={modalRef}
-        className={styles.modal}
+        style={modalStyle}
         role="dialog"
         aria-modal="true"
         aria-label="Share persona card"
         onClick={(event) => event.stopPropagation()}
       >
-        <div className={styles.header}>
-          <h2>Share Your Persona Card</h2>
-          <button onClick={handleClose} className={styles.closeButton} aria-label="Close">
+        <div style={headerStyle}>
+          <h2 style={headerTitleStyle}>Share Your Persona Card</h2>
+          <button onClick={handleClose} style={closeButtonStyle} aria-label="Close">
             ×
           </button>
         </div>
 
-        <div className={styles.content}>
+        <div style={contentStyle}>
           <ShareOptions
             platforms={['instagram', 'twitter', 'tiktok', 'whatsapp', 'copy']}
             onShare={handleShare}
@@ -141,11 +209,11 @@ export function ShareModal({ persona, onShare, onClose }: ShareModalProps) {
           />
 
           {preview && (
-            <div className={styles.preview}>
+            <div style={previewStyle}>
               <img
                 src={URL.createObjectURL(preview)}
                 alt={`${persona.name} persona card preview`}
-                className={styles.previewImage}
+                style={previewImageStyle}
               />
             </div>
           )}
@@ -212,4 +280,3 @@ function drawBranding(
   ctx.textAlign = 'right';
   ctx.fillText('Re:MirAI', x, y);
 }
-

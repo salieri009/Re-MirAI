@@ -2,7 +2,6 @@
 
 import { useState } from 'react';
 import { Button } from '@/components/atoms/Button';
-import styles from './ShareableSnippet.module.css';
 
 interface ChatMessage {
   id: string;
@@ -24,11 +23,11 @@ interface ShareableSnippetProps {
   variant?: 'instagram' | 'twitter' | 'tiktok';
 }
 
-export function ShareableSnippet({ 
-  message, 
-  persona, 
-  onShare, 
-  variant = 'instagram' 
+export function ShareableSnippet({
+  message,
+  persona,
+  onShare,
+  variant = 'instagram'
 }: ShareableSnippetProps) {
   const [isGenerating, setIsGenerating] = useState(false);
 
@@ -37,27 +36,27 @@ export function ShareableSnippet({
     try {
       const canvas = document.createElement('canvas');
       const ctx = canvas.getContext('2d');
-      
+
       if (!ctx) return;
 
       // Set canvas size based on platform
       const dimensions = getPlatformDimensions(variant);
       canvas.width = dimensions.width;
       canvas.height = dimensions.height;
-      
+
       // Draw background
       ctx.fillStyle = '#f8fafc';
       ctx.fillRect(0, 0, canvas.width, canvas.height);
-      
+
       // Draw message bubble
       drawMessageBubble(ctx, message, dimensions);
-      
+
       // Draw persona info
       drawPersonaInfo(ctx, persona, dimensions);
-      
+
       // Draw branding
       drawBranding(ctx, dimensions);
-      
+
       // Convert to blob
       canvas.toBlob((blob) => {
         if (blob) {
@@ -77,7 +76,6 @@ export function ShareableSnippet({
       size="sm"
       onClick={generateImage}
       disabled={isGenerating}
-      className={styles.shareButton}
       aria-label="Share this message"
     >
       {isGenerating ? 'Generating...' : '📤 Share'}
@@ -123,20 +121,20 @@ function drawMessageBubble(
   ctx.font = '24px Inter, sans-serif';
   ctx.textAlign = 'left';
   ctx.textBaseline = 'top';
-  
+
   const textX = x + 20;
   const textY = y + 20;
   const maxWidth = bubbleWidth - 40;
-  
+
   // Word wrap
   const words = message.content.split(' ');
   let line = '';
   let lineY = textY;
-  
+
   for (let i = 0; i < words.length; i++) {
     const testLine = line + words[i] + ' ';
     const metrics = ctx.measureText(testLine);
-    
+
     if (metrics.width > maxWidth && i > 0) {
       ctx.fillText(line, textX, lineY);
       line = words[i] + ' ';
@@ -182,4 +180,3 @@ function drawBranding(
   ctx.textAlign = 'right';
   ctx.fillText('Re:MirAI', x, y);
 }
-

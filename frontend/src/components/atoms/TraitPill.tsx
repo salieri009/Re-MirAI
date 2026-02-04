@@ -1,40 +1,85 @@
-import React from 'react';
+'use client';
+
+import React, { useState } from 'react';
+import { colors, spacing, radius, typography, transitions, mergeStyles, CSSProperties } from '@/lib/styles';
 
 interface TraitPillProps {
     trait: string;
     value?: number | string;
     variant?: 'neutral' | 'accent' | 'highlight';
-    className?: string;
+    style?: CSSProperties;
 }
+
+const baseStyle: CSSProperties = {
+    display: 'inline-flex',
+    alignItems: 'center',
+    gap: spacing.xs,
+    padding: `${spacing.xxs}px ${spacing.sm}px`,
+    borderRadius: radius.md,
+    fontSize: typography.size.sm,
+    fontWeight: typography.weight.medium,
+    border: '1px solid',
+    backdropFilter: 'blur(4px)',
+    WebkitBackdropFilter: 'blur(4px)',
+    transition: transitions.normal,
+};
+
+const variantStyles: Record<'neutral' | 'accent' | 'highlight', CSSProperties> = {
+    neutral: {
+        background: 'rgba(255, 255, 255, 0.05)',
+        color: colors.textSecondary,
+        borderColor: 'rgba(255, 255, 255, 0.1)',
+    },
+    accent: {
+        background: `${colors.accent}15`,
+        color: colors.accent,
+        borderColor: `${colors.accent}30`,
+    },
+    highlight: {
+        background: `${colors.highlight}15`,
+        color: colors.highlight,
+        borderColor: `${colors.highlight}30`,
+    },
+};
+
+const hoverStyle: CSSProperties = {
+    background: 'rgba(255, 255, 255, 0.1)',
+};
+
+const dotStyle: CSSProperties = {
+    width: 4,
+    height: 4,
+    borderRadius: radius.pill,
+    background: 'currentColor',
+    opacity: 0.5,
+};
 
 export function TraitPill({
     trait,
     value,
     variant = 'neutral',
-    className = ''
+    style,
 }: TraitPillProps) {
-    const variantClasses = {
-        neutral: 'bg-white/5 text-text-secondary border-white/10',
-        accent: 'bg-accent/10 text-accent border-accent/20',
-        highlight: 'bg-highlight/10 text-highlight border-highlight/20',
-    };
+    const [isHovered, setIsHovered] = useState(false);
+
+    const combinedStyle = mergeStyles(
+        baseStyle,
+        variantStyles[variant],
+        isHovered && hoverStyle,
+        style
+    );
 
     return (
         <div
-            className={`
-        inline-flex items-center gap-2
-        px-3 py-1 rounded-md text-sm font-medium
-        border backdrop-blur-sm
-        transition-all duration-200 hover:bg-white/10
-        ${variantClasses[variant]}
-        ${className}
-      `}
+            style={combinedStyle}
+            onMouseEnter={() => setIsHovered(true)}
+            onMouseLeave={() => setIsHovered(false)}
         >
             <span>{trait}</span>
             {value && (
                 <>
-                    <span className="w-1 h-1 rounded-full bg-current opacity-50" />
-                    <span className="opacity-90">{value}</span>
+                    <span style={dotStyle} />
+                    <span style={{ opacity: 0.9 }}>{value}</span>
                 </>
             )}
         </div>

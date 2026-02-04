@@ -4,13 +4,77 @@ import { useEffect, useRef } from 'react';
 import gsap from 'gsap';
 import { MirrorCanvas } from '@/components/organisms/MirrorCanvas/MirrorCanvas';
 import { TraitPill } from '@/components/atoms/TraitPill';
-import styles from './LivePreview.module.css';
+import { colors, spacing, radius, typography, shadows, CSSProperties } from '@/lib/styles';
 
 interface LivePreviewProps {
     answersCount: number;
     lastAnswer?: number;
     isAnalyzing?: boolean;
 }
+
+const containerStyle: CSSProperties = {
+    position: 'relative',
+    borderRadius: radius.xl,
+    overflow: 'hidden',
+    background: colors.surface,
+    border: `1px solid ${colors.border}`,
+    boxShadow: shadows.lg,
+};
+
+const canvasWrapperStyle: CSSProperties = {
+    position: 'relative',
+    width: '100%',
+    height: 300,
+};
+
+const overlayStyle: CSSProperties = {
+    position: 'absolute',
+    inset: 0,
+    display: 'flex',
+    flexDirection: 'column',
+    padding: spacing.lg,
+    pointerEvents: 'none',
+};
+
+const headerStyle: CSSProperties = {
+    display: 'flex',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    marginBottom: spacing.md,
+};
+
+const titleStyle: CSSProperties = {
+    fontSize: typography.size.lg,
+    fontWeight: typography.weight.semiBold,
+    color: colors.text,
+    margin: 0,
+};
+
+const statusStyle: CSSProperties = {
+    fontSize: typography.size.sm,
+    color: colors.textMuted,
+};
+
+const traitsGridStyle: CSSProperties = {
+    display: 'flex',
+    flexWrap: 'wrap',
+    gap: spacing.sm,
+    marginTop: 'auto',
+};
+
+const traitWrapperStyle: CSSProperties = {
+    pointerEvents: 'auto',
+};
+
+const emptyStateStyle: CSSProperties = {
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center',
+    flex: 1,
+    fontSize: typography.size.sm,
+    color: colors.textMuted,
+    fontStyle: 'italic',
+};
 
 export function LivePreview({ answersCount, lastAnswer, isAnalyzing }: LivePreviewProps) {
     const containerRef = useRef<HTMLDivElement>(null);
@@ -52,8 +116,8 @@ export function LivePreview({ answersCount, lastAnswer, isAnalyzing }: LivePrevi
     }, [answersCount]);
 
     return (
-        <div ref={containerRef} className={styles.container}>
-            <div className={styles.canvasWrapper}>
+        <div ref={containerRef} style={containerStyle}>
+            <div style={canvasWrapperStyle}>
                 <MirrorCanvas
                     variant="mirror"
                     intensity={0.5 + (answersCount * 0.05)}
@@ -61,28 +125,27 @@ export function LivePreview({ answersCount, lastAnswer, isAnalyzing }: LivePrevi
                 />
             </div>
 
-            <div className={styles.overlay}>
-                <div className={styles.header}>
-                    <h3 className={styles.title}>Digital Mirror</h3>
-                    <span className={styles.status}>
+            <div style={overlayStyle}>
+                <div style={headerStyle}>
+                    <h3 style={titleStyle}>Digital Mirror</h3>
+                    <span style={statusStyle}>
                         {isAnalyzing ? 'Analyzing resonance...' : 'Waiting for input...'}
                     </span>
                 </div>
 
-                <div ref={traitsRef} className={styles.traitsGrid}>
+                <div ref={traitsRef} style={traitsGridStyle}>
                     {Array.from({ length: answersCount }).map((_, i) => (
-                        <div key={i} className={styles.traitWrapper}>
+                        <div key={i} style={traitWrapperStyle}>
                             <TraitPill
                                 trait={getTraitForAnswer(i)}
                                 variant="accent"
-                                className="shadow-lg"
                             />
                         </div>
                     ))}
                 </div>
 
                 {answersCount === 0 && (
-                    <div className={styles.emptyState}>
+                    <div style={emptyStateStyle}>
                         <p>Answer questions to reveal your reflection</p>
                     </div>
                 )}

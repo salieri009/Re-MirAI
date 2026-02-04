@@ -6,7 +6,7 @@ import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import { useRouter } from 'next/navigation';
 import { Button } from '@/components/atoms/Button';
 import { useReducedMotion } from '@/hooks/useAccessibility';
-import styles from './FeatureShowcase.module.css';
+import { colors, spacing, radius, typography, shadows, CSSProperties } from '@/lib/styles';
 
 // Register ScrollTrigger plugin
 let isScrollTriggerRegistered = false;
@@ -24,43 +24,146 @@ interface Step {
 }
 
 const steps: Step[] = [
-    {
-        number: 1,
-        title: 'Launch the Link',
-        description: 'One tap. Your ritual survey is live.',
-        icon: '🔗',
-    },
-    {
-        number: 2,
-        title: 'Collect Echoes',
-        description: 'Friends drop anonymous notes in under 2 min.',
-        icon: '🗳️',
-    },
-    {
-        number: 3,
-        title: 'Summon the Persona',
-        description: 'AI weaves the echoes into an anime twin.',
-        icon: '✨',
-    },
+    { number: 1, title: 'Launch the Link', description: 'One tap. Your ritual survey is live.', icon: '🔗' },
+    { number: 2, title: 'Collect Echoes', description: 'Friends drop anonymous notes in under 2 min.', icon: '🗳️' },
+    { number: 3, title: 'Summon the Persona', description: 'AI weaves the echoes into an anime twin.', icon: '✨' },
 ];
 
 const trustBadges = [
-    {
-        title: 'Privacy First',
-        description: 'Only you see the echoes.',
-        icon: '🛡️'
-    },
-    {
-        title: '1-Minute Setup',
-        description: 'Link, copy, share. Done.',
-        icon: '⚡'
-    },
-    {
-        title: 'Guided Journey',
-        description: 'Dashboard tracks the summon bar.',
-        icon: '🧭'
-    }
+    { title: 'Privacy First', description: 'Only you see the echoes.', icon: '🛡️' },
+    { title: '1-Minute Setup', description: 'Link, copy, share. Done.', icon: '⚡' },
+    { title: 'Guided Journey', description: 'Dashboard tracks the summon bar.', icon: '🧭' }
 ];
+
+const showcaseStyle: CSSProperties = {
+    padding: `${spacing.xxl * 2}px ${spacing.xl}px`,
+    background: colors.background,
+};
+
+const containerStyle: CSSProperties = {
+    maxWidth: 1200,
+    margin: '0 auto',
+};
+
+const kickerStyle: CSSProperties = {
+    fontSize: typography.size.sm,
+    color: colors.accent,
+    textTransform: 'uppercase',
+    letterSpacing: '0.1em',
+    textAlign: 'center',
+    marginBottom: spacing.sm,
+};
+
+const headingStyle: CSSProperties = {
+    fontSize: typography.size['3xl'],
+    fontWeight: typography.weight.bold,
+    color: colors.text,
+    textAlign: 'center',
+    marginBottom: spacing.sm,
+};
+
+const subheadingStyle: CSSProperties = {
+    fontSize: typography.size.lg,
+    color: colors.textMuted,
+    textAlign: 'center',
+    marginBottom: spacing.xxl,
+};
+
+const stepsContainerStyle: CSSProperties = {
+    display: 'grid',
+    gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))',
+    gap: spacing.lg,
+    marginBottom: spacing.xxl,
+};
+
+const stepStyle: CSSProperties = {
+    display: 'flex',
+    flexDirection: 'column',
+    alignItems: 'center',
+    textAlign: 'center',
+    padding: spacing.xl,
+    background: colors.surface,
+    borderRadius: radius.xl,
+    border: `1px solid ${colors.border}`,
+    boxShadow: shadows.md,
+};
+
+const stepIconStyle: CSSProperties = {
+    fontSize: 48,
+    marginBottom: spacing.md,
+};
+
+const stepNumberStyle: CSSProperties = {
+    width: 32,
+    height: 32,
+    borderRadius: '50%',
+    background: colors.primary,
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center',
+    fontSize: typography.size.sm,
+    fontWeight: typography.weight.bold,
+    color: colors.text,
+    marginBottom: spacing.md,
+};
+
+const stepTitleStyle: CSSProperties = {
+    fontSize: typography.size.xl,
+    fontWeight: typography.weight.semiBold,
+    color: colors.text,
+    marginBottom: spacing.sm,
+};
+
+const stepDescriptionStyle: CSSProperties = {
+    fontSize: typography.size.base,
+    color: colors.textMuted,
+};
+
+const trustSectionStyle: CSSProperties = {
+    marginBottom: spacing.xxl,
+};
+
+const trustHeaderStyle: CSSProperties = {
+    textAlign: 'center',
+    marginBottom: spacing.lg,
+};
+
+const trustGridStyle: CSSProperties = {
+    display: 'grid',
+    gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))',
+    gap: spacing.md,
+};
+
+const trustCardStyle: CSSProperties = {
+    display: 'flex',
+    alignItems: 'center',
+    gap: spacing.md,
+    padding: spacing.md,
+    background: colors.surface,
+    borderRadius: radius.lg,
+    border: `1px solid ${colors.border}`,
+};
+
+const trustIconStyle: CSSProperties = {
+    fontSize: 32,
+};
+
+const trustTitleStyle: CSSProperties = {
+    fontSize: typography.size.base,
+    fontWeight: typography.weight.medium,
+    color: colors.text,
+    marginBottom: spacing.xxs,
+};
+
+const trustDescriptionStyle: CSSProperties = {
+    fontSize: typography.size.sm,
+    color: colors.textMuted,
+};
+
+const ctaRowStyle: CSSProperties = {
+    display: 'flex',
+    justifyContent: 'center',
+};
 
 export function FeatureShowcase() {
     const sectionRef = useRef<HTMLElement>(null);
@@ -70,7 +173,7 @@ export function FeatureShowcase() {
     useEffect(() => {
         if (reducedMotion || !sectionRef.current) return;
 
-        const stepElements = sectionRef.current.querySelectorAll(`.${styles.step}`);
+        const stepElements = sectionRef.current.querySelectorAll('[data-step]');
 
         gsap.from(stepElements, {
             scrollTrigger: {
@@ -85,53 +188,52 @@ export function FeatureShowcase() {
             ease: 'power2.out',
         });
 
-        // Cleanup
         return () => {
             ScrollTrigger.getAll().forEach(trigger => trigger.kill());
         };
     }, [reducedMotion]);
 
     return (
-        <section ref={sectionRef} className={styles.showcase}>
-            <div className={styles.container}>
-                <p className={styles.kicker}>How It Works</p>
-                <h2 className={styles.heading}>3 Steps. Zero Filler.</h2>
-                <p className={styles.subheading}>
+        <section ref={sectionRef} style={showcaseStyle}>
+            <div style={containerStyle}>
+                <p style={kickerStyle}>How It Works</p>
+                <h2 style={headingStyle}>3 Steps. Zero Filler.</h2>
+                <p style={subheadingStyle}>
                     Short flow built for anime-style reveals. Tap, collect, summon.
                 </p>
 
-                <div className={styles.steps}>
+                <div style={stepsContainerStyle}>
                     {steps.map((step) => (
-                        <div key={step.number} className={styles.step}>
-                            <div className={styles.stepIcon}>{step.icon}</div>
-                            <div className={styles.stepNumber}>
+                        <div key={step.number} style={stepStyle} data-step>
+                            <div style={stepIconStyle}>{step.icon}</div>
+                            <div style={stepNumberStyle}>
                                 <span>{step.number}</span>
                             </div>
-                            <h3 className={styles.stepTitle}>{step.title}</h3>
-                            <p className={styles.stepDescription}>{step.description}</p>
+                            <h3 style={stepTitleStyle}>{step.title}</h3>
+                            <p style={stepDescriptionStyle}>{step.description}</p>
                         </div>
                     ))}
                 </div>
 
-                <div className={styles.trustSection}>
-                    <div className={styles.trustHeader}>
-                        <h3>Fast. Private. Otaku-friendly.</h3>
-                        <p>Clear UX, short copy, WCAG-safe.</p>
+                <div style={trustSectionStyle}>
+                    <div style={trustHeaderStyle}>
+                        <h3 style={headingStyle}>Fast. Private. Otaku-friendly.</h3>
+                        <p style={subheadingStyle}>Clear UX, short copy, WCAG-safe.</p>
                     </div>
-                    <div className={styles.trustGrid}>
+                    <div style={trustGridStyle}>
                         {trustBadges.map((badge) => (
-                            <div key={badge.title} className={styles.trustCard}>
-                                <div className={styles.trustIcon}>{badge.icon}</div>
+                            <div key={badge.title} style={trustCardStyle}>
+                                <div style={trustIconStyle}>{badge.icon}</div>
                                 <div>
-                                    <p className={styles.trustTitle}>{badge.title}</p>
-                                    <p className={styles.trustDescription}>{badge.description}</p>
+                                    <p style={trustTitleStyle}>{badge.title}</p>
+                                    <p style={trustDescriptionStyle}>{badge.description}</p>
                                 </div>
                             </div>
                         ))}
                     </div>
                 </div>
 
-                <div className={styles.ctaRow}>
+                <div style={ctaRowStyle}>
                     <Button variant="primary" size="lg" onClick={() => router.push('/login')}>
                         Create Your AI Mirror (Free)
                     </Button>

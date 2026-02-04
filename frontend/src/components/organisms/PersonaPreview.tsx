@@ -3,11 +3,108 @@
 import { useEffect, useRef } from 'react';
 import gsap from 'gsap';
 import { useReducedMotion } from '@/hooks/useAccessibility';
-import styles from './PersonaPreview.module.css';
+import { colors, spacing, radius, typography, shadows, CSSProperties } from '@/lib/styles';
 
 interface PersonaPreviewProps {
   isVisible: boolean;
 }
+
+const previewContainerStyle: CSSProperties = {
+  display: 'flex',
+  justifyContent: 'center',
+  alignItems: 'center',
+  padding: spacing.xl,
+};
+
+const cardStyle: CSSProperties = {
+  width: 320,
+  background: colors.surface,
+  borderRadius: radius.xl,
+  border: `1px solid ${colors.border}`,
+  boxShadow: shadows.xl,
+  overflow: 'hidden',
+};
+
+const headerStyleCard: CSSProperties = {
+  display: 'flex',
+  justifyContent: 'space-between',
+  alignItems: 'center',
+  padding: spacing.lg,
+  borderBottom: `1px solid ${colors.border}`,
+};
+
+const nameStyle: CSSProperties = {
+  fontSize: typography.size.xl,
+  fontWeight: typography.weight.bold,
+  color: colors.text,
+  margin: 0,
+};
+
+const badgeStyle: CSSProperties = {
+  fontSize: typography.size.sm,
+  color: colors.accent,
+  background: `${colors.accent}20`,
+  padding: `${spacing.xxs}px ${spacing.sm}px`,
+  borderRadius: radius.sm,
+};
+
+const visualStyle: CSSProperties = {
+  display: 'flex',
+  alignItems: 'center',
+  justifyContent: 'center',
+  fontSize: 80,
+  padding: spacing.xl,
+  background: `linear-gradient(135deg, ${colors.primary}20, ${colors.accent}20)`,
+};
+
+const statsStyle: CSSProperties = {
+  padding: spacing.lg,
+  display: 'flex',
+  flexDirection: 'column',
+  gap: spacing.sm,
+};
+
+const statRowStyle: CSSProperties = {
+  display: 'flex',
+  alignItems: 'center',
+  gap: spacing.sm,
+};
+
+const statLabelStyle: CSSProperties = {
+  fontSize: typography.size.sm,
+  color: colors.textSecondary,
+  width: 80,
+};
+
+const statBarStyle: CSSProperties = {
+  flex: 1,
+  height: 8,
+  background: colors.border,
+  borderRadius: radius.full,
+  overflow: 'hidden',
+};
+
+const statFillStyle: CSSProperties = {
+  height: '100%',
+  background: `linear-gradient(90deg, ${colors.primary}, ${colors.accent})`,
+  borderRadius: radius.full,
+  width: 0,
+};
+
+const footerStyleCard: CSSProperties = {
+  padding: spacing.lg,
+  borderTop: `1px solid ${colors.border}`,
+  textAlign: 'center',
+  fontSize: typography.size.sm,
+  color: colors.textMuted,
+  fontStyle: 'italic',
+};
+
+const stats = [
+  { label: 'Charisma', value: 85 },
+  { label: 'Intellect', value: 92 },
+  { label: 'Empathy', value: 78 },
+];
 
 export function PersonaPreview({ isVisible }: PersonaPreviewProps) {
   const containerRef = useRef<HTMLDivElement>(null);
@@ -30,27 +127,16 @@ export function PersonaPreview({ isVisible }: PersonaPreviewProps) {
         { scale: 1, opacity: 1, y: 0, duration: 0.8 }
       );
 
-      // Staggered element reveal
-      timeline.from(`.${styles.name}`, { opacity: 0, y: 20, duration: 0.4 }, '-=0.4');
-      timeline.from(`.${styles.badge}`, { opacity: 0, scale: 0, duration: 0.4 }, '-=0.3');
-      timeline.from(`.${styles.visual}`, { opacity: 0, scale: 0.5, rotation: -180, duration: 0.6 }, '-=0.3');
-      
-      // Stats animation
-      timeline.from(`.${styles.statRow}`, { 
-        opacity: 0, 
-        x: -20, 
-        stagger: 0.1, 
-        duration: 0.4,
-        ease: 'power2.out'
-      }, '-=0.2');
-
       // Fill stat bars
-      timeline.to(`.${styles.statFill}`, {
-        width: (i, target) => target.dataset.value + '%',
-        duration: 1,
-        ease: 'power2.out',
-        stagger: 0.2
-      }, '-=0.2');
+      const statFills = containerRef.current?.querySelectorAll('[data-stat-fill]');
+      statFills?.forEach((fill, i) => {
+        const value = stats[i]?.value || 0;
+        timeline.to(fill, {
+          width: `${value}%`,
+          duration: 1,
+          ease: 'power2.out',
+        }, i === 0 ? '-=0.4' : '-=0.8');
+      });
 
     }, containerRef);
 
@@ -60,39 +146,29 @@ export function PersonaPreview({ isVisible }: PersonaPreviewProps) {
   if (!isVisible) return null;
 
   return (
-    <div ref={containerRef} className={styles.previewContainer}>
-      <div className={styles.card}>
-        <div className={styles.header}>
-          <h3 className={styles.name}>The Mystic</h3>
-          <span className={styles.badge}>SSR ★★★</span>
+    <div ref={containerRef} style={previewContainerStyle}>
+      <div style={cardStyle}>
+        <div style={headerStyleCard}>
+          <h3 style={nameStyle}>The Mystic</h3>
+          <span style={badgeStyle}>SSR ★★★</span>
         </div>
 
-        <div className={styles.visual}>
+        <div style={visualStyle}>
           🔮
         </div>
 
-        <div className={styles.stats}>
-          <div className={styles.statRow}>
-            <span>Charisma</span>
-            <div className={styles.statBar}>
-              <div className={styles.statFill} data-value="85" />
+        <div style={statsStyle}>
+          {stats.map((stat) => (
+            <div key={stat.label} style={statRowStyle}>
+              <span style={statLabelStyle}>{stat.label}</span>
+              <div style={statBarStyle}>
+                <div style={statFillStyle} data-stat-fill data-value={stat.value} />
+              </div>
             </div>
-          </div>
-          <div className={styles.statRow}>
-            <span>Intellect</span>
-            <div className={styles.statBar}>
-              <div className={styles.statFill} data-value="92" />
-            </div>
-          </div>
-          <div className={styles.statRow}>
-            <span>Empathy</span>
-            <div className={styles.statBar}>
-              <div className={styles.statFill} data-value="78" />
-            </div>
-          </div>
+          ))}
         </div>
 
-        <div className={styles.footer}>
+        <div style={footerStyleCard}>
           This could be you...
         </div>
       </div>

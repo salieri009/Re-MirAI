@@ -3,14 +3,14 @@
 import { useState } from 'react';
 import { Button } from '@/components/atoms/Button';
 import { Input } from '@/components/atoms/Input';
-import styles from './WaitlistForm.module.css';
 
 interface WaitlistFormProps {
     campaign: string;
     source?: string;
+    className?: string;
 }
 
-export function WaitlistForm({ campaign, source = 'landing' }: WaitlistFormProps) {
+export function WaitlistForm({ campaign, source = 'landing', className = '' }: WaitlistFormProps) {
     const [email, setEmail] = useState('');
     const [submitted, setSubmitted] = useState(false);
     const [loading, setLoading] = useState(false);
@@ -40,9 +40,9 @@ export function WaitlistForm({ campaign, source = 'landing' }: WaitlistFormProps
 
     if (submitted) {
         return (
-            <div className="bg-primary/10 border border-primary/20 rounded-xl p-6 text-center animate-fade-in">
-                <h3 className="text-xl font-bold text-primary mb-2">🎉 You're on the list!</h3>
-                <p className="text-text-secondary mb-4">Share with friends to unlock early access:</p>
+            <div className={`bg-primary/10 border border-primary/20 rounded-xl p-4 text-center animate-fade-in ${className}`}>
+                <h3 className="text-lg font-bold text-primary mb-1">🎉 You're on the list!</h3>
+                <p className="text-text-secondary text-sm mb-3">Share with friends to check your bond:</p>
                 <Button
                     onClick={() => {
                         const referralCode = `re-mirai-${email.split('@')[0]}`;
@@ -51,37 +51,32 @@ export function WaitlistForm({ campaign, source = 'landing' }: WaitlistFormProps
                         alert('Referral link copied!');
                     }}
                     variant="ghost"
-                    className="w-full"
+                    className="w-full text-sm h-9"
                 >
-                    Copy Your Referral Link
+                    Copy Referral Link
                 </Button>
             </div>
         );
     }
 
     return (
-        <form onSubmit={handleSubmit} className="w-full max-w-md mx-auto">
-            <div className="flex flex-col sm:flex-row gap-3">
-                <Input
-                    type="email"
-                    value={email}
-                    onChange={(e) => setEmail(e.target.value)}
-                    placeholder="your@email.com"
-                    required
-                    aria-label="Email address"
-                    className="flex-1 bg-white/5 border-white/10 focus:border-primary"
-                />
-                <Button
-                    type="submit"
-                    disabled={loading || !email}
-                    className="bg-primary hover:bg-primary-light text-white font-bold whitespace-nowrap"
-                >
-                    {loading ? 'Joining...' : 'Join Waitlist'}
-                </Button>
-            </div>
-            <p className="text-xs text-text-muted mt-3 text-center">
-                🔒 Your email stays private. Unsubscribe anytime.
-            </p>
+        <form onSubmit={handleSubmit} className={`w-full max-w-[480px] flex gap-2 ${className}`}>
+            <Input
+                type="email"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                placeholder="Enter email to start..."
+                required
+                aria-label="Email address"
+                className="flex-1 h-10 sm:h-12 bg-white/5 border-white/10 focus:border-primary text-white placeholder:text-white/40"
+            />
+            <Button
+                type="submit"
+                disabled={loading || !email}
+                className="h-10 sm:h-12 px-6 bg-accent hover:bg-accent-light text-background-dark font-bold whitespace-nowrap transition-all shadow-[0_0_20px_rgba(0,201,167,0.3)] hover:shadow-[0_0_30px_rgba(0,201,167,0.5)]"
+            >
+                {loading ? '...' : 'Start Discovery'}
+            </Button>
         </form>
     );
 }

@@ -3,7 +3,7 @@
 import { useEffect, useRef } from 'react';
 import gsap from 'gsap';
 import { useReducedMotion } from '@/hooks/useAccessibility';
-import styles from './RitualTimeline.module.css';
+import { colors, spacing, radius, typography, mergeStyles, CSSProperties } from '@/lib/styles';
 
 interface TimelineStage {
     id: string;
@@ -18,6 +18,98 @@ interface RitualTimelineProps {
     stages: TimelineStage[];
 }
 
+const timelineStyle: CSSProperties = {
+    display: 'flex',
+    gap: spacing.lg,
+    position: 'relative',
+    padding: spacing.md,
+};
+
+const timelineTrackStyle: CSSProperties = {
+    position: 'absolute',
+    left: 20,
+    top: 0,
+    bottom: 0,
+    width: 4,
+    background: colors.border,
+    borderRadius: radius.full,
+};
+
+const timelineProgressStyle: CSSProperties = {
+    width: '100%',
+    background: `linear-gradient(to bottom, ${colors.primary}, ${colors.accent})`,
+    borderRadius: radius.full,
+    height: 0,
+};
+
+const stagesStyle: CSSProperties = {
+    display: 'flex',
+    flexDirection: 'column',
+    gap: spacing.lg,
+    marginLeft: 40,
+};
+
+const stageBase: CSSProperties = {
+    display: 'flex',
+    alignItems: 'flex-start',
+    gap: spacing.md,
+    opacity: 0,
+    transform: 'translateX(-20px)',
+};
+
+const stageMarkerBase: CSSProperties = {
+    width: 40,
+    height: 40,
+    borderRadius: '50%',
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center',
+    fontSize: typography.size.lg,
+    flexShrink: 0,
+    marginLeft: -60,
+    background: colors.surface,
+    border: `2px solid ${colors.border}`,
+};
+
+const markerCompleted: CSSProperties = {
+    background: colors.primary,
+    borderColor: colors.primary,
+    color: colors.text,
+};
+
+const markerActive: CSSProperties = {
+    borderColor: colors.accent,
+    boxShadow: `0 0 10px ${colors.accent}40`,
+};
+
+const stageContentStyle: CSSProperties = {
+    display: 'flex',
+    flexDirection: 'column',
+    gap: spacing.xxs,
+};
+
+const stageNameStyle: CSSProperties = {
+    fontSize: typography.size.lg,
+    fontWeight: typography.weight.semiBold,
+    color: colors.text,
+    margin: 0,
+};
+
+const stageDescriptionStyle: CSSProperties = {
+    fontSize: typography.size.sm,
+    color: colors.textMuted,
+    margin: 0,
+};
+
+const stageTimestampStyle: CSSProperties = {
+    display: 'flex',
+    alignItems: 'center',
+    gap: spacing.xs,
+    fontSize: typography.size.xs,
+    color: colors.textSecondary,
+    marginTop: spacing.xs,
+};
+
 export function RitualTimeline({ stages }: RitualTimelineProps) {
     const timelineRef = useRef<HTMLDivElement>(null);
     const progressRef = useRef<HTMLDivElement>(null);
@@ -26,7 +118,7 @@ export function RitualTimeline({ stages }: RitualTimelineProps) {
     useEffect(() => {
         if (reducedMotion || !timelineRef.current) return;
 
-        const stageElements = timelineRef.current.querySelectorAll(`.${styles.stage}`);
+        const stageElements = timelineRef.current.querySelectorAll('[data-stage]');
         const completedCount = stages.filter(s => s.status === 'completed').length;
         const progressPercentage = (completedCount / stages.length) * 100;
 
@@ -50,26 +142,31 @@ export function RitualTimeline({ stages }: RitualTimelineProps) {
     }, [reducedMotion, stages]);
 
     return (
-        <div ref={timelineRef} className={styles.timeline}>
-            <div className={styles.timelineTrack}>
-                <div ref={progressRef} className={styles.timelineProgress} />
+        <div ref={timelineRef} style={timelineStyle}>
+            <div style={timelineTrackStyle}>
+                <div ref={progressRef} style={timelineProgressStyle} />
             </div>
 
-            <div className={styles.stages}>
+            <div style={stagesStyle}>
                 {stages.map((stage) => (
                     <div
                         key={stage.id}
-                        className={`${styles.stage} ${styles[stage.status]}`}
+                        style={stageBase}
+                        data-stage
                     >
-                        <div className={styles.stageMarker}>
+                        <div style={mergeStyles(
+                            stageMarkerBase,
+                            stage.status === 'completed' && markerCompleted,
+                            stage.status === 'active' && markerActive
+                        )}>
                             {stage.status === 'completed' ? '✓' : stage.icon}
                         </div>
 
-                        <div className={styles.stageContent}>
-                            <h3 className={styles.stageName}>{stage.name}</h3>
-                            <p className={styles.stageDescription}>{stage.description}</p>
+                        <div style={stageContentStyle}>
+                            <h3 style={stageNameStyle}>{stage.name}</h3>
+                            <p style={stageDescriptionStyle}>{stage.description}</p>
                             {stage.timestamp && (
-                                <div className={styles.stageTimestamp}>
+                                <div style={stageTimestampStyle}>
                                     <span>🕐</span>
                                     <span>{new Date(stage.timestamp).toLocaleString()}</span>
                                 </div>

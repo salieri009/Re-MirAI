@@ -3,7 +3,7 @@
 import { useEffect, useRef, useState } from 'react';
 import gsap from 'gsap';
 import { useReducedMotion } from '@/hooks/useAccessibility';
-import styles from './PersonaRadarChart.module.css';
+import { colors, spacing, radius, typography, CSSProperties } from '@/lib/styles';
 
 interface PersonaStats {
     charisma: number;
@@ -17,6 +17,62 @@ interface PersonaRadarChartProps {
     stats: PersonaStats;
 }
 
+const containerStyle: CSSProperties = {
+    position: 'relative',
+    width: '100%',
+    maxWidth: 300,
+    aspectRatio: '1',
+};
+
+const chartSvgStyle: CSSProperties = {
+    width: '100%',
+    height: '100%',
+};
+
+const webBackgroundStyle: CSSProperties = {
+    fill: 'none',
+    stroke: colors.border,
+    strokeWidth: 1,
+};
+
+const axisStyle: CSSProperties = {
+    stroke: colors.border,
+    strokeWidth: 1,
+};
+
+const dataPolygonStyle: CSSProperties = {
+    fill: `${colors.primary}40`,
+    stroke: colors.primary,
+    strokeWidth: 2,
+};
+
+const pointStyle: CSSProperties = {
+    fill: colors.primary,
+    cursor: 'pointer',
+    transition: 'r 0.2s ease',
+};
+
+const labelStyle: CSSProperties = {
+    fontSize: 12,
+    fill: colors.textMuted,
+    textAnchor: 'middle',
+    textTransform: 'capitalize',
+};
+
+const tooltipStyle: CSSProperties = {
+    position: 'absolute',
+    transform: 'translate(-50%, -120%)',
+    padding: `${spacing.xs}px ${spacing.sm}px`,
+    background: colors.surfaceElevated,
+    borderRadius: radius.sm,
+    border: `1px solid ${colors.border}`,
+    fontSize: typography.size.xs,
+    color: colors.text,
+    pointerEvents: 'none',
+    whiteSpace: 'nowrap',
+    zIndex: 10,
+};
+
 export function PersonaRadarChart({ stats }: PersonaRadarChartProps) {
     const svgRef = useRef<SVGSVGElement>(null);
     const polygonRef = useRef<SVGPolygonElement>(null);
@@ -25,7 +81,7 @@ export function PersonaRadarChart({ stats }: PersonaRadarChartProps) {
 
     const size = 300;
     const center = size / 2;
-    const radius = size * 0.4;
+    const radVar = size * 0.4;
     const keys = Object.keys(stats);
     const total = keys.length;
     const angleSlice = (Math.PI * 2) / total;
@@ -33,7 +89,7 @@ export function PersonaRadarChart({ stats }: PersonaRadarChartProps) {
     // Helper to calculate coordinates
     const getCoordinates = (value: number, index: number) => {
         const angle = index * angleSlice - Math.PI / 2; // Start from top
-        const r = (value / 100) * radius;
+        const r = (value / 100) * radVar;
         return {
             x: center + r * Math.cos(angle),
             y: center + r * Math.sin(angle),
@@ -69,13 +125,13 @@ export function PersonaRadarChart({ stats }: PersonaRadarChartProps) {
     }, [reducedMotion, points, initialPoints]);
 
     return (
-        <div className={styles.container}>
-            <svg ref={svgRef} className={styles.chartSvg} viewBox={`0 0 ${size} ${size}`}>
+        <div style={containerStyle}>
+            <svg ref={svgRef} style={chartSvgStyle} viewBox={`0 0 ${size} ${size}`}>
                 {/* Background Web */}
                 {[0.25, 0.5, 0.75, 1].map((scale) => (
                     <polygon
                         key={scale}
-                        className={styles.webBackground}
+                        style={webBackgroundStyle}
                         points={keys
                             .map((_, i) => {
                                 const { x, y } = getCoordinates(100 * scale, i);
@@ -91,7 +147,7 @@ export function PersonaRadarChart({ stats }: PersonaRadarChartProps) {
                     return (
                         <line
                             key={i}
-                            className={styles.axis}
+                            style={axisStyle}
                             x1={center}
                             y1={center}
                             x2={x}
@@ -103,7 +159,7 @@ export function PersonaRadarChart({ stats }: PersonaRadarChartProps) {
                 {/* Data Polygon */}
                 <polygon
                     ref={polygonRef}
-                    className={styles.dataPolygon}
+                    style={dataPolygonStyle}
                     points={reducedMotion ? points : initialPoints}
                 />
 
@@ -113,7 +169,7 @@ export function PersonaRadarChart({ stats }: PersonaRadarChartProps) {
                     return (
                         <g key={key}>
                             <circle
-                                className={styles.point}
+                                style={pointStyle}
                                 cx={x}
                                 cy={y}
                                 r={4}
@@ -122,7 +178,7 @@ export function PersonaRadarChart({ stats }: PersonaRadarChartProps) {
                             />
                             {/* Labels */}
                             <text
-                                className={styles.label}
+                                style={labelStyle}
                                 x={x + (x - center) * 0.2}
                                 y={y + (y - center) * 0.2}
                             >
@@ -136,8 +192,8 @@ export function PersonaRadarChart({ stats }: PersonaRadarChartProps) {
             {/* Tooltip */}
             {hoveredStat && (
                 <div
-                    className={styles.tooltip}
                     style={{
+                        ...tooltipStyle,
                         left: `${(hoveredStat.x / size) * 100}%`,
                         top: `${(hoveredStat.y / size) * 100}%`,
                         opacity: 1,

@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useRef, useState, CSSProperties } from 'react';
 import { useRouter } from 'next/navigation';
 import gsap from 'gsap';
 import { authApi } from '@/lib/api/auth';
@@ -14,7 +14,6 @@ import { ProgressBar } from '@/components/molecules/ProgressBar';
 import { ProgressTracker } from '@/components/molecules/ProgressTracker';
 import { trustInteractions } from '@/lib/micro-interactions';
 import { useReducedMotion, useAnnouncement } from '@/hooks/useAccessibility';
-import styles from './page.module.css';
 
 type AuthState = 'idle' | 'loading' | 'success' | 'error';
 type ProgressStep = 'authenticate' | 'verify' | 'welcome';
@@ -44,10 +43,150 @@ const SECURITY_POINTS = [
 ];
 
 const PROGRESS_METRICS = [
-  { label: 'Survey constellations completed', value: 64 },
-  { label: 'Persona synthesis queue', value: 32 },
-  { label: 'Community trust index', value: 92 },
+  { label: 'Active surveys', value: 64 },
+  { label: 'Personas created', value: 32 },
+  { label: 'User satisfaction', value: 92 },
 ];
+
+// Styles
+const pageStyles = {
+  main: {
+    minHeight: '100vh',
+    display: 'grid',
+    gridTemplateColumns: 'minmax(320px, 0.9fr) minmax(360px, 1fr)',
+    gap: 'var(--space-3xl)',
+    padding: 'var(--space-4xl)',
+    background: `radial-gradient(circle at top left, rgba(132, 94, 194, 0.45), transparent),
+            radial-gradient(circle at bottom right, rgba(0, 201, 167, 0.35), transparent),
+            var(--color-bg-dark)`,
+  } as CSSProperties,
+  showcase: {
+    display: 'flex',
+    flexDirection: 'column',
+    gap: 'var(--space-xl)',
+    padding: 'var(--space-3xl)',
+    borderRadius: 'var(--radius-xl)',
+    border: '1px solid rgba(255, 255, 255, 0.08)',
+    background: 'rgba(10, 1, 18, 0.6)',
+    backdropFilter: 'blur(18px)',
+    WebkitBackdropFilter: 'blur(18px)',
+  } as CSSProperties,
+  kicker: {
+    textTransform: 'uppercase',
+    letterSpacing: '0.35em',
+    fontSize: '0.75rem',
+    color: 'var(--color-text-secondary)',
+  } as CSSProperties,
+  headline: {
+    fontSize: 'clamp(2rem, 3vw, 2.75rem)',
+    fontWeight: 'var(--font-weight-extrabold)',
+  } as CSSProperties,
+  copy: {
+    color: 'var(--color-text-muted)',
+    fontSize: '1.1rem',
+    lineHeight: 'var(--line-height-relaxed)',
+  } as CSSProperties,
+  pointList: {
+    listStyle: 'none',
+    display: 'flex',
+    flexDirection: 'column',
+    gap: 'var(--space-sm)',
+    padding: 0,
+    margin: 0,
+  } as CSSProperties,
+  pointListItem: {
+    paddingLeft: 'var(--space-xl)',
+    position: 'relative',
+    color: 'var(--color-text-secondary)',
+  } as CSSProperties,
+  metricGrid: {
+    display: 'flex',
+    flexDirection: 'column',
+    gap: 'var(--space-md)',
+  } as CSSProperties,
+  cardWrapper: {
+    position: 'relative',
+    borderRadius: 'var(--radius-xl)',
+    overflow: 'hidden',
+    border: '1px solid rgba(255, 255, 255, 0.12)',
+    background: 'rgba(255, 255, 255, 0.05)',
+    backdropFilter: 'blur(24px)',
+    WebkitBackdropFilter: 'blur(24px)',
+  } as CSSProperties,
+  card: {
+    position: 'relative',
+    zIndex: 1,
+    padding: 'var(--space-4xl)',
+    display: 'flex',
+    flexDirection: 'column',
+    gap: 'var(--space-2xl)',
+  } as CSSProperties,
+  header: {
+    textAlign: 'center',
+  } as CSSProperties,
+  title: {
+    fontSize: '2.25rem',
+    marginBottom: 'var(--space-xs)',
+  } as CSSProperties,
+  subtitle: {
+    color: 'var(--color-text-secondary)',
+    fontSize: '1.1rem',
+  } as CSSProperties,
+  content: {
+    display: 'flex',
+    flexDirection: 'column',
+    gap: 'var(--space-lg)',
+    alignItems: 'center',
+  } as CSSProperties,
+  helpText: {
+    color: 'var(--color-text-muted)',
+    fontSize: '0.9rem',
+    textAlign: 'center',
+  } as CSSProperties,
+  privacyPromise: {
+    color: 'var(--color-text-muted)',
+    fontSize: '0.9rem',
+    textAlign: 'center',
+  } as CSSProperties,
+  trustBadges: {
+    display: 'grid',
+    gridTemplateColumns: 'repeat(auto-fit, minmax(140px, 1fr))',
+    gap: 'var(--space-md)',
+  } as CSSProperties,
+  footer: {
+    textAlign: 'center',
+  } as CSSProperties,
+  progressTracker: {
+    width: '100%',
+    marginBottom: 'var(--space-lg)',
+  } as CSSProperties,
+  authButtons: {
+    display: 'flex',
+    flexDirection: 'column',
+    gap: 'var(--space-md)',
+    width: '100%',
+    maxWidth: '320px',
+  } as CSSProperties,
+  errorMessage: {
+    color: '#ef4444',
+    fontSize: '0.9rem',
+    textAlign: 'center',
+    padding: 'var(--space-sm) var(--space-md)',
+    background: 'rgba(239, 68, 68, 0.1)',
+    borderRadius: 'var(--radius-md)',
+    border: '1px solid rgba(239, 68, 68, 0.3)',
+  } as CSSProperties,
+};
+
+// CSS for li::before pseudo-element
+const listItemStyles = `
+.login-list-item::before {
+    content: '◆';
+    position: absolute;
+    left: 0;
+    color: var(--color-accent);
+}
+`;
 
 export default function LoginPage() {
   const router = useRouter();
@@ -78,17 +217,9 @@ export default function LoginPage() {
   // Loading state carousel
   useEffect(() => {
     if (authState === 'loading') {
-      const messages = [
-        'Connecting to Google...',
-        'Verifying your account...',
-        'Almost there...',
-      ];
+      const messages = ['Connecting to Google...', 'Verifying your account...', 'Almost there...'];
 
-      const cleanup = trustInteractions.loadingStates(
-        setStatusMessage,
-        messages,
-        2000
-      );
+      const cleanup = trustInteractions.loadingStates(setStatusMessage, messages, 2000);
 
       return cleanup;
     }
@@ -136,85 +267,87 @@ export default function LoginPage() {
   };
 
   return (
-    <main className={styles.main}>
-      <section className={styles.showcase}>
-        <p className={styles.kicker}>ver2 onboarding</p>
-        <h1 className={styles.headline}>Authorize the ritual console.</h1>
-        <p className={styles.copy}>
-          The Login Page follows the ver2 spec: cinematic gradient, trust checklist, and real-time
-          telemetry from the Summoning pipeline.
-        </p>
+    <>
+      <style>{listItemStyles}</style>
+      <main style={pageStyles.main}>
+        <section style={pageStyles.showcase}>
+          <p style={pageStyles.kicker}>secure sign in</p>
+          <h1 style={pageStyles.headline}>Sign in to continue</h1>
+          <p style={pageStyles.copy}>
+            One-click authentication with your favorite provider. Your data stays private and secure.
+          </p>
 
-        <ul className={styles.pointList}>
-          {SECURITY_POINTS.map((point) => (
-            <li key={point}>{point}</li>
-          ))}
-        </ul>
+          <ul style={pageStyles.pointList}>
+            {SECURITY_POINTS.map((point) => (
+              <li key={point} className="login-list-item" style={pageStyles.pointListItem}>
+                {point}
+              </li>
+            ))}
+          </ul>
 
-        <div className={styles.metricGrid}>
-          {PROGRESS_METRICS.map((metric) => (
-            <ProgressBar key={metric.label} label={metric.label} value={metric.value} />
-          ))}
-        </div>
-      </section>
-
-      <div className={styles.cardWrapper}>
-        <MirrorCanvas variant="background" intensity={0.6} />
-
-        <div ref={cardRef} className={styles.card}>
-          <div className={styles.header}>
-            <h1 className={styles.title}>✨ Re:MirAI</h1>
-            <h2 className={styles.subtitle}>Ready to discover your reflection?</h2>
-          </div>
-
-          <div className={styles.content}>
-            {authState === 'loading' && (
-              <ProgressTracker currentStep={progressStep} className={styles.progressTracker} />
-            )}
-
-            {/* Multi-provider Social Auth Buttons */}
-            <div className={styles.authButtons}>
-              <SocialAuthButton provider="google" />
-              <SocialAuthButton provider="kakao" />
-              <SocialAuthButton provider="apple" />
-            </div>
-
-            {error && (
-              <p className={styles.errorMessage}>{error}</p>
-            )}
-
-            <p className={styles.privacyPromise}>
-              We only use your email to save your progress. No data is sold.
-            </p>
-
-            <p className={styles.helpText}>Quick, secure, simple</p>
-          </div>
-
-          <div className={styles.trustBadges} role="list">
-            {TRUST_BADGES.map((badge) => (
-              <div key={badge.label} role="listitem">
-                <TrustBadge
-                  icon={badge.icon}
-                  label={badge.label}
-                  description={badge.description}
-                  aria-label={`${badge.label} — ${badge.description}`}
-                />
-              </div>
+          <div style={pageStyles.metricGrid}>
+            {PROGRESS_METRICS.map((metric) => (
+              <ProgressBar key={metric.label} label={metric.label} value={metric.value} />
             ))}
           </div>
+        </section>
 
-          <div className={styles.footer}>
-            <Button
-              variant="ghost"
-              size="sm"
-              onClick={() => router.push('/')}
-              aria-label="Return to home page"
-            >
-              ← Back to home
-            </Button>
+        <div style={pageStyles.cardWrapper}>
+          <MirrorCanvas variant="background" intensity={0.6} />
+
+          <div ref={cardRef} style={pageStyles.card}>
+            <div style={pageStyles.header}>
+              <h1 style={pageStyles.title}>✨ Re:MirAI</h1>
+              <h2 style={pageStyles.subtitle}>Ready to discover your reflection?</h2>
+            </div>
+
+            <div style={pageStyles.content}>
+              {authState === 'loading' && (
+                <ProgressTracker currentStep={progressStep} style={pageStyles.progressTracker} />
+              )}
+
+              {/* Multi-provider Social Auth Buttons */}
+              <div style={pageStyles.authButtons}>
+                <SocialAuthButton provider="google" />
+                <SocialAuthButton provider="kakao" />
+                <SocialAuthButton provider="apple" />
+              </div>
+
+              {error && <p style={pageStyles.errorMessage}>{error}</p>}
+
+              <p style={pageStyles.privacyPromise}>
+                We only use your email to save your progress. No data is sold.
+              </p>
+
+              <p style={pageStyles.helpText}>Quick, secure, simple</p>
+            </div>
+
+            <div style={pageStyles.trustBadges} role="list">
+              {TRUST_BADGES.map((badge) => (
+                <div key={badge.label} role="listitem">
+                  <TrustBadge
+                    icon={badge.icon}
+                    label={badge.label}
+                    description={badge.description}
+                    aria-label={`${badge.label} — ${badge.description}`}
+                  />
+                </div>
+              ))}
+            </div>
+
+            <div style={pageStyles.footer}>
+              <Button
+                variant="ghost"
+                size="sm"
+                onClick={() => router.push('/')}
+                aria-label="Return to home page"
+              >
+                ← Back to home
+              </Button>
+            </div>
           </div>
         </div>
-      </div>
-    </main>
+      </main>
+    </>
   );
 }
