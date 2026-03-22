@@ -17,6 +17,8 @@ interface Toast {
   duration: number;
 }
 
+export type { Toast };
+
 let toastQueue: Toast[] = [];
 let toastCallbacks: Set<(toasts: Toast[]) => void> = new Set();
 let toastIdCounter = 0;

@@ -1,22 +1,25 @@
 'use client';
 
 import { useState, useEffect, useRef } from 'react';
+import { useQuery } from '@tanstack/react-query';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
-import gsap from 'gsap';
+import { chatApi } from '@/lib/api/chat';
+import { personaApi } from '@/lib/api/persona';
+import { toast } from '@/lib/toast';
 import { Button } from '@/components/atoms/Button';
 import { ProgressBar } from '@/components/molecules/ProgressBar';
 import { StageBadge, type SurveyStage } from '@/components/molecules/StageBadge';
 import { TypingIndicator } from '@/components/molecules/TypingIndicator';
 import { useReducedMotion } from '@/hooks/useAccessibility';
 import { slideIn } from '@/lib/animations';
-import { colors, spacing, radius, typography, shadows, mergeStyles, CSSProperties } from '@/lib/styles';
+import { colors, spacing, radius, typography, mergeStyles, CSSProperties } from '@/lib/styles';
 
 interface Message {
     id: string;
     type: 'user' | 'persona';
     content: string;
-    timestamp: Date;
+    timestamp: string;
 }
 
 const QUICK_ACTIONS = [
@@ -227,11 +230,77 @@ export function DashboardChatArea() {
     const reducedMotion = useReducedMotion();
     const messagesRef = useRef<HTMLDivElement>(null);
     const [messages, setMessages] = useState<Message[]>([
-        { id: '1', type: 'persona', content: 'Ceremony is idle. Collect 3 more responses or enter Alchemic Mode to boost resonance.', timestamp: new Date() },
+        {
+            id: 'seed-1',
+            type: 'persona',
+            content: 'Ceremony is idle. Collect 3 more responses or enter Alchemic Mode to boost resonance.',
+            timestamp: new Date().toISOString(),
+        },
     ]);
     const [inputValue, setInputValue] = useState('');
-    const [isTyping, setIsTyping] = useState(false);
+    const [isSending, setIsSending] = useState(false);
     const [surveyStage, setSurveyStage] = useState<SurveyStage>('COLLECTING');
+    const [activeSessionId, setActiveSessionId] = useState<string | null>(null);
+    const [activePersonaName, setActivePersonaName] = useState<string>('Digital Mirror');
+
+    const { data: sessions = [] } = useQuery({
+        queryKey: ['chat-sessions-dashboard'],
+        queryFn: () => chatApi.getSessions(),
+    });
+
+    const { data: personas = [] } = useQuery({
+        queryKey: ['personas-dashboard-chat'],
+        queryFn: () => personaApi.list(),
+    });
+
+    const { data: history, isLoading: isHistoryLoading } = useQuery({
+        queryKey: ['chat-history-dashboard', activeSessionId],
+        queryFn: () => chatApi.getHistory(activeSessionId as string),
+        enabled: !!activeSessionId,
+    });
+
+    const { data: bondLevel } = useQuery({
+        queryKey: ['bond-level-dashboard', sessions[0]?.personaId],
+        queryFn: () => chatApi.getBondLevel(sessions[0].personaId),
+        enabled: sessions.length > 0,
+    });
+
+    useEffect(() => {
+        if (sessions.length > 0 && !activeSessionId) {
+            setActiveSessionId(sessions[0].id);
+            setActivePersonaName(sessions[0].personaName);
+            setSurveyStage('READY');
+            return;
+        }
+
+        if (sessions.length === 0) {
+            setSurveyStage('COLLECTING');
+        }
+    }, [sessions, activeSessionId]);
+
+    useEffect(() => {
+        if (!history) return;
+        if (history.messages.length === 0) {
+            setMessages([
+                {
+                    id: 'history-empty',
+                    type: 'persona',
+                    content: '첫 메시지를 보내 Digital Mirror와 대화를 시작해보세요.',
+                    timestamp: new Date().toISOString(),
+                },
+            ]);
+            return;
+        }
+
+        setMessages(
+            history.messages.map((m) => ({
+                id: m.id,
+                type: m.sender === 'USER' ? 'user' : 'persona',
+                content: m.content,
+                timestamp: m.createdAt,
+            })),
+        );
+    }, [history]);
 
     useEffect(() => {
         if (!messagesRef.current || reducedMotion) return;
@@ -241,19 +310,66 @@ export function DashboardChatArea() {
         }
     }, [messages, reducedMotion]);
 
-    const handleSend = () => {
-        if (!inputValue.trim() || isTyping) return;
-        const newMessage: Message = { id: Date.now().toString(), type: 'user', content: inputValue, timestamp: new Date() };
-        setMessages((prev) => [...prev, newMessage]);
-        setInputValue('');
-        setIsTyping(true);
+    const handleSend = async () => {
+        const content = inputValue.trim();
+        if (!content || isSending || isHistoryLoading) return;
 
-        setTimeout(() => {
-            const aiResponse: Message = { id: (Date.now() + 1).toString(), type: 'persona', content: 'I understand. Let me reflect on that...', timestamp: new Date() };
-            setMessages((prev) => [...prev, aiResponse]);
-            setIsTyping(false);
-        }, 1500);
+        setInputValue('');
+        setIsSending(true);
+
+        const optimisticUserMessage: Message = {
+            id: `tmp-user-${Date.now()}`,
+            type: 'user',
+            content,
+            timestamp: new Date().toISOString(),
+        };
+        setMessages((prev) => [...prev, optimisticUserMessage]);
+
+        try {
+            let sessionId = activeSessionId;
+
+            if (!sessionId) {
+                if (personas.length === 0) {
+                    toast.warning('먼저 Persona를 생성한 뒤 대화를 시작할 수 있어요.');
+                    setMessages((prev) => prev.filter((m) => m.id !== optimisticUserMessage.id));
+                    return;
+                }
+
+                const newSession = await chatApi.startSession(personas[0].id);
+                sessionId = newSession.id;
+                setActiveSessionId(newSession.id);
+                setActivePersonaName(newSession.personaName);
+                setSurveyStage('READY');
+            }
+
+            const response = await chatApi.sendMessage(sessionId, content);
+
+            const aiMessage: Message = {
+                id: response.aiMessage.id,
+                type: 'persona',
+                content: response.aiMessage.content,
+                timestamp: response.aiMessage.createdAt,
+            };
+
+            setMessages((prev) => [
+                ...prev.filter((m) => m.id !== optimisticUserMessage.id),
+                {
+                    id: response.userMessage.id,
+                    type: 'user',
+                    content: response.userMessage.content,
+                    timestamp: response.userMessage.createdAt,
+                },
+                aiMessage,
+            ]);
+        } catch {
+            setMessages((prev) => prev.filter((m) => m.id !== optimisticUserMessage.id));
+            toast.error('메시지 전송에 실패했습니다. 잠시 후 다시 시도해주세요.');
+        } finally {
+            setIsSending(false);
+        }
     };
+
+    const surveyProgress = Math.min(100, Math.max(24, sessions.length * 20));
 
     return (
         <section style={chatAreaStyle}>
@@ -266,9 +382,13 @@ export function DashboardChatArea() {
                     </div>
                 </div>
                 <div style={headerActionsStyle}>
-                    <ProgressBar value={72} label="Survey completion" accent />
-                    <Button size="sm" variant="secondary" onClick={() => router.push('/summon')}>
-                        {surveyStage === 'READY' ? 'Begin Synthesis' : 'Enter Summoning Page'}
+                    <ProgressBar value={surveyProgress} label="Survey completion" accent />
+                    <Button
+                        size="sm"
+                        variant="secondary"
+                        onClick={() => (activeSessionId ? router.push(`/chat/${activeSessionId}`) : router.push('/summon'))}
+                    >
+                        {activeSessionId ? 'Open Full Chat' : surveyStage === 'READY' ? 'Begin Synthesis' : 'Enter Summoning Page'}
                     </Button>
                 </div>
             </header>
@@ -290,10 +410,10 @@ export function DashboardChatArea() {
                     {messages.map((message) => (
                         <div key={message.id} style={mergeStyles(messageBase, message.type === 'user' ? messageUser : messagePersona)}>
                             <div style={messageContentStyle}>{message.content}</div>
-                            <time style={messageTimeStyle}>{message.timestamp.toLocaleTimeString()}</time>
+                            <time style={messageTimeStyle}>{new Date(message.timestamp).toLocaleTimeString()}</time>
                         </div>
                     ))}
-                    {isTyping && (
+                    {isSending && (
                         <div style={mergeStyles(messageBase, messagePersona)}>
                             <TypingIndicator />
                         </div>
@@ -303,9 +423,11 @@ export function DashboardChatArea() {
                 <aside style={personaPanelStyle}>
                     <p style={panelLabelStyle}>Persona Pulse</p>
                     <div style={panelCardStyle}>
-                        <p>Bonding Meter</p>
-                        <ProgressBar value={48} showValue />
-                        <p style={panelHintStyle}>Complete 2 rituals to unlock next memory.</p>
+                        <p>{activePersonaName} Bonding Meter</p>
+                        <ProgressBar value={bondLevel?.progress ?? 0} showValue />
+                        <p style={panelHintStyle}>
+                            {bondLevel ? `현재 Bond Level ${bondLevel.level}` : 'Persona와 대화하면 Bond Level이 올라갑니다.'}
+                        </p>
                     </div>
                     <div style={panelCardStyle}>
                         <p>Ritual Timeline</p>
@@ -334,8 +456,11 @@ export function DashboardChatArea() {
                     value={inputValue}
                     onChange={(e) => setInputValue(e.target.value)}
                     onKeyDown={(e) => e.key === 'Enter' && handleSend()}
+                    disabled={isSending}
                 />
-                <Button onClick={handleSend}>Send</Button>
+                <Button onClick={handleSend} disabled={isSending || isHistoryLoading}>
+                    {isSending ? 'Sending...' : 'Send'}
+                </Button>
             </div>
         </section>
     );

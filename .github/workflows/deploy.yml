@@ -69,6 +69,29 @@ jobs:
       - name: Build
         run: npm run build
 
+      - name: Verify backend health endpoint
+        run: |
+          npm run start:prod &
+          APP_PID=$!
+          for i in {1..30}; do
+            if curl -fsS http://localhost:3001/health > /tmp/health.json; then
+              cat /tmp/health.json
+              kill $APP_PID
+              wait $APP_PID || true
+              exit 0
+            fi
+            sleep 2
+          done
+          echo "Backend health check failed"
+          kill $APP_PID || true
+          wait $APP_PID || true
+          exit 1
+        env:
+          DATABASE_URL: postgresql://postgres:postgres@localhost:5432/remirai_test
+          JWT_SECRET: test-jwt-secret
+          JWT_REFRESH_SECRET: test-refresh-secret
+          OPENAI_API_KEY: test-openai-key
+
   # ============================================
   # Test Frontend
   # ============================================

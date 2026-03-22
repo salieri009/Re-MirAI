@@ -22,4 +22,14 @@ describe('AppController (e2e)', () => {
       .expect(200)
       .expect('Hello World!');
   });
+
+  it('/health (GET)', async () => {
+    const response = await request(app.getHttpServer())
+      .get('/health')
+      .expect(200);
+
+    expect(response.body.status).toBe('ok');
+    expect(typeof response.body.timestamp).toBe('string');
+    expect(typeof response.body.uptime).toBe('number');
+  });
 });
