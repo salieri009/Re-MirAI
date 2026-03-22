@@ -109,9 +109,9 @@ npm run test:cov
 ## 📚 Documentation
 
 For detailed development plan, see:
-- [Backend Development Plan](../../docs/03-planning/10-Backend-Development-Plan.md)
-- [API Specification](../../docs/03-planning/06-API-Specification.md)
-- [Database Schema](../../docs/03-planning/07-Database-Schema.md)
+- [Backend Architecture](../docs/BACKEND_ARCHITECTURE.md)
+- [API Common](../docs/api/API_COMMON.md)
+- [Database Model](../docs/DATABASE_MODEL.md)
 
 ## 🛠️ Tech Stack
 

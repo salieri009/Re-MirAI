@@ -3,6 +3,7 @@
 import { useState, CSSProperties } from 'react';
 import { useRouter } from 'next/navigation';
 import { personaApi } from '@/lib/api/persona';
+import { toast } from '@/lib/toast';
 import { Button } from '@/components/atoms/Button';
 import { SummoningAnimation } from '@/components/organisms/SummoningAnimation';
 
@@ -104,8 +105,7 @@ export default function SynthesizePage() {
       setCreatedPersona(persona);
       setShowAnimation(true);
     } catch (error) {
-      console.error('Failed to create persona:', error);
-      alert('Failed to generate persona. Please try again.');
+      toast.error('Failed to generate persona. Please try again.');
       setIsGenerating(false);
     }
   };

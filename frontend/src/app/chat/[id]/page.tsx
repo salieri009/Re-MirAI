@@ -6,6 +6,7 @@ import { useRouter } from 'next/navigation';
 import gsap from 'gsap';
 import { chatApi } from '@/lib/api/chat';
 import { personaApi } from '@/lib/api/persona';
+import { toast } from '@/lib/toast';
 import { Button } from '@/components/atoms/Button';
 import { Input } from '@/components/atoms/Input';
 import { TypingIndicator } from '@/components/molecules/TypingIndicator';
@@ -398,7 +399,7 @@ export default function ChatPage({ params }: { params: Promise<{ id: string }> }
       const response = await chatApi.sendMessage(id, message);
       setMessages((prev) => [...prev, response.aiMessage]);
     } catch (error) {
-      console.error('Failed to send message:', error);
+      toast.error('Failed to send message. Please try again.');
     } finally {
       setIsSending(false);
     }

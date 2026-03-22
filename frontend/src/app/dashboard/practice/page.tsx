@@ -6,6 +6,7 @@ import { useQuery } from '@tanstack/react-query';
 import { useAuthStore } from '@/stores/authStore';
 import { surveyApi } from '@/lib/api/survey';
 import { personaApi } from '@/lib/api/persona';
+import { toast } from '@/lib/toast';
 import { SurveyWizard } from '@/components/organisms/SurveyWizard';
 import { ProgressBar } from '@/components/molecules/ProgressBar';
 import { Button } from '@/components/atoms/Button';
@@ -160,8 +161,7 @@ export default function PracticeModePage() {
             // Navigate to the new persona
             router.push(`/p/${persona.id}?practice=true`);
         } catch (error) {
-            console.error('Failed to generate Proto-Persona:', error);
-            alert('Failed to generate your Proto-Persona. Please try again.');
+            toast.error('Failed to generate your Proto-Persona. Please try again.');
             setIsGenerating(false);
             setIsComplete(false);
         }

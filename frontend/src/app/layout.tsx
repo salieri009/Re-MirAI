@@ -3,6 +3,7 @@ import { Space_Grotesk, Plus_Jakarta_Sans } from 'next/font/google'
 import '../styles/tokens.css'
 import '../global.css'
 import { QueryProvider } from '@/lib/providers/QueryProvider'
+import ClientProviders from '@/lib/providers/ClientProviders'
 
 const spaceGrotesk = Space_Grotesk({
   subsets: ['latin'],
@@ -38,7 +39,9 @@ export default function RootLayout({
       </head>
       <body suppressHydrationWarning className="bg-background-dark text-text-primary font-sans antialiased">
         <QueryProvider>
-          {children}
+          <ClientProviders>
+            {children}
+          </ClientProviders>
         </QueryProvider>
       </body>
     </html>

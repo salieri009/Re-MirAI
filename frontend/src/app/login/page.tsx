@@ -6,6 +6,7 @@ import gsap from 'gsap';
 import { authApi } from '@/lib/api/auth';
 import { trackEvent } from '@/lib/analytics';
 import { useAuthStore } from '@/stores/authStore';
+import { toast } from '@/lib/toast';
 import { SocialAuthButton } from '@/components/molecules/SocialAuthButton';
 import { TrustBadge } from '@/components/molecules/TrustBadge';
 import { Button } from '@/components/atoms/Button';
@@ -248,8 +249,8 @@ export default function LoginPage() {
       trackEvent('auth.success', { provider: 'google' });
       setTimeout(() => router.push('/dashboard'), 1200);
     } catch (err: any) {
-      console.error('Login failed:', err);
       const errorMsg = err.message || 'Login failed. Please try again.';
+      toast.error(errorMsg);
       setError(errorMsg);
       setStatusMessage('We hit a snag. Try again.');
       setAuthState('error');

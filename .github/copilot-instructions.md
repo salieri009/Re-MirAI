@@ -14,12 +14,12 @@
 
 | Feature | Documentation Path | Key Focus |
 |---------|-------------------|-----------|
-| **Landing Page** | `docs/07-Enhancement/ver2/01-Landing-Page-Enhancement.md` | Particle background, Hero entrance |
-| **Auth/Login** | `docs/07-Enhancement/ver2/02-Login-Page-Enhancement.md` | "Sacred Threshold", Trust badges |
-| **Chat System** | `docs/07-Enhancement/ver2/04-Chat-Page-Enhancement.md` | 3-column layout, Typing indicators |
-| **Persona Room** | `docs/07-Enhancement/ver2/05-Persona-Room-Page-Enhancement.md` | Radar charts, Share modals |
-| **Summoning** | `docs/07-Enhancement/ver2/07-Summoning-Page-Enhancement.md` | 3-stage reveal animation, Canvas API |
-| **Survey (Ritual)**| `docs/07-Enhancement/ver2/08-Survey-Page-Enhancement.md` | Form UX, Shareable links |
+| **Landing Page** | `docs/FRONTEND_ARCHITECTURE.md` | Page structure, rendering strategy |
+| **Auth/Login** | `docs/USER_FLOW.md` | User journey, auth flow |
+| **Chat System** | `docs/FRONTEND_ARCHITECTURE.md` | UI architecture, state flow |
+| **Persona Room** | `docs/USER_FLOW.md` | Persona experience flow |
+| **Summoning** | `docs/USER_FLOW.md` | Synthesis flow and transitions |
+| **Survey (Ritual)**| `docs/PRD.md` | Product requirements and constraints |
 
 ## 3. Architecture & Tech Stack
 

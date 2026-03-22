@@ -97,15 +97,14 @@ Re-MirAI/
 │   │   └── main.ts    # Application entry point
 │   └── prisma/
 │       └── schema.prisma  # Prisma schema definition
-├── docs/              # Project Documentation
-│   ├── 01-concept/    # Initial PRD & Concepts
-│   ├── 02-project-overview/ # Features, Goals & Roadmap
-│   ├── 03-planning/   # Technical Specs & UI/UX Design
-│   ├── 04-user-experience/ # UX Flows & Journey Maps
-│   ├── 05-analysis/   # UX/UI Expert Analysis
-│   ├── 06-team/       # Team Roles & Competencies
-│   ├── 07-Enhancement/# ver1 / ver2 enhancement packs
-│   └── 08-Connectivity-and-Deployment/ # FE-BE connectivity & deployment
+├── docs/              # Project Documentation (minimal structure)
+│   ├── PRD.md
+│   ├── USER_FLOW.md
+│   ├── FRONTEND_ARCHITECTURE.md
+│   ├── BACKEND_ARCHITECTURE.md
+│   ├── DATABASE_MODEL.md
+│   ├── DESIGN_SYSTEM.md
+│   └── api/
 └── README.md          # This file
 ```
 
@@ -164,31 +163,28 @@ All detailed documentation is located in the `docs/` directory.
 
 ### Core Documentation
 
-- **Project Overview:** [Project Goals & Features](docs/02-project-overview/README.md)
-- **Product Requirements:** [PRD (Project Plan)](docs/01-concept/02-Project-Plan.md)
-- **Technical Spec:** [Technical Specification](docs/03-planning/05-Technical-Specification.md)
-- **Design System:** [Design Philosophy](docs/02-project-overview/03-Design-Philosophy.md)
-- **Roadmap:** [Development Roadmap](docs/02-project-overview/04-Roadmap.md)
-- **Feature Specs:** [Core Features Index](docs/02-project-overview/02-Core-Features.md)
+- **PRD:** [docs/PRD.md](docs/PRD.md)
+- **User Flow:** [docs/USER_FLOW.md](docs/USER_FLOW.md)
+- **Frontend Architecture:** [docs/FRONTEND_ARCHITECTURE.md](docs/FRONTEND_ARCHITECTURE.md)
+- **Backend Architecture:** [docs/BACKEND_ARCHITECTURE.md](docs/BACKEND_ARCHITECTURE.md)
+- **Database Model:** [docs/DATABASE_MODEL.md](docs/DATABASE_MODEL.md)
+- **Design System:** [docs/DESIGN_SYSTEM.md](docs/DESIGN_SYSTEM.md)
 
-### Enhancement Documentation
+### API Documentation
 
-- **ver2 Enhancement Pack:** [Frontend Refactoring Guide](docs/07-Enhancement/ver2/README.md)
-  - Comprehensive page-by-page enhancement specs with animation details
-  - Design system updates (color palette, typography, 4px grid)
-  - Frontend audit and compliance reports
-  - Backend engineering guide
-
-### Connectivity & Deployment
-
-- **[Frontend ↔ Backend Connectivity Test Plan](docs/08-Connectivity-and-Deployment/01-Frontend-Backend-Connectivity-Test-Plan.md)**  
-  Maps directly to F-001~F-006 requirements from `docs/02-project-overview/02-Core-Features.md`. Ensures each API flow matches the feature specifications.
-
-- **[Pipeline Strategy](docs/08-Connectivity-and-Deployment/02-Pipeline-Strategy.md)**  
-  CI/CD pipeline aligned with growth goals from `docs/02-project-overview/01-Project-Goals.md`. Includes feature flags, blue/green deployments, and rollback procedures.
-
-- **[Deployment Guide](docs/08-Connectivity-and-Deployment/03-Deployment-Guide.md)**  
-  Step-by-step instructions for deploying to Railway (Backend) and Vercel (Frontend).
+- **API Index:** [docs/api/API_COMMON.md](docs/api/API_COMMON.md)
+- **Contracts:** [docs/api/API_CONTRACTS.md](docs/api/API_CONTRACTS.md)
+- **Customers:** [docs/api/API_CUSTOMERS.md](docs/api/API_CUSTOMERS.md)
+- **Dashboard:** [docs/api/API_DASHBOARD.md](docs/api/API_DASHBOARD.md)
+- **Equipments:** [docs/api/API_EQUIPMENTS.md](docs/api/API_EQUIPMENTS.md)
+- **Inspections:** [docs/api/API_INSPECTIONS.md](docs/api/API_INSPECTIONS.md)
+- **Inventory Ledger:** [docs/api/API_INVENTORY_LEDGER.md](docs/api/API_INVENTORY_LEDGER.md)
+- **Invoices:** [docs/api/API_INVOICES.md](docs/api/API_INVOICES.md)
+- **Maintenances:** [docs/api/API_MAINTENANCES.md](docs/api/API_MAINTENANCES.md)
+- **Notifications:** [docs/api/API_NOTIFICATIONS.md](docs/api/API_NOTIFICATIONS.md)
+- **Payments:** [docs/api/API_PAYMENTS.md](docs/api/API_PAYMENTS.md)
+- **Reports:** [docs/api/API_REPORTS.md](docs/api/API_REPORTS.md)
+- **Settings:** [docs/api/API_SETTINGS.md](docs/api/API_SETTINGS.md)
 
 For complete documentation index, see [docs/README.md](docs/README.md).
 

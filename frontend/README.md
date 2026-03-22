@@ -169,6 +169,6 @@ When the backend is ready:
 
 ## 📚 Related Documentation
 
-- [Frontend Development Plan](../../docs/03-planning/09-Frontend-Development-Plan.md)
-- [API Specification](../../docs/03-planning/06-API-Specification.md)
-- [Page Architecture](../../docs/03-planning/02-Page-Architecture.md)
+- [Frontend Architecture](../docs/FRONTEND_ARCHITECTURE.md)
+- [API Common](../docs/api/API_COMMON.md)
+- [User Flow](../docs/USER_FLOW.md)

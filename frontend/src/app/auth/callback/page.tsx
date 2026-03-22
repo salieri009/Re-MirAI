@@ -3,6 +3,7 @@
 import { useEffect, useState, CSSProperties, Suspense } from 'react';
 import { useRouter, useSearchParams } from 'next/navigation';
 import { useAuthStore } from '@/stores/authStore';
+import { toast } from '@/lib/toast';
 import { Button } from '@/components/atoms/Button';
 
 // Styles
@@ -143,7 +144,8 @@ function AuthCallbackContent() {
                         };
                     }
                 } catch (decodeError) {
-                    console.warn('Failed to decode JWT, using defaults:', decodeError);
+                    // Silently fail over to defaults if JWT decode fails
+                    // (Using defaults is acceptable; decoded user data is just metadata)
                 }
 
                 // Store tokens and user in auth store
@@ -156,7 +158,7 @@ function AuthCallbackContent() {
                     router.push('/dashboard');
                 }, 1500);
             } catch (err) {
-                console.error('Auth callback error:', err);
+                toast.error('Failed to process authentication. Please try again.');
                 setStatus('error');
                 setErrorMessage('Failed to process authentication');
             }
