@@ -121,17 +121,33 @@ function AuthCallbackContent() {
             }
 
             try {
-                // Fetch user details with the access token
-                // For now, create a minimal user object from the token
-                // In production, you'd decode the JWT or call a /me endpoint
-                const mockUser = {
-                    id: 'user-' + Date.now(),
+                // Extract user info from JWT token
+                // JWT format: header.payload.signature
+                let user = {
+                    id: 'user-unknown',
                     email: 'user@example.com',
                     name: 'User',
                 };
 
+                try {
+                    // Decode JWT payload to extract user info
+                    const parts = accessToken.split('.');
+                    if (parts.length === 3) {
+                        const decodedPayload = JSON.parse(
+                            atob(parts[1].replace(/-/g, '+').replace(/_/g, '/'))
+                        );
+                        user = {
+                            id: decodedPayload.sub || decodedPayload.id || user.id,
+                            email: decodedPayload.email || user.email,
+                            name: decodedPayload.name || 'User',
+                        };
+                    }
+                } catch (decodeError) {
+                    console.warn('Failed to decode JWT, using defaults:', decodeError);
+                }
+
                 // Store tokens and user in auth store
-                login(accessToken, refreshToken, mockUser);
+                login(accessToken, refreshToken, user);
 
                 setStatus('success');
 

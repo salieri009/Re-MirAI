@@ -23,7 +23,7 @@ apiClient.interceptors.request.use((config) => {
   return config;
 });
 
-// Response interceptor: Comprehensive error handling
+// Response interceptor: Comprehensive error handling + auto-refresh
 apiClient.interceptors.response.use(
   (response) => response,
   async (error: AxiosError) => {
@@ -33,21 +33,58 @@ apiClient.interceptors.response.use(
       return Promise.reject(new Error('Network error'));
     }
 
-    const { status, data } = error.response;
+    const { status, data, config } = error.response;
+    const originalRequest = config as any;
 
     switch (status) {
       case 401:
-        // Unauthorized - redirect to login
+        // Unauthorized - attempt token refresh
+        if (!originalRequest._retry) {
+          originalRequest._retry = true;
+          
+          try {
+            const refreshToken = typeof window !== 'undefined' 
+              ? localStorage.getItem('auth_refresh_token') 
+              : null;
+            
+            if (refreshToken) {
+              // Attempt to refresh access token
+              const response = await axios.post(
+                `${API_URL}/auth/refresh`,
+                { refreshToken }
+              );
+              
+              const { accessToken } = response.data;
+              
+              // Update stored token
+              localStorage.setItem('auth_token', accessToken);
+              
+              // Retry original request with new token
+              originalRequest.headers.Authorization = `Bearer ${accessToken}`;
+              return apiClient(originalRequest);
+            }
+          } catch (refreshError) {
+            console.error('Token refresh failed:', refreshError);
+            // Refresh failed, redirect to login
+            if (typeof window !== 'undefined') {
+              localStorage.removeItem('auth_token');
+              localStorage.removeItem('auth_refresh_token');
+              localStorage.removeItem('auth_user');
+              window.location.href = '/login';
+            }
+            return Promise.reject(refreshError);
+          }
+        }
+        
+        // Refresh already attempted, redirect to login
         if (typeof window !== 'undefined') {
           localStorage.removeItem('auth_token');
+          localStorage.removeItem('auth_refresh_token');
+          localStorage.removeItem('auth_user');
           window.location.href = '/login';
         }
         break;
           
-        //   try {
-        //     // Attempt to refresh access token
-        //     const response = await axios.post(
-      
       case 403:
         console.error('Access denied.');
         break;
