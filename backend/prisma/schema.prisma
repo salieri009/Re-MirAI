@@ -25,6 +25,7 @@ model User {
   personas     Persona[]
   chatSessions ChatSession[]
   wallet       Wallet?
+  userQuests   UserQuest[]
 
   @@map("users")
 }
@@ -161,6 +162,7 @@ model UserQuest {
   isClaimed Boolean  @default(false)
   resetAt   DateTime // KST based UTC time for reset 
 
+  user  User  @relation(fields: [userId], references: [id], onDelete: Cascade)
   quest Quest @relation(fields: [questId], references: [id], onDelete: Cascade)
 
   @@unique([userId, questId, resetAt])
