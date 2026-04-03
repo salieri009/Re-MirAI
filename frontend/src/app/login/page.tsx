@@ -1,354 +1,148 @@
 'use client';
 
-import { useEffect, useRef, useState, CSSProperties } from 'react';
+import { useEffect, useMemo, useRef, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import gsap from 'gsap';
-import { authApi } from '@/lib/api/auth';
 import { trackEvent } from '@/lib/analytics';
 import { useAuthStore } from '@/stores/authStore';
-import { toast } from '@/lib/toast';
-import { SocialAuthButton } from '@/components/molecules/SocialAuthButton';
-import { TrustBadge } from '@/components/molecules/TrustBadge';
-import { Button } from '@/components/atoms/Button';
+import { useAnnouncement, useReducedMotion } from '@/hooks/useAccessibility';
 import { MirrorCanvas } from '@/components/organisms/MirrorCanvas/MirrorCanvas';
-import { ProgressBar } from '@/components/molecules/ProgressBar';
-import { ProgressTracker } from '@/components/molecules/ProgressTracker';
-import { trustInteractions } from '@/lib/micro-interactions';
-import { useReducedMotion, useAnnouncement } from '@/hooks/useAccessibility';
-
-type AuthState = 'idle' | 'loading' | 'success' | 'error';
-type ProgressStep = 'authenticate' | 'verify' | 'welcome';
+import { AuthRitualShell } from '@/components/layouts/AuthRitualShell';
 
 const TRUST_BADGES = [
   {
-    icon: '🔐',
     label: 'Secure OAuth',
-    description: 'Google-verified authentication',
+    description: 'Google-verified authentication with token refresh.',
   },
   {
-    icon: '🔒',
     label: 'Privacy First',
-    description: '100% anonymous responses',
+    description: 'Anonymous survey responses are kept separated by design.',
   },
   {
-    icon: '⚡',
-    label: 'No Password',
-    description: 'One-click access',
+    label: 'Fast Onboarding',
+    description: 'Move from login to ritual creation in one guided flow.',
   },
 ];
-
-const SECURITY_POINTS = [
-  'OAuth tokens are never stored client-side.',
-  'Survey answers remain anonymous until you approve a persona.',
-  'Session expires automatically after 20 minutes of inactivity.',
-];
-
-const PROGRESS_METRICS = [
-  { label: 'Active surveys', value: 64 },
-  { label: 'Personas created', value: 32 },
-  { label: 'User satisfaction', value: 92 },
-];
-
-// Styles
-const pageStyles = {
-  main: {
-    minHeight: '100vh',
-    display: 'grid',
-    gridTemplateColumns: 'minmax(320px, 0.9fr) minmax(360px, 1fr)',
-    gap: 'var(--space-3xl)',
-    padding: 'var(--space-4xl)',
-    background: `radial-gradient(circle at top left, rgba(132, 94, 194, 0.45), transparent),
-            radial-gradient(circle at bottom right, rgba(0, 201, 167, 0.35), transparent),
-            var(--color-bg-dark)`,
-  } as CSSProperties,
-  showcase: {
-    display: 'flex',
-    flexDirection: 'column',
-    gap: 'var(--space-xl)',
-    padding: 'var(--space-3xl)',
-    borderRadius: 'var(--radius-xl)',
-    border: '1px solid rgba(255, 255, 255, 0.08)',
-    background: 'rgba(10, 1, 18, 0.6)',
-    backdropFilter: 'blur(18px)',
-    WebkitBackdropFilter: 'blur(18px)',
-  } as CSSProperties,
-  kicker: {
-    textTransform: 'uppercase',
-    letterSpacing: '0.35em',
-    fontSize: '0.75rem',
-    color: 'var(--color-text-secondary)',
-  } as CSSProperties,
-  headline: {
-    fontSize: 'clamp(2rem, 3vw, 2.75rem)',
-    fontWeight: 'var(--font-weight-extrabold)',
-  } as CSSProperties,
-  copy: {
-    color: 'var(--color-text-muted)',
-    fontSize: '1.1rem',
-    lineHeight: 'var(--line-height-relaxed)',
-  } as CSSProperties,
-  pointList: {
-    listStyle: 'none',
-    display: 'flex',
-    flexDirection: 'column',
-    gap: 'var(--space-sm)',
-    padding: 0,
-    margin: 0,
-  } as CSSProperties,
-  pointListItem: {
-    paddingLeft: 'var(--space-xl)',
-    position: 'relative',
-    color: 'var(--color-text-secondary)',
-  } as CSSProperties,
-  metricGrid: {
-    display: 'flex',
-    flexDirection: 'column',
-    gap: 'var(--space-md)',
-  } as CSSProperties,
-  cardWrapper: {
-    position: 'relative',
-    borderRadius: 'var(--radius-xl)',
-    overflow: 'hidden',
-    border: '1px solid rgba(255, 255, 255, 0.12)',
-    background: 'rgba(255, 255, 255, 0.05)',
-    backdropFilter: 'blur(24px)',
-    WebkitBackdropFilter: 'blur(24px)',
-  } as CSSProperties,
-  card: {
-    position: 'relative',
-    zIndex: 1,
-    padding: 'var(--space-4xl)',
-    display: 'flex',
-    flexDirection: 'column',
-    gap: 'var(--space-2xl)',
-  } as CSSProperties,
-  header: {
-    textAlign: 'center',
-  } as CSSProperties,
-  title: {
-    fontSize: '2.25rem',
-    marginBottom: 'var(--space-xs)',
-  } as CSSProperties,
-  subtitle: {
-    color: 'var(--color-text-secondary)',
-    fontSize: '1.1rem',
-  } as CSSProperties,
-  content: {
-    display: 'flex',
-    flexDirection: 'column',
-    gap: 'var(--space-lg)',
-    alignItems: 'center',
-  } as CSSProperties,
-  helpText: {
-    color: 'var(--color-text-muted)',
-    fontSize: '0.9rem',
-    textAlign: 'center',
-  } as CSSProperties,
-  privacyPromise: {
-    color: 'var(--color-text-muted)',
-    fontSize: '0.9rem',
-    textAlign: 'center',
-  } as CSSProperties,
-  trustBadges: {
-    display: 'grid',
-    gridTemplateColumns: 'repeat(auto-fit, minmax(140px, 1fr))',
-    gap: 'var(--space-md)',
-  } as CSSProperties,
-  footer: {
-    textAlign: 'center',
-  } as CSSProperties,
-  progressTracker: {
-    width: '100%',
-    marginBottom: 'var(--space-lg)',
-  } as CSSProperties,
-  authButtons: {
-    display: 'flex',
-    flexDirection: 'column',
-    gap: 'var(--space-md)',
-    width: '100%',
-    maxWidth: '320px',
-  } as CSSProperties,
-  errorMessage: {
-    color: '#ef4444',
-    fontSize: '0.9rem',
-    textAlign: 'center',
-    padding: 'var(--space-sm) var(--space-md)',
-    background: 'rgba(239, 68, 68, 0.1)',
-    borderRadius: 'var(--radius-md)',
-    border: '1px solid rgba(239, 68, 68, 0.3)',
-  } as CSSProperties,
-};
-
-// CSS for li::before pseudo-element
-const listItemStyles = `
-.login-list-item::before {
-    content: '◆';
-    position: absolute;
-    left: 0;
-    color: var(--color-accent);
-}
-`;
 
 export default function LoginPage() {
   const router = useRouter();
-  const { login } = useAuthStore();
-  const [authState, setAuthState] = useState<AuthState>('idle');
-  const [statusMessage, setStatusMessage] = useState('Connecting to Google...');
-  const [error, setError] = useState<string | null>(null);
-  const [progressStep, setProgressStep] = useState<ProgressStep>('authenticate');
-
-  const cardRef = useRef<HTMLDivElement>(null);
-
+  const isAuthenticated = useAuthStore((state) => state.isAuthenticated);
+  const [isLoading, setIsLoading] = useState(false);
   const reducedMotion = useReducedMotion();
   const announce = useAnnouncement();
+  const panelRef = useRef<HTMLDivElement>(null);
 
-  // Initial entrance animation
+  const apiBaseUrl = useMemo(
+    () => process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3001',
+    []
+  );
+
   useEffect(() => {
-    if (!reducedMotion && cardRef.current) {
-      gsap.from(cardRef.current, {
-        opacity: 0,
-        y: 20,
-        scale: 0.95,
-        duration: 0.6,
-        ease: 'power2.out',
-      });
+    if (isAuthenticated) {
+      router.push('/dashboard');
+      return;
     }
-  }, [reducedMotion]);
 
-  // Loading state carousel
-  useEffect(() => {
-    if (authState === 'loading') {
-      const messages = ['Connecting to Google...', 'Verifying your account...', 'Almost there...'];
-
-      const cleanup = trustInteractions.loadingStates(setStatusMessage, messages, 2000);
-
-      return cleanup;
+    if (!panelRef.current) {
+      return;
     }
-  }, [authState]);
 
-  const handleGoogleAuth = async () => {
-    if (authState === 'loading') return;
-
-    setAuthState('loading');
-    setError(null);
-    setProgressStep('authenticate');
-    trackEvent('auth.start', { provider: 'google' });
-    announce('Authenticating with Google', 'polite');
-
-    try {
-      // Simulate progress steps
-      setTimeout(() => setProgressStep('verify'), 1000);
-
-      const response = await authApi.googleLogin('mock-id-token');
-      login(response.accessToken, response.refreshToken, response.user);
-
-      setProgressStep('welcome');
-      setStatusMessage('Welcome back. Redirecting to your dashboard...');
-      setAuthState('success');
-      announce('Login successful! Redirecting…', 'polite');
-      trackEvent('auth.success', { provider: 'google' });
-      setTimeout(() => router.push('/dashboard'), 1200);
-    } catch (err: any) {
-      const errorMsg = err.message || 'Login failed. Please try again.';
-      toast.error(errorMsg);
-      setError(errorMsg);
-      setStatusMessage('We hit a snag. Try again.');
-      setAuthState('error');
-      setProgressStep('authenticate'); // Reset on error
-      announce(errorMsg, 'assertive');
-      trackEvent('auth.error', { provider: 'google', message: errorMsg });
+    if (reducedMotion) {
+      gsap.set(panelRef.current, { opacity: 1, y: 0, scale: 1 });
+      return;
     }
+
+    gsap.fromTo(
+      panelRef.current,
+      { opacity: 0, y: 24, scale: 0.98 },
+      { opacity: 1, y: 0, scale: 1, duration: 0.75, ease: 'power3.out' }
+    );
+  }, [isAuthenticated, reducedMotion, router]);
+
+  const handleGoogleLogin = () => {
+    setIsLoading(true);
+    trackEvent('click_google_login', { category: 'auth' });
+    announce('Redirecting to Google login');
+    window.location.href = `${apiBaseUrl}/auth/google`;
   };
 
-  const handleRetry = () => {
-    setError(null);
-    setAuthState('idle');
-    setStatusMessage('Connecting to Google...');
-    handleGoogleAuth();
+  const handleDemoLogin = () => {
+    setIsLoading(true);
+    trackEvent('click_demo_login', { category: 'auth' });
+    announce('Redirecting to demo login');
+    window.location.href = `${apiBaseUrl}/auth/demo`;
   };
+
+  if (isAuthenticated) {
+    return null;
+  }
 
   return (
-    <>
-      <style>{listItemStyles}</style>
-      <main style={pageStyles.main}>
-        <section style={pageStyles.showcase}>
-          <p style={pageStyles.kicker}>secure sign in</p>
-          <h1 style={pageStyles.headline}>Sign in to continue</h1>
-          <p style={pageStyles.copy}>
-            One-click authentication with your favorite provider. Your data stays private and secure.
+    <AuthRitualShell
+      visual={
+        <>
+          <div className="ornament-ring mb-auto w-fit bg-white/75 px-5 py-2 text-xs font-semibold tracking-[0.2em] text-slate-700">
+            RE:MIRAI ACCESS
+          </div>
+
+          <div className="pointer-events-none absolute inset-0 -z-10">
+            <MirrorCanvas variant="background" intensity={0.36} />
+            <div className="auth-visual-wash absolute inset-0" />
+          </div>
+
+          <div className="mt-auto max-w-[560px]">
+            <p className="mb-4 text-xs uppercase tracking-[0.24em] text-slate-500">Threshold</p>
+            <h1 className="font-display text-5xl leading-[0.95] text-slate-800 xl:text-6xl">
+              Step Through The Looking Glass.
+            </h1>
+            <p className="mt-5 max-w-[46ch] text-lg leading-relaxed text-slate-700">
+              Continue your ritual, gather peer echoes, and summon a persona that reflects what others
+              truly notice in you.
+            </p>
+          </div>
+        </>
+      }
+      form={
+        <div ref={panelRef} className="atmospheric-surface mx-auto w-full max-w-[540px] p-6 sm:p-9">
+          <p className="text-xs uppercase tracking-[0.24em] text-slate-500">Welcome Back</p>
+          <h2 className="mt-2 font-display text-5xl leading-[0.9] text-slate-800 sm:text-6xl">Enter</h2>
+          <p className="mt-4 text-base leading-relaxed text-slate-600">
+            Authenticate once and we will return you directly to your dashboard ritual flow.
           </p>
 
-          <ul style={pageStyles.pointList}>
-            {SECURITY_POINTS.map((point) => (
-              <li key={point} className="login-list-item" style={pageStyles.pointListItem}>
-                {point}
-              </li>
-            ))}
-          </ul>
+          <div className="mt-7 space-y-3">
+            <button
+              type="button"
+              onClick={handleGoogleLogin}
+              disabled={isLoading}
+              className="flex w-full items-center justify-center gap-3 rounded-xl border border-slate-300/80 bg-white px-4 py-3 text-sm font-semibold text-slate-700 transition hover:border-fuchsia-300 hover:bg-fuchsia-50 disabled:cursor-not-allowed disabled:opacity-60"
+            >
+              {isLoading ? 'Authenticating...' : 'Continue with Google'}
+            </button>
 
-          <div style={pageStyles.metricGrid}>
-            {PROGRESS_METRICS.map((metric) => (
-              <ProgressBar key={metric.label} label={metric.label} value={metric.value} />
-            ))}
+            <button
+              type="button"
+              onClick={handleDemoLogin}
+              disabled={isLoading}
+              className="flex w-full items-center justify-center rounded-xl border border-fuchsia-300/55 bg-fuchsia-100/40 px-4 py-3 text-sm font-semibold text-slate-700 transition hover:bg-fuchsia-100/70 disabled:cursor-not-allowed disabled:opacity-60"
+            >
+              Continue with Demo Access
+            </button>
           </div>
-        </section>
 
-        <div style={pageStyles.cardWrapper}>
-          <MirrorCanvas variant="background" intensity={0.6} />
-
-          <div ref={cardRef} style={pageStyles.card}>
-            <div style={pageStyles.header}>
-              <h1 style={pageStyles.title}>✨ Re:MirAI</h1>
-              <h2 style={pageStyles.subtitle}>Ready to discover your reflection?</h2>
-            </div>
-
-            <div style={pageStyles.content}>
-              {authState === 'loading' && (
-                <ProgressTracker currentStep={progressStep} style={pageStyles.progressTracker} />
-              )}
-
-              {/* Multi-provider Social Auth Buttons */}
-              <div style={pageStyles.authButtons}>
-                <SocialAuthButton provider="google" />
-                <SocialAuthButton provider="kakao" />
-                <SocialAuthButton provider="apple" />
-              </div>
-
-              {error && <p style={pageStyles.errorMessage}>{error}</p>}
-
-              <p style={pageStyles.privacyPromise}>
-                We only use your email to save your progress. No data is sold.
-              </p>
-
-              <p style={pageStyles.helpText}>Quick, secure, simple</p>
-            </div>
-
-            <div style={pageStyles.trustBadges} role="list">
-              {TRUST_BADGES.map((badge) => (
-                <div key={badge.label} role="listitem">
-                  <TrustBadge
-                    icon={badge.icon}
-                    label={badge.label}
-                    description={badge.description}
-                    aria-label={`${badge.label} — ${badge.description}`}
-                  />
-                </div>
-              ))}
-            </div>
-
-            <div style={pageStyles.footer}>
-              <Button
-                variant="ghost"
-                size="sm"
-                onClick={() => router.push('/')}
-                aria-label="Return to home page"
+          <div className="mt-7 grid gap-3">
+            {TRUST_BADGES.map((badge) => (
+              <div
+                key={badge.label}
+                className="rounded-xl border border-slate-500/20 bg-white/55 px-4 py-3"
               >
-                ← Back to home
-              </Button>
-            </div>
+                <h3 className="text-sm font-semibold text-slate-700">{badge.label}</h3>
+                <p className="mt-1 text-xs leading-relaxed text-slate-600">{badge.description}</p>
+              </div>
+            ))}
           </div>
         </div>
-      </main>
-    </>
+      }
+    />
   );
 }

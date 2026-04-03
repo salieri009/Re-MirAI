@@ -4,27 +4,12 @@ import { useEffect, useRef } from 'react';
 import { useReducedMotion } from '@/hooks/useAccessibility';
 import { delightInteractions } from '@/lib/micro-interactions';
 import { tokens } from '@/design-tokens';
-import { CSSProperties } from '@/lib/styles';
 
 interface MirrorCanvasProps {
     variant?: 'background' | 'mirror';
     intensity?: number;
     interactionMode?: 'default' | 'converge';
 }
-
-const canvasStyle: CSSProperties = {
-    position: 'absolute',
-    inset: 0,
-    width: '100%',
-    height: '100%',
-    pointerEvents: 'none',
-    zIndex: 0,
-};
-
-const mirrorCanvasStyle: CSSProperties = {
-    ...canvasStyle,
-    opacity: 0.8,
-};
 
 export function MirrorCanvas({ variant = 'background', intensity = 1, interactionMode = 'default' }: MirrorCanvasProps) {
     const canvasRef = useRef<HTMLCanvasElement>(null);
@@ -92,7 +77,11 @@ export function MirrorCanvas({ variant = 'background', intensity = 1, interactio
     return (
         <canvas
             ref={canvasRef}
-            style={variant === 'background' ? canvasStyle : mirrorCanvasStyle}
+            className={
+                variant === 'background'
+                    ? 'pointer-events-none absolute inset-0 z-0 h-full w-full'
+                    : 'pointer-events-none absolute inset-0 z-0 h-full w-full opacity-80'
+            }
         />
     );
 }

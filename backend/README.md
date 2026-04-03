@@ -17,7 +17,6 @@ Backend API server for Re:MirAI built with NestJS, PostgreSQL, and Prisma.
 npm install
 
 # Set up environment variables
-cp .env.example .env
 # Edit .env with your configuration
 
 # Generate Prisma Client
@@ -33,15 +32,42 @@ npx prisma migrate dev
 # Start development server
 npm run start:dev
 
-# The server will run on http://localhost:3000
+# The server will run on http://localhost:3001
 ```
 
 ### API Endpoints
 
+#### Operational
+- `GET /` - Base endpoint
 - `GET /health` - Health check endpoint
-- `GET /v1/auth/google` - Initiate Google OAuth
-- `GET /v1/auth/google/callback` - Google OAuth callback
-- `POST /v1/auth/refresh` - Refresh access token
+
+#### Auth
+- `GET /auth/google`
+- `GET /auth/google/callback`
+- `GET /auth/kakao`
+- `GET /auth/kakao/callback`
+- `GET /auth/apple`
+- `POST /auth/apple/callback`
+- `POST /auth/refresh`
+- `POST /auth/logout`
+
+#### Survey
+- `POST /surveys`
+- `GET /surveys/my`
+- `GET /surveys/:linkOrId/public`
+- `POST /surveys/:id/responses`
+- `GET /surveys/:id/status`
+
+#### Persona
+- `POST /personas/synthesize`
+- `GET /personas`
+- `GET /personas/:id`
+
+#### Chat
+- `GET /chats/sessions`
+- `POST /chats/sessions`
+- `GET /chats/:sessionId/history`
+- `POST /chats/:sessionId/messages`
 
 ## 📁 Project Structure
 
@@ -76,14 +102,14 @@ npx prisma migrate reset
 
 ## 🔐 Authentication
 
-The backend uses Google OAuth 2.0 for authentication with JWT tokens:
+The backend uses Google, Kakao, and Apple OAuth with JWT tokens:
 
 - **Access Token**: Valid for 1 hour
 - **Refresh Token**: Valid for 7 days
 
 ## 📝 Environment Variables
 
-See `.env.example` for required environment variables:
+Required environment variables are configured in `.env`:
 
 - `DATABASE_URL` - PostgreSQL connection string
 - `JWT_SECRET` - Secret key for JWT signing
@@ -91,7 +117,16 @@ See `.env.example` for required environment variables:
 - `GOOGLE_CLIENT_ID` - Google OAuth client ID
 - `GOOGLE_CLIENT_SECRET` - Google OAuth client secret
 - `GOOGLE_CALLBACK_URL` - OAuth callback URL
+- `KAKAO_CLIENT_ID` - Kakao OAuth client ID
+- `KAKAO_CLIENT_SECRET` - Kakao OAuth client secret
+- `KAKAO_CALLBACK_URL` - Kakao callback URL
+- `APPLE_CLIENT_ID` - Apple OAuth client ID
+- `APPLE_TEAM_ID` - Apple Team ID
+- `APPLE_KEY_ID` - Apple key ID
+- `APPLE_PRIVATE_KEY` - Apple private key
+- `APPLE_CALLBACK_URL` - Apple callback URL
 - `FRONTEND_URL` - Frontend application URL (for CORS)
+- `OPENAI_API_KEY` - OpenAI API key
 
 ## 🧪 Testing
 
@@ -111,6 +146,10 @@ npm run test:cov
 For detailed development plan, see:
 - [Backend Architecture](../docs/BACKEND_ARCHITECTURE.md)
 - [API Common](../docs/api/API_COMMON.md)
+- [API Auth](../docs/api/API_AUTH.md)
+- [API Survey](../docs/api/API_SURVEY.md)
+- [API Persona](../docs/api/API_PERSONA.md)
+- [API Chat](../docs/api/API_CHAT.md)
 - [Database Model](../docs/DATABASE_MODEL.md)
 
 ## 🛠️ Tech Stack
@@ -145,4 +184,4 @@ Check your `DATABASE_URL` in `.env` file and ensure PostgreSQL is running.
 
 ### Port already in use
 
-Change the `PORT` in `.env` or kill the process using port 3000.
+Change the `PORT` in `.env` or kill the process using port 3001.

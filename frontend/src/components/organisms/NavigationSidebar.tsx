@@ -27,8 +27,18 @@ export function NavigationSidebar({ currentPath }: NavigationSidebarProps) {
             ),
         },
         {
-            label: 'Chat',
-            href: '/chat',
+            label: 'Ritual Hub',
+            href: '/dashboard/ritual',
+            icon: (
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                    <path d="M12 22c5.523 0 10-4.477 10-10S17.523 2 12 2 2 6.477 2 12s4.477 10 10 10z" />
+                    <path d="m9 12 2 2 4-4" />
+                </svg>
+            ),
+        },
+        {
+            label: 'Practice',
+            href: '/dashboard/practice',
             icon: (
                 <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
                     <path d="M14 9a2 2 0 0 1-2 2H6l-4 4V4c0-1.1.9-2 2-2h8a2 2 0 0 1 2 2v5Z" />
@@ -37,12 +47,13 @@ export function NavigationSidebar({ currentPath }: NavigationSidebarProps) {
             ),
         },
         {
-            label: 'Rituals',
-            href: '/survey',
+            label: 'Summon',
+            href: '/dashboard/synthesize',
             icon: (
                 <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                    <path d="M12 22c5.523 0 10-4.477 10-10S17.523 2 12 2 2 6.477 2 12s4.477 10 10 10z" />
-                    <path d="m9 12 2 2 4-4" />
+                    <path d="M12 3v18" />
+                    <path d="m5 10 7-7 7 7" />
+                    <path d="m5 14 7 7 7-7" />
                 </svg>
             ),
         },

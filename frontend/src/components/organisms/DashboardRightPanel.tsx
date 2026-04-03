@@ -6,7 +6,6 @@ import { ProgressBar } from '@/components/molecules/ProgressBar';
 import { Button } from '@/components/atoms/Button';
 import { StageBadge, type SurveyStage } from '@/components/molecules/StageBadge';
 import { useAuthStore } from '@/stores/authStore';
-import { colors, spacing, radius, typography, CSSProperties } from '@/lib/styles';
 
 const QUESTS = [
     { name: 'Daily Ritual', progress: '2 / 3', status: 'In progress' },
@@ -19,165 +18,36 @@ const ACTIONS = [
     { label: 'Resume Summoning', href: '/summon' },
 ];
 
-const rightPanelStyle: CSSProperties = {
-    display: 'flex',
-    flexDirection: 'column',
-    gap: spacing.lg,
-    padding: spacing.lg,
-    width: 320,
-    background: colors.surface,
-    borderLeft: `1px solid ${colors.border}`,
-    overflowY: 'auto',
-};
-
-const sectionStyle: CSSProperties = {
-    display: 'flex',
-    flexDirection: 'column',
-    gap: spacing.sm,
-};
-
-const sectionKickerStyle: CSSProperties = {
-    fontSize: typography.size.xs,
-    color: colors.textMuted,
-    textTransform: 'uppercase',
-    letterSpacing: '0.1em',
-};
-
-const personaCardStyle: CSSProperties = {
-    padding: spacing.md,
-    background: colors.surfaceElevated,
-    borderRadius: radius.lg,
-    border: `1px solid ${colors.border}`,
-};
-
-const personaNameStyle: CSSProperties = {
-    fontSize: typography.size.lg,
-    fontWeight: typography.weight.semiBold,
-    color: colors.text,
-    marginBottom: spacing.xxs,
-};
-
-const personaMetaStyle: CSSProperties = {
-    fontSize: typography.size.sm,
-    color: colors.textMuted,
-    marginBottom: spacing.md,
-};
-
-const surveyCardStyle: CSSProperties = {
-    padding: spacing.md,
-    background: colors.surfaceElevated,
-    borderRadius: radius.lg,
-    border: `1px solid ${colors.border}`,
-};
-
-const cardRowStyle: CSSProperties = {
-    display: 'flex',
-    justifyContent: 'space-between',
-    alignItems: 'center',
-    marginBottom: spacing.sm,
-    fontSize: typography.size.sm,
-    color: colors.textSecondary,
-};
-
-const cardRowRightStyle: CSSProperties = {
-    display: 'flex',
-    alignItems: 'center',
-    gap: spacing.sm,
-};
-
-const badgeStyle: CSSProperties = {
-    padding: `${spacing.xxs}px ${spacing.sm}px`,
-    background: colors.primary,
-    borderRadius: radius.sm,
-    fontSize: typography.size.xs,
-    fontWeight: typography.weight.medium,
-    color: colors.text,
-};
-
-const cardHintStyle: CSSProperties = {
-    fontSize: typography.size.sm,
-    color: colors.textMuted,
-    marginTop: spacing.sm,
-};
-
-const questListStyle: CSSProperties = {
-    display: 'flex',
-    flexDirection: 'column',
-    gap: spacing.sm,
-};
-
-const questItemStyle: CSSProperties = {
-    display: 'flex',
-    justifyContent: 'space-between',
-    alignItems: 'center',
-    padding: spacing.sm,
-    background: colors.surfaceElevated,
-    borderRadius: radius.md,
-    border: `1px solid ${colors.border}`,
-};
-
-const questNameStyle: CSSProperties = {
-    fontSize: typography.size.sm,
-    fontWeight: typography.weight.medium,
-    color: colors.text,
-};
-
-const questMetaStyle: CSSProperties = {
-    fontSize: typography.size.xs,
-    color: colors.textMuted,
-};
-
-const questStatusStyle: CSSProperties = {
-    fontSize: typography.size.xs,
-    color: colors.accent,
-};
-
-const linksStyle: CSSProperties = {
-    display: 'flex',
-    flexDirection: 'column',
-    gap: spacing.xs,
-};
-
-const linkStyle: CSSProperties = {
-    color: colors.accent,
-    fontSize: typography.size.sm,
-    textDecoration: 'none',
-};
-
-const primaryActionStyle: CSSProperties = {
-    marginTop: spacing.sm,
-};
-
 export function DashboardRightPanel() {
     const router = useRouter();
     const { user } = useAuthStore();
     const surveyStage: SurveyStage = 'COLLECTING' as SurveyStage;
 
     return (
-        <aside style={rightPanelStyle}>
-            <div style={sectionStyle}>
-                <p style={sectionKickerStyle}>persona resonance</p>
-                <div style={personaCardStyle}>
+        <aside className="flex w-80 flex-col gap-6 overflow-y-auto border-l border-slate-700/25 bg-surface p-6">
+            <div className="flex flex-col gap-2">
+                <p className="text-xs uppercase tracking-[0.1em] text-text-muted">persona resonance</p>
+                <div className="rounded-lg border border-slate-700/25 bg-surface-elevated p-4">
                     <div>
-                        <p style={personaNameStyle}>{user?.name ?? 'Summoner'}</p>
-                        <p style={personaMetaStyle}>Phase 1 · Ritual Build 2.0</p>
+                        <p className="mb-1 text-lg font-semibold text-text-primary">{user?.name ?? 'Summoner'}</p>
+                        <p className="mb-4 text-sm text-text-muted">Phase 1 · Ritual Build 2.0</p>
                     </div>
                     <ProgressBar value={58} label="Bonding meter" />
                 </div>
             </div>
 
-            <div style={sectionStyle}>
-                <p style={sectionKickerStyle}>survey readiness</p>
-                <div style={surveyCardStyle}>
-                    <div style={cardRowStyle}>
+            <div className="flex flex-col gap-2">
+                <p className="text-xs uppercase tracking-[0.1em] text-text-muted">survey readiness</p>
+                <div className="rounded-lg border border-slate-700/25 bg-surface-elevated p-4">
+                    <div className="mb-2 flex items-center justify-between text-sm text-text-secondary">
                         <span>Active constellation</span>
-                        <div style={cardRowRightStyle}>
-                            <span style={badgeStyle}>12 / 14</span>
+                        <div className="flex items-center gap-2">
+                            <span className="rounded-sm bg-primary px-2 py-0.5 text-xs font-medium text-text-primary">12 / 14</span>
                             <StageBadge stage={surveyStage} />
                         </div>
                     </div>
                     <ProgressBar value={86} showValue accent={(surveyStage as string) === 'READY'} />
-                    <p style={cardHintStyle}>
+                    <p className="mt-2 text-sm text-text-muted">
                         {surveyStage === 'READY'
                             ? 'Ready to begin synthesis!'
                             : 'Collect 2 more echoes to unlock reveal.'}
@@ -185,33 +55,35 @@ export function DashboardRightPanel() {
                 </div>
             </div>
 
-            <div style={sectionStyle}>
-                <p style={sectionKickerStyle}>quests</p>
-                <div style={questListStyle}>
+            <div className="flex flex-col gap-2">
+                <p className="text-xs uppercase tracking-[0.1em] text-text-muted">quests</p>
+                <div className="flex flex-col gap-2">
                     {QUESTS.map((quest) => (
-                        <div key={quest.name} style={questItemStyle}>
+                        <div key={quest.name} className="flex items-center justify-between rounded-md border border-slate-700/25 bg-surface-elevated p-2">
                             <div>
-                                <p style={questNameStyle}>{quest.name}</p>
-                                <p style={questMetaStyle}>{quest.progress}</p>
+                                <p className="text-sm font-medium text-text-primary">{quest.name}</p>
+                                <p className="text-xs text-text-muted">{quest.progress}</p>
                             </div>
-                            <span style={questStatusStyle}>{quest.status}</span>
+                            <span className="text-xs text-accent">{quest.status}</span>
                         </div>
                     ))}
                 </div>
             </div>
 
-            <div style={sectionStyle}>
-                <p style={sectionKickerStyle}>shortcuts</p>
-                <div style={linksStyle}>
+            <div className="flex flex-col gap-2">
+                <p className="text-xs uppercase tracking-[0.1em] text-text-muted">shortcuts</p>
+                <div className="flex flex-col gap-1">
                     {ACTIONS.map((action) => (
-                        <Link key={action.label} href={action.href} style={linkStyle}>
+                        <Link key={action.label} href={action.href} className="text-sm text-accent no-underline hover:text-accent-light">
                             {action.label}
                         </Link>
                     ))}
                 </div>
-                <Button style={primaryActionStyle} onClick={() => router.push('/summon')}>
+                <div className="mt-2">
+                    <Button onClick={() => router.push('/summon')}>
                     Launch Summoning Page
-                </Button>
+                    </Button>
+                </div>
             </div>
         </aside>
     );

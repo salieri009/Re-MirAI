@@ -1,51 +1,70 @@
 :root {
-  /* === CORE 3-COLOR PALETTE (HSL) === */
-  /* Primary: Amethyst Purple #845EC2 */
-  --hue-primary: 263;
-  --sat-primary: 48%;
-  --lig-primary: 56%;
+  /* === CORE SMALL SWITCH PALETTE V2 (HSL) === */
+  /* Primary: Fuchsia #d946ef */
+  --hue-primary: 292;
+  --sat-primary: 84%;
+  --lig-primary: 61%;
 
-  /* Accent: Mint Green #00C9A7 */
-  --hue-accent: 170;
-  --sat-accent: 100%;
-  --lig-accent: 39%;
+  /* Accent: Mist #e6ebf8 */
+  --hue-accent: 224;
+  --sat-accent: 53%;
+  --lig-accent: 94%;
 
-  /* Highlight: Light Lavender #C197FF */
-  --hue-highlight: 264;
-  --sat-highlight: 100%;
-  --lig-highlight: 80%;
+  /* Highlight: Anchor #334155 */
+  --hue-highlight: 215;
+  --sat-highlight: 25%;
+  --lig-highlight: 27%;
 
-  /* Extra: Dark Green #005b44 */
-  --hue-green-dark: 165;
-  --sat-green-dark: 100%;
-  --lig-green-dark: 18%;
+  /* Extra: Success Green #10b981 */
+  --hue-green-dark: 160;
+  --sat-green-dark: 84%;
+  --lig-green-dark: 39%;
 
   /* === SEMANTIC COLORS === */
   --color-primary: hsl(var(--hue-primary), var(--sat-primary), var(--lig-primary));
-  --color-primary-dark: hsl(var(--hue-primary), var(--sat-primary), 40%);
+  --color-primary-dark: hsl(var(--hue-primary), var(--sat-primary), 48%);
   --color-primary-light: hsl(var(--hue-primary), var(--sat-primary), 70%);
 
   --color-accent: hsl(var(--hue-accent), var(--sat-accent), var(--lig-accent));
-  --color-accent-dark: hsl(var(--hue-accent), var(--sat-accent), 30%);
-  --color-accent-light: hsl(var(--hue-accent), var(--sat-accent), 50%);
+  --color-accent-dark: hsl(224, 35%, 88%);
+  --color-accent-light: hsl(224, 65%, 97%);
 
   --color-highlight: hsl(var(--hue-highlight), var(--sat-highlight), var(--lig-highlight));
 
   /* === BACKGROUNDS & SURFACES === */
-  /* Dark Mode Default */
-  --color-bg-dark: #0A0112;
-  --color-surface: hsla(var(--hue-primary), 30%, 20%, 0.4);
-  --color-surface-elevated: hsla(var(--hue-primary), 30%, 30%, 0.6);
-  --color-border: hsla(var(--hue-highlight), 100%, 80%, 0.2);
+  /* Light-first by design system v2 */
+  --color-bg-dark: #e6ebf8;
+  --color-surface: hsla(var(--hue-highlight), 20%, 95%, 0.7);
+  --color-surface-elevated: hsla(var(--hue-highlight), 20%, 92%, 0.85);
+  --color-border: hsla(var(--hue-highlight), 20%, 40%, 0.2);
   
   /* Legacy: Keep green-dark for backward compatibility if needed */
   --color-accent-green-dark: hsl(var(--hue-green-dark), var(--sat-green-dark), var(--lig-green-dark));
 
   /* === TEXT COLORS === */
-  --color-text-primary: #f8f6f7;
-  --color-text-secondary: #c197ff;
-  --color-text-muted: rgba(248, 246, 247, 0.6);
-  --color-text-inverse: #0A0112;
+  --color-text-primary: #334155;
+  --color-text-secondary: #475569;
+  --color-text-muted: rgba(51, 65, 85, 0.68);
+  --color-text-inverse: #f8fafc;
+
+  /* === LEGACY VARIABLE ALIASES (compatibility layer) === */
+  --background-dark: var(--color-bg-dark);
+  --card-background: var(--color-surface);
+  --border-color: var(--color-border);
+  --text-primary: var(--color-text-primary);
+  --text-secondary: var(--color-text-secondary);
+  --accent: var(--color-primary);
+  --color-bg-secondary: var(--color-bg-dark);
+  --color-secondary: var(--color-highlight);
+
+  --font-size-xs: 0.75rem;
+  --font-size-sm: 0.875rem;
+  --font-size-md: 1rem;
+  --font-size-lg: 1.125rem;
+  --font-size-xl: 1.5rem;
+  --font-weight-medium: 500;
+  --font-weight-semibold: 600;
+  --radius-full: var(--radius-pill);
 
   /* === SPACING (4px Grid) === */
   --grid-unit: 4px;
@@ -69,9 +88,9 @@
   /* 64px */
 
   /* === TYPOGRAPHY === */
-  --font-display: 'Space Grotesk', sans-serif;
-  --font-sans: 'Plus Jakarta Sans', sans-serif;
-  --font-mono: 'Space Mono', monospace;
+  --font-display: 'Sora', sans-serif;
+  --font-sans: 'Manrope', sans-serif;
+  --font-mono: 'IBM Plex Mono', monospace;
   --font-weight-regular: 400;
   --font-weight-medium: 500;
   --font-weight-semibold: 600;
@@ -82,8 +101,8 @@
   --line-height-loose: 1.6;
 
   /* === SHADOWS === */
-  --shadow-glow-primary: 0 0 32px hsla(var(--hue-primary), 100%, 50%, 0.3);
-  --shadow-glow-accent: 0 0 28px hsla(var(--hue-accent), 100%, 50%, 0.3);
+  --shadow-glow-primary: 0 0 32px hsla(var(--hue-primary), 84%, 61%, 0.28);
+  --shadow-glow-accent: 0 0 28px hsla(var(--hue-highlight), 25%, 27%, 0.18);
 
   /* === RADII === */
   --radius-xs: 0.25rem;
@@ -103,11 +122,10 @@
   --z-tooltip: 1070;
 }
 
-/* Dark mode is default, but we support light mode override if needed (though ver2 is dark-first) */
+/* Light mode is default for Small Switch Palette v2. */
 @media (prefers-color-scheme: light) {
 
-  /* Keeping minimal light mode support for now, but ver2 is primarily dark */
   :root {
-    /* Invert logic could go here if requested */
+    /* Default token layer already targets light-first UI. */
   }
 }

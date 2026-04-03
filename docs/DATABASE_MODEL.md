@@ -39,24 +39,56 @@
 - bondLevel
 - createdAt/updatedAt
 
-## 3. 예정(주석 처리) 엔티티
-- ChatSession
-- ChatMessage
+### ChatSession
+- id (uuid, PK)
+- userId (FK -> User)
+- personaId (FK -> Persona)
+- startedAt/lastMsgAt
+
+### ChatMessage
+- id (uuid, PK)
+- sessionId (FK -> ChatSession)
+- sender (USER/AI)
+- content (Text)
+- reactions (Json)
+- createdAt
+
+### Wallet (Gamification)
+- id (uuid, PK)
+- userId (FK -> User, UI)
+- crystals, premium
+- updatedAt
+
+### Quest & UserQuest (Gamification)
+- **Quest**: id, name, title, description, type (daily, weekly), reward, target
+- **UserQuest**: id, userId, questId (FK), progress, completed, isClaimed, resetAt (KST 기준 UTC)
+
+## 3. 핵심 모듈 동기화 규칙
+
+### 동기화 상태
+- **완료**: 초기 기획된 Survey, Persona, Chat 뿐만 아니라 Social, Gamification(Wallet, Quests) 도메인의 스키마도 `schema.prisma`에 모두 공식 지정됨.
+
+### 마이그레이션 규칙
+1. `backend/prisma/schema.prisma` 수정
+2. `npx prisma migrate dev --name <descriptive_name>` 실행
+3. `npx prisma generate` 필수 실행하여 TypeScript 타입 갱신
+4. 모델 변경 시 모듈의 DTO 점검
 
 ## 4. 관계
-- User 1:N Survey
-- User 1:N Persona
-- Survey 1:N SurveyResponse
-- User와 Survey는 onDelete: Cascade
+- User 1:N Survey, Persona, ChatSession
+- User 1:1 Wallet
+- Persona 1:N ChatSession
+- ChatSession 1:N ChatMessage
+- Quest 1:N UserQuest
+- User와 관련된 대다수 엔티티는 onDelete: Cascade (탈퇴 대비)
 
 ## 5. 인덱스 전략(현재)
 - Survey: userId, status, shareableLink
 - SurveyResponse: surveyId
 - Persona: userId
-- User: email(unique)
+- ChatSession: userId, personaId
+- ChatMessage: sessionId, createdAt
+- UserQuest: userId + questId + resetAt (유니크 제한 복합키)
 
-## 6. 마이그레이션 규칙
-1. schema.prisma 수정
-2. npx prisma migrate dev --name <name>
-3. npx prisma generate
-4. 서버 재시작
+## 6. 스키마 구성 검증
+- 모든 엔티티는 PRD `F-001`부터 `F-006` 명세를 완벽히 충족함.

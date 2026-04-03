@@ -3,10 +3,10 @@
 import { useState } from 'react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
+import clsx from 'clsx';
 import { useAuthStore } from '@/stores/authStore';
 import { WalletDisplay } from '@/components/molecules/WalletDisplay';
 import { DailyLoginModal } from '@/components/organisms/DailyLoginModal';
-import { colors, spacing, radius, typography, transitions, mergeStyles, CSSProperties } from '@/lib/styles';
 
 interface Channel {
     id: string;
@@ -27,151 +27,6 @@ const socialChannels: Channel[] = [
     { id: 'settings', name: 'Profile Settings', icon: '⚙️', href: '/profile/settings' },
 ];
 
-const sidebarStyle: CSSProperties = {
-    display: 'flex',
-    flexDirection: 'column',
-    width: 240,
-    height: '100vh',
-    background: colors.surface,
-    borderRight: `1px solid ${colors.border}`,
-    padding: spacing.md,
-};
-
-const serverInfoStyle: CSSProperties = {
-    display: 'flex',
-    alignItems: 'center',
-    gap: spacing.sm,
-    padding: spacing.md,
-    marginBottom: spacing.md,
-};
-
-const serverIconStyle: CSSProperties = {
-    width: 40,
-    height: 40,
-    borderRadius: radius.md,
-    background: `linear-gradient(135deg, ${colors.primary}, ${colors.accent})`,
-    display: 'flex',
-    alignItems: 'center',
-    justifyContent: 'center',
-    fontWeight: typography.weight.bold,
-    color: colors.text,
-};
-
-const serverNameStyle: CSSProperties = {
-    fontSize: typography.size.lg,
-    fontWeight: typography.weight.semiBold,
-    color: colors.text,
-    margin: 0,
-};
-
-const channelsStyle: CSSProperties = {
-    display: 'flex',
-    flexDirection: 'column',
-    gap: spacing.md,
-    flex: 1,
-    overflowY: 'auto',
-};
-
-const channelCategoryStyle: CSSProperties = {
-    display: 'flex',
-    flexDirection: 'column',
-    gap: spacing.xxs,
-};
-
-const categoryLabelStyle: CSSProperties = {
-    fontSize: typography.size.xs,
-    fontWeight: typography.weight.semiBold,
-    color: colors.textMuted,
-    textTransform: 'uppercase',
-    letterSpacing: '0.05em',
-    padding: `${spacing.sm}px ${spacing.sm}px`,
-};
-
-const channelBase: CSSProperties = {
-    display: 'flex',
-    alignItems: 'center',
-    gap: spacing.sm,
-    padding: `${spacing.sm}px ${spacing.sm}px`,
-    borderRadius: radius.md,
-    color: colors.textSecondary,
-    textDecoration: 'none',
-    fontSize: typography.size.sm,
-    transition: transitions.fast,
-};
-
-const channelActive: CSSProperties = {
-    background: colors.surfaceElevated,
-    color: colors.text,
-};
-
-const channelIconStyle: CSSProperties = {
-    fontSize: typography.size.base,
-    width: 20,
-    textAlign: 'center',
-};
-
-const dailyLoginBtnStyle: CSSProperties = {
-    display: 'flex',
-    alignItems: 'center',
-    justifyContent: 'center',
-    gap: spacing.sm,
-    padding: spacing.md,
-    marginTop: spacing.md,
-    background: `linear-gradient(135deg, ${colors.accent}20, ${colors.primary}20)`,
-    border: `1px solid ${colors.accent}40`,
-    borderRadius: radius.md,
-    color: colors.text,
-    fontSize: typography.size.sm,
-    fontWeight: typography.weight.medium,
-    cursor: 'pointer',
-    transition: transitions.normal,
-    fontFamily: typography.fontSans,
-};
-
-const walletSectionStyle: CSSProperties = {
-    paddingTop: spacing.md,
-    borderTop: `1px solid ${colors.border}`,
-    marginTop: spacing.md,
-};
-
-const userPanelStyle: CSSProperties = {
-    display: 'flex',
-    alignItems: 'center',
-    gap: spacing.sm,
-    padding: spacing.md,
-    marginTop: spacing.md,
-    borderTop: `1px solid ${colors.border}`,
-};
-
-const userAvatarStyle: CSSProperties = {
-    width: 32,
-    height: 32,
-    borderRadius: '50%',
-    background: colors.primary,
-    display: 'flex',
-    alignItems: 'center',
-    justifyContent: 'center',
-    fontSize: typography.size.sm,
-    fontWeight: typography.weight.bold,
-    color: colors.text,
-};
-
-const userInfoStyle: CSSProperties = {
-    display: 'flex',
-    flexDirection: 'column',
-};
-
-const userNameStyle: CSSProperties = {
-    fontSize: typography.size.sm,
-    fontWeight: typography.weight.medium,
-    color: colors.text,
-};
-
-const userStatusStyle: CSSProperties = {
-    fontSize: typography.size.xs,
-    color: colors.accent,
-};
-
 export function DashboardSidebar() {
     const pathname = usePathname();
     const { user } = useAuthStore();
@@ -179,24 +34,27 @@ export function DashboardSidebar() {
 
     return (
         <>
-            <aside style={sidebarStyle}>
-                <div style={serverInfoStyle}>
-                    <div style={serverIconStyle}>R</div>
-                    <h2 style={serverNameStyle}>Re:MirAI</h2>
+            <aside className="flex h-screen w-60 flex-col border-r border-slate-700/25 bg-surface p-4">
+                <div className="mb-4 flex items-center gap-2 p-4">
+                    <div className="flex h-10 w-10 items-center justify-center rounded-md bg-gradient-to-br from-primary to-accent font-bold text-text-primary">R</div>
+                    <h2 className="m-0 text-lg font-semibold text-text-primary">Re:MirAI</h2>
                 </div>
 
-                <nav style={channelsStyle}>
-                    <div style={channelCategoryStyle}>
-                        <span style={categoryLabelStyle}>CHANNELS</span>
+                <nav className="flex flex-1 flex-col gap-4 overflow-y-auto">
+                    <div className="flex flex-col gap-1">
+                        <span className="px-2 py-2 text-xs font-semibold uppercase tracking-[0.05em] text-text-muted">CHANNELS</span>
                         {channels.map((channel) => {
                             const isActive = pathname === channel.href;
                             return (
                                 <Link
                                     key={channel.id}
                                     href={channel.href}
-                                    style={mergeStyles(channelBase, isActive && channelActive)}
+                                    className={clsx(
+                                        'flex items-center gap-2 rounded-md px-2 py-2 text-sm text-text-secondary transition-colors duration-150',
+                                        isActive && 'bg-surface-elevated text-text-primary'
+                                    )}
                                 >
-                                    <span style={channelIconStyle}>{channel.icon}</span>
+                                    <span className="w-5 text-center text-base">{channel.icon}</span>
                                     <span>{channel.name}</span>
                                 </Link>
                             );
@@ -204,17 +62,20 @@ export function DashboardSidebar() {
                     </div>
 
                     {/* Social Features (FR-005) */}
-                    <div style={channelCategoryStyle}>
-                        <span style={categoryLabelStyle}>SOCIAL</span>
+                    <div className="flex flex-col gap-1">
+                        <span className="px-2 py-2 text-xs font-semibold uppercase tracking-[0.05em] text-text-muted">SOCIAL</span>
                         {socialChannels.map((channel) => {
                             const isActive = pathname === channel.href;
                             return (
                                 <Link
                                     key={channel.id}
                                     href={channel.href}
-                                    style={mergeStyles(channelBase, isActive && channelActive)}
+                                    className={clsx(
+                                        'flex items-center gap-2 rounded-md px-2 py-2 text-sm text-text-secondary transition-colors duration-150',
+                                        isActive && 'bg-surface-elevated text-text-primary'
+                                    )}
                                 >
-                                    <span style={channelIconStyle}>{channel.icon}</span>
+                                    <span className="w-5 text-center text-base">{channel.icon}</span>
                                     <span>{channel.name}</span>
                                 </Link>
                             );
@@ -224,24 +85,24 @@ export function DashboardSidebar() {
 
                 {/* Daily Login Button (FR-006.3) */}
                 <button
-                    style={dailyLoginBtnStyle}
+                    className="mt-4 flex items-center justify-center gap-2 rounded-md border border-accent/30 bg-gradient-to-br from-accent/15 to-primary/15 p-4 text-sm font-medium text-text-primary transition-colors duration-200 hover:border-accent/50"
                     onClick={() => setShowDailyLogin(true)}
                 >
                     🎁 Daily Reward
                 </button>
 
                 {/* FR-006.2: Memory Crystals Wallet */}
-                <div style={walletSectionStyle}>
+                <div className="mt-4 border-t border-slate-700/25 pt-4">
                     <WalletDisplay />
                 </div>
 
-                <div style={userPanelStyle}>
-                    <div style={userAvatarStyle}>
+                <div className="mt-4 flex items-center gap-2 border-t border-slate-700/25 p-4">
+                    <div className="flex h-8 w-8 items-center justify-center rounded-full bg-primary text-sm font-bold text-text-primary">
                         {user?.name?.[0]?.toUpperCase() || 'U'}
                     </div>
-                    <div style={userInfoStyle}>
-                        <div style={userNameStyle}>{user?.name || 'User'}</div>
-                        <div style={userStatusStyle}>Online</div>
+                    <div className="flex flex-col">
+                        <div className="text-sm font-medium text-text-primary">{user?.name || 'User'}</div>
+                        <div className="text-xs text-accent">Online</div>
                     </div>
                 </div>
             </aside>

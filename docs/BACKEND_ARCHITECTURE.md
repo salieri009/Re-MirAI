@@ -8,14 +8,16 @@
 - OpenAI 연동
 - Chat: REST + WebSocket 병행
 
-## 2. 모듈(현재 코드 기준)
+## 2. 모듈 (현재 코드 및 설계 기준)
 - auth
 - survey
 - persona
 - chat
 - openai
+- social (신규 구현 대상)
+- gamification (신규 구현 대상)
 
-## 3. 라우트 개요(현재 구현)
+## 3. 라우트 개요(설계 완비)
 ### Auth
 - GET /auth/google, /auth/google/callback
 - GET /auth/kakao, /auth/kakao/callback
@@ -34,12 +36,22 @@
 - POST /personas/synthesize
 - GET /personas
 - GET /personas/:id
+- POST /personas/:id/card
 
 ### Chat
 - GET /chats/sessions
 - POST /chats/sessions
 - GET /chats/:sessionId/history
 - POST /chats/:sessionId/messages
+
+### Social (구현 예정)
+- GET /social/compatibility
+- GET /social/rooms/:userId
+
+### Gamification (구현 예정)
+- GET /quests
+- POST /quests/:questId/claim
+- GET /currency/balance
 
 ## 4. 보안/검증
 - JwtAuthGuard로 보호 라우트 구분
@@ -55,3 +67,8 @@
 - Prisma migrate/generate 워크플로우 준수
 - 모듈 단위로 컨트롤러/서비스/DTO 분리
 - 합성/채팅 오류는 사용자 재시도 가능 경로 제공
+
+## 7. PRD 구현 정합 조건
+- F-001~F-006 기능은 모두 API 계약과 1:1로 대응되어야 함
+- Chat 모듈은 코드에서 `chatSession`, `chatMessage`를 사용하므로 Prisma 스키마와 동기화되어야 함
+- 신규 기능 추가 시 `docs/api/*.md`를 먼저 갱신한 뒤 Controller/DTO 구현을 진행

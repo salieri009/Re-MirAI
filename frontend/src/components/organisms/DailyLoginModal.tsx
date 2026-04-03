@@ -2,8 +2,8 @@
 
 import React, { useState } from 'react';
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
+import clsx from 'clsx';
 import { Button } from '@/components/atoms/Button';
-import { colors, spacing, radius, typography, shadows, mergeStyles, CSSProperties } from '@/lib/styles';
 
 interface DailyLoginReward {
     day: number;
@@ -58,175 +58,6 @@ interface DailyLoginModalProps {
     onClose: () => void;
 }
 
-const overlayStyle: CSSProperties = {
-    position: 'fixed',
-    inset: 0,
-    background: 'rgba(0, 0, 0, 0.7)',
-    backdropFilter: 'blur(4px)',
-    display: 'flex',
-    alignItems: 'center',
-    justifyContent: 'center',
-    zIndex: 100,
-};
-
-const modalStyle: CSSProperties = {
-    background: colors.surface,
-    borderRadius: radius.xl,
-    border: `1px solid ${colors.border}`,
-    boxShadow: shadows.xl,
-    maxWidth: 480,
-    width: '90%',
-    maxHeight: '90vh',
-    overflow: 'auto',
-};
-
-const headerStyle: CSSProperties = {
-    display: 'flex',
-    alignItems: 'center',
-    justifyContent: 'space-between',
-    padding: spacing.lg,
-    borderBottom: `1px solid ${colors.border}`,
-};
-
-const headerTitleStyle: CSSProperties = {
-    fontSize: typography.size.xl,
-    fontWeight: typography.weight.bold,
-    color: colors.text,
-    margin: 0,
-};
-
-const closeBtnStyle: CSSProperties = {
-    width: 32,
-    height: 32,
-    display: 'flex',
-    alignItems: 'center',
-    justifyContent: 'center',
-    background: 'transparent',
-    border: 'none',
-    color: colors.textMuted,
-    fontSize: typography.size['2xl'],
-    cursor: 'pointer',
-    borderRadius: radius.sm,
-};
-
-const streakInfoStyle: CSSProperties = {
-    display: 'flex',
-    flexDirection: 'column',
-    alignItems: 'center',
-    padding: spacing.lg,
-    gap: spacing.sm,
-};
-
-const streakCircleStyle: CSSProperties = {
-    width: 80,
-    height: 80,
-    borderRadius: '50%',
-    background: `linear-gradient(135deg, ${colors.accent}, ${colors.primary})`,
-    display: 'flex',
-    flexDirection: 'column',
-    alignItems: 'center',
-    justifyContent: 'center',
-};
-
-const streakCountStyle: CSSProperties = {
-    fontSize: typography.size['2xl'],
-    fontWeight: typography.weight.bold,
-    color: colors.text,
-};
-
-const streakLabelStyle: CSSProperties = {
-    fontSize: typography.size.xs,
-    color: colors.text,
-    opacity: 0.8,
-};
-
-const maxStreakStyle: CSSProperties = {
-    fontSize: typography.size.sm,
-    color: colors.textMuted,
-};
-
-const rewardsGridStyle: CSSProperties = {
-    display: 'grid',
-    gridTemplateColumns: 'repeat(7, 1fr)',
-    gap: spacing.xs,
-    padding: `0 ${spacing.lg}px`,
-};
-
-const rewardCardBase: CSSProperties = {
-    display: 'flex',
-    flexDirection: 'column',
-    alignItems: 'center',
-    gap: spacing.xxs,
-    padding: spacing.sm,
-    background: colors.surfaceElevated,
-    borderRadius: radius.md,
-    border: `1px solid ${colors.border}`,
-};
-
-const rewardCardClaimed: CSSProperties = {
-    opacity: 0.5,
-};
-
-const rewardCardToday: CSSProperties = {
-    borderColor: colors.accent,
-    boxShadow: `0 0 10px ${colors.accent}40`,
-};
-
-const rewardCardBonus: CSSProperties = {
-    background: `linear-gradient(135deg, ${colors.accent}20, ${colors.primary}20)`,
-};
-
-const dayLabelStyle: CSSProperties = {
-    fontSize: 10,
-    color: colors.textMuted,
-};
-
-const rewardIconStyle: CSSProperties = {
-    fontSize: typography.size.lg,
-};
-
-const crystalAmountStyle: CSSProperties = {
-    fontSize: typography.size.xs,
-    fontWeight: typography.weight.medium,
-    color: colors.text,
-};
-
-const actionsStyle: CSSProperties = {
-    display: 'flex',
-    justifyContent: 'center',
-    padding: spacing.lg,
-};
-
-const claimedViewStyle: CSSProperties = {
-    display: 'flex',
-    flexDirection: 'column',
-    alignItems: 'center',
-    justifyContent: 'center',
-    padding: spacing.xxl,
-    gap: spacing.md,
-};
-
-const claimedIconStyle: CSSProperties = {
-    fontSize: 64,
-};
-
-const claimedAmountStyle: CSSProperties = {
-    fontSize: typography.size.xl,
-    fontWeight: typography.weight.bold,
-    color: colors.accent,
-};
-
-const loadingStyle: CSSProperties = {
-    padding: spacing.xxl,
-    textAlign: 'center',
-    color: colors.textMuted,
-};
-
-const alreadyClaimedStyle: CSSProperties = {
-    fontSize: typography.size.sm,
-    color: colors.textMuted,
-};
-
 /**
  * Daily Login Modal (FR-006.3)
  * 
@@ -262,54 +93,54 @@ export function DailyLoginModal({ isOpen, onClose }: DailyLoginModalProps) {
     if (!isOpen) return null;
 
     return (
-        <div style={overlayStyle} onClick={onClose}>
-            <div style={modalStyle} onClick={(e) => e.stopPropagation()}>
+        <div className="fixed inset-0 z-[100] flex items-center justify-center bg-black/70 backdrop-blur-sm" onClick={onClose}>
+            <div className="max-h-[90vh] w-[90%] max-w-[480px] overflow-auto rounded-xl border border-slate-700/25 bg-surface shadow-2xl" onClick={(e) => e.stopPropagation()}>
                 {showClaimed ? (
-                    <div style={claimedViewStyle}>
-                        <div style={claimedIconStyle}>💎</div>
+                    <div className="flex flex-col items-center justify-center gap-4 p-8">
+                        <div className="text-[64px]">💎</div>
                         <h2>Reward Claimed!</h2>
-                        <p style={claimedAmountStyle}>+{claimedAmount} Memory Crystals</p>
+                        <p className="text-xl font-bold text-accent">+{claimedAmount} Memory Crystals</p>
                     </div>
                 ) : isLoading ? (
-                    <div style={loadingStyle}>Loading...</div>
+                    <div className="p-8 text-center text-text-muted">Loading...</div>
                 ) : loginState ? (
                     <>
-                        <header style={headerStyle}>
-                            <h2 style={headerTitleStyle}>Daily Login Rewards</h2>
-                            <button style={closeBtnStyle} onClick={onClose}>×</button>
+                        <header className="flex items-center justify-between border-b border-slate-700/25 p-6">
+                            <h2 className="m-0 text-xl font-bold text-text-primary">Daily Login Rewards</h2>
+                            <button className="flex h-8 w-8 cursor-pointer items-center justify-center rounded-sm border-0 bg-transparent text-2xl text-text-muted" onClick={onClose}>×</button>
                         </header>
 
-                        <div style={streakInfoStyle}>
-                            <div style={streakCircleStyle}>
-                                <span style={streakCountStyle}>{loginState.currentStreak}</span>
-                                <span style={streakLabelStyle}>Day Streak</span>
+                        <div className="flex flex-col items-center gap-2 p-6">
+                            <div className="flex h-20 w-20 flex-col items-center justify-center rounded-full bg-gradient-to-br from-accent to-primary">
+                                <span className="text-2xl font-bold text-text-primary">{loginState.currentStreak}</span>
+                                <span className="text-xs text-text-primary/80">Day Streak</span>
                             </div>
-                            <p style={maxStreakStyle}>Best: {loginState.maxStreak} days</p>
+                            <p className="text-sm text-text-muted">Best: {loginState.maxStreak} days</p>
                         </div>
 
-                        <div style={rewardsGridStyle}>
+                        <div className="grid grid-cols-7 gap-1 px-6">
                             {loginState.rewards.map((reward) => (
                                 <div
                                     key={reward.day}
-                                    style={mergeStyles(
-                                        rewardCardBase,
-                                        reward.claimed && rewardCardClaimed,
-                                        reward.isToday && rewardCardToday,
-                                        reward.isBonus && rewardCardBonus
+                                    className={clsx(
+                                        'flex flex-col items-center gap-0.5 rounded-md border border-slate-700/25 bg-surface-elevated p-2',
+                                        reward.claimed && 'opacity-50',
+                                        reward.isToday && 'border-accent shadow-[0_0_10px_rgba(0,201,167,0.25)]',
+                                        reward.isBonus && 'bg-gradient-to-br from-accent/20 to-primary/20'
                                     )}
                                 >
-                                    <span style={dayLabelStyle}>Day {reward.day}</span>
-                                    <div style={rewardIconStyle}>
+                                    <span className="text-[10px] text-text-muted">Day {reward.day}</span>
+                                    <div className="text-lg">
                                         {reward.claimed ? '✓' : reward.isBonus ? '🎁' : '💎'}
                                     </div>
-                                    <span style={crystalAmountStyle}>
+                                    <span className="text-xs font-medium text-text-primary">
                                         {reward.crystals} {reward.isBonus && '✨'}
                                     </span>
                                 </div>
                             ))}
                         </div>
 
-                        <div style={actionsStyle}>
+                        <div className="flex justify-center p-6">
                             {loginState.todayClaimable ? (
                                 <Button
                                     variant="primary"
@@ -319,7 +150,7 @@ export function DailyLoginModal({ isOpen, onClose }: DailyLoginModalProps) {
                                     {claimMutation.isPending ? 'Claiming...' : 'Claim Today\'s Reward'}
                                 </Button>
                             ) : (
-                                <p style={alreadyClaimedStyle}>Today&apos;s reward already claimed!</p>
+                                <p className="text-sm text-text-muted">Today&apos;s reward already claimed!</p>
                             )}
                         </div>
                     </>

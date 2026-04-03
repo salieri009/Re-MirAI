@@ -3,6 +3,7 @@
 import { useState } from 'react';
 import { Button } from '@/components/atoms/Button';
 import { Input } from '@/components/atoms/Input';
+import { toast } from '@/lib/toast';
 
 interface WaitlistFormProps {
     campaign: string;
@@ -31,8 +32,8 @@ export function WaitlistForm({ campaign, source = 'landing', className = '' }: W
             });
 
             setSubmitted(true);
-        } catch (error) {
-            console.error('Waitlist submission failed:', error);
+        } catch {
+            toast.error('Waitlist submission failed. Please try again.');
         } finally {
             setLoading(false);
         }
@@ -48,7 +49,7 @@ export function WaitlistForm({ campaign, source = 'landing', className = '' }: W
                         const referralCode = `re-mirai-${email.split('@')[0]}`;
                         const shareUrl = `${window.location.origin}?ref=${referralCode}`;
                         navigator.clipboard.writeText(shareUrl);
-                        alert('Referral link copied!');
+                        toast.success('Referral link copied!');
                     }}
                     variant="ghost"
                     className="w-full text-sm h-9"

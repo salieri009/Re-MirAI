@@ -2,84 +2,8 @@
 
 import { useState, useEffect } from 'react';
 import Link from 'next/link';
+import clsx from 'clsx';
 import { useAuthStore } from '@/stores/authStore';
-import { colors, spacing, radius, typography, transitions, mergeStyles, CSSProperties } from '@/lib/styles';
-
-const headerBase: CSSProperties = {
-    position: 'fixed',
-    top: 0,
-    left: 0,
-    right: 0,
-    zIndex: 100,
-    padding: `${spacing.md}px ${spacing.xl}px`,
-    background: 'transparent',
-    transition: transitions.normal,
-};
-
-const headerScrolled: CSSProperties = {
-    background: `${colors.background}e6`,
-    backdropFilter: 'blur(10px)',
-    borderBottom: `1px solid ${colors.border}`,
-};
-
-const containerStyle: CSSProperties = {
-    maxWidth: 1280,
-    margin: '0 auto',
-    display: 'flex',
-    alignItems: 'center',
-    justifyContent: 'space-between',
-};
-
-const leftSectionStyle: CSSProperties = {
-    display: 'flex',
-    alignItems: 'center',
-    gap: spacing.xl,
-};
-
-const logoStyle: CSSProperties = {
-    fontSize: typography.size.xl,
-    fontFamily: typography.fontDisplay,
-    fontWeight: typography.weight.bold,
-    color: colors.text,
-    textDecoration: 'none',
-};
-
-const navStyle: CSSProperties = {
-    display: 'flex',
-    alignItems: 'center',
-    gap: spacing.lg,
-};
-
-const navLinkStyle: CSSProperties = {
-    fontSize: typography.size.sm,
-    color: colors.textSecondary,
-    textDecoration: 'none',
-    transition: transitions.fast,
-};
-
-const rightSectionStyle: CSSProperties = {
-    display: 'flex',
-    alignItems: 'center',
-    gap: spacing.md,
-};
-
-const loginLinkStyle: CSSProperties = {
-    fontSize: typography.size.sm,
-    color: colors.textSecondary,
-    textDecoration: 'none',
-    transition: transitions.fast,
-};
-
-const ctaButtonStyle: CSSProperties = {
-    padding: `${spacing.sm}px ${spacing.lg}px`,
-    background: `linear-gradient(135deg, ${colors.primary}, ${colors.accent})`,
-    color: colors.text,
-    fontSize: typography.size.sm,
-    fontWeight: typography.weight.medium,
-    borderRadius: radius.md,
-    textDecoration: 'none',
-    transition: transitions.normal,
-};
 
 export function Header() {
     const { isAuthenticated } = useAuthStore();
@@ -96,34 +20,37 @@ export function Header() {
         return () => window.removeEventListener('scroll', handleScroll);
     }, []);
 
-    const headerStyle = mergeStyles(headerBase, isScrolled && headerScrolled);
-
     return (
-        <header style={headerStyle}>
-            <div style={containerStyle}>
-                <div style={leftSectionStyle}>
-                    <Link href="/" style={logoStyle}>
+        <header
+            className={clsx(
+                'fixed left-0 right-0 top-0 z-[100] px-6 py-4 transition-all duration-300',
+                isScrolled && 'border-b border-slate-700/25 bg-background-dark/90 backdrop-blur-md'
+            )}
+        >
+            <div className="mx-auto flex w-full max-w-[1280px] items-center justify-between">
+                <div className="flex items-center gap-8">
+                    <Link href="/" className="font-display text-xl font-bold text-text-primary no-underline">
                         Re:MirAI
                     </Link>
-                    <nav style={navStyle}>
-                        <Link href="#features" style={navLinkStyle}>Features</Link>
-                        <Link href="#solutions" style={navLinkStyle}>Solutions</Link>
-                        <Link href="#resources" style={navLinkStyle}>Resources</Link>
-                        <Link href="#pricing" style={navLinkStyle}>Pricing</Link>
+                    <nav className="hidden items-center gap-6 md:flex">
+                        <Link href="#features" className="text-sm text-text-secondary no-underline transition-colors hover:text-text-primary">Features</Link>
+                        <Link href="#solutions" className="text-sm text-text-secondary no-underline transition-colors hover:text-text-primary">Solutions</Link>
+                        <Link href="#resources" className="text-sm text-text-secondary no-underline transition-colors hover:text-text-primary">Resources</Link>
+                        <Link href="#pricing" className="text-sm text-text-secondary no-underline transition-colors hover:text-text-primary">Pricing</Link>
                     </nav>
                 </div>
 
-                <div style={rightSectionStyle}>
+                <div className="flex items-center gap-4">
                     {mounted && isAuthenticated ? (
-                        <Link href="/dashboard" style={ctaButtonStyle}>
+                        <Link href="/dashboard" className="rounded-md bg-gradient-to-br from-primary to-accent px-4 py-2 text-sm font-medium text-text-primary no-underline transition-transform duration-200 hover:-translate-y-0.5">
                             Dashboard
                         </Link>
                     ) : (
                         <>
-                            <Link href="/login" style={loginLinkStyle}>
+                            <Link href="/login" className="hidden text-sm text-text-secondary no-underline transition-colors hover:text-text-primary sm:inline">
                                 Log In
                             </Link>
-                            <Link href="/login" style={ctaButtonStyle}>
+                            <Link href="/login" className="rounded-md bg-gradient-to-br from-primary to-accent px-4 py-2 text-sm font-medium text-text-primary no-underline transition-transform duration-200 hover:-translate-y-0.5">
                                 Get Started
                             </Link>
                         </>

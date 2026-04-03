@@ -1,27 +1,30 @@
 'use client';
 
-import { useEffect, useMemo, useRef, useState, CSSProperties } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import { useQuery } from '@tanstack/react-query';
 import { useRouter } from 'next/navigation';
 import { useAuthStore } from '@/stores/authStore';
 import { surveyApi } from '@/lib/api/survey';
+import { toast } from '@/lib/toast';
 import { Button } from '@/components/atoms/Button';
+import { FlowStepper } from '@/components/molecules/FlowStepper';
 import { StageBadge, type SurveyStage } from '@/components/molecules/StageBadge';
 import { SurveyLinkCard } from '@/components/molecules/SurveyLinkCard';
 import { ShareOptions } from '@/components/molecules/ShareOptions';
-import { guidanceInteractions } from '@/lib/micro-interactions';
+import { ProgressBar } from '@/components/molecules/ProgressBar';
+import { DashboardScaffold } from '@/components/layouts/DashboardScaffold';
 
 const SURVEY_TEMPLATES = [
   {
     id: 'foundations',
-    title: 'Foundations Ritual',
-    description: '10 cinematic questions that map core motivations.',
+    title: 'Foundations',
+    description: '10 cinematic questions mapping core motivations.',
     length: '6 min',
   },
   {
     id: 'bonding',
     title: 'Bonding Sprint',
-    description: 'Fast 5-question pulse to deepen the persona bond.',
+    description: 'Fast pulse to deepen the persona bond.',
     length: '3 min',
   },
   {
@@ -32,173 +35,13 @@ const SURVEY_TEMPLATES = [
   },
 ];
 
-// Styles
-const pageStyles = {
-  container: {
-    minHeight: '100vh',
-    padding: 'var(--space-2xl) var(--space-xl)',
-    background: 'var(--color-bg-secondary)',
-    display: 'flex',
-    justifyContent: 'center',
-  } as CSSProperties,
-  rhub: {
-    width: 'min(1200px, 100%)',
-    display: 'flex',
-    flexDirection: 'column',
-    gap: 'var(--space-xl)',
-  } as CSSProperties,
-  header: {
-    background: 'linear-gradient(135deg, rgba(59, 130, 246, 0.12), rgba(147, 51, 234, 0.12))',
-    borderRadius: 'var(--radius-xl)',
-    padding: 'var(--space-xl)',
-  } as CSSProperties,
-  kicker: {
-    textTransform: 'uppercase',
-    letterSpacing: '0.1em',
-    fontSize: 'var(--font-size-sm)',
-    color: 'var(--color-text-secondary)',
-  } as CSSProperties,
-  subtitle: {
-    color: 'var(--color-text-secondary)',
-    maxWidth: '600px',
-  } as CSSProperties,
-  progressSection: {
-    display: 'grid',
-    gridTemplateColumns: '2fr 1fr',
-    gap: 'var(--space-xl)',
-  } as CSSProperties,
-  progressCard: {
-    background: 'rgba(255, 255, 255, 0.03)',
-    borderRadius: 'var(--radius-xl)',
-    border: '1px solid rgba(255, 255, 255, 0.08)',
-    padding: 'var(--space-xl)',
-    display: 'flex',
-    flexDirection: 'column',
-    gap: 'var(--space-lg)',
-  } as CSSProperties,
-  progressHeader: {
-    display: 'flex',
-    justifyContent: 'space-between',
-    alignItems: 'baseline',
-    gap: 'var(--space-md)',
-  } as CSSProperties,
-  label: {
-    fontSize: 'var(--font-size-sm)',
-    color: 'var(--color-text-secondary)',
-    textTransform: 'uppercase',
-  } as CSSProperties,
-  progressTrack: {
-    width: '100%',
-    height: '10px',
-    borderRadius: 'var(--radius-full)',
-    background: 'rgba(255, 255, 255, 0.08)',
-    overflow: 'hidden',
-  } as CSSProperties,
-  progressFill: {
-    height: '100%',
-    borderRadius: 'inherit',
-    background: 'linear-gradient(90deg, var(--color-primary), var(--color-secondary))',
-    transition: 'width 0.3s ease',
-  } as CSSProperties,
-  helper: {
-    color: 'var(--color-text-secondary)',
-  } as CSSProperties,
-  metrics: {
-    display: 'grid',
-    gridTemplateColumns: 'repeat(auto-fit, minmax(140px, 1fr))',
-    gap: 'var(--space-md)',
-  } as CSSProperties,
-  metric: {
-    padding: 'var(--space-md)',
-    borderRadius: 'var(--radius-lg)',
-    border: '1px solid rgba(255, 255, 255, 0.08)',
-    background: 'rgba(255, 255, 255, 0.02)',
-  } as CSSProperties,
-  metricLabel: {
-    fontSize: 'var(--font-size-xs)',
-    textTransform: 'uppercase',
-    letterSpacing: '0.08em',
-    color: 'var(--color-text-secondary)',
-  } as CSSProperties,
-  metricValue: {
-    fontSize: 'var(--font-size-xl)',
-    fontWeight: 'var(--font-weight-semibold)',
-  } as CSSProperties,
-  metricHint: {
-    fontSize: 'var(--font-size-xs)',
-    color: 'var(--color-text-secondary)',
-  } as CSSProperties,
-  sharePanel: {
-    display: 'flex',
-    flexDirection: 'column',
-    gap: 'var(--space-lg)',
-  } as CSSProperties,
-  reminderSection: {
-    display: 'flex',
-    justifyContent: 'space-between',
-    alignItems: 'center',
-    gap: 'var(--space-md)',
-    padding: 'var(--space-xl)',
-    borderRadius: 'var(--radius-xl)',
-    background: 'rgba(255, 255, 255, 0.03)',
-    border: '1px solid rgba(255, 255, 255, 0.08)',
-  } as CSSProperties,
-  reminderActions: {
-    display: 'flex',
-    gap: 'var(--space-md)',
-    flexWrap: 'wrap',
-  } as CSSProperties,
-  practiceSection: {
-    display: 'flex',
-    justifyContent: 'space-between',
-    alignItems: 'center',
-    gap: 'var(--space-md)',
-    padding: 'var(--space-xl)',
-    borderRadius: 'var(--radius-xl)',
-    background: 'linear-gradient(135deg, rgba(217, 70, 239, 0.08), rgba(59, 130, 246, 0.08))',
-    border: '1px solid rgba(217, 70, 239, 0.2)',
-  } as CSSProperties,
-  practiceH2: {
-    marginBottom: 'var(--space-xs)',
-  } as CSSProperties,
-  practiceP: {
-    color: 'var(--color-text-secondary)',
-    maxWidth: '500px',
-  } as CSSProperties,
-  templateSection: {
-    display: 'flex',
-    flexDirection: 'column',
-    gap: 'var(--space-lg)',
-  } as CSSProperties,
-  templateGrid: {
-    display: 'grid',
-    gridTemplateColumns: 'repeat(auto-fit, minmax(240px, 1fr))',
-    gap: 'var(--space-lg)',
-  } as CSSProperties,
-  templateCard: {
-    borderRadius: 'var(--radius-lg)',
-    border: '1px solid rgba(255, 255, 255, 0.08)',
-    padding: 'var(--space-lg)',
-    background: 'rgba(255, 255, 255, 0.03)',
-    display: 'flex',
-    flexDirection: 'column',
-    gap: 'var(--space-md)',
-    justifyContent: 'space-between',
-  } as CSSProperties,
-  templateLabel: {
-    fontSize: '0.85rem',
-    textTransform: 'uppercase',
-    letterSpacing: '0.2em',
-    color: 'var(--color-text-secondary)',
-  } as CSSProperties,
-};
-
 export default function RitualHubPage() {
   const router = useRouter();
   const { isAuthenticated } = useAuthStore();
   const [surveyUrl, setSurveyUrl] = useState<string | null>(null);
   const [shareCount, setShareCount] = useState(0);
-  const progressFillRef = useRef<HTMLDivElement>(null);
+
+  const flowSteps = ['Login', 'Create Ritual', 'Collect Responses', 'Summon Persona', 'Bond'];
 
   const { data: surveyStatus } = useQuery({
     queryKey: ['ritual-status'],
@@ -213,29 +56,19 @@ export default function RitualHubPage() {
     }
   }, [surveyStatus]);
 
-  useEffect(() => {
-    if (progressFillRef.current) {
-      guidanceInteractions.progressShimmer(progressFillRef.current);
-    }
-  }, []);
-
   const progressPercentage = useMemo(() => {
-    if (!surveyStatus?.threshold) return 0;
+    if (!surveyStatus?.threshold) {
+      return 0;
+    }
     return Math.min(100, Math.round((surveyStatus.responsesCount / surveyStatus.threshold) * 100));
   }, [surveyStatus]);
 
   const surveyStage: SurveyStage = useMemo(() => {
-    if (surveyStatus?.canCreatePersona) return 'READY';
-    if (surveyStatus?.responsesCount && surveyStatus.responsesCount > 0) return 'COLLECTING';
+    if (surveyStatus?.canCreatePersona) {
+      return 'READY';
+    }
     return 'COLLECTING';
   }, [surveyStatus]);
-
-  const handleShare = (platform: string) => {
-    if (platform === 'copy' && surveyUrl) {
-      navigator.clipboard.writeText(surveyUrl);
-      setShareCount((prev) => prev + 1);
-    }
-  };
 
   const metrics = [
     {
@@ -255,122 +88,152 @@ export default function RitualHubPage() {
     },
   ];
 
+  const handleShare = (platform: string) => {
+    if (platform === 'copy' && surveyUrl) {
+      navigator.clipboard.writeText(surveyUrl);
+      setShareCount((prev) => prev + 1);
+    }
+  };
+
   if (!isAuthenticated) {
     router.push('/');
     return null;
   }
 
   return (
-    <div style={pageStyles.container}>
-      <div style={pageStyles.rhub}>
-        <header style={pageStyles.header}>
-          <div>
-            <p style={pageStyles.kicker}>Survey Hub</p>
-            <h1>Gather anonymous echoes</h1>
-            <p style={pageStyles.subtitle}>
-              Track progress, share your ritual link, and nudge friends for more feedback.
-            </p>
-          </div>
-        </header>
+    <DashboardScaffold
+      title="Gather Anonymous Echoes"
+      subtitle="Track ritual momentum, distribute your share link, and summon once resonance crosses threshold."
+    >
+      <section className="atmospheric-surface mb-6 p-5 sm:p-6">
+        <p className="mb-3 text-xs font-semibold uppercase tracking-[0.16em] text-slate-500">Current Flow Position</p>
+        <FlowStepper steps={flowSteps} activeIndex={2} ariaLabel="Ritual user flow" variant="compact" />
+      </section>
 
-        <section style={pageStyles.progressSection}>
-          <div style={pageStyles.progressCard}>
-            <div style={pageStyles.progressHeader}>
+      <div className="grid grid-cols-1 gap-6 lg:grid-cols-[1.2fr_0.8fr]">
+        <div className="flex flex-col gap-6">
+          <section className="atmospheric-surface p-6 sm:p-7">
+            <div className="mb-4 flex items-start justify-between gap-4">
               <div>
-                <p style={pageStyles.label}>Echoes collected</p>
-                <h2>
-                  {surveyStatus?.responsesCount ?? 0}/{surveyStatus?.threshold ?? 3}
-                </h2>
+                <h2 className="font-display text-3xl text-slate-800">Resonance Status</h2>
+                <p className="mt-2 text-sm text-slate-600">
+                  {surveyStatus?.canCreatePersona
+                    ? 'Threshold reached. You can synthesize your persona now.'
+                    : 'Share your ritual link to gather more anonymous echoes.'}
+                </p>
               </div>
               <StageBadge stage={surveyStage} />
             </div>
-            <div style={pageStyles.progressTrack}>
-              <div
-                ref={progressFillRef}
-                style={{ ...pageStyles.progressFill, width: `${progressPercentage}%` }}
-              />
-            </div>
-            <p style={pageStyles.helper}>
-              {surveyStatus?.canCreatePersona
-                ? 'Threshold reached. You can synthesize your persona now.'
-                : 'Share your ritual link to gather anonymous echoes.'}
-            </p>
-            <div style={pageStyles.metrics}>
+
+            <ProgressBar value={progressPercentage} label="Resonance Progress" />
+
+            <div className="mt-5 grid grid-cols-1 gap-3 sm:grid-cols-3">
               {metrics.map((metric) => (
-                <div key={metric.label} style={pageStyles.metric}>
-                  <p style={pageStyles.metricLabel}>{metric.label}</p>
-                  <p style={pageStyles.metricValue}>{metric.value}</p>
-                  <p style={pageStyles.metricHint}>{metric.hint}</p>
+                <div key={metric.label} className="rounded-xl border border-slate-500/20 bg-white/55 p-4">
+                  <p className="text-[11px] font-semibold uppercase tracking-[0.12em] text-slate-500">{metric.label}</p>
+                  <p className="mt-1 text-2xl font-semibold text-slate-700">{metric.value}</p>
+                  <p className="mt-1 text-xs text-slate-500">{metric.hint}</p>
                 </div>
               ))}
             </div>
-          </div>
-          <div style={pageStyles.sharePanel}>
-            {surveyUrl && (
-              <SurveyLinkCard
-                link={surveyUrl}
-                shareCount={shareCount}
-                onCopy={() => setShareCount((prev) => prev + 1)}
+          </section>
+
+          <section className="atmospheric-surface p-6 sm:p-7">
+            <h2 className="font-display text-3xl text-slate-800">Distribution Hub</h2>
+            <p className="mt-2 text-sm text-slate-600">Spread your ritual link across channels and maintain completion pace.</p>
+
+            <div className="mt-5 space-y-4">
+              {surveyUrl ? (
+                <SurveyLinkCard
+                  link={surveyUrl}
+                  shareCount={shareCount}
+                  onCopy={() => setShareCount((prev) => prev + 1)}
+                />
+              ) : null}
+
+              <ShareOptions
+                platforms={['whatsapp', 'instagram', 'twitter', 'copy']}
+                onShare={handleShare}
+                link={surveyUrl ?? undefined}
               />
-            )}
-            <ShareOptions
-              platforms={['whatsapp', 'instagram', 'twitter', 'copy']}
-              onShare={handleShare}
-              link={surveyUrl ?? undefined}
-            />
-          </div>
-        </section>
+            </div>
 
-        <section style={pageStyles.reminderSection}>
-          <div>
-            <h2>Need more responses?</h2>
-            <p>Send yourself a reminder or ping friends directly.</p>
-          </div>
-          <div style={pageStyles.reminderActions}>
-            <Button variant="secondary" onClick={() => alert('Reminder scheduled!')}>
-              ⏰ Remind me later
-            </Button>
-            <Button variant="primary" onClick={() => alert('Reminder sent!')}>
-              📣 Notify friends
-            </Button>
-          </div>
-        </section>
-
-        {/* Practice Mode Section (FR-001.5) */}
-        <section style={pageStyles.practiceSection}>
-          <div>
-            <h2 style={pageStyles.practiceH2}>🎭 Try Practice Mode</h2>
-            <p style={pageStyles.practiceP}>
-              Can&apos;t wait for friend responses? Answer the questions yourself to create a
-              <strong> Proto-Persona</strong> based on self-perception.
-            </p>
-          </div>
-          <Button variant="secondary" onClick={() => router.push('/dashboard/practice')}>
-            Start Practice Mode
-          </Button>
-        </section>
-
-        <section style={pageStyles.templateSection}>
-          <div>
-            <p style={pageStyles.kicker}>Templates</p>
-            <h2>Choose a survey flow that matches your ritual.</h2>
-          </div>
-          <div style={pageStyles.templateGrid}>
-            {SURVEY_TEMPLATES.map((template) => (
-              <div key={template.id} style={pageStyles.templateCard}>
-                <div>
-                  <p style={pageStyles.templateLabel}>{template.length}</p>
-                  <h3>{template.title}</h3>
-                  <p>{template.description}</p>
-                </div>
-                <Button variant="ghost" onClick={() => alert(`Template ${template.title} selected`)}>
-                  Preview
+            <div className="mt-5 flex flex-wrap items-center justify-between gap-3 border-t border-slate-500/20 pt-4">
+              <div>
+                <p className="text-sm font-semibold text-slate-700">Need more responses?</p>
+                <p className="text-xs text-slate-500">Schedule a reminder or trigger a quick social ping.</p>
+              </div>
+              <div className="flex gap-2">
+                <Button variant="secondary" onClick={() => toast.success('Reminder scheduled!')}>
+                  Remind me
+                </Button>
+                <Button variant="ghost" onClick={() => toast.success('Reminder sent!')}>
+                  Notify friends
                 </Button>
               </div>
-            ))}
-          </div>
-        </section>
+            </div>
+          </section>
+        </div>
+
+        <div className="flex flex-col gap-6">
+          <section className="atmospheric-surface p-6">
+            <p className="text-xs uppercase tracking-[0.16em] text-slate-500">Synthesis</p>
+            <h2 className="mt-1 font-display text-3xl text-slate-800">Summon Persona</h2>
+            <p className="mt-3 text-sm leading-relaxed text-slate-600">
+              {surveyStatus?.canCreatePersona
+                ? 'Enough echoes collected. Your digital mirror is ready to be synthesized.'
+                : `Collect ${Math.max(0, (surveyStatus?.threshold ?? 3) - (surveyStatus?.responsesCount ?? 0))} more responses to unlock synthesis.`}
+            </p>
+            <div className="mt-5">
+              <Button
+                variant="primary"
+                onClick={() => router.push('/dashboard/synthesize')}
+                disabled={!surveyStatus?.canCreatePersona}
+              >
+                {surveyStatus?.canCreatePersona ? 'Synthesize Now' : 'Gather More Echoes'}
+              </Button>
+            </div>
+          </section>
+
+          <section className="atmospheric-surface p-6">
+            <p className="text-xs uppercase tracking-[0.16em] text-slate-500">Fallback</p>
+            <h2 className="mt-1 font-display text-3xl text-slate-800">Practice Mode</h2>
+            <p className="mt-3 text-sm leading-relaxed text-slate-600">
+              Build a Proto-Persona instantly from self-reflection while your ritual responses are still gathering.
+            </p>
+            <div className="mt-5">
+              <Button variant="secondary" onClick={() => router.push('/dashboard/practice')}>
+                Start Practice Mode
+              </Button>
+            </div>
+          </section>
+
+          <section className="atmospheric-surface p-6">
+            <p className="text-xs uppercase tracking-[0.16em] text-slate-500">Explore</p>
+            <h2 className="mt-1 font-display text-3xl text-slate-800">Ritual Templates</h2>
+            <div className="mt-4 space-y-3">
+              {SURVEY_TEMPLATES.map((template) => (
+                <button
+                  key={template.id}
+                  type="button"
+                  onClick={() => toast.info(`Template ${template.title} selected`)}
+                  className="w-full rounded-xl border border-slate-500/20 bg-white/55 px-4 py-3 text-left transition hover:-translate-y-0.5 hover:bg-white"
+                >
+                  <div className="flex items-center justify-between gap-3">
+                    <div>
+                      <p className="text-sm font-semibold text-slate-700">{template.title}</p>
+                      <p className="mt-1 text-xs text-slate-500">{template.description}</p>
+                    </div>
+                    <span className="rounded-md bg-slate-200/60 px-2 py-1 text-[10px] font-semibold uppercase tracking-[0.1em] text-slate-600">
+                      {template.length}
+                    </span>
+                  </div>
+                </button>
+              ))}
+            </div>
+          </section>
+        </div>
       </div>
-    </div>
+    </DashboardScaffold>
   );
 }

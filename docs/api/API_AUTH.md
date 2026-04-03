@@ -59,7 +59,13 @@ OAuth 2.0 기반 멀티 프로바이더 인증 및 토큰 관리.
   ```json
   {
     "accessToken": "eyJhbGciOi...",
-    "refreshToken": "eyJhbGciOi..."
+    "refreshToken": "eyJhbGciOi...",
+    "expiresIn": 3600,
+    "user": {
+      "id": "uuid",
+      "email": "user@example.com",
+      "name": "ReMir"
+    }
   }
   ```
 - **Errors**:
@@ -81,7 +87,7 @@ OAuth 2.0 기반 멀티 프로바이더 인증 및 토큰 관리.
 
 ### Access Token
 - **Type**: JWT
-- **Expires**: 15분 (설정 가능)
+- **Expires**: 1시간
 - **Claims**: `sub` (user ID), `iat`, `exp`
 - **Usage**: `Authorization: Bearer {accessToken}`
 
@@ -91,6 +97,9 @@ OAuth 2.0 기반 멀티 프로바이더 인증 및 토큰 관리.
 - **Usage**: Token refresh endpoint에서 사용
 
 ## 인증 정책
-- OAuth 콜백: Browser fingerprinting으로 Anonymous Responder 추적
 - Protected Endpoints: JWT Bearer token 필수
 - 오류 시: `401 UNAUTHORIZED` 반환
+
+## Notes
+- 프론트엔드의 `POST /auth/google/login` 방식은 현재 사용하지 않습니다.
+- 현재 인증 진입점은 OAuth redirect(`GET /auth/google|kakao|apple`) + callback 플로우입니다.

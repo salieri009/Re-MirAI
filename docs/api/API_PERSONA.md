@@ -17,40 +17,35 @@ Survey Responses 수집 → OpenAI 분석 → Persona 생성 → Chat 준비 →
 - **Body**:
   ```json
   {
-    "surveyId": "survey_xyz",
-    "name": "My Digital Mirror"
+    "surveyId": "survey_uuid",
+    "mode": "FATED",
+    "modifiers": {
+      "archetype": "The Sage"
+    }
   }
   ```
 - **Response**:
   ```json
   {
-    "success": true,
-    "data": {
-      "id": "persona_abc",
-      "ownerId": "user_123",
-      "surveyId": "survey_xyz",
-      "name": "My Digital Mirror",
-      "traits": [
-        {
-          "category": "Strengths",
-          "items": ["Leadership", "Vision", "Empathy"]
-        },
-        {
-          "category": "Growth Areas",
-          "items": ["Patience", "Delegation"]
-        }
-      ],
-      "systemPrompt": "You are a digital mirror of the user based on 15 survey responses...",
-      "status": "ready",
-      "createdAt": "2026-03-22T10:15:00Z"
-    }
+    "id": "persona_uuid",
+    "name": "Mirror of ReMir",
+    "archetype": "The Sage",
+    "rarity": "RARE",
+    "stats": {
+      "charisma": 62,
+      "intellect": 81,
+      "kindness": 74,
+      "energy": 58
+    },
+    "greeting": "Welcome back.",
+    "bondLevel": 0,
+    "createdAt": "2026-03-22T10:15:00.000Z"
   }
   ```
 - **Errors**:
-  - `400 VALIDATION_ERROR`: Invalid survey ID or input
+  - `400 BAD_REQUEST`: 입력 오류, 응답 수 부족, 상태 불가
   - `401 UNAUTHORIZED`: JWT 토큰 없음/만료
-  - `404 NOT_FOUND`: Survey 없음/응답 부족
-  - `409 CONFLICT`: Persona 이미 생성됨
+  - `404 NOT_FOUND`: Survey 없음
 
 ### Get All Personas
 - **Endpoint**: `GET /personas`
@@ -59,19 +54,23 @@ Survey Responses 수집 → OpenAI 분석 → Persona 생성 → Chat 준비 →
 - **Query Parameters**: 없음
 - **Response**:
   ```json
-  {
-    "success": true,
-    "data": [
-      {
-        "id": "persona_abc",
-        "name": "My Digital Mirror",
-        "surveyId": "survey_xyz",
-        "traits": [...],
-        "status": "ready",
-        "createdAt": "2026-03-22T10:15:00Z"
-      }
-    ]
-  }
+  [
+    {
+      "id": "persona_uuid",
+      "name": "Mirror of ReMir",
+      "archetype": "The Sage",
+      "rarity": "RARE",
+      "stats": {
+        "charisma": 62,
+        "intellect": 81,
+        "kindness": 74,
+        "energy": 58
+      },
+      "greeting": "Welcome back.",
+      "bondLevel": 2,
+      "createdAt": "2026-03-22T10:15:00.000Z"
+    }
+  ]
   ```
 - **Errors**:
   - `401 UNAUTHORIZED`: JWT 토큰 없음/만료
@@ -85,58 +84,57 @@ Survey Responses 수집 → OpenAI 분석 → Persona 생성 → Chat 준비 →
 - **Response**:
   ```json
   {
-    "success": true,
-    "data": {
-      "id": "persona_abc",
-      "ownerId": "user_123",
-      "surveyId": "survey_xyz",
-      "name": "My Digital Mirror",
-      "description": "A comprehensive digital reflection based on 15 feedback responses",
-      "traits": [
-        {
-          "category": "Strengths",
-          "items": ["Leadership", "Vision", "Empathy"]
-        },
-        {
-          "category": "Growth Areas",
-          "items": ["Patience", "Delegation"]
-        },
-        {
-          "category": "Values",
-          "items": ["Integrity", "Innovation", "Collaboration"]
-        }
-      ],
-      "systemPrompt": "You are a digital mirror of the user...",
-      "conversationStyle": "supportive, reflective, insightful",
-      "status": "ready",
-      "createdAt": "2026-03-22T10:15:00Z"
-    }
+    "id": "persona_uuid",
+    "name": "Mirror of ReMir",
+    "archetype": "The Sage",
+    "rarity": "RARE",
+    "stats": {
+      "charisma": 62,
+      "intellect": 81,
+      "kindness": 74,
+      "energy": 58
+    },
+    "greeting": "Welcome back.",
+    "bondLevel": 2,
+    "systemPrompt": "You are a digital mirror...",
+    "surveyId": "survey_uuid",
+    "createdAt": "2026-03-22T10:15:00.000Z"
   }
   ```
 - **Errors**:
   - `401 UNAUTHORIZED`: JWT 토큰 없음/만료
-  - `403 FORBIDDEN`: Persona Owner가 아님
   - `404 NOT_FOUND`: Persona 없음
 
-## Persona Data Model
+### Generate Persona Card (F-004)
+- **Endpoint**: `POST /personas/:id/card`
+- **Status**: 📘 **Specified (Implementation Target)**
+- **Auth**: JWT 필수 (Owner)
+- **Path Parameters**:
+  - `id`: Persona ID
+- **Body**: 없음
+- **Response (Draft)**:
+  ```json
+  {
+    "imageUrl": "https://cdn.remirai.app/cards/persona_uuid.png",
+    "publicProfileUrl": "https://remirai.app/p/persona_uuid",
+    "expiresAt": "2026-04-10T10:15:00.000Z"
+  }
+  ```
+- **Errors**:
+  - `401 UNAUTHORIZED`: JWT 토큰 없음/만료
+  - `403 FORBIDDEN`: Owner가 아님
+  - `404 NOT_FOUND`: Persona 없음
 
-### Status
-- `synthesizing`: 분석 중 (OpenAI 처리)
-- `ready`: 채팅 가능
-- `archived`: 보관됨
+## Persona Data Model (현재 API 응답)
 
-### Traits
-각 Persona는 Survey 응답을 바탕으로 다음 카테고리로 분석됨:
-- **Strengths**: 강점/장점
-- **Growth Areas**: 개선할 점
-- **Values**: 가치관
-- **Motivations**: 동기/목표
-- **Tendencies**: 성향/습관
+### Synthesis Mode
+- `FATED`: 자동 archetype
+- `ALCHEMIC`: 사용자 modifier 반영
 
 ### System Prompt
 - OpenAI에 전달되는 사용자 정의 프롬프트
 - Persona의 성격/톤 정의
-- 각 Persona마다 고유함
+- 각 Persona마다 고유하며 상세 조회에서 반환됨
 
 ## AI Integration
 - **Provider**: OpenAI GPT API

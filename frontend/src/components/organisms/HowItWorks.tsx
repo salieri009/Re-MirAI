@@ -1,65 +1,5 @@
 'use client';
 
-import { colors, spacing, radius, typography, CSSProperties } from '@/lib/styles';
-
-const sectionStyle: CSSProperties = {
-    padding: `${spacing.xxl * 2}px ${spacing.xl}px`,
-    background: colors.surface,
-};
-
-const sectionTitleStyle: CSSProperties = {
-    fontSize: typography.size['3xl'],
-    fontWeight: typography.weight.bold,
-    color: colors.text,
-    textAlign: 'center',
-    marginBottom: spacing.xxl,
-};
-
-const stepsGridStyle: CSSProperties = {
-    display: 'flex',
-    flexDirection: 'column',
-    gap: spacing.lg,
-    maxWidth: 800,
-    margin: '0 auto',
-};
-
-const stepStyle: CSSProperties = {
-    display: 'flex',
-    alignItems: 'flex-start',
-    gap: spacing.lg,
-};
-
-const stepNumberStyle: CSSProperties = {
-    width: 48,
-    height: 48,
-    borderRadius: '50%',
-    background: `linear-gradient(135deg, ${colors.primary}, ${colors.accent})`,
-    display: 'flex',
-    alignItems: 'center',
-    justifyContent: 'center',
-    fontSize: typography.size.xl,
-    fontWeight: typography.weight.bold,
-    color: colors.text,
-    flexShrink: 0,
-};
-
-const stepContentStyle: CSSProperties = {
-    display: 'flex',
-    flexDirection: 'column',
-    gap: spacing.xs,
-};
-
-const stepTitleStyle: CSSProperties = {
-    fontSize: typography.size.xl,
-    fontWeight: typography.weight.semiBold,
-    color: colors.text,
-};
-
-const stepDescriptionStyle: CSSProperties = {
-    fontSize: typography.size.base,
-    color: colors.textMuted,
-    lineHeight: 1.6,
-};
 
 export function HowItWorks() {
     const steps = [
@@ -80,19 +20,19 @@ export function HowItWorks() {
     ];
 
     return (
-        <section style={sectionStyle} aria-labelledby="how-it-works-title">
-            <h2 id="how-it-works-title" style={sectionTitleStyle}>
+        <section className="bg-surface px-6 py-24" aria-labelledby="how-it-works-title">
+            <h2 id="how-it-works-title" className="mb-8 text-center font-display text-4xl font-bold text-text-primary">
                 How It Works
             </h2>
 
-            <div style={stepsGridStyle}>
+            <div className="mx-auto flex w-full max-w-[800px] flex-col gap-6">
                 {steps.map((step) => (
-                    <div key={step.number} style={stepStyle}>
-                        <div style={stepNumberStyle}>{step.number}</div>
-                        <div style={stepContentStyle}>
-                            <h3 style={stepTitleStyle}>{step.title}</h3>
+                    <div key={step.number} className="atmospheric-surface flex items-start gap-6 p-6">
+                        <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-full bg-gradient-to-br from-primary to-accent text-xl font-bold text-text-primary">{step.number}</div>
+                        <div className="flex flex-col gap-1">
+                            <h3 className="text-xl font-semibold text-text-primary">{step.title}</h3>
                             {step.description && (
-                                <p style={stepDescriptionStyle}>{step.description}</p>
+                                <p className="text-base leading-relaxed text-text-muted">{step.description}</p>
                             )}
                         </div>
                     </div>

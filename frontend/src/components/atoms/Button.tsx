@@ -1,12 +1,11 @@
 'use client';
 
-import React, { forwardRef, useState } from 'react';
-import { colors, spacing, radius, typography, shadows, transitions, mergeStyles, CSSProperties } from '@/lib/styles';
+import React, { forwardRef } from 'react';
 
 type ButtonVariant = 'primary' | 'secondary' | 'ghost' | 'accent';
 type ButtonSize = 'sm' | 'md' | 'lg';
 
-interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
+interface ButtonProps extends Omit<React.ButtonHTMLAttributes<HTMLButtonElement>, 'style'> {
   variant?: ButtonVariant;
   size?: ButtonSize;
   children: React.ReactNode;
@@ -14,84 +13,19 @@ interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
   'aria-describedby'?: string;
 }
 
-const baseStyle: CSSProperties = {
-  display: 'inline-flex',
-  alignItems: 'center',
-  justifyContent: 'center',
-  fontFamily: typography.fontDisplay,
-  fontWeight: typography.weight.semiBold,
-  borderRadius: radius.md,
-  border: 'none',
-  cursor: 'pointer',
-  transition: transitions.normal,
-  position: 'relative',
-  gap: spacing.xs,
+const baseClass = 'relative inline-flex items-center justify-center gap-1 rounded-md border-0 font-display font-semibold transition-all duration-200';
+
+const variantClasses: Record<ButtonVariant, string> = {
+  primary: 'bg-primary text-white hover:-translate-y-0.5 hover:bg-primary-dark hover:shadow-md',
+  secondary: 'bg-highlight text-white hover:-translate-y-0.5 hover:bg-text-secondary hover:shadow-md',
+  accent: 'border border-slate-700/25 bg-accent text-highlight hover:-translate-y-0.5 hover:bg-accent-light hover:shadow-glow-accent',
+  ghost: 'border border-highlight bg-transparent text-highlight hover:bg-accent/30',
 };
 
-const variantStyles: Record<ButtonVariant, { base: CSSProperties; hover: CSSProperties }> = {
-  primary: {
-    base: {
-      backgroundColor: colors.primary,
-      color: colors.white,
-    },
-    hover: {
-      backgroundColor: colors.primaryDark,
-      transform: 'translateY(-1px)',
-      boxShadow: shadows.md,
-    },
-  },
-  secondary: {
-    base: {
-      backgroundColor: colors.accent,
-      color: colors.white,
-    },
-    hover: {
-      backgroundColor: colors.accentDark,
-      transform: 'translateY(-1px)',
-      boxShadow: shadows.md,
-    },
-  },
-  accent: {
-    base: {
-      backgroundColor: colors.accent,
-      color: colors.bgDark,
-    },
-    hover: {
-      backgroundColor: colors.accentLight,
-      transform: 'translateY(-1px)',
-      boxShadow: shadows.glowAccent,
-    },
-  },
-  ghost: {
-    base: {
-      backgroundColor: 'transparent',
-      color: colors.accent,
-      border: `1px solid ${colors.accent}`,
-    },
-    hover: {
-      backgroundColor: colors.surface,
-    },
-  },
-};
-
-const sizeStyles: Record<ButtonSize, CSSProperties> = {
-  sm: {
-    padding: `${spacing.sm}px ${spacing.md}px`,
-    fontSize: typography.size.sm,
-  },
-  md: {
-    padding: `${spacing.md}px ${spacing.lg}px`,
-    fontSize: typography.size.base,
-  },
-  lg: {
-    padding: `${spacing.lg}px ${spacing.xl}px`,
-    fontSize: typography.size.lg,
-  },
-};
-
-const disabledStyle: CSSProperties = {
-  opacity: 0.5,
-  cursor: 'not-allowed',
+const sizeClasses: Record<ButtonSize, string> = {
+  sm: 'px-3 py-2 text-sm',
+  md: 'px-6 py-4 text-base',
+  lg: 'px-8 py-6 text-lg',
 };
 
 export const Button = forwardRef<HTMLButtonElement, ButtonProps>(function Button(
@@ -100,41 +34,16 @@ export const Button = forwardRef<HTMLButtonElement, ButtonProps>(function Button
     size = 'md',
     children,
     disabled,
-    style,
-    onMouseEnter,
-    onMouseLeave,
+    className,
     ...props
   },
   ref
 ) {
-  const [isHovered, setIsHovered] = useState(false);
-
-  const handleMouseEnter = (e: React.MouseEvent<HTMLButtonElement>) => {
-    if (!disabled) setIsHovered(true);
-    onMouseEnter?.(e);
-  };
-
-  const handleMouseLeave = (e: React.MouseEvent<HTMLButtonElement>) => {
-    setIsHovered(false);
-    onMouseLeave?.(e);
-  };
-
-  const combinedStyle = mergeStyles(
-    baseStyle,
-    variantStyles[variant].base,
-    sizeStyles[size],
-    isHovered && !disabled && variantStyles[variant].hover,
-    disabled && disabledStyle,
-    style
-  );
-
   return (
     <button
       ref={ref}
-      style={combinedStyle}
+      className={`${baseClass} ${variantClasses[variant]} ${sizeClasses[size]} ${disabled ? 'cursor-not-allowed opacity-50 hover:translate-y-0 hover:shadow-none' : ''} ${className ?? ''}`.trim()}
       disabled={disabled}
-      onMouseEnter={handleMouseEnter}
-      onMouseLeave={handleMouseLeave}
       {...props}
     >
       {children}

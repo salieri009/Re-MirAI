@@ -4,7 +4,6 @@ import { useEffect, useRef, useState } from 'react';
 import gsap from 'gsap';
 import { ShareOptions } from '@/components/molecules/ShareOptions';
 import { useFocusTrap, useReducedMotion } from '@/hooks/useAccessibility';
-import { colors, spacing, radius, typography, shadows, CSSProperties } from '@/lib/styles';
 
 interface Persona {
   id: string;
@@ -17,74 +16,6 @@ interface ShareModalProps {
   onShare: (platform: string, image?: Blob) => void;
   onClose: () => void;
 }
-
-const backdropStyle: CSSProperties = {
-  position: 'fixed',
-  inset: 0,
-  background: 'rgba(0, 0, 0, 0.7)',
-  backdropFilter: 'blur(4px)',
-  display: 'flex',
-  alignItems: 'center',
-  justifyContent: 'center',
-  zIndex: 100,
-};
-
-const modalStyle: CSSProperties = {
-  background: colors.surface,
-  borderRadius: radius.xl,
-  border: `1px solid ${colors.border}`,
-  boxShadow: shadows.xl,
-  maxWidth: 480,
-  width: '90%',
-  maxHeight: '90vh',
-  overflow: 'auto',
-};
-
-const headerStyle: CSSProperties = {
-  display: 'flex',
-  alignItems: 'center',
-  justifyContent: 'space-between',
-  padding: spacing.lg,
-  borderBottom: `1px solid ${colors.border}`,
-};
-
-const headerTitleStyle: CSSProperties = {
-  fontSize: typography.size.xl,
-  fontWeight: typography.weight.bold,
-  color: colors.text,
-  margin: 0,
-};
-
-const closeButtonStyle: CSSProperties = {
-  width: 32,
-  height: 32,
-  display: 'flex',
-  alignItems: 'center',
-  justifyContent: 'center',
-  background: 'transparent',
-  border: 'none',
-  color: colors.textMuted,
-  fontSize: typography.size['2xl'],
-  cursor: 'pointer',
-  borderRadius: radius.sm,
-};
-
-const contentStyle: CSSProperties = {
-  padding: spacing.lg,
-};
-
-const previewStyle: CSSProperties = {
-  marginTop: spacing.lg,
-  display: 'flex',
-  justifyContent: 'center',
-};
-
-const previewImageStyle: CSSProperties = {
-  maxWidth: '100%',
-  maxHeight: 300,
-  borderRadius: radius.md,
-  border: `1px solid ${colors.border}`,
-};
 
 export function ShareModal({ persona, onShare, onClose }: ShareModalProps) {
   const [preview, setPreview] = useState<Blob | null>(null);
@@ -182,26 +113,26 @@ export function ShareModal({ persona, onShare, onClose }: ShareModalProps) {
   return (
     <div
       ref={backdropRef}
-      style={backdropStyle}
+      className="fixed inset-0 z-[100] flex items-center justify-center bg-black/70 backdrop-blur-sm"
       onClick={handleClose}
       role="presentation"
     >
       <div
         ref={modalRef}
-        style={modalStyle}
+        className="max-h-[90vh] w-[90%] max-w-[480px] overflow-auto rounded-xl border border-slate-700/25 bg-surface shadow-2xl"
         role="dialog"
         aria-modal="true"
         aria-label="Share persona card"
         onClick={(event) => event.stopPropagation()}
       >
-        <div style={headerStyle}>
-          <h2 style={headerTitleStyle}>Share Your Persona Card</h2>
-          <button onClick={handleClose} style={closeButtonStyle} aria-label="Close">
+        <div className="flex items-center justify-between border-b border-slate-700/25 p-6">
+          <h2 className="m-0 text-xl font-bold text-text-primary">Share Your Persona Card</h2>
+          <button onClick={handleClose} className="flex h-8 w-8 cursor-pointer items-center justify-center rounded-sm border-0 bg-transparent text-2xl text-text-muted" aria-label="Close">
             ×
           </button>
         </div>
 
-        <div style={contentStyle}>
+        <div className="p-6">
           <ShareOptions
             platforms={['instagram', 'twitter', 'tiktok', 'whatsapp', 'copy']}
             onShare={handleShare}
@@ -209,11 +140,11 @@ export function ShareModal({ persona, onShare, onClose }: ShareModalProps) {
           />
 
           {preview && (
-            <div style={previewStyle}>
+            <div className="mt-6 flex justify-center">
               <img
                 src={URL.createObjectURL(preview)}
                 alt={`${persona.name} persona card preview`}
-                style={previewImageStyle}
+                className="max-h-[300px] max-w-full rounded-md border border-slate-700/25"
               />
             </div>
           )}

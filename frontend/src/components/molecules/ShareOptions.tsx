@@ -2,6 +2,7 @@
 
 import { Button } from '@/components/atoms/Button';
 import { colors, spacing, typography, CSSProperties } from '@/lib/styles';
+import { toast } from '@/lib/toast';
 
 interface ShareOptionsProps {
   platforms: string[];
@@ -50,7 +51,7 @@ export function ShareOptions({ platforms, onShare, link }: ShareOptionsProps) {
   const handleShare = (platform: string) => {
     if (platform === 'copy' && link) {
       navigator.clipboard.writeText(link);
-      alert('Link copied to clipboard!');
+      toast.success('Link copied to clipboard!');
     } else {
       onShare(platform);
     }

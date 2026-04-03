@@ -1,5 +1,6 @@
 // Base API Client - Connected to Backend
 import axios, { AxiosInstance, AxiosError } from 'axios';
+import { toast } from '@/lib/toast';
 
 const API_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3001';
 
@@ -27,10 +28,17 @@ apiClient.interceptors.request.use((config) => {
 apiClient.interceptors.response.use(
   (response) => response,
   async (error: AxiosError) => {
+    const notifyError = (message: string) => {
+      if (typeof window !== 'undefined') {
+        toast.error(message);
+      }
+      return message;
+    };
+
     // Network error (no response)
     if (!error.response) {
-      console.error('Network connection lost. Please check your internet.');
-      return Promise.reject(new Error('Network error'));
+      const message = notifyError('Network connection lost. Please check your internet.');
+      return Promise.reject(new Error(message));
     }
 
     const { status, data, config } = error.response;
@@ -64,7 +72,7 @@ apiClient.interceptors.response.use(
               return apiClient(originalRequest);
             }
           } catch (refreshError) {
-            console.error('Token refresh failed:', refreshError);
+            notifyError('Session expired. Please log in again.');
             // Refresh failed, redirect to login
             if (typeof window !== 'undefined') {
               localStorage.removeItem('auth_token');
@@ -86,27 +94,27 @@ apiClient.interceptors.response.use(
         break;
           
       case 403:
-        console.error('Access denied.');
+        notifyError('Access denied.');
         break;
 
       case 404:
-        console.error('Resource not found.');
+        notifyError('Resource not found.');
         break;
 
       case 429:
-        console.error('Too many requests. Please wait.');
+        notifyError('Too many requests. Please wait.');
         break;
 
       case 500:
-        console.error('Server error. Our team has been notified.');
+        notifyError('Server error. Please try again in a moment.');
         break;
 
       case 503:
-        console.error('Service temporarily unavailable.');
+        notifyError('Service temporarily unavailable.');
         break;
 
       default:
-        console.error('An unexpected error occurred.');
+        notifyError('An unexpected error occurred.');
     }
 
     return Promise.reject(error);

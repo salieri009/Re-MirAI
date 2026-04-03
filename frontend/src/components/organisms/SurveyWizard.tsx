@@ -7,7 +7,7 @@ import { ProgressBar } from '@/components/molecules/ProgressBar';
 import { Button } from '@/components/atoms/Button';
 import { surveyApi } from '@/lib/api/survey';
 import { SurveyQuestion } from '@/lib/api/survey';
-import { colors, spacing, radius, CSSProperties } from '@/lib/styles';
+import { toast } from '@/lib/toast';
 
 interface SurveyWizardProps {
   surveyId: string;
@@ -17,26 +17,6 @@ interface SurveyWizardProps {
   /** If true, this is Practice Mode (self-survey) */
   isPracticeMode?: boolean;
 }
-
-const wizardStyle: CSSProperties = {
-  display: 'flex',
-  flexDirection: 'column',
-  gap: spacing.lg,
-  maxWidth: 600,
-  margin: '0 auto',
-  padding: spacing.lg,
-};
-
-const questionContainerStyle: CSSProperties = {
-  minHeight: 200,
-};
-
-const navigationStyle: CSSProperties = {
-  display: 'flex',
-  justifyContent: 'space-between',
-  alignItems: 'center',
-  gap: spacing.md,
-};
 
 export function SurveyWizard({ surveyId, questions, onComplete, isPracticeMode }: SurveyWizardProps) {
   const router = useRouter();
@@ -75,12 +55,12 @@ export function SurveyWizard({ surveyId, questions, onComplete, isPracticeMode }
       if (isPracticeMode && onComplete) {
         onComplete();
       } else {
+        toast.success('Survey submitted successfully. Thank you!');
         // Normal mode: redirect to thank-you page
         router.push(`/s/${surveyId}/thank-you`);
       }
-    } catch (error) {
-      console.error('Failed to submit survey:', error);
-      alert('Submission failed. Please try again.');
+    } catch {
+      toast.error('Submission failed. Please try again.');
     } finally {
       setIsSubmitting(false);
     }
@@ -90,13 +70,13 @@ export function SurveyWizard({ surveyId, questions, onComplete, isPracticeMode }
   const hasAnswer = answers[`q${currentQuestion.id}`] !== undefined;
 
   return (
-    <div style={wizardStyle}>
+    <div className="mx-auto flex w-full max-w-[600px] flex-col gap-6 p-6">
       <ProgressBar
         value={progress}
         label={`Question ${currentIndex + 1} of ${questions.length}`}
       />
 
-      <div style={questionContainerStyle}>
+      <div className="min-h-[200px]">
         <QuestionCard
           question={currentQuestion}
           value={answers[`q${currentQuestion.id}`]}
@@ -104,7 +84,7 @@ export function SurveyWizard({ surveyId, questions, onComplete, isPracticeMode }
         />
       </div>
 
-      <div style={navigationStyle}>
+      <div className="flex items-center justify-between gap-4">
         <Button
           variant="ghost"
           onClick={handlePrev}

@@ -59,9 +59,9 @@ The project uses a custom design system with CSS variables defined in `src/style
 
 ## 🔌 API Integration
 
-### Current Status: Mock Mode
+### Current Status
 
-All API calls currently use mock data. The actual API calls are commented out and can be easily enabled when the backend is ready.
+Core modules are wired to backend endpoints via Axios client.
 
 ### How to Enable Real API
 
@@ -70,50 +70,39 @@ All API calls currently use mock data. The actual API calls are commented out an
    NEXT_PUBLIC_API_URL=http://localhost:3001
    ```
 
-2. Uncomment the actual API calls in `src/lib/api/*.ts` files
-
-3. Remove or comment out the mock implementations
+2. Start backend server and ensure CORS `FRONTEND_URL` matches frontend origin
 
 ### API Modules
 
-- `auth.ts` - Authentication (Google OAuth)
-- `survey.ts` - Survey creation and responses (F-001)
-- `persona.ts` - Persona synthesis (F-002)
-- `chat.ts` - Chat interface (F-003)
-- `social.ts` - Social features (F-005)
-- `quest.ts` - Gamification (F-006)
+- `auth.ts` - OAuth callback and token flow
+- `survey.ts` - Survey creation, public fetch, response submit, status
+- `persona.ts` - Persona synthesis, list, details
+- `chat.ts` - Sessions, history, message send
+- `social.ts` - Social features (planned/extension)
+- `quest.ts` - Gamification (planned/extension)
 
 ## 🔐 Authentication
 
-### Demo Mode
-
-Currently, authentication is in demo mode. Clicking "Continue with Google" will:
-1. Call the mock auth API
-2. Store user data in localStorage
-3. Redirect to dashboard
-
-### Enabling Real Authentication
-
-1. Set up Google OAuth credentials
-2. Uncomment the real API call in `src/lib/api/auth.ts`
-3. Update the login flow in `src/app/page.tsx`
+Frontend stores `auth_token`, `auth_refresh_token`, `auth_user` in localStorage.
+Axios interceptor behavior:
+1. Adds Bearer token to requests.
+2. On 401, attempts `POST /auth/refresh`.
+3. On refresh failure, clears auth storage and redirects to `/login`.
 
 ## 📄 Pages
 
 ### Landing Page (`/`)
 - Hero section with value proposition
 - "How It Works" section
-- Google login button (demo mode)
+- Login entry
 
 ### Dashboard (`/dashboard`)
-Three states:
-1. **Awaiting Responses** - Shows progress bar, share button
-2. **Ready for Synthesis** - Shows "Create Persona" button
-3. **Active Persona** - Shows persona card, chat button
+- Dashboard home and module navigation
+- Related pages: `/dashboard/ritual`, `/dashboard/synthesize`, `/dashboard/practice`
 
 ### Survey Page (`/s/[id]`)
 - Question wizard with progress bar
-- Likert scale inputs
+- Mixed question types from backend default questions
 - Anonymous submission
 
 ### Persona Page (`/p/[id]`)
@@ -122,9 +111,16 @@ Three states:
 - Chat button
 
 ### Chat Interface (`/chat/[id]`)
-- Real-time chat interface (mock)
+- Chat interface with REST fallback APIs
 - Message history
 - Input area
+
+### Other Routes
+- `/auth/callback`
+- `/summon`
+- `/social/compatibility`
+- `/profile/settings`
+- `/s/[id]/thank-you`
 
 ## 🧪 Testing
 
@@ -141,34 +137,16 @@ npm start
 
 ## 📝 Development Notes
 
-- All API calls use mock data by default
-- Authentication is in demo mode
-- WebSocket chat is mocked (real implementation ready in comments)
-- Design tokens follow the Blonix design philosophy
+- API client default base URL: `http://localhost:3001`
+- Token refresh and 401 handling are active in Axios interceptor
+- Design tokens follow Re:MirAI Small Switch Palette v2
 - Components follow Atomic Design principles
-
-## 🔄 Migration to Real Backend
-
-When the backend is ready:
-
-1. **Update Environment Variables**
-   - Copy `.env.local.example` to `.env.local`
-   - Set `NEXT_PUBLIC_API_URL`
-
-2. **Enable API Calls**
-   - Uncomment actual API calls in `src/lib/api/*.ts`
-   - Remove mock implementations
-
-3. **Enable Authentication**
-   - Uncomment Google OAuth in `src/lib/api/auth.ts`
-   - Update login flow
-
-4. **Enable WebSocket**
-   - Uncomment WebSocket code in `src/lib/api/chat.ts`
-   - Install `socket.io-client` if needed
 
 ## 📚 Related Documentation
 
 - [Frontend Architecture](../docs/FRONTEND_ARCHITECTURE.md)
 - [API Common](../docs/api/API_COMMON.md)
+- [API Survey](../docs/api/API_SURVEY.md)
+- [API Persona](../docs/api/API_PERSONA.md)
+- [API Chat](../docs/api/API_CHAT.md)
 - [User Flow](../docs/USER_FLOW.md)

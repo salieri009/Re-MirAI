@@ -3,8 +3,6 @@
  * Pure inline styles using design tokens - no CSS files needed
  */
 
-import { tokens } from '@/design-tokens';
-
 // ============================================
 // Type Definitions
 // ============================================
@@ -30,35 +28,36 @@ export const spacing = {
 // Color Palette
 // ============================================
 export const colors = {
-    primary: '#845EC2',
-    primaryDark: '#6B4A9E',
-    primaryLight: '#A67DD9',
-    accent: '#00C9A7',
-    accentDark: '#009B82',
-    accentLight: '#33D4B8',
-    highlight: '#C197FF',
-    bgDark: '#0A0112',
-    background: '#0A0112',
-    surface: 'rgba(132, 94, 194, 0.1)',
-    surfaceElevated: 'rgba(132, 94, 194, 0.2)',
-    border: 'rgba(193, 151, 255, 0.2)',
-    borderHover: 'rgba(193, 151, 255, 0.4)',
-    text: '#f8f6f7',
-    textSecondary: '#c197ff',
-    textMuted: 'rgba(248, 246, 247, 0.6)',
+    primary: '#d946ef',
+    primaryDark: '#c026d3',
+    primaryLight: '#e879f9',
+    accent: '#e6ebf8',
+    accentDark: '#d7deef',
+    accentLight: '#f4f7ff',
+    highlight: '#334155',
+    bgDark: '#e6ebf8',
+    background: '#e6ebf8',
+    surface: 'rgba(255, 255, 255, 0.62)',
+    surfaceElevated: 'rgba(255, 255, 255, 0.82)',
+    border: 'rgba(51, 65, 85, 0.16)',
+    borderHover: 'rgba(51, 65, 85, 0.3)',
+    text: '#334155',
+    textSecondary: '#475569',
+    textMuted: 'rgba(51, 65, 85, 0.68)',
     white: '#ffffff',
     black: '#000000',
     transparent: 'transparent',
     error: '#EF4444',
+    success: '#10B981',
 } as const;
 
 // ============================================
 // Typography
 // ============================================
 export const typography = {
-    fontDisplay: "'Space Grotesk', sans-serif",
-    fontSans: "'Plus Jakarta Sans', sans-serif",
-    fontMono: "'Space Mono', monospace",
+    fontDisplay: "'Sora', sans-serif",
+    fontSans: "'Manrope', sans-serif",
+    fontMono: "'IBM Plex Mono', monospace",
 
     weight: {
         regular: 400,
@@ -110,9 +109,9 @@ export const shadows = {
     md: '0 4px 6px -1px rgba(0, 0, 0, 0.15)',
     lg: '0 10px 15px -3px rgba(0, 0, 0, 0.2)',
     xl: '0 20px 25px -5px rgba(0, 0, 0, 0.25)',
-    glowPrimary: '0 0 32px rgba(132, 94, 194, 0.4)',
-    glowAccent: '0 0 28px rgba(0, 201, 167, 0.4)',
-    glowHighlight: '0 0 24px rgba(193, 151, 255, 0.3)',
+    glowPrimary: '0 0 32px rgba(217, 70, 239, 0.35)',
+    glowAccent: '0 0 28px rgba(51, 65, 85, 0.22)',
+    glowHighlight: '0 0 24px rgba(71, 85, 105, 0.25)',
 } as const;
 
 // ============================================
@@ -158,7 +157,7 @@ export const patterns = {
 
     // Glass effect
     glass: {
-        background: 'rgba(10, 1, 18, 0.6)',
+        background: 'rgba(255, 255, 255, 0.68)',
         backdropFilter: 'blur(12px)',
         WebkitBackdropFilter: 'blur(12px)',
         border: `1px solid ${colors.border}`,

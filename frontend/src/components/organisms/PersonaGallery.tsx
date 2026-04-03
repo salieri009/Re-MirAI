@@ -5,25 +5,11 @@ import gsap from 'gsap';
 import { Persona } from '@/lib/api/persona';
 import { PersonaCard } from '@/components/molecules/PersonaCard';
 import { useReducedMotion } from '@/hooks/useAccessibility';
-import { spacing, CSSProperties } from '@/lib/styles';
 
 interface PersonaGalleryProps {
     personas: Persona[];
     onPersonaClick?: (persona: Persona) => void;
 }
-
-const galleryStyle: CSSProperties = {
-    display: 'grid',
-    gridTemplateColumns: 'repeat(auto-fill, minmax(280px, 1fr))',
-    gap: spacing.lg,
-    padding: spacing.lg,
-};
-
-const galleryItemStyle: CSSProperties = {
-    cursor: 'pointer',
-    opacity: 0,
-    transform: 'translateY(20px)',
-};
 
 export function PersonaGallery({ personas, onPersonaClick }: PersonaGalleryProps) {
     const containerRef = useRef<HTMLDivElement>(null);
@@ -45,11 +31,11 @@ export function PersonaGallery({ personas, onPersonaClick }: PersonaGalleryProps
     }, [reducedMotion, personas]);
 
     return (
-        <div ref={containerRef} style={galleryStyle}>
+        <div ref={containerRef} className="grid grid-cols-1 gap-6 p-6 md:grid-cols-2 xl:grid-cols-3">
             {personas.map((persona) => (
                 <div
                     key={persona.id}
-                    style={galleryItemStyle}
+                    className="translate-y-5 cursor-pointer opacity-0"
                     onClick={() => onPersonaClick?.(persona)}
                 >
                     <PersonaCard persona={persona} readOnly />

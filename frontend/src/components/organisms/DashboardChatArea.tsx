@@ -4,6 +4,7 @@ import { useState, useEffect, useRef } from 'react';
 import { useQuery } from '@tanstack/react-query';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
+import clsx from 'clsx';
 import { chatApi } from '@/lib/api/chat';
 import { personaApi } from '@/lib/api/persona';
 import { toast } from '@/lib/toast';
@@ -13,7 +14,6 @@ import { StageBadge, type SurveyStage } from '@/components/molecules/StageBadge'
 import { TypingIndicator } from '@/components/molecules/TypingIndicator';
 import { useReducedMotion } from '@/hooks/useAccessibility';
 import { slideIn } from '@/lib/animations';
-import { colors, spacing, radius, typography, mergeStyles, CSSProperties } from '@/lib/styles';
 
 interface Message {
     id: string;
@@ -33,197 +33,6 @@ const PROMPTS = [
     'Summarize today\'s ritual insights.',
     'How many surveys remain?',
 ];
-
-const chatAreaStyle: CSSProperties = {
-    display: 'flex',
-    flexDirection: 'column',
-    gap: spacing.lg,
-    padding: spacing.lg,
-    flex: 1,
-};
-
-const statusHeaderStyle: CSSProperties = {
-    display: 'flex',
-    justifyContent: 'space-between',
-    alignItems: 'flex-start',
-    gap: spacing.md,
-    flexWrap: 'wrap',
-};
-
-const kickerStyle: CSSProperties = {
-    fontSize: typography.size.xs,
-    color: colors.textMuted,
-    textTransform: 'uppercase',
-    letterSpacing: '0.1em',
-    marginBottom: spacing.xs,
-};
-
-const headerTitleRowStyle: CSSProperties = {
-    display: 'flex',
-    alignItems: 'center',
-    gap: spacing.md,
-};
-
-const headerTitleStyle: CSSProperties = {
-    fontSize: typography.size.xl,
-    fontWeight: typography.weight.semiBold,
-    color: colors.text,
-    margin: 0,
-};
-
-const headerActionsStyle: CSSProperties = {
-    display: 'flex',
-    alignItems: 'center',
-    gap: spacing.md,
-};
-
-const quickActionsStyle: CSSProperties = {
-    display: 'grid',
-    gridTemplateColumns: 'repeat(auto-fit, minmax(250px, 1fr))',
-    gap: spacing.md,
-};
-
-const actionCardStyle: CSSProperties = {
-    display: 'flex',
-    alignItems: 'flex-start',
-    gap: spacing.md,
-    padding: spacing.md,
-    background: colors.surface,
-    borderRadius: radius.lg,
-    border: `1px solid ${colors.border}`,
-    textDecoration: 'none',
-    transition: 'transform 0.2s, box-shadow 0.2s',
-};
-
-const actionIconStyle: CSSProperties = {
-    fontSize: 24,
-};
-
-const actionLabelStyle: CSSProperties = {
-    fontSize: typography.size.base,
-    fontWeight: typography.weight.medium,
-    color: colors.text,
-    margin: 0,
-};
-
-const actionDescriptionStyle: CSSProperties = {
-    fontSize: typography.size.sm,
-    color: colors.textMuted,
-    margin: 0,
-};
-
-const chatLayoutStyle: CSSProperties = {
-    display: 'grid',
-    gridTemplateColumns: '1fr 300px',
-    gap: spacing.lg,
-    flex: 1,
-    minHeight: 0,
-};
-
-const messagesContainerStyle: CSSProperties = {
-    display: 'flex',
-    flexDirection: 'column',
-    gap: spacing.md,
-    overflowY: 'auto',
-    padding: spacing.md,
-    background: colors.surface,
-    borderRadius: radius.lg,
-    border: `1px solid ${colors.border}`,
-};
-
-const messageBase: CSSProperties = {
-    maxWidth: '80%',
-    padding: spacing.md,
-    borderRadius: radius.lg,
-};
-
-const messageUser: CSSProperties = {
-    alignSelf: 'flex-end',
-    background: colors.primary,
-    color: colors.text,
-};
-
-const messagePersona: CSSProperties = {
-    alignSelf: 'flex-start',
-    background: colors.surfaceElevated,
-    border: `1px solid ${colors.border}`,
-};
-
-const messageContentStyle: CSSProperties = {
-    fontSize: typography.size.base,
-    lineHeight: 1.5,
-};
-
-const messageTimeStyle: CSSProperties = {
-    fontSize: typography.size.xs,
-    color: colors.textMuted,
-    marginTop: spacing.xs,
-    display: 'block',
-};
-
-const personaPanelStyle: CSSProperties = {
-    display: 'flex',
-    flexDirection: 'column',
-    gap: spacing.md,
-};
-
-const panelLabelStyle: CSSProperties = {
-    fontSize: typography.size.sm,
-    fontWeight: typography.weight.medium,
-    color: colors.textSecondary,
-    marginBottom: spacing.xs,
-};
-
-const panelCardStyle: CSSProperties = {
-    padding: spacing.md,
-    background: colors.surface,
-    borderRadius: radius.lg,
-    border: `1px solid ${colors.border}`,
-};
-
-const panelHintStyle: CSSProperties = {
-    fontSize: typography.size.sm,
-    color: colors.textMuted,
-    marginTop: spacing.sm,
-};
-
-const suggestionsStyle: CSSProperties = {
-    display: 'flex',
-    gap: spacing.sm,
-    flexWrap: 'wrap',
-};
-
-const suggestionBtnStyle: CSSProperties = {
-    padding: `${spacing.sm}px ${spacing.md}px`,
-    background: colors.surfaceElevated,
-    border: `1px solid ${colors.border}`,
-    borderRadius: radius.full,
-    color: colors.textSecondary,
-    fontSize: typography.size.sm,
-    cursor: 'pointer',
-    fontFamily: typography.fontSans,
-};
-
-const inputAreaStyle: CSSProperties = {
-    display: 'flex',
-    gap: spacing.md,
-    padding: spacing.md,
-    background: colors.surface,
-    borderRadius: radius.lg,
-    border: `1px solid ${colors.border}`,
-};
-
-const inputStyle: CSSProperties = {
-    flex: 1,
-    padding: spacing.md,
-    background: colors.background,
-    border: `1px solid ${colors.border}`,
-    borderRadius: radius.md,
-    color: colors.text,
-    fontSize: typography.size.base,
-    fontFamily: typography.fontSans,
-    outline: 'none',
-};
 
 export function DashboardChatArea() {
     const router = useRouter();
@@ -372,16 +181,16 @@ export function DashboardChatArea() {
     const surveyProgress = Math.min(100, Math.max(24, sessions.length * 20));
 
     return (
-        <section style={chatAreaStyle}>
-            <header style={statusHeaderStyle}>
+        <section className="flex flex-1 flex-col gap-6 p-6">
+            <header className="flex flex-wrap items-start justify-between gap-4">
                 <div>
-                    <p style={kickerStyle}>dashboard ritual state</p>
-                    <div style={headerTitleRowStyle}>
-                        <h2 style={headerTitleStyle}>Summoning pipeline overview</h2>
+                    <p className="mb-1 text-xs uppercase tracking-[0.1em] text-text-muted">dashboard ritual state</p>
+                    <div className="flex items-center gap-4">
+                        <h2 className="m-0 text-xl font-semibold text-text-primary">Summoning pipeline overview</h2>
                         <StageBadge stage={surveyStage} />
                     </div>
                 </div>
-                <div style={headerActionsStyle}>
+                <div className="flex items-center gap-4">
                     <ProgressBar value={surveyProgress} label="Survey completion" accent />
                     <Button
                         size="sm"
@@ -393,43 +202,51 @@ export function DashboardChatArea() {
                 </div>
             </header>
 
-            <div style={quickActionsStyle}>
+            <div className="grid grid-cols-1 gap-4 md:grid-cols-2 xl:grid-cols-3">
                 {QUICK_ACTIONS.map((action) => (
-                    <Link key={action.label} href={action.href} style={actionCardStyle}>
-                        <span style={actionIconStyle}>{action.icon}</span>
+                    <Link key={action.label} href={action.href} className="flex items-start gap-4 rounded-lg border border-slate-700/25 bg-surface p-4 no-underline transition-transform duration-200 hover:-translate-y-0.5">
+                        <span className="text-2xl">{action.icon}</span>
                         <div>
-                            <p style={actionLabelStyle}>{action.label}</p>
-                            <p style={actionDescriptionStyle}>{action.description}</p>
+                            <p className="m-0 text-base font-medium text-text-primary">{action.label}</p>
+                            <p className="m-0 text-sm text-text-muted">{action.description}</p>
                         </div>
                     </Link>
                 ))}
             </div>
 
-            <div style={chatLayoutStyle}>
-                <div ref={messagesRef} style={messagesContainerStyle}>
+            <div className="grid min-h-0 flex-1 grid-cols-1 gap-6 xl:grid-cols-[1fr_300px]">
+                <div ref={messagesRef} className="flex flex-col gap-4 overflow-y-auto rounded-lg border border-slate-700/25 bg-surface p-4">
                     {messages.map((message) => (
-                        <div key={message.id} style={mergeStyles(messageBase, message.type === 'user' ? messageUser : messagePersona)}>
-                            <div style={messageContentStyle}>{message.content}</div>
-                            <time style={messageTimeStyle}>{new Date(message.timestamp).toLocaleTimeString()}</time>
+                        <div
+                            key={message.id}
+                            className={clsx(
+                                'max-w-[80%] rounded-lg p-4',
+                                message.type === 'user'
+                                    ? 'self-end bg-primary text-text-primary'
+                                    : 'self-start border border-slate-700/25 bg-surface-elevated'
+                            )}
+                        >
+                            <div className="text-base leading-relaxed">{message.content}</div>
+                            <time className="mt-1 block text-xs text-text-muted">{new Date(message.timestamp).toLocaleTimeString()}</time>
                         </div>
                     ))}
                     {isSending && (
-                        <div style={mergeStyles(messageBase, messagePersona)}>
+                        <div className="max-w-[80%] self-start rounded-lg border border-slate-700/25 bg-surface-elevated p-4">
                             <TypingIndicator />
                         </div>
                     )}
                 </div>
 
-                <aside style={personaPanelStyle}>
-                    <p style={panelLabelStyle}>Persona Pulse</p>
-                    <div style={panelCardStyle}>
+                <aside className="flex flex-col gap-4">
+                    <p className="mb-1 text-sm font-medium text-text-secondary">Persona Pulse</p>
+                    <div className="rounded-lg border border-slate-700/25 bg-surface p-4">
                         <p>{activePersonaName} Bonding Meter</p>
                         <ProgressBar value={bondLevel?.progress ?? 0} showValue />
-                        <p style={panelHintStyle}>
+                        <p className="mt-2 text-sm text-text-muted">
                             {bondLevel ? `현재 Bond Level ${bondLevel.level}` : 'Persona와 대화하면 Bond Level이 올라갑니다.'}
                         </p>
                     </div>
-                    <div style={panelCardStyle}>
+                    <div className="rounded-lg border border-slate-700/25 bg-surface p-4">
                         <p>Ritual Timeline</p>
                         <ul>
                             <li>Survey Constellation · Completed</li>
@@ -440,18 +257,22 @@ export function DashboardChatArea() {
                 </aside>
             </div>
 
-            <div style={suggestionsStyle}>
+            <div className="flex flex-wrap gap-2">
                 {PROMPTS.map((prompt) => (
-                    <button key={prompt} style={suggestionBtnStyle} onClick={() => setInputValue(prompt)}>
+                    <button
+                        key={prompt}
+                        className="cursor-pointer rounded-full border border-slate-700/25 bg-surface-elevated px-4 py-2 text-sm text-text-secondary"
+                        onClick={() => setInputValue(prompt)}
+                    >
                         {prompt}
                     </button>
                 ))}
             </div>
 
-            <div style={inputAreaStyle}>
+            <div className="flex gap-4 rounded-lg border border-slate-700/25 bg-surface p-4">
                 <input
                     type="text"
-                    style={inputStyle}
+                    className="flex-1 rounded-md border border-slate-700/25 bg-background-dark px-4 py-3 text-base text-text-primary outline-none"
                     placeholder="Ask your persona..."
                     value={inputValue}
                     onChange={(e) => setInputValue(e.target.value)}

@@ -1,225 +1,142 @@
 'use client';
 
-import { useEffect, useState, CSSProperties, Suspense } from 'react';
+import { Suspense, useEffect, useState } from 'react';
 import { useRouter, useSearchParams } from 'next/navigation';
 import { useAuthStore } from '@/stores/authStore';
 import { toast } from '@/lib/toast';
-import { Button } from '@/components/atoms/Button';
+import { PublicAtmosphere } from '@/components/layouts/PublicAtmosphere';
 
-// Styles
-const pageStyles = {
-    container: {
-        minHeight: '100vh',
-        display: 'flex',
-        alignItems: 'center',
-        justifyContent: 'center',
-        background: 'var(--color-bg-dark)',
-        padding: '1rem',
-    } as CSSProperties,
-    card: {
-        background: 'var(--color-surface)',
-        borderRadius: '16px',
-        padding: '3rem',
-        textAlign: 'center',
-        maxWidth: '400px',
-        width: '100%',
-        boxShadow: '0 10px 40px rgba(0, 0, 0, 0.3)',
-    } as CSSProperties,
-    h2: {
-        color: 'var(--color-text)',
-        margin: '1rem 0 0.5rem',
-        fontSize: '1.5rem',
-    } as CSSProperties,
-    p: {
-        color: 'var(--color-text-secondary)',
-        margin: 0,
-    } as CSSProperties,
-    spinner: {
-        width: '48px',
-        height: '48px',
-        border: '3px solid var(--color-border)',
-        borderTopColor: 'var(--color-primary)',
-        borderRadius: '50%',
-        margin: '0 auto',
-        animation: 'spin 1s linear infinite',
-    } as CSSProperties,
-    successIcon: {
-        width: '48px',
-        height: '48px',
-        borderRadius: '50%',
-        background: 'linear-gradient(135deg, #22c55e, #16a34a)',
-        color: 'white',
-        fontSize: '1.5rem',
-        display: 'flex',
-        alignItems: 'center',
-        justifyContent: 'center',
-        margin: '0 auto',
-    } as CSSProperties,
-    errorIcon: {
-        width: '48px',
-        height: '48px',
-        borderRadius: '50%',
-        background: 'linear-gradient(135deg, #ef4444, #dc2626)',
-        color: 'white',
-        fontSize: '1.5rem',
-        display: 'flex',
-        alignItems: 'center',
-        justifyContent: 'center',
-        margin: '0 auto',
-    } as CSSProperties,
-    retryButton: {
-        marginTop: '1.5rem',
-        padding: '0.75rem 1.5rem',
-        background: 'var(--color-primary)',
-        color: 'white',
-        border: 'none',
-        borderRadius: '8px',
-        fontSize: '1rem',
-        cursor: 'pointer',
-        transition: 'background 0.2s ease',
-    } as CSSProperties,
-};
+function StatusCard({
+  status,
+  errorMessage,
+  onRetry,
+}: {
+  status: 'processing' | 'success' | 'error' | 'loading';
+  errorMessage?: string | null;
+  onRetry: () => void;
+}) {
+  const statusConfig = {
+    loading: {
+      icon: <div className="h-12 w-12 animate-spin rounded-full border-2 border-slate-300 border-t-fuchsia-500" />,
+      title: 'Loading...',
+      description: 'Please wait...',
+    },
+    processing: {
+      icon: <div className="h-12 w-12 animate-spin rounded-full border-2 border-slate-300 border-t-fuchsia-500" />,
+      title: 'Completing sign in...',
+      description: 'Please wait while we verify your account.',
+    },
+    success: {
+      icon: <div className="flex h-12 w-12 items-center justify-center rounded-full bg-emerald-500 text-2xl text-white">✓</div>,
+      title: 'Welcome!',
+      description: 'Redirecting to your dashboard...',
+    },
+    error: {
+      icon: <div className="flex h-12 w-12 items-center justify-center rounded-full bg-rose-500 text-2xl text-white">✕</div>,
+      title: 'Sign in failed',
+      description: errorMessage || 'An error occurred during authentication.',
+    },
+  } as const;
 
-// CSS for spinner animation
-const spinnerKeyframes = `
-@keyframes spin {
-    to {
-        transform: rotate(360deg);
-    }
+  const config = statusConfig[status];
+
+  return (
+    <section className="atmospheric-surface w-full max-w-[440px] rounded-2xl px-7 py-9 text-center sm:px-10">
+      <div className="flex justify-center">{config.icon}</div>
+      <h1 className="mt-3 font-display text-4xl text-slate-800">{config.title}</h1>
+      <p className="mt-2 text-sm text-slate-600">{config.description}</p>
+
+      {status === 'error' ? (
+        <button
+          type="button"
+          onClick={onRetry}
+          className="mt-6 rounded-lg bg-fuchsia-600 px-4 py-2 text-sm font-semibold text-white transition hover:bg-fuchsia-500"
+        >
+          Try Again
+        </button>
+      ) : null}
+    </section>
+  );
 }
-`;
 
-/**
- * OAuth Callback Handler
- *
- * This page handles the redirect from OAuth providers.
- * It extracts tokens from URL parameters and stores them in the auth store.
- */
 function AuthCallbackContent() {
-    const router = useRouter();
-    const searchParams = useSearchParams();
-    const { login } = useAuthStore();
-    const [status, setStatus] = useState<'processing' | 'success' | 'error'>('processing');
-    const [errorMessage, setErrorMessage] = useState<string | null>(null);
+  const router = useRouter();
+  const searchParams = useSearchParams();
+  const { login } = useAuthStore();
+  const [status, setStatus] = useState<'processing' | 'success' | 'error'>('processing');
+  const [errorMessage, setErrorMessage] = useState<string | null>(null);
 
-    useEffect(() => {
-        const handleCallback = async () => {
-            const accessToken = searchParams.get('accessToken');
-            const refreshToken = searchParams.get('refreshToken');
-            const provider = searchParams.get('provider');
-            const error = searchParams.get('error');
+  useEffect(() => {
+    const handleCallback = async () => {
+      const accessToken = searchParams.get('accessToken');
+      const refreshToken = searchParams.get('refreshToken');
+      const error = searchParams.get('error');
 
-            if (error) {
-                setStatus('error');
-                setErrorMessage(decodeURIComponent(error));
-                return;
-            }
+      if (error) {
+        setStatus('error');
+        setErrorMessage(decodeURIComponent(error));
+        return;
+      }
 
-            if (!accessToken || !refreshToken) {
-                setStatus('error');
-                setErrorMessage('Missing authentication tokens');
-                return;
-            }
+      if (!accessToken || !refreshToken) {
+        setStatus('error');
+        setErrorMessage('Missing authentication tokens');
+        return;
+      }
 
-            try {
-                // Extract user info from JWT token
-                // JWT format: header.payload.signature
-                let user = {
-                    id: 'user-unknown',
-                    email: 'user@example.com',
-                    name: 'User',
-                };
-
-                try {
-                    // Decode JWT payload to extract user info
-                    const parts = accessToken.split('.');
-                    if (parts.length === 3) {
-                        const decodedPayload = JSON.parse(
-                            atob(parts[1].replace(/-/g, '+').replace(/_/g, '/'))
-                        );
-                        user = {
-                            id: decodedPayload.sub || decodedPayload.id || user.id,
-                            email: decodedPayload.email || user.email,
-                            name: decodedPayload.name || 'User',
-                        };
-                    }
-                } catch (decodeError) {
-                    // Silently fail over to defaults if JWT decode fails
-                    // (Using defaults is acceptable; decoded user data is just metadata)
-                }
-
-                // Store tokens and user in auth store
-                login(accessToken, refreshToken, user);
-
-                setStatus('success');
-
-                // Redirect to dashboard after a short delay
-                setTimeout(() => {
-                    router.push('/dashboard');
-                }, 1500);
-            } catch (err) {
-                toast.error('Failed to process authentication. Please try again.');
-                setStatus('error');
-                setErrorMessage('Failed to process authentication');
-            }
+      try {
+        let user = {
+          id: 'user-unknown',
+          email: 'user@example.com',
+          name: 'User',
         };
 
-        handleCallback();
-    }, [searchParams, login, router]);
+        try {
+          const parts = accessToken.split('.');
+          if (parts.length === 3) {
+            const decodedPayload = JSON.parse(atob(parts[1].replace(/-/g, '+').replace(/_/g, '/')));
+            user = {
+              id: decodedPayload.sub || decodedPayload.id || user.id,
+              email: decodedPayload.email || user.email,
+              name: decodedPayload.name || 'User',
+            };
+          }
+        } catch (_decodeError) {
+          // fallback values are acceptable when JWT payload parse fails
+        }
 
-    return (
-        <div style={pageStyles.card}>
-            {status === 'processing' && (
-                <>
-                    <div style={pageStyles.spinner}></div>
-                    <h2 style={pageStyles.h2}>Completing sign in...</h2>
-                    <p style={pageStyles.p}>Please wait while we verify your account.</p>
-                </>
-            )}
+        login(accessToken, refreshToken, user);
+        setStatus('success');
 
-            {status === 'success' && (
-                <>
-                    <div style={pageStyles.successIcon}>✓</div>
-                    <h2 style={pageStyles.h2}>Welcome!</h2>
-                    <p style={pageStyles.p}>Redirecting to your dashboard...</p>
-                </>
-            )}
+        setTimeout(() => {
+          router.push('/dashboard');
+        }, 1500);
+      } catch (_err) {
+        toast.error('Failed to process authentication. Please try again.');
+        setStatus('error');
+        setErrorMessage('Failed to process authentication');
+      }
+    };
 
-            {status === 'error' && (
-                <>
-                    <div style={pageStyles.errorIcon}>✕</div>
-                    <h2 style={pageStyles.h2}>Sign in failed</h2>
-                    <p style={pageStyles.p}>{errorMessage || 'An error occurred during authentication.'}</p>
-                    <button style={pageStyles.retryButton} onClick={() => router.push('/login')}>
-                        Try Again
-                    </button>
-                </>
-            )}
-        </div>
-    );
+    handleCallback();
+  }, [searchParams, login, router]);
+
+  return <StatusCard status={status} errorMessage={errorMessage} onRetry={() => router.push('/login')} />;
 }
 
-// Loading fallback for Suspense
 function LoadingFallback() {
-    return (
-        <div style={pageStyles.card}>
-            <div style={pageStyles.spinner}></div>
-            <h2 style={pageStyles.h2}>Loading...</h2>
-            <p style={pageStyles.p}>Please wait...</p>
-        </div>
-    );
+  return <StatusCard status="loading" onRetry={() => undefined} />;
 }
 
 export default function AuthCallbackPage() {
-    return (
-        <>
-            <style>{spinnerKeyframes}</style>
-            <div style={pageStyles.container}>
-                <Suspense fallback={<LoadingFallback />}>
-                    <AuthCallbackContent />
-                </Suspense>
-            </div>
-        </>
-    );
+  return (
+    <PublicAtmosphere>
+      <main className="mx-auto flex min-h-screen w-full max-w-[960px] items-center justify-center px-6 py-10" role="main" aria-label="Authentication callback page">
+        <Suspense fallback={<LoadingFallback />}>
+          <AuthCallbackContent />
+        </Suspense>
+      </main>
+    </PublicAtmosphere>
+  );
 }
 

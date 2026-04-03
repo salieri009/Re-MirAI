@@ -2,8 +2,8 @@
 
 import { useEffect, useRef } from 'react';
 import gsap from 'gsap';
+import clsx from 'clsx';
 import { useReducedMotion } from '@/hooks/useAccessibility';
-import { colors, spacing, radius, typography, mergeStyles, CSSProperties } from '@/lib/styles';
 
 interface TimelineStage {
     id: string;
@@ -17,98 +17,6 @@ interface TimelineStage {
 interface RitualTimelineProps {
     stages: TimelineStage[];
 }
-
-const timelineStyle: CSSProperties = {
-    display: 'flex',
-    gap: spacing.lg,
-    position: 'relative',
-    padding: spacing.md,
-};
-
-const timelineTrackStyle: CSSProperties = {
-    position: 'absolute',
-    left: 20,
-    top: 0,
-    bottom: 0,
-    width: 4,
-    background: colors.border,
-    borderRadius: radius.full,
-};
-
-const timelineProgressStyle: CSSProperties = {
-    width: '100%',
-    background: `linear-gradient(to bottom, ${colors.primary}, ${colors.accent})`,
-    borderRadius: radius.full,
-    height: 0,
-};
-
-const stagesStyle: CSSProperties = {
-    display: 'flex',
-    flexDirection: 'column',
-    gap: spacing.lg,
-    marginLeft: 40,
-};
-
-const stageBase: CSSProperties = {
-    display: 'flex',
-    alignItems: 'flex-start',
-    gap: spacing.md,
-    opacity: 0,
-    transform: 'translateX(-20px)',
-};
-
-const stageMarkerBase: CSSProperties = {
-    width: 40,
-    height: 40,
-    borderRadius: '50%',
-    display: 'flex',
-    alignItems: 'center',
-    justifyContent: 'center',
-    fontSize: typography.size.lg,
-    flexShrink: 0,
-    marginLeft: -60,
-    background: colors.surface,
-    border: `2px solid ${colors.border}`,
-};
-
-const markerCompleted: CSSProperties = {
-    background: colors.primary,
-    borderColor: colors.primary,
-    color: colors.text,
-};
-
-const markerActive: CSSProperties = {
-    borderColor: colors.accent,
-    boxShadow: `0 0 10px ${colors.accent}40`,
-};
-
-const stageContentStyle: CSSProperties = {
-    display: 'flex',
-    flexDirection: 'column',
-    gap: spacing.xxs,
-};
-
-const stageNameStyle: CSSProperties = {
-    fontSize: typography.size.lg,
-    fontWeight: typography.weight.semiBold,
-    color: colors.text,
-    margin: 0,
-};
-
-const stageDescriptionStyle: CSSProperties = {
-    fontSize: typography.size.sm,
-    color: colors.textMuted,
-    margin: 0,
-};
-
-const stageTimestampStyle: CSSProperties = {
-    display: 'flex',
-    alignItems: 'center',
-    gap: spacing.xs,
-    fontSize: typography.size.xs,
-    color: colors.textSecondary,
-    marginTop: spacing.xs,
-};
 
 export function RitualTimeline({ stages }: RitualTimelineProps) {
     const timelineRef = useRef<HTMLDivElement>(null);
@@ -142,31 +50,33 @@ export function RitualTimeline({ stages }: RitualTimelineProps) {
     }, [reducedMotion, stages]);
 
     return (
-        <div ref={timelineRef} style={timelineStyle}>
-            <div style={timelineTrackStyle}>
-                <div ref={progressRef} style={timelineProgressStyle} />
+        <div ref={timelineRef} className="relative flex gap-6 p-4">
+            <div className="absolute bottom-0 left-5 top-0 w-1 rounded-full bg-slate-700/25">
+                <div ref={progressRef} className="h-0 w-full rounded-full bg-gradient-to-b from-primary to-accent" />
             </div>
 
-            <div style={stagesStyle}>
+            <div className="ml-10 flex flex-col gap-6">
                 {stages.map((stage) => (
                     <div
                         key={stage.id}
-                        style={stageBase}
+                        className="flex -translate-x-5 items-start gap-4 opacity-0"
                         data-stage
                     >
-                        <div style={mergeStyles(
-                            stageMarkerBase,
-                            stage.status === 'completed' && markerCompleted,
-                            stage.status === 'active' && markerActive
-                        )}>
+                        <div
+                            className={clsx(
+                                '-ml-14 flex h-10 w-10 shrink-0 items-center justify-center rounded-full border-2 border-slate-700/25 bg-surface text-lg',
+                                stage.status === 'completed' && 'border-primary bg-primary text-text-primary',
+                                stage.status === 'active' && 'border-accent shadow-[0_0_10px_rgba(0,201,167,0.25)]'
+                            )}
+                        >
                             {stage.status === 'completed' ? '✓' : stage.icon}
                         </div>
 
-                        <div style={stageContentStyle}>
-                            <h3 style={stageNameStyle}>{stage.name}</h3>
-                            <p style={stageDescriptionStyle}>{stage.description}</p>
+                        <div className="flex flex-col gap-0.5">
+                            <h3 className="m-0 text-lg font-semibold text-text-primary">{stage.name}</h3>
+                            <p className="m-0 text-sm text-text-muted">{stage.description}</p>
                             {stage.timestamp && (
-                                <div style={stageTimestampStyle}>
+                                <div className="mt-1 flex items-center gap-1 text-xs text-text-secondary">
                                     <span>🕐</span>
                                     <span>{new Date(stage.timestamp).toLocaleString()}</span>
                                 </div>

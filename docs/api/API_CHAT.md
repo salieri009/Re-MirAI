@@ -153,5 +153,10 @@ Status: Implemented
 ## Notes
 
 - REST 응답은 `success/data` 래퍼 없이 실제 DTO 형태를 직접 반환합니다.
-- WebSocket 인증은 현재 `chat:auth` 이벤트 페이로드를 사용합니다.
+- WebSocket 인증은 현재 `chat:auth` 이벤트 페이로드의 `userId`를 사용합니다.
 - Bond level 증가는 메시지 전송 시 서버에서 `persona.bondLevel`을 증가시키는 방식으로 처리됩니다.
+
+## Security Requirements
+
+- WebSocket 인증은 JWT 기반 서버 검증을 사용합니다.
+- `chat:auth` 페이로드의 사용자 식별 정보는 토큰 검증 결과와 불일치하면 거부합니다.

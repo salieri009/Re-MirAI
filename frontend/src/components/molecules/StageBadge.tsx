@@ -1,74 +1,48 @@
 'use client';
 
 import React from 'react';
-import { colors, spacing, radius, typography, mergeStyles, CSSProperties } from '@/lib/styles';
 
 export type SurveyStage = 'COLLECTING' | 'READY' | 'SYNTHESIZED';
 
 interface StageBadgeProps {
     stage: SurveyStage;
-    style?: CSSProperties;
+    className?: string;
 }
 
-const STAGE_CONFIG: Record<SurveyStage, { label: string; color: string; icon: string }> = {
+const STAGE_CONFIG: Record<SurveyStage, { label: string; tone: string; icon: string }> = {
     COLLECTING: {
         label: 'Collecting',
-        color: 'accent',
+        tone: 'accent',
         icon: '🔮',
     },
     READY: {
         label: 'Ready',
-        color: 'primary',
+        tone: 'primary',
         icon: '⚡',
     },
     SYNTHESIZED: {
         label: 'Synthesized',
-        color: 'highlight',
+        tone: 'highlight',
         icon: '✨',
     },
 };
 
-const badgeBase: CSSProperties = {
-    display: 'inline-flex',
-    alignItems: 'center',
-    gap: spacing.xs,
-    padding: `${spacing.xxs}px ${spacing.sm}px`,
-    borderRadius: radius.pill,
-    fontSize: typography.size.sm,
-    fontWeight: typography.weight.medium,
+const toneClass: Record<string, string> = {
+    accent: 'bg-accent/20 text-accent',
+    primary: 'bg-primary/20 text-primary',
+    highlight: 'bg-highlight/20 text-highlight',
 };
 
-const colorStyles: Record<string, CSSProperties> = {
-    accent: {
-        background: `${colors.accent}20`,
-        color: colors.accent,
-    },
-    primary: {
-        background: `${colors.primary}20`,
-        color: colors.primary,
-    },
-    highlight: {
-        background: `${colors.highlight}20`,
-        color: colors.highlight,
-    },
-};
-
-const iconStyle: CSSProperties = {
-    fontSize: typography.size.base,
-};
-
-const labelStyle: CSSProperties = {
-    fontSize: typography.size.sm,
-};
-
-export function StageBadge({ stage, style }: StageBadgeProps) {
+export function StageBadge({ stage, className }: StageBadgeProps) {
     const config = STAGE_CONFIG[stage];
-    const combinedStyle = mergeStyles(badgeBase, colorStyles[config.color], style);
 
     return (
-        <span style={combinedStyle} aria-label={`Status: ${config.label}`}>
-            <span style={iconStyle} aria-hidden="true">{config.icon}</span>
-            <span style={labelStyle}>{config.label}</span>
+        <span
+            className={`inline-flex items-center gap-1 rounded-pill px-2 py-0.5 text-sm font-medium ${toneClass[config.tone]} ${className ?? ''}`.trim()}
+            aria-label={`Status: ${config.label}`}
+        >
+            <span className="text-base" aria-hidden="true">{config.icon}</span>
+            <span className="text-sm">{config.label}</span>
         </span>
     );
 }

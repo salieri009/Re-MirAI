@@ -5,6 +5,7 @@ import gsap from 'gsap';
 import { Button } from '@/components/atoms/Button';
 import { useReducedMotion } from '@/hooks/useAccessibility';
 import { ShareOptions } from './ShareOptions';
+import { toast } from '@/lib/toast';
 import { colors, spacing, radius, typography, shadows, mergeStyles, CSSProperties } from '@/lib/styles';
 
 interface SurveyLinkCardProps {
@@ -167,7 +168,7 @@ export function SurveyLinkCard({ link, onCopy, shareCount, lastShared }: SurveyL
       window.open(`https://twitter.com/intent/tweet?text=${encodeURIComponent(message)}`, '_blank');
     } else {
       navigator.clipboard.writeText(message);
-      alert(`Message copied! Share it on ${platform}.`);
+      toast.success(`Message copied! Share it on ${platform}.`);
     }
   };
 

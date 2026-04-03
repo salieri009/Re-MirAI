@@ -1,54 +1,14 @@
 'use client';
 
 import React, { forwardRef, useState } from 'react';
-import { colors, spacing, radius, typography, transitions, mergeStyles, CSSProperties } from '@/lib/styles';
 
-interface InputProps extends React.InputHTMLAttributes<HTMLInputElement> {
+interface InputProps extends Omit<React.InputHTMLAttributes<HTMLInputElement>, 'style'> {
   label?: string;
   error?: string;
 }
 
-const wrapperStyle: CSSProperties = {
-  display: 'flex',
-  flexDirection: 'column',
-  gap: spacing.xs,
-};
-
-const labelStyle: CSSProperties = {
-  fontSize: typography.size.sm,
-  fontWeight: typography.weight.medium,
-  color: colors.text,
-};
-
-const inputBaseStyle: CSSProperties = {
-  width: '100%',
-  padding: spacing.md,
-  fontSize: typography.size.base,
-  fontFamily: typography.fontSans,
-  border: `1px solid ${colors.border}`,
-  borderRadius: radius.md,
-  backgroundColor: colors.surface,
-  color: colors.text,
-  transition: transitions.colors,
-  outline: 'none',
-};
-
-const inputFocusStyle: CSSProperties = {
-  borderColor: colors.accent,
-  boxShadow: `0 0 0 3px rgba(0, 201, 167, 0.2)`,
-};
-
-const inputErrorStyle: CSSProperties = {
-  borderColor: '#EF4444',
-};
-
-const errorTextStyle: CSSProperties = {
-  fontSize: typography.size.sm,
-  color: '#EF4444',
-};
-
 export const Input = forwardRef<HTMLInputElement, InputProps>(function Input(
-  { label, error, style, onFocus, onBlur, ...props },
+  { label, error, className, onFocus, onBlur, ...props },
   ref
 ) {
   const [isFocused, setIsFocused] = useState(false);
@@ -63,24 +23,23 @@ export const Input = forwardRef<HTMLInputElement, InputProps>(function Input(
     onBlur?.(e);
   };
 
-  const inputStyle = mergeStyles(
-    inputBaseStyle,
-    isFocused ? inputFocusStyle : undefined,
-    error ? inputErrorStyle : undefined,
-    style
-  );
-
   return (
-    <div style={wrapperStyle}>
-      {label && <label style={labelStyle}>{label}</label>}
+    <div className="flex flex-col gap-1">
+      {label && <label className="text-sm font-medium text-text-primary">{label}</label>}
       <input
         ref={ref}
-        style={inputStyle}
+        className={`${
+          'w-full rounded-md border bg-surface px-4 py-4 font-sans text-base text-text-primary outline-none transition-all duration-200'
+        } ${
+          isFocused
+            ? 'border-accent shadow-[0_0_0_3px_rgba(0,201,167,0.2)]'
+            : 'border-slate-700/25'
+        } ${error ? 'border-red-500' : ''} ${className ?? ''}`.trim()}
         onFocus={handleFocus}
         onBlur={handleBlur}
         {...props}
       />
-      {error && <span style={errorTextStyle}>{error}</span>}
+      {error && <span className="text-sm text-red-500">{error}</span>}
     </div>
   );
 });

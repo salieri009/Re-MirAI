@@ -2,20 +2,20 @@
  * Re:MirAI Design Tokens
  * Emotion-mapped design system supporting purpose-driven UX
  * 
- * Aligned with 3-Color System:
- * - Primary: Amethyst Purple (#845EC2)
- * - Accent: Mint Green (#00C9A7)
- * - Highlight: Light Lavender (#C197FF)
+ * Aligned with Small Switch Palette v2:
+ * - Background: Mist (#e6ebf8)
+ * - Primary: Fuchsia (#d946ef)
+ * - Text/Anchor: Anchor (#334155)
  */
 
 export const tokens = {
     // Core Palette (Matching tokens.css)
     palette: {
-        primary: '#845EC2',   // Amethyst Purple
-        accent: '#00C9A7',    // Mint Green
-        highlight: '#C197FF', // Light Lavender
-        bgDark: '#0A0112',    // Deep Space
-        surface: 'rgba(132, 94, 194, 0.2)', // Purple tint
+        primary: '#d946ef',   // Fuchsia
+        accent: '#e6ebf8',    // Mist
+        highlight: '#334155', // Anchor
+        bgDark: '#e6ebf8',
+        surface: 'rgba(255, 255, 255, 0.72)',
     },
 
     spacing: {
@@ -77,39 +77,39 @@ export const tokens = {
     emotions: {
         // Curiosity & Wonder (Landing Page)
         curiosity: {
-            primary: '#845EC2',
-            secondary: '#C197FF',
-            accent: '#00C9A7',
+            primary: '#d946ef',
+            secondary: '#ec4899',
+            accent: '#334155',
         },
 
         // Trust & Clarity (Login, Survey)
         trust: {
-            primary: '#00C9A7',
-            secondary: '#845EC2',
-            accent: '#C197FF',
+            primary: '#334155',
+            secondary: '#475569',
+            accent: '#d946ef',
         },
 
         // Progress & Motivation (Dashboard)
         progress: {
-            collecting: '#00C9A7',
-            ready: '#845EC2',
-            success: '#00C9A7',
-            warning: '#C197FF',
+            collecting: '#64748b',
+            ready: '#d946ef',
+            success: '#10b981',
+            warning: '#f59e0b',
         },
 
         // Intimacy & Connection (Chat)
         connection: {
-            user: '#845EC2',
-            ai: '#C197FF',
-            bond: '#00C9A7',
+            user: '#d946ef',
+            ai: '#334155',
+            bond: '#0ea5e9',
         },
 
         // Awe & Joy (Summoning)
         delight: {
-            dark: '#0A0112',
-            magical: '#845EC2',
-            celebration: '#00C9A7',
-            particle: '#C197FF',
+            dark: '#334155',
+            magical: '#d946ef',
+            celebration: '#10b981',
+            particle: '#e6ebf8',
         },
     },
 
@@ -117,9 +117,9 @@ export const tokens = {
      * Surface Colors
      */
     surface: {
-        card: 'rgba(132, 94, 194, 0.1)',
-        glass: 'rgba(10, 1, 18, 0.6)',
-        overlay: 'rgba(10, 1, 18, 0.8)',
+        card: 'rgba(255, 255, 255, 0.7)',
+        glass: 'rgba(255, 255, 255, 0.78)',
+        overlay: 'rgba(51, 65, 85, 0.35)',
     },
 
     /**
@@ -150,8 +150,8 @@ export const tokens = {
         sm: '0 1px 2px 0 rgba(0, 0, 0, 0.1)',
         md: '0 4px 6px -1px rgba(0, 0, 0, 0.15)',
         lg: '0 10px 15px -3px rgba(0, 0, 0, 0.2)',
-        glowPrimary: '0 0 32px rgba(132, 94, 194, 0.4)',
-        glowAccent: '0 0 28px rgba(0, 201, 167, 0.4)',
+        glowPrimary: '0 0 32px rgba(217, 70, 239, 0.35)',
+        glowAccent: '0 0 28px rgba(51, 65, 85, 0.25)',
     },
 } as const;
 

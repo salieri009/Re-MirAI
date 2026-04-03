@@ -1,21 +1,22 @@
 import type { Metadata } from 'next'
-import { Space_Grotesk, Plus_Jakarta_Sans } from 'next/font/google'
+import { Cormorant_Garamond, Source_Sans_3 } from 'next/font/google'
 import '../styles/tokens.css'
 import '../global.css'
 import { QueryProvider } from '@/lib/providers/QueryProvider'
 import ClientProviders from '@/lib/providers/ClientProviders'
 
-const spaceGrotesk = Space_Grotesk({
+const cormorant = Cormorant_Garamond({
   subsets: ['latin'],
   variable: '--font-display',
   display: 'swap',
-  weight: ['500', '700'], // Medium (500) and Bold (700) per ver2 spec
+  weight: ['500', '600', '700'],
 })
 
-const plusJakarta = Plus_Jakarta_Sans({
+const sourceSans = Source_Sans_3({
   subsets: ['latin'],
   variable: '--font-sans',
   display: 'swap',
+  weight: ['400', '500', '600', '700'],
 })
 
 export const metadata: Metadata = {
@@ -29,7 +30,7 @@ export default function RootLayout({
   children: React.ReactNode
 }) {
   return (
-    <html lang="en" suppressHydrationWarning className={`${spaceGrotesk.variable} ${plusJakarta.variable}`}>
+    <html lang="en" suppressHydrationWarning className={`${cormorant.variable} ${sourceSans.variable}`}>
       <head>
         <link
           href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200&display=swap"
@@ -37,7 +38,7 @@ export default function RootLayout({
         />
 
       </head>
-      <body suppressHydrationWarning className="bg-background-dark text-text-primary font-sans antialiased">
+      <body suppressHydrationWarning className="bg-background-dark text-text-primary font-sans antialiased selection:bg-fuchsia-300/60 selection:text-slate-900">
         <QueryProvider>
           <ClientProviders>
             {children}

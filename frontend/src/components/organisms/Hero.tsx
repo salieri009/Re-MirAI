@@ -29,7 +29,7 @@ export const Hero = () => {
         if (titleRef.current) {
             const words = titleRef.current.textContent?.split(' ') || [];
             titleRef.current.innerHTML = words
-                .map((word, i) => `<span style="display: inline-block;" data-word="${i}">${word}</span>`)
+                .map((word, i) => `<span class="inline-block" data-word="${i}">${word}</span>`)
                 .join(' ');
 
             const wordSpans = titleRef.current.querySelectorAll('[data-word]');
@@ -87,7 +87,7 @@ export const Hero = () => {
             {/* Background Gradients */}
             <div className="absolute inset-0 pointer-events-none z-0">
                 <div className="absolute top-[-20%] left-[-10%] w-[60%] h-[60%] bg-primary/20 blur-[120px] rounded-full mix-blend-screen animate-pulse" />
-                <div className="absolute bottom-[-20%] right-[-10%] w-[60%] h-[60%] bg-accent/20 blur-[120px] rounded-full mix-blend-screen animate-pulse" style={{ animationDelay: '1s' }} />
+                <div className="absolute bottom-[-20%] right-[-10%] h-[60%] w-[60%] animate-pulse rounded-full bg-accent/20 blur-[120px] mix-blend-screen [animation-delay:1s]" />
             </div>
 
             {/* Content */}

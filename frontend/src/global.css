@@ -25,6 +25,7 @@ body {
     color: var(--color-text-primary);
     background-color: var(--color-bg-dark);
     letter-spacing: 0.01em;
+    min-height: 100vh;
 }
 
 h1,
@@ -80,7 +81,7 @@ h6 {
 
 /* Glassmorphism Effect */
 .glass {
-    background: rgba(10, 1, 18, 0.6);
+    background: rgba(255, 255, 255, 0.6);
     -webkit-backdrop-filter: blur(12px);
     backdrop-filter: blur(12px);
     border: 1px solid var(--color-border);
@@ -132,6 +133,195 @@ h6 {
     transform: translateY(0) scale(0.98);
 }
 
+.atmospheric-surface {
+    background:
+        linear-gradient(140deg, rgba(255, 255, 255, 0.72), rgba(255, 255, 255, 0.58)),
+        radial-gradient(circle at top right, rgba(217, 70, 239, 0.14), transparent 50%);
+    border: 1px solid rgba(51, 65, 85, 0.16);
+    border-radius: var(--radius-xl);
+    -webkit-backdrop-filter: blur(12px);
+    backdrop-filter: blur(12px);
+}
+
+.ornament-ring {
+    border: 1px solid rgba(217, 70, 239, 0.36);
+    box-shadow: inset 0 0 28px rgba(217, 70, 239, 0.14);
+    border-radius: 9999px;
+}
+
+.public-orb-a {
+    background: radial-gradient(circle, rgba(217, 70, 239, 0.24) 0%, rgba(217, 70, 239, 0) 72%);
+}
+
+.public-orb-b {
+    background: radial-gradient(circle, rgba(51, 65, 85, 0.14) 0%, rgba(51, 65, 85, 0) 74%);
+}
+
+.public-orb-c {
+    background: radial-gradient(circle, rgba(143, 89, 201, 0.16) 0%, rgba(143, 89, 201, 0) 68%);
+}
+
+.public-grid-overlay {
+    background-image:
+        linear-gradient(rgba(51, 65, 85, 0.15) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(51, 65, 85, 0.15) 1px, transparent 1px);
+    background-size: 36px 36px;
+}
+
+.auth-shell-overlay {
+    background:
+        radial-gradient(circle at 80% 18%, rgba(217, 70, 239, 0.2), rgba(217, 70, 239, 0) 52%),
+        radial-gradient(circle at 10% 90%, rgba(51, 65, 85, 0.16), rgba(51, 65, 85, 0) 48%);
+}
+
+.auth-visual-wash {
+    background: linear-gradient(to right, rgba(230, 235, 248, 0.15), rgba(230, 235, 248, 0.9));
+}
+
+.summoning-overlay {
+    position: fixed;
+    inset: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 200;
+}
+
+.summoning-overlay-fated {
+    background: radial-gradient(circle at center, rgba(132, 94, 194, 0.12) 0%, var(--color-bg-dark) 70%);
+}
+
+.summoning-overlay-custom {
+    background: radial-gradient(circle at center, rgba(0, 201, 167, 0.12) 0%, var(--color-bg-dark) 70%);
+}
+
+.summoning-stage {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: var(--space-lg);
+    text-align: center;
+}
+
+.summoning-title {
+    font-size: var(--font-size-2xl);
+    font-weight: var(--font-weight-semibold);
+    color: var(--color-text-primary);
+}
+
+.summoning-sparkles {
+    font-size: 64px;
+    animation: summoningPulse 2s ease-in-out infinite;
+}
+
+.summoning-particles {
+    position: absolute;
+    width: 200px;
+    height: 200px;
+}
+
+.summoning-particle {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 8px;
+    height: 8px;
+    border-radius: 9999px;
+    background: var(--color-accent);
+    transform: translate(-50%, -50%);
+    animation: summoningFlicker 1.8s ease-in-out infinite;
+}
+
+.summoning-particle:nth-child(6n + 1) {
+    transform: translate(-18px, -62px);
+    animation-delay: 0.1s;
+}
+
+.summoning-particle:nth-child(6n + 2) {
+    transform: translate(56px, -30px);
+    animation-delay: 0.26s;
+}
+
+.summoning-particle:nth-child(6n + 3) {
+    transform: translate(42px, 50px);
+    animation-delay: 0.42s;
+}
+
+.summoning-particle:nth-child(6n + 4) {
+    transform: translate(-36px, 56px);
+    animation-delay: 0.58s;
+}
+
+.summoning-particle:nth-child(6n + 5) {
+    transform: translate(-64px, -8px);
+    animation-delay: 0.74s;
+}
+
+.summoning-particle:nth-child(6n) {
+    transform: translate(6px, -42px);
+    animation-delay: 0.9s;
+}
+
+.summoning-silhouette {
+    width: 150px;
+    height: 200px;
+    border-radius: var(--radius-xl) var(--radius-xl) 0 0;
+    background: linear-gradient(to top, rgba(132, 94, 194, 0.4), transparent);
+    animation: summoningPulse 1.5s ease-in-out infinite;
+}
+
+.summoning-persona-card {
+    border: 2px solid var(--color-accent);
+    border-radius: var(--radius-xl);
+    padding: var(--space-xxl);
+    background: var(--color-surface);
+    box-shadow: 0 0 40px rgba(0, 201, 167, 0.25);
+    animation: summoningScaleIn 0.5s ease-out;
+}
+
+.summoning-persona-name {
+    margin-bottom: var(--space-sm);
+    font-size: var(--font-size-3xl);
+    font-weight: var(--font-weight-bold);
+    color: var(--color-text-primary);
+}
+
+.summoning-persona-badge {
+    margin-bottom: var(--space-md);
+    font-size: var(--font-size-lg);
+    color: var(--color-accent);
+}
+
+.summoning-celebration {
+    font-size: var(--font-size-xl);
+    font-weight: var(--font-weight-bold);
+    color: var(--color-highlight);
+}
+
+.summoning-skip {
+    position: absolute;
+    right: var(--space-xl);
+    bottom: var(--space-xl);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-md);
+    padding: var(--space-sm) var(--space-lg);
+    background: transparent;
+    color: var(--color-text-muted);
+    font-size: var(--font-size-sm);
+    cursor: pointer;
+}
+
+.summoning-skip:hover {
+    border-color: var(--color-accent);
+    color: var(--color-text-primary);
+}
+
+.toast-stack > * {
+    animation: toastSlideIn 0.3s ease-out;
+}
+
 /* Animation Utilities */
 .animate-fade-in {
     animation: fadeIn 0.3s ease-out;
@@ -164,6 +354,54 @@ h6 {
     to {
         opacity: 1;
         transform: translateY(0);
+    }
+}
+
+@keyframes summoningPulse {
+    0%,
+    100% {
+        opacity: 1;
+        transform: scale(1);
+    }
+
+    50% {
+        opacity: 0.72;
+        transform: scale(1.05);
+    }
+}
+
+@keyframes summoningScaleIn {
+    from {
+        opacity: 0;
+        transform: scale(0.8);
+    }
+
+    to {
+        opacity: 1;
+        transform: scale(1);
+    }
+}
+
+@keyframes summoningFlicker {
+    0%,
+    100% {
+        opacity: 0.95;
+    }
+
+    50% {
+        opacity: 0.45;
+    }
+}
+
+@keyframes toastSlideIn {
+    from {
+        transform: translateX(400px);
+        opacity: 0;
+    }
+
+    to {
+        transform: translateX(0);
+        opacity: 1;
     }
 }
 

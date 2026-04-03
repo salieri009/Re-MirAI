@@ -2,6 +2,7 @@
 
 import { useEffect, useMemo, useRef } from 'react';
 import gsap from 'gsap';
+import clsx from 'clsx';
 import { Button } from '@/components/atoms/Button';
 import { PersonaCard } from '@/components/molecules/PersonaCard';
 import { QuestCard } from '@/components/molecules/QuestCard';
@@ -11,7 +12,6 @@ import { useAnnouncement, useReducedMotion } from '@/hooks/useAccessibility';
 import type { SurveyStatus } from '@/lib/api/survey';
 import type { Persona } from '@/lib/api/persona';
 import type { Quest } from '@/lib/api/quest';
-import { colors, spacing, radius, typography, shadows, mergeStyles, CSSProperties } from '@/lib/styles';
 
 export type DashboardState = 'empty' | 'collecting' | 'ready' | 'active';
 
@@ -30,176 +30,6 @@ interface DashboardStateViewProps {
   onClaimQuest?: (questId: string) => Promise<void>;
   onCopySurveyLink?: () => void;
 }
-
-const stateRootStyle: CSSProperties = {
-  padding: spacing.lg,
-};
-
-const stateContentStyle: CSSProperties = {
-  display: 'flex',
-  flexDirection: 'column',
-  gap: spacing.lg,
-};
-
-const cardBase: CSSProperties = {
-  padding: spacing.xl,
-  background: colors.surface,
-  borderRadius: radius.xl,
-  border: `1px solid ${colors.border}`,
-  boxShadow: shadows.md,
-};
-
-const cardEmpty: CSSProperties = {
-  textAlign: 'center',
-};
-
-const cardReady: CSSProperties = {
-  background: `linear-gradient(135deg, ${colors.primary}10, ${colors.accent}10)`,
-  borderColor: colors.accent,
-};
-
-const headingStyle: CSSProperties = {
-  fontSize: typography.size['2xl'],
-  fontWeight: typography.weight.bold,
-  color: colors.text,
-  marginBottom: spacing.sm,
-};
-
-const labelStyle: CSSProperties = {
-  fontSize: typography.size.sm,
-  color: colors.accent,
-  textTransform: 'uppercase',
-  letterSpacing: '0.1em',
-  marginBottom: spacing.xs,
-};
-
-const journeyMapStyle: CSSProperties = {
-  display: 'flex',
-  alignItems: 'center',
-  justifyContent: 'center',
-  gap: spacing.sm,
-  margin: `${spacing.xl}px 0`,
-};
-
-const journeyStepBase: CSSProperties = {
-  display: 'flex',
-  flexDirection: 'column',
-  alignItems: 'center',
-  gap: spacing.xs,
-  opacity: 0.5,
-};
-
-const journeyStepActive: CSSProperties = {
-  opacity: 1,
-};
-
-const stepIconStyle: CSSProperties = {
-  width: 48,
-  height: 48,
-  borderRadius: '50%',
-  background: colors.surfaceElevated,
-  display: 'flex',
-  alignItems: 'center',
-  justifyContent: 'center',
-  fontSize: 24,
-};
-
-const connectorStyle: CSSProperties = {
-  width: 40,
-  height: 2,
-  background: colors.border,
-};
-
-const tipCardStyle: CSSProperties = {
-  padding: spacing.md,
-  background: colors.surfaceElevated,
-  borderRadius: radius.md,
-  border: `1px solid ${colors.border}`,
-  marginBottom: spacing.lg,
-};
-
-const tipLabelStyle: CSSProperties = {
-  fontSize: typography.size.xs,
-  color: colors.accent,
-  fontWeight: typography.weight.medium,
-  marginBottom: spacing.xs,
-};
-
-const collectingHeaderStyle: CSSProperties = {
-  display: 'flex',
-  justifyContent: 'space-between',
-  alignItems: 'center',
-  marginBottom: spacing.md,
-};
-
-const counterStyle: CSSProperties = {
-  fontSize: typography.size['3xl'],
-  fontWeight: typography.weight.bold,
-  color: colors.text,
-};
-
-const thresholdStyle: CSSProperties = {
-  fontSize: typography.size.xl,
-  color: colors.textMuted,
-};
-
-const badgeStyleMsg: CSSProperties = {
-  padding: `${spacing.xs}px ${spacing.md}px`,
-  background: colors.accent,
-  borderRadius: radius.full,
-  fontSize: typography.size.sm,
-  fontWeight: typography.weight.medium,
-  color: colors.text,
-};
-
-const progressTrackStyle: CSSProperties = {
-  height: 8,
-  background: colors.border,
-  borderRadius: radius.full,
-  overflow: 'hidden',
-  marginBottom: spacing.md,
-};
-
-const progressFillStyle: CSSProperties = {
-  height: '100%',
-  background: `linear-gradient(90deg, ${colors.primary}, ${colors.accent})`,
-  borderRadius: radius.full,
-  transition: 'width 0.5s ease',
-};
-
-const helperTextStyle: CSSProperties = {
-  fontSize: typography.size.sm,
-  color: colors.textMuted,
-  marginBottom: spacing.lg,
-};
-
-const questsStyle: CSSProperties = {
-  marginTop: spacing.lg,
-};
-
-const questListStyle: CSSProperties = {
-  display: 'grid',
-  gridTemplateColumns: 'repeat(auto-fill, minmax(280px, 1fr))',
-  gap: spacing.md,
-  marginTop: spacing.md,
-};
-
-const activeGridStyle: CSSProperties = {
-  display: 'grid',
-  gridTemplateColumns: '1fr 1fr',
-  gap: spacing.lg,
-};
-
-const personaPanelStyle: CSSProperties = {
-  display: 'flex',
-  flexDirection: 'column',
-  gap: spacing.lg,
-};
-
-const quickActionsStyle: CSSProperties = {
-  display: 'flex',
-  gap: spacing.md,
-};
 
 export function DashboardStateView({
   state,
@@ -244,6 +74,11 @@ export function DashboardStateView({
   }, [reducedMotion, state]);
 
   useEffect(() => {
+    if (!progressFillRef.current) return;
+    progressFillRef.current.style.width = `${progressPercentage}%`;
+  }, [progressPercentage]);
+
+  useEffect(() => {
     if (reducedMotion || state !== 'collecting' || !echoCountRef.current || !surveyStatus) return;
     guidanceInteractions.echoCountUp(echoCountRef.current, 0, surveyStatus.responsesCount);
   }, [reducedMotion, state, surveyStatus]);
@@ -263,32 +98,32 @@ export function DashboardStateView({
     : 0;
 
   const renderEmptyState = () => (
-    <div style={mergeStyles(cardBase, cardEmpty)}>
-      <h2 style={headingStyle}>Your journey begins</h2>
-      <p>Create your first perception ritual to start gathering anonymous echoes.</p>
-      <div style={journeyMapStyle}>
-        <div style={mergeStyles(journeyStepBase, journeyStepActive)}>
-          <div style={stepIconStyle}>🔗</div>
+    <div className="rounded-xl border border-slate-700/25 bg-surface p-8 text-center shadow-md">
+      <h2 className="mb-2 text-2xl font-bold text-text-primary">Your journey begins</h2>
+      <p className="text-text-secondary">Create your first perception ritual to start gathering anonymous echoes.</p>
+      <div className="my-8 flex items-center justify-center gap-2">
+        <div className="flex flex-col items-center gap-1 opacity-100">
+          <div className="flex h-12 w-12 items-center justify-center rounded-full bg-surface-elevated text-2xl">🔗</div>
           <p>Create Ritual</p>
         </div>
-        <div style={connectorStyle} />
-        <div style={journeyStepBase}>
-          <div style={stepIconStyle}>📤</div>
+        <div className="h-0.5 w-10 bg-slate-700/35" />
+        <div className="flex flex-col items-center gap-1 opacity-50">
+          <div className="flex h-12 w-12 items-center justify-center rounded-full bg-surface-elevated text-2xl">📤</div>
           <p>Share Link</p>
         </div>
-        <div style={connectorStyle} />
-        <div style={journeyStepBase}>
-          <div style={stepIconStyle}>🔮</div>
+        <div className="h-0.5 w-10 bg-slate-700/35" />
+        <div className="flex flex-col items-center gap-1 opacity-50">
+          <div className="flex h-12 w-12 items-center justify-center rounded-full bg-surface-elevated text-2xl">🔮</div>
           <p>Collect Echoes</p>
         </div>
-        <div style={connectorStyle} />
-        <div style={journeyStepBase}>
-          <div style={stepIconStyle}>⚡</div>
+        <div className="h-0.5 w-10 bg-slate-700/35" />
+        <div className="flex flex-col items-center gap-1 opacity-50">
+          <div className="flex h-12 w-12 items-center justify-center rounded-full bg-surface-elevated text-2xl">⚡</div>
           <p>Summon</p>
         </div>
       </div>
-      <div style={tipCardStyle}>
-        <p style={tipLabelStyle}>Tip</p>
+      <div className="mb-6 rounded-md border border-slate-700/25 bg-surface-elevated p-4 text-left">
+        <p className="mb-1 text-xs font-medium text-accent">Tip</p>
         <p>People respond 2× faster when you add a personal note to the link.</p>
       </div>
       <Button variant="primary" size="lg" onClick={onCreateSurvey}>🌟 Create First Survey</Button>
@@ -297,19 +132,19 @@ export function DashboardStateView({
 
   const renderCollectingState = () => (
     <>
-      <div style={cardBase}>
-        <div style={collectingHeaderStyle}>
+      <div className="rounded-xl border border-slate-700/25 bg-surface p-8 shadow-md">
+        <div className="mb-4 flex items-center justify-between">
           <div>
-            <p style={labelStyle}>Echoes collected</p>
-            <span ref={echoCountRef} style={counterStyle}>{surveyStatus?.responsesCount ?? 0}</span>
-            <span style={thresholdStyle}> / {surveyStatus?.threshold ?? '?'}</span>
+            <p className="mb-1 text-sm uppercase tracking-[0.1em] text-accent">Echoes collected</p>
+            <span ref={echoCountRef} className="text-3xl font-bold text-text-primary">{surveyStatus?.responsesCount ?? 0}</span>
+            <span className="text-xl text-text-muted"> / {surveyStatus?.threshold ?? '?'}</span>
           </div>
-          <span style={badgeStyleMsg}>Need {responsesNeeded || 0} more</span>
+          <span className="rounded-full bg-accent px-4 py-1 text-sm font-medium text-text-primary">Need {responsesNeeded || 0} more</span>
         </div>
-        <div style={progressTrackStyle} role="progressbar" aria-label={`Survey progress: ${progressPercentage}%`} aria-valuenow={progressPercentage} aria-valuemin={0} aria-valuemax={100}>
-          <div ref={progressFillRef} style={{ ...progressFillStyle, width: `${progressPercentage}%` }} />
+        <div className="mb-4 h-2 overflow-hidden rounded-full bg-slate-700/30" role="progressbar" aria-label={`Survey progress: ${progressPercentage}%`}>
+          <div ref={progressFillRef} className="h-full w-0 rounded-full bg-gradient-to-r from-primary to-accent transition-[width] duration-500" />
         </div>
-        <p style={helperTextStyle}>Every echo is anonymous. Keep sharing your ritual link to reach the summoning threshold.</p>
+        <p className="mb-6 text-sm text-text-muted">Every echo is anonymous. Keep sharing your ritual link to reach the summoning threshold.</p>
         {surveyUrl ? (
           <Button ref={state === 'collecting' ? primaryActionRef : undefined} variant="primary" size="lg" onClick={() => { onCopySurveyLink?.(); announce('Survey link copied to clipboard', 'polite'); }}>📤 Share Survey Link</Button>
         ) : (
@@ -318,46 +153,46 @@ export function DashboardStateView({
       </div>
       {surveyUrl && <SurveyLinkCard link={surveyUrl} shareCount={shareCount} lastShared={lastShared} onCopy={() => { onCopySurveyLink?.(); announce('Survey link copied to clipboard', 'polite'); }} />}
       {quests && quests.length > 0 && (
-        <div style={questsStyle}>
+        <div className="mt-6">
           <h3>Active Quests</h3>
-          <div style={questListStyle}>{quests.map((quest) => <QuestCard key={quest.id} quest={quest} onClaim={onClaimQuest ?? (() => Promise.resolve())} />)}</div>
+          <div className="mt-4 grid grid-cols-1 gap-4 xl:grid-cols-2">{quests.map((quest) => <QuestCard key={quest.id} quest={quest} onClaim={onClaimQuest ?? (() => Promise.resolve())} />)}</div>
         </div>
       )}
     </>
   );
 
   const renderReadyState = () => (
-    <div style={mergeStyles(cardBase, cardReady)}>
-      <p style={labelStyle}>SUMMON READY ⚡</p>
-      <h2 style={headingStyle}>All echoes gathered</h2>
-      <p>Your persona is waiting to be born. Begin the ritual to reveal them.</p>
+    <div className="rounded-xl border border-accent/70 bg-gradient-to-br from-primary/10 to-accent/10 p-8 shadow-md">
+      <p className="mb-1 text-sm uppercase tracking-[0.1em] text-accent">SUMMON READY ⚡</p>
+      <h2 className="mb-2 text-2xl font-bold text-text-primary">All echoes gathered</h2>
+      <p className="mb-4 text-text-secondary">Your persona is waiting to be born. Begin the ritual to reveal them.</p>
       <Button ref={state === 'ready' ? primaryActionRef : undefined} variant="primary" size="lg" onClick={onSummon}>Summon Persona Now!</Button>
     </div>
   );
 
   const renderActiveState = () => (
-    <div style={activeGridStyle}>
+    <div className="grid grid-cols-1 gap-6 xl:grid-cols-2">
       {persona && (
-        <div style={personaPanelStyle}>
+        <div className="flex flex-col gap-6">
           <PersonaCard persona={persona} />
-          <div style={quickActionsStyle}>
+          <div className="flex gap-4">
             {onChat && <Button variant="primary" size="lg" onClick={onChat}>💬 Chat with {persona.name}</Button>}
             {onViewPersona && <Button variant="secondary" onClick={onViewPersona}>Enter Persona Room</Button>}
           </div>
         </div>
       )}
       {quests && quests.length > 0 && (
-        <div style={questsStyle}>
+        <div className="mt-6 xl:mt-0">
           <h3>Continue your journey</h3>
-          <div style={questListStyle}>{quests.map((quest) => <QuestCard key={quest.id} quest={quest} onClaim={onClaimQuest ?? (() => Promise.resolve())} />)}</div>
+          <div className="mt-4 grid grid-cols-1 gap-4">{quests.map((quest) => <QuestCard key={quest.id} quest={quest} onClaim={onClaimQuest ?? (() => Promise.resolve())} />)}</div>
         </div>
       )}
     </div>
   );
 
   return (
-    <section style={stateRootStyle}>
-      <div ref={containerRef} style={stateContentStyle}>
+    <section className="p-6">
+      <div ref={containerRef} className={clsx('flex flex-col gap-6')}>
         {state === 'empty' && renderEmptyState()}
         {state === 'collecting' && renderCollectingState()}
         {state === 'ready' && renderReadyState()}

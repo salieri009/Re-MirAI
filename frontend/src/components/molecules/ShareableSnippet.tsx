@@ -2,6 +2,7 @@
 
 import { useState } from 'react';
 import { Button } from '@/components/atoms/Button';
+import { toast } from '@/lib/toast';
 
 interface ChatMessage {
   id: string;
@@ -61,11 +62,12 @@ export function ShareableSnippet({
       canvas.toBlob((blob) => {
         if (blob) {
           onShare(blob);
+          toast.success('Snippet generated. Ready to share.');
         }
         setIsGenerating(false);
       }, 'image/png');
-    } catch (error) {
-      console.error('Failed to generate image:', error);
+    } catch {
+      toast.error('Failed to generate image. Please try again.');
       setIsGenerating(false);
     }
   };

@@ -1,14 +1,12 @@
 'use client';
 
-import { use, useState, useEffect, useRef, useMemo, CSSProperties } from 'react';
+import { use, useEffect, useMemo, useRef, useState } from 'react';
 import { useQuery } from '@tanstack/react-query';
 import { useRouter } from 'next/navigation';
-import gsap from 'gsap';
 import { chatApi } from '@/lib/api/chat';
 import { personaApi } from '@/lib/api/persona';
 import { toast } from '@/lib/toast';
 import { Button } from '@/components/atoms/Button';
-import { Input } from '@/components/atoms/Input';
 import { TypingIndicator } from '@/components/molecules/TypingIndicator';
 import { BondLevelIndicator } from '@/components/molecules/BondLevelIndicator';
 import { ChatMessage } from '@/components/organisms/ChatMessage';
@@ -17,276 +15,8 @@ import { TopicSuggestion } from '@/components/molecules/TopicSuggestion';
 import { NavigationSidebar } from '@/components/organisms/NavigationSidebar';
 import { useReducedMotion } from '@/hooks/useAccessibility';
 import { slideIn } from '@/lib/animations';
-import { moderateContent, type ModerationResult } from '@/lib/moderation';
+import { moderateContent } from '@/lib/moderation';
 import { ChatMessage as ChatMessageType } from '@/lib/api/chat';
-
-// Styles
-const pageStyles = {
-  chat: {
-    display: 'flex',
-    height: '100vh',
-    background: 'var(--color-bg-dark)',
-    position: 'relative',
-  } as CSSProperties,
-  chatMain: {
-    flex: 1,
-    display: 'flex',
-    flexDirection: 'column',
-    maxWidth: '1024px',
-    margin: '0 auto',
-    marginLeft: '256px',
-    background: 'var(--color-bg-dark)',
-    position: 'relative',
-  } as CSSProperties,
-  chatHeader: {
-    display: 'flex',
-    alignItems: 'center',
-    justifyContent: 'space-between',
-    padding: 'var(--space-md) var(--space-lg)',
-    background: 'rgba(10, 1, 18, 0.8)',
-    backdropFilter: 'blur(12px)',
-    WebkitBackdropFilter: 'blur(12px)',
-    borderBottom: '1px solid rgba(255, 255, 255, 0.08)',
-    position: 'sticky',
-    top: 0,
-    zIndex: 'var(--z-primary)',
-  } as CSSProperties,
-  headerInfo: {
-    display: 'flex',
-    alignItems: 'center',
-    gap: 'var(--space-lg)',
-  } as CSSProperties,
-  personaInfo: {
-    display: 'flex',
-    flexDirection: 'column',
-  } as CSSProperties,
-  personaName: {
-    fontFamily: 'var(--font-display)',
-    fontWeight: 'var(--font-weight-bold)',
-    fontSize: 'var(--font-size-lg)',
-    margin: 0,
-  } as CSSProperties,
-  statusRow: {
-    display: 'flex',
-    alignItems: 'center',
-    gap: 'var(--space-xs)',
-  } as CSSProperties,
-  statusDot: {
-    width: '8px',
-    height: '8px',
-    borderRadius: '50%',
-    background: 'var(--color-text-secondary)',
-  } as CSSProperties,
-  statusOnline: {
-    background: 'var(--color-accent)',
-    boxShadow: '0 0 8px hsla(var(--hue-accent), 100%, 50%, 0.4)',
-  } as CSSProperties,
-  statusTyping: {
-    background: 'var(--color-primary)',
-    animation: 'pulse 1s infinite',
-  } as CSSProperties,
-  statusText: {
-    fontSize: 'var(--font-size-xs)',
-    color: 'var(--color-text-secondary)',
-    textTransform: 'capitalize',
-  } as CSSProperties,
-  messages: {
-    flex: 1,
-    overflowY: 'auto',
-    padding: 'var(--space-lg)',
-    display: 'flex',
-    flexDirection: 'column',
-    gap: 'var(--space-md)',
-    scrollBehavior: 'smooth',
-  } as CSSProperties,
-  typingContainer: {
-    alignSelf: 'flex-start',
-    marginLeft: 'var(--space-md)',
-    marginBottom: 'var(--space-md)',
-  } as CSSProperties,
-  suggestions: {
-    padding: 'var(--space-sm) var(--space-lg)',
-    background: 'linear-gradient(to top, var(--color-bg-dark) 80%, transparent)',
-  } as CSSProperties,
-  inputArea: {
-    padding: 'var(--space-md) var(--space-lg)',
-    background: 'var(--color-surface)',
-    borderTop: '1px solid var(--color-border)',
-    display: 'flex',
-    flexWrap: 'wrap',
-    gap: 'var(--space-sm)',
-    alignItems: 'flex-end',
-  } as CSSProperties,
-  moderationWarning: {
-    width: '100%',
-    display: 'flex',
-    alignItems: 'center',
-    gap: 'var(--space-sm)',
-    padding: 'var(--space-sm) var(--space-md)',
-    background: 'rgba(251, 191, 36, 0.15)',
-    border: '1px solid rgba(251, 191, 36, 0.3)',
-    borderRadius: 'var(--radius-lg)',
-    marginBottom: 'var(--space-sm)',
-  } as CSSProperties,
-  moderationP: {
-    flex: 1,
-    margin: 0,
-    fontSize: 'var(--font-size-sm)',
-    color: 'var(--color-text-primary)',
-  } as CSSProperties,
-  warningIcon: {
-    fontSize: '1.25rem',
-  } as CSSProperties,
-  dismissWarning: {
-    background: 'none',
-    border: 'none',
-    color: 'var(--color-text-secondary)',
-    fontSize: '1.25rem',
-    cursor: 'pointer',
-    padding: 0,
-    lineHeight: 1,
-    transition: 'color 0.2s ease',
-  } as CSSProperties,
-  input: {
-    flex: 1,
-    minHeight: '44px',
-  } as CSSProperties,
-  shareSheet: {
-    position: 'fixed',
-    inset: 0,
-    background: 'rgba(0, 0, 0, 0.5)',
-    display: 'flex',
-    alignItems: 'center',
-    justifyContent: 'center',
-    zIndex: 'var(--z-overlay)',
-    backdropFilter: 'blur(4px)',
-  } as CSSProperties,
-  shareCard: {
-    background: 'var(--color-surface)',
-    padding: 'var(--space-lg)',
-    borderRadius: 'var(--radius-xl)',
-    display: 'flex',
-    flexDirection: 'column',
-    gap: 'var(--space-md)',
-    maxWidth: '90vw',
-    width: '400px',
-    boxShadow: 'var(--shadow-2xl)',
-  } as CSSProperties,
-  sharePreview: {
-    width: '100%',
-    borderRadius: 'var(--radius-lg)',
-    border: '1px solid var(--color-border)',
-  } as CSSProperties,
-  personaSidebar: {
-    width: '320px',
-    height: '100vh',
-    padding: 'var(--space-2xl) var(--space-xl)',
-    background: 'rgba(10, 1, 18, 0.8)',
-    borderLeft: '1px solid rgba(255, 255, 255, 0.08)',
-    position: 'sticky',
-    top: 0,
-    overflowY: 'auto',
-    display: 'flex',
-    flexDirection: 'column',
-    gap: 'var(--space-2xl)',
-  } as CSSProperties,
-  personaHeader: {
-    display: 'flex',
-    flexDirection: 'column',
-    alignItems: 'center',
-    gap: 'var(--space-sm)',
-    textAlign: 'center',
-  } as CSSProperties,
-  personaAvatar: {
-    width: '80px',
-    height: '80px',
-    borderRadius: '50%',
-    background: 'linear-gradient(135deg, var(--color-primary), var(--color-accent))',
-    display: 'flex',
-    alignItems: 'center',
-    justifyContent: 'center',
-    overflow: 'hidden',
-    boxShadow: '0 0 24px hsla(var(--hue-primary), 100%, 50%, 0.3)',
-  } as CSSProperties,
-  avatarPlaceholder: {
-    fontSize: '2rem',
-    fontWeight: 'var(--font-weight-bold)',
-    color: 'white',
-  } as CSSProperties,
-  sidebarPersonaName: {
-    fontFamily: 'var(--font-display)',
-    fontSize: '1.5rem',
-    fontWeight: 'var(--font-weight-bold)',
-    margin: 0,
-  } as CSSProperties,
-  personaArchetype: {
-    color: 'var(--color-text-secondary)',
-    fontSize: '0.875rem',
-    textTransform: 'uppercase',
-    letterSpacing: '0.1em',
-  } as CSSProperties,
-  personaTraits: {
-    display: 'flex',
-    flexDirection: 'column',
-    gap: 'var(--space-sm)',
-  } as CSSProperties,
-  traitsLabel: {
-    textTransform: 'uppercase',
-    letterSpacing: '0.1em',
-    fontSize: '0.75rem',
-    color: 'var(--color-text-muted)',
-  } as CSSProperties,
-  traitsGrid: {
-    display: 'flex',
-    flexWrap: 'wrap',
-    gap: 'var(--space-xs)',
-  } as CSSProperties,
-  traitPill: {
-    padding: 'var(--space-xs) var(--space-sm)',
-    borderRadius: 'var(--radius-pill)',
-    background: 'hsla(var(--hue-highlight), 100%, 50%, 0.15)',
-    color: 'var(--color-highlight)',
-    border: '1px solid hsla(var(--hue-highlight), 100%, 50%, 0.3)',
-    fontSize: '0.75rem',
-    fontWeight: 'var(--font-weight-medium)',
-  } as CSSProperties,
-  personaStats: {
-    padding: 'var(--space-lg)',
-    borderRadius: 'var(--radius-lg)',
-    border: '1px solid rgba(255, 255, 255, 0.08)',
-    background: 'rgba(255, 255, 255, 0.02)',
-  } as CSSProperties,
-  ritualLinks: {
-    display: 'flex',
-    flexDirection: 'column',
-    gap: 'var(--space-sm)',
-  } as CSSProperties,
-  linksLabel: {
-    textTransform: 'uppercase',
-    letterSpacing: '0.1em',
-    fontSize: '0.75rem',
-    color: 'var(--color-text-muted)',
-    marginBottom: 'var(--space-xs)',
-  } as CSSProperties,
-};
-
-// CSS for pulse animation
-const pulseKeyframes = `
-@keyframes pulse {
-    0% {
-        opacity: 0.5;
-        transform: scale(0.9);
-    }
-    50% {
-        opacity: 1;
-        transform: scale(1.1);
-    }
-    100% {
-        opacity: 0.5;
-        transform: scale(0.9);
-    }
-}
-`;
 
 export default function ChatPage({ params }: { params: Promise<{ id: string }> }) {
   const { id } = use(params);
@@ -315,15 +45,13 @@ export default function ChatPage({ params }: { params: Promise<{ id: string }> }
     enabled: !!id,
   });
 
-  // FR-003.4: Dynamic Bond Level
   const { data: bondData } = useQuery({
     queryKey: ['bond-level', id],
     queryFn: () => chatApi.getBondLevel(id),
     enabled: !!id,
-    refetchInterval: 30000, // Refresh every 30s
+    refetchInterval: 30000,
   });
 
-  // Extract bond level with fallback
   const bondLevel = bondData?.level ?? 1;
   const bondProgress = bondData?.progress ?? 0;
 
@@ -333,11 +61,10 @@ export default function ChatPage({ params }: { params: Promise<{ id: string }> }
     }
   }, [history]);
 
-  // Animate new messages
   useEffect(() => {
     if (!messagesRef.current || reducedMotion) return;
 
-    const lastMessage = messagesRef.current.lastElementChild as HTMLElement;
+    const lastMessage = messagesRef.current.lastElementChild as HTMLElement | null;
     if (lastMessage) {
       slideIn(lastMessage, 'up');
     }
@@ -367,7 +94,6 @@ export default function ChatPage({ params }: { params: Promise<{ id: string }> }
   const handleSend = async () => {
     if (!message.trim() || isSending) return;
 
-    // FR-003.5: Content Moderation
     const moderation = moderateContent(message);
 
     if (!moderation.isAllowed) {
@@ -376,9 +102,7 @@ export default function ChatPage({ params }: { params: Promise<{ id: string }> }
     }
 
     if (moderation.showWarning && moderation.message) {
-      // Show warning but allow sending
       setModerationWarning(moderation.message);
-      // Clear warning after 5 seconds
       setTimeout(() => setModerationWarning(null), 5000);
     } else {
       setModerationWarning(null);
@@ -398,7 +122,7 @@ export default function ChatPage({ params }: { params: Promise<{ id: string }> }
     try {
       const response = await chatApi.sendMessage(id, message);
       setMessages((prev) => [...prev, response.aiMessage]);
-    } catch (error) {
+    } catch (_error) {
       toast.error('Failed to send message. Please try again.');
     } finally {
       setIsSending(false);
@@ -433,11 +157,12 @@ export default function ChatPage({ params }: { params: Promise<{ id: string }> }
 
   const handleShareToPlatform = (platform: string) => {
     if (!shareBlob) return;
+
     const objectUrl = URL.createObjectURL(shareBlob);
     const shareCaptions: Record<string, string> = {
       instagram: 'Sharing my Re:MirAI reflection. Upload the saved image with this caption!',
       twitter: 'Discovering my AI reflection with #ReMirAI',
-      tiktok: 'My Re:MirAI persona just said this 👇',
+      tiktok: 'My Re:MirAI persona just said this',
       whatsapp: 'Help me decode myself via Re:MirAI!',
       copy: `${window.location.origin}/chat/${id}`,
       download: '',
@@ -449,7 +174,7 @@ export default function ChatPage({ params }: { params: Promise<{ id: string }> }
       downloadBlob(objectUrl);
       const caption = shareCaptions[platform] || shareCaptions.copy;
       navigator.clipboard.writeText(caption);
-      alert(`Caption copied! Upload the downloaded snippet to ${platform}.`);
+      toast.success(`Caption copied! Upload the downloaded snippet to ${platform}.`);
     }
 
     URL.revokeObjectURL(objectUrl);
@@ -475,178 +200,170 @@ export default function ChatPage({ params }: { params: Promise<{ id: string }> }
     });
   };
 
-  const connectionStatus = isSending ? 'typing…' : 'online';
+  const connectionStatus = isSending ? 'typing...' : 'online';
 
   return (
-    <>
-      <style>{pulseKeyframes}</style>
-      <div style={pageStyles.chat}>
-        {/* Left Navigation Sidebar */}
-        <NavigationSidebar currentPath="/chat" />
+    <div className="min-h-screen bg-background-dark text-text-primary">
+      <NavigationSidebar currentPath="/dashboard" />
 
-        <div style={pageStyles.chatMain}>
-          <div style={pageStyles.chatHeader}>
-            <div style={pageStyles.headerInfo}>
-              <div style={pageStyles.personaInfo}>
-                <p style={pageStyles.personaName}>{persona?.name ?? 'Your Persona'}</p>
-                <div style={pageStyles.statusRow}>
+      <div className="md:pl-64 xl:pr-[320px]">
+        <main className="mx-auto flex h-screen w-full max-w-[1024px] flex-col">
+          <header className="atmospheric-surface sticky top-0 z-20 mx-3 mt-3 flex items-center justify-between gap-4 rounded-xl px-4 py-3 sm:mx-5">
+            <div className="flex items-center gap-4">
+              <div>
+                <p className="font-display text-lg font-semibold text-slate-800">{persona?.name ?? 'Your Persona'}</p>
+                <div className="mt-1 flex items-center gap-2">
                   <span
-                    style={{
-                      ...pageStyles.statusDot,
-                      ...(isSending ? pageStyles.statusTyping : pageStyles.statusOnline),
-                    }}
+                    className={`h-2 w-2 rounded-full ${isSending ? 'animate-pulse bg-fuchsia-500' : 'bg-emerald-500'}`}
+                    aria-hidden="true"
                   />
-                  <span style={pageStyles.statusText}>{connectionStatus}</span>
+                  <span className="text-xs uppercase tracking-[0.08em] text-slate-500">{connectionStatus}</span>
                 </div>
               </div>
               <BondLevelIndicator level={bondLevel} progress={bondProgress} />
             </div>
-            <div>
-              <Button
-                variant="ghost"
-                size="sm"
-                onClick={() => {
-                  if (persona) {
-                    router.push(`/p/${persona.id}`);
-                  }
-                }}
-                disabled={!persona}
-              >
-                View Persona Room
-              </Button>
-            </div>
-          </div>
 
-          <div ref={messagesRef} style={pageStyles.messages}>
+            <Button
+              variant="ghost"
+              size="sm"
+              onClick={() => {
+                if (persona) {
+                  router.push(`/p/${persona.id}`);
+                }
+              }}
+              disabled={!persona}
+            >
+              View Persona Room
+            </Button>
+          </header>
+
+          <section ref={messagesRef} className="flex-1 overflow-y-auto px-4 py-4 sm:px-6">
             {messages.map((msg) => (
               <ChatMessage
                 key={msg.id}
                 message={msg}
                 persona={persona}
-                bondLevel={3} // Mock level for now
+                bondLevel={bondLevel}
                 onReact={handleReact}
                 onShare={handleShare}
                 reactions={messageReactions[msg.id]}
               />
             ))}
+
             {isSending && (
-              <div style={pageStyles.typingContainer}>
+              <div className="mb-3 ml-2">
                 <TypingIndicator personaName={persona?.name || 'AI'} estimatedTime={3} />
               </div>
             )}
+          </section>
+
+          <div className="px-4 pb-3 sm:px-6">
+            <TopicSuggestion topics={topicSuggestions} recentTopics={recentTopics} onSelect={handleTopicSelect} />
           </div>
 
-          <div style={pageStyles.suggestions}>
-            <TopicSuggestion
-              topics={topicSuggestions}
-              recentTopics={recentTopics}
-              onSelect={handleTopicSelect}
-            />
-          </div>
-
-          <div style={pageStyles.inputArea}>
-            {/* FR-003.5: Moderation Warning Display */}
+          <section className="atmospheric-surface mx-3 mb-3 rounded-xl border border-slate-500/20 bg-white/60 px-4 py-3 sm:mx-5">
             {moderationWarning && (
-              <div style={pageStyles.moderationWarning} role="alert">
-                <span style={pageStyles.warningIcon}>⚠️</span>
-                <p style={pageStyles.moderationP}>{moderationWarning}</p>
+              <div className="mb-3 flex items-center gap-2 rounded-lg border border-amber-400/35 bg-amber-100/40 px-3 py-2" role="alert">
+                <span className="text-lg" aria-hidden="true">
+                  ⚠️
+                </span>
+                <p className="flex-1 text-sm text-slate-700">{moderationWarning}</p>
                 <button
+                  type="button"
                   onClick={() => setModerationWarning(null)}
-                  style={pageStyles.dismissWarning}
+                  className="text-lg leading-none text-slate-500 transition hover:text-slate-700"
                   aria-label="Dismiss warning"
                 >
                   ×
                 </button>
               </div>
             )}
-            <Input
-              ref={inputRef}
-              value={message}
-              onChange={(e) => setMessage(e.target.value)}
-              onKeyPress={(e) => {
-                if (e.key === 'Enter' && !e.shiftKey) {
-                  e.preventDefault();
-                  handleSend();
-                }
-              }}
-              placeholder="Type a message..."
-              style={pageStyles.input}
-              maxLength={1000}
-            />
-            <Button
-              variant="primary"
-              onClick={handleSend}
-              disabled={!message.trim() || isSending}
-              aria-label="Send message"
-            >
-              Send
+
+            <div className="flex flex-wrap items-end gap-2">
+              <input
+                ref={inputRef}
+                value={message}
+                onChange={(e) => setMessage(e.target.value)}
+                onKeyDown={(e) => {
+                  if (e.key === 'Enter' && !e.shiftKey) {
+                    e.preventDefault();
+                    handleSend();
+                  }
+                }}
+                placeholder="Type a message..."
+                maxLength={1000}
+                className="min-h-[44px] flex-1 rounded-md border border-slate-300 bg-white px-3 py-2 text-sm text-slate-700 outline-none transition focus:border-fuchsia-400 focus:ring-2 focus:ring-fuchsia-200"
+              />
+              <Button variant="primary" onClick={handleSend} disabled={!message.trim() || isSending} aria-label="Send message">
+                Send
+              </Button>
+            </div>
+          </section>
+        </main>
+      </div>
+
+      {persona && (
+        <aside className="fixed right-0 top-0 hidden h-screen w-[320px] overflow-y-auto border-l border-slate-600/20 bg-slate-950/45 px-6 py-7 backdrop-blur xl:block">
+          <div className="flex flex-col items-center gap-2 text-center">
+            <div className="flex h-20 w-20 items-center justify-center overflow-hidden rounded-full bg-gradient-to-br from-fuchsia-500 to-cyan-500 shadow-[0_0_24px_rgba(217,70,239,0.35)]">
+              {persona.avatar ? (
+                <img src={persona.avatar} alt={persona.name} className="h-full w-full object-cover" />
+              ) : (
+                <span className="text-3xl font-bold text-white">{persona.name.charAt(0).toUpperCase()}</span>
+              )}
+            </div>
+            <h3 className="font-display text-3xl text-slate-100">{persona.name}</h3>
+            <p className="text-xs uppercase tracking-[0.12em] text-slate-400">{persona.archetype}</p>
+          </div>
+
+          <div className="mt-6">
+            <p className="mb-2 text-xs uppercase tracking-[0.12em] text-slate-400">Essence Traits</p>
+            <div className="flex flex-wrap gap-2">
+              {persona.traits?.slice(0, 6).map((trait, idx) => (
+                <span
+                  key={`${trait}-${idx}`}
+                  className="rounded-full border border-fuchsia-400/35 bg-fuchsia-500/15 px-2.5 py-1 text-[11px] font-medium text-fuchsia-100"
+                >
+                  {trait}
+                </span>
+              ))}
+            </div>
+          </div>
+
+          <div className="mt-6 rounded-xl border border-slate-500/25 bg-slate-900/35 p-4">
+            <BondLevelIndicator level={bondLevel} progress={bondProgress} />
+          </div>
+
+          <div className="mt-6 flex flex-col gap-2">
+            <p className="text-xs uppercase tracking-[0.12em] text-slate-400">Related Rituals</p>
+            <Button variant="ghost" size="sm" onClick={() => router.push(`/p/${persona.id}`)}>
+              Visit Persona Room
+            </Button>
+            <Button variant="ghost" size="sm" onClick={() => router.push('/dashboard/ritual')}>
+              View Survey Hub
             </Button>
           </div>
-        </div>
+        </aside>
+      )}
 
-        {/* Right Persona Context Sidebar */}
-        {persona && (
-          <aside style={pageStyles.personaSidebar}>
-            <div style={pageStyles.personaHeader}>
-              <div style={pageStyles.personaAvatar}>
-                {persona.avatar ? (
-                  <img
-                    src={persona.avatar}
-                    alt={persona.name}
-                    style={{ width: '100%', height: '100%', objectFit: 'cover' }}
-                  />
-                ) : (
-                  <span style={pageStyles.avatarPlaceholder}>
-                    {persona.name.charAt(0).toUpperCase()}
-                  </span>
-                )}
-              </div>
-              <h3 style={pageStyles.sidebarPersonaName}>{persona.name}</h3>
-              <p style={pageStyles.personaArchetype}>{persona.archetype}</p>
-            </div>
-
-            <div style={pageStyles.personaTraits}>
-              <p style={pageStyles.traitsLabel}>Essence Traits</p>
-              <div style={pageStyles.traitsGrid}>
-                {persona.traits?.slice(0, 6).map((trait, idx) => (
-                  <span key={idx} style={pageStyles.traitPill}>
-                    {trait}
-                  </span>
-                ))}
-              </div>
-            </div>
-
-            <div style={pageStyles.personaStats}>
-              <BondLevelIndicator level={bondLevel} progress={bondProgress} />
-            </div>
-
-            <div style={pageStyles.ritualLinks}>
-              <p style={pageStyles.linksLabel}>Related Rituals</p>
-              <Button variant="ghost" size="sm" onClick={() => router.push(`/p/${persona.id}`)}>
-                Visit Persona Room
-              </Button>
-              <Button variant="ghost" size="sm" onClick={() => router.push('/dashboard/ritual')}>
-                View Survey Hub
-              </Button>
-            </div>
-          </aside>
-        )}
-
-        {sharePanelOpen && sharePreviewUrl && (
-          <div style={pageStyles.shareSheet} role="dialog" aria-modal="true">
-            <div style={pageStyles.shareCard}>
-              <img src={sharePreviewUrl} alt="Share preview" style={pageStyles.sharePreview} />
+      {sharePanelOpen && sharePreviewUrl && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/55 p-4 backdrop-blur-[3px]" role="dialog" aria-modal="true">
+          <div className="atmospheric-surface w-full max-w-[420px] rounded-2xl p-4">
+            <img src={sharePreviewUrl} alt="Share preview" className="w-full rounded-lg border border-slate-500/25" />
+            <div className="mt-3">
               <ShareOptions
                 platforms={['download', 'instagram', 'twitter', 'tiktok', 'whatsapp']}
                 onShare={handleShareToPlatform}
               />
+            </div>
+            <div className="mt-2">
               <Button variant="ghost" onClick={closeSharePanel}>
                 Close
               </Button>
             </div>
           </div>
-        )}
-      </div>
-    </>
+        </div>
+      )}
+    </div>
   );
 }

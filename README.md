@@ -50,7 +50,7 @@ npm run dev
 # Client running at http://localhost:3001 (or next available port)
 ```
 
-**Note:** Make sure PostgreSQL is running and `DATABASE_URL` is configured in `backend/.env`. See [BACKEND_SETUP.md](BACKEND_SETUP.md) for detailed setup instructions.
+**Note:** Make sure PostgreSQL is running and `DATABASE_URL` is configured in `backend/.env`. For details, see [docs/README.md](docs/README.md).
 
 ---
 
@@ -173,18 +173,12 @@ All detailed documentation is located in the `docs/` directory.
 ### API Documentation
 
 - **API Index:** [docs/api/API_COMMON.md](docs/api/API_COMMON.md)
-- **Contracts:** [docs/api/API_CONTRACTS.md](docs/api/API_CONTRACTS.md)
-- **Customers:** [docs/api/API_CUSTOMERS.md](docs/api/API_CUSTOMERS.md)
-- **Dashboard:** [docs/api/API_DASHBOARD.md](docs/api/API_DASHBOARD.md)
-- **Equipments:** [docs/api/API_EQUIPMENTS.md](docs/api/API_EQUIPMENTS.md)
-- **Inspections:** [docs/api/API_INSPECTIONS.md](docs/api/API_INSPECTIONS.md)
-- **Inventory Ledger:** [docs/api/API_INVENTORY_LEDGER.md](docs/api/API_INVENTORY_LEDGER.md)
-- **Invoices:** [docs/api/API_INVOICES.md](docs/api/API_INVOICES.md)
-- **Maintenances:** [docs/api/API_MAINTENANCES.md](docs/api/API_MAINTENANCES.md)
-- **Notifications:** [docs/api/API_NOTIFICATIONS.md](docs/api/API_NOTIFICATIONS.md)
-- **Payments:** [docs/api/API_PAYMENTS.md](docs/api/API_PAYMENTS.md)
-- **Reports:** [docs/api/API_REPORTS.md](docs/api/API_REPORTS.md)
-- **Settings:** [docs/api/API_SETTINGS.md](docs/api/API_SETTINGS.md)
+- **Auth:** [docs/api/API_AUTH.md](docs/api/API_AUTH.md)
+- **Survey:** [docs/api/API_SURVEY.md](docs/api/API_SURVEY.md)
+- **Persona:** [docs/api/API_PERSONA.md](docs/api/API_PERSONA.md)
+- **Chat:** [docs/api/API_CHAT.md](docs/api/API_CHAT.md)
+- **Social (Planned):** [docs/api/API_SOCIAL.md](docs/api/API_SOCIAL.md)
+- **Gamification (Planned):** [docs/api/API_GAMIFICATION.md](docs/api/API_GAMIFICATION.md)
 
 For complete documentation index, see [docs/README.md](docs/README.md).
 

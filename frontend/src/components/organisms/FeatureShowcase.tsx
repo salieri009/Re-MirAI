@@ -6,7 +6,6 @@ import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import { useRouter } from 'next/navigation';
 import { Button } from '@/components/atoms/Button';
 import { useReducedMotion } from '@/hooks/useAccessibility';
-import { colors, spacing, radius, typography, shadows, CSSProperties } from '@/lib/styles';
 
 // Register ScrollTrigger plugin
 let isScrollTriggerRegistered = false;
@@ -35,135 +34,6 @@ const trustBadges = [
     { title: 'Guided Journey', description: 'Dashboard tracks the summon bar.', icon: '🧭' }
 ];
 
-const showcaseStyle: CSSProperties = {
-    padding: `${spacing.xxl * 2}px ${spacing.xl}px`,
-    background: colors.background,
-};
-
-const containerStyle: CSSProperties = {
-    maxWidth: 1200,
-    margin: '0 auto',
-};
-
-const kickerStyle: CSSProperties = {
-    fontSize: typography.size.sm,
-    color: colors.accent,
-    textTransform: 'uppercase',
-    letterSpacing: '0.1em',
-    textAlign: 'center',
-    marginBottom: spacing.sm,
-};
-
-const headingStyle: CSSProperties = {
-    fontSize: typography.size['3xl'],
-    fontWeight: typography.weight.bold,
-    color: colors.text,
-    textAlign: 'center',
-    marginBottom: spacing.sm,
-};
-
-const subheadingStyle: CSSProperties = {
-    fontSize: typography.size.lg,
-    color: colors.textMuted,
-    textAlign: 'center',
-    marginBottom: spacing.xxl,
-};
-
-const stepsContainerStyle: CSSProperties = {
-    display: 'grid',
-    gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))',
-    gap: spacing.lg,
-    marginBottom: spacing.xxl,
-};
-
-const stepStyle: CSSProperties = {
-    display: 'flex',
-    flexDirection: 'column',
-    alignItems: 'center',
-    textAlign: 'center',
-    padding: spacing.xl,
-    background: colors.surface,
-    borderRadius: radius.xl,
-    border: `1px solid ${colors.border}`,
-    boxShadow: shadows.md,
-};
-
-const stepIconStyle: CSSProperties = {
-    fontSize: 48,
-    marginBottom: spacing.md,
-};
-
-const stepNumberStyle: CSSProperties = {
-    width: 32,
-    height: 32,
-    borderRadius: '50%',
-    background: colors.primary,
-    display: 'flex',
-    alignItems: 'center',
-    justifyContent: 'center',
-    fontSize: typography.size.sm,
-    fontWeight: typography.weight.bold,
-    color: colors.text,
-    marginBottom: spacing.md,
-};
-
-const stepTitleStyle: CSSProperties = {
-    fontSize: typography.size.xl,
-    fontWeight: typography.weight.semiBold,
-    color: colors.text,
-    marginBottom: spacing.sm,
-};
-
-const stepDescriptionStyle: CSSProperties = {
-    fontSize: typography.size.base,
-    color: colors.textMuted,
-};
-
-const trustSectionStyle: CSSProperties = {
-    marginBottom: spacing.xxl,
-};
-
-const trustHeaderStyle: CSSProperties = {
-    textAlign: 'center',
-    marginBottom: spacing.lg,
-};
-
-const trustGridStyle: CSSProperties = {
-    display: 'grid',
-    gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))',
-    gap: spacing.md,
-};
-
-const trustCardStyle: CSSProperties = {
-    display: 'flex',
-    alignItems: 'center',
-    gap: spacing.md,
-    padding: spacing.md,
-    background: colors.surface,
-    borderRadius: radius.lg,
-    border: `1px solid ${colors.border}`,
-};
-
-const trustIconStyle: CSSProperties = {
-    fontSize: 32,
-};
-
-const trustTitleStyle: CSSProperties = {
-    fontSize: typography.size.base,
-    fontWeight: typography.weight.medium,
-    color: colors.text,
-    marginBottom: spacing.xxs,
-};
-
-const trustDescriptionStyle: CSSProperties = {
-    fontSize: typography.size.sm,
-    color: colors.textMuted,
-};
-
-const ctaRowStyle: CSSProperties = {
-    display: 'flex',
-    justifyContent: 'center',
-};
 
 export function FeatureShowcase() {
     const sectionRef = useRef<HTMLElement>(null);
@@ -194,46 +64,46 @@ export function FeatureShowcase() {
     }, [reducedMotion]);
 
     return (
-        <section ref={sectionRef} style={showcaseStyle}>
-            <div style={containerStyle}>
-                <p style={kickerStyle}>How It Works</p>
-                <h2 style={headingStyle}>3 Steps. Zero Filler.</h2>
-                <p style={subheadingStyle}>
+        <section ref={sectionRef} className="bg-background-dark px-6 py-24">
+            <div className="mx-auto w-full max-w-[1200px]">
+                <p className="mb-2 text-center text-sm uppercase tracking-[0.1em] text-accent">How It Works</p>
+                <h2 className="mb-2 text-center font-display text-4xl font-bold text-text-primary">3 Steps. Zero Filler.</h2>
+                <p className="mb-8 text-center text-lg text-text-muted">
                     Short flow built for anime-style reveals. Tap, collect, summon.
                 </p>
 
-                <div style={stepsContainerStyle}>
+                <div className="mb-8 grid grid-cols-1 gap-6 md:grid-cols-3">
                     {steps.map((step) => (
-                        <div key={step.number} style={stepStyle} data-step>
-                            <div style={stepIconStyle}>{step.icon}</div>
-                            <div style={stepNumberStyle}>
+                        <div key={step.number} className="atmospheric-surface flex flex-col items-center p-8 text-center shadow-md" data-step>
+                            <div className="mb-4 text-5xl">{step.icon}</div>
+                            <div className="mb-4 flex h-8 w-8 items-center justify-center rounded-full bg-primary text-sm font-bold text-text-primary">
                                 <span>{step.number}</span>
                             </div>
-                            <h3 style={stepTitleStyle}>{step.title}</h3>
-                            <p style={stepDescriptionStyle}>{step.description}</p>
+                            <h3 className="mb-2 text-xl font-semibold text-text-primary">{step.title}</h3>
+                            <p className="text-base text-text-muted">{step.description}</p>
                         </div>
                     ))}
                 </div>
 
-                <div style={trustSectionStyle}>
-                    <div style={trustHeaderStyle}>
-                        <h3 style={headingStyle}>Fast. Private. Otaku-friendly.</h3>
-                        <p style={subheadingStyle}>Clear UX, short copy, WCAG-safe.</p>
+                <div className="mb-8">
+                    <div className="mb-6 text-center">
+                        <h3 className="mb-2 font-display text-4xl font-bold text-text-primary">Fast. Private. Otaku-friendly.</h3>
+                        <p className="text-lg text-text-muted">Clear UX, short copy, WCAG-safe.</p>
                     </div>
-                    <div style={trustGridStyle}>
+                    <div className="grid grid-cols-1 gap-4 md:grid-cols-3">
                         {trustBadges.map((badge) => (
-                            <div key={badge.title} style={trustCardStyle}>
-                                <div style={trustIconStyle}>{badge.icon}</div>
+                            <div key={badge.title} className="flex items-center gap-4 rounded-lg border border-slate-700/25 bg-surface p-4">
+                                <div className="text-3xl">{badge.icon}</div>
                                 <div>
-                                    <p style={trustTitleStyle}>{badge.title}</p>
-                                    <p style={trustDescriptionStyle}>{badge.description}</p>
+                                    <p className="mb-0.5 text-base font-medium text-text-primary">{badge.title}</p>
+                                    <p className="text-sm text-text-muted">{badge.description}</p>
                                 </div>
                             </div>
                         ))}
                     </div>
                 </div>
 
-                <div style={ctaRowStyle}>
+                <div className="flex justify-center">
                     <Button variant="primary" size="lg" onClick={() => router.push('/login')}>
                         Create Your AI Mirror (Free)
                     </Button>

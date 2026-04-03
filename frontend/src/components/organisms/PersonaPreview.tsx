@@ -3,102 +3,10 @@
 import { useEffect, useRef } from 'react';
 import gsap from 'gsap';
 import { useReducedMotion } from '@/hooks/useAccessibility';
-import { colors, spacing, radius, typography, shadows, CSSProperties } from '@/lib/styles';
 
 interface PersonaPreviewProps {
   isVisible: boolean;
 }
-
-const previewContainerStyle: CSSProperties = {
-  display: 'flex',
-  justifyContent: 'center',
-  alignItems: 'center',
-  padding: spacing.xl,
-};
-
-const cardStyle: CSSProperties = {
-  width: 320,
-  background: colors.surface,
-  borderRadius: radius.xl,
-  border: `1px solid ${colors.border}`,
-  boxShadow: shadows.xl,
-  overflow: 'hidden',
-};
-
-const headerStyleCard: CSSProperties = {
-  display: 'flex',
-  justifyContent: 'space-between',
-  alignItems: 'center',
-  padding: spacing.lg,
-  borderBottom: `1px solid ${colors.border}`,
-};
-
-const nameStyle: CSSProperties = {
-  fontSize: typography.size.xl,
-  fontWeight: typography.weight.bold,
-  color: colors.text,
-  margin: 0,
-};
-
-const badgeStyle: CSSProperties = {
-  fontSize: typography.size.sm,
-  color: colors.accent,
-  background: `${colors.accent}20`,
-  padding: `${spacing.xxs}px ${spacing.sm}px`,
-  borderRadius: radius.sm,
-};
-
-const visualStyle: CSSProperties = {
-  display: 'flex',
-  alignItems: 'center',
-  justifyContent: 'center',
-  fontSize: 80,
-  padding: spacing.xl,
-  background: `linear-gradient(135deg, ${colors.primary}20, ${colors.accent}20)`,
-};
-
-const statsStyle: CSSProperties = {
-  padding: spacing.lg,
-  display: 'flex',
-  flexDirection: 'column',
-  gap: spacing.sm,
-};
-
-const statRowStyle: CSSProperties = {
-  display: 'flex',
-  alignItems: 'center',
-  gap: spacing.sm,
-};
-
-const statLabelStyle: CSSProperties = {
-  fontSize: typography.size.sm,
-  color: colors.textSecondary,
-  width: 80,
-};
-
-const statBarStyle: CSSProperties = {
-  flex: 1,
-  height: 8,
-  background: colors.border,
-  borderRadius: radius.full,
-  overflow: 'hidden',
-};
-
-const statFillStyle: CSSProperties = {
-  height: '100%',
-  background: `linear-gradient(90deg, ${colors.primary}, ${colors.accent})`,
-  borderRadius: radius.full,
-  width: 0,
-};
-
-const footerStyleCard: CSSProperties = {
-  padding: spacing.lg,
-  borderTop: `1px solid ${colors.border}`,
-  textAlign: 'center',
-  fontSize: typography.size.sm,
-  color: colors.textMuted,
-  fontStyle: 'italic',
-};
 
 const stats = [
   { label: 'Charisma', value: 85 },
@@ -146,29 +54,29 @@ export function PersonaPreview({ isVisible }: PersonaPreviewProps) {
   if (!isVisible) return null;
 
   return (
-    <div ref={containerRef} style={previewContainerStyle}>
-      <div style={cardStyle}>
-        <div style={headerStyleCard}>
-          <h3 style={nameStyle}>The Mystic</h3>
-          <span style={badgeStyle}>SSR ★★★</span>
+    <div ref={containerRef} className="flex items-center justify-center p-8">
+      <div className="w-[320px] overflow-hidden rounded-xl border border-slate-700/25 bg-surface shadow-2xl">
+        <div className="flex items-center justify-between border-b border-slate-700/25 p-6">
+          <h3 className="m-0 text-xl font-bold text-text-primary">The Mystic</h3>
+          <span className="rounded-sm bg-accent/20 px-2 py-0.5 text-sm text-accent">SSR ★★★</span>
         </div>
 
-        <div style={visualStyle}>
+        <div className="flex items-center justify-center bg-gradient-to-br from-primary/20 to-accent/20 p-8 text-[80px]">
           🔮
         </div>
 
-        <div style={statsStyle}>
+        <div className="flex flex-col gap-2 p-6">
           {stats.map((stat) => (
-            <div key={stat.label} style={statRowStyle}>
-              <span style={statLabelStyle}>{stat.label}</span>
-              <div style={statBarStyle}>
-                <div style={statFillStyle} data-stat-fill data-value={stat.value} />
+            <div key={stat.label} className="flex items-center gap-2">
+              <span className="w-20 text-sm text-text-secondary">{stat.label}</span>
+              <div className="h-2 flex-1 overflow-hidden rounded-full bg-slate-700/25">
+                <div className="h-full w-0 rounded-full bg-gradient-to-r from-primary to-accent" data-stat-fill data-value={stat.value} />
               </div>
             </div>
           ))}
         </div>
 
-        <div style={footerStyleCard}>
+        <div className="border-t border-slate-700/25 p-6 text-center text-sm italic text-text-muted">
           This could be you...
         </div>
       </div>

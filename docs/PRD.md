@@ -37,10 +37,10 @@
 - 페르소나 핵심 속성을 카드 형태로 보여주고 공유 가능하게 구성
 
 ### F-005 Social Features
-- 공개 프로필/호환성 등 관계형 경험(단계적 확장)
+- 공개 프로필/호환성/Room 방문 등 관계형 경험
 
 ### F-006 Gamification
-- bond level 기반의 리텐션 설계(단계적 확장)
+- bond level 기반의 리텐션 설계
 
 ## 6. 비기능 요구사항
 - 인증: OAuth(구글/카카오/애플) + JWT
@@ -54,7 +54,108 @@
 - 채팅 시작률/재방문율, 카드 공유율
 - OAuth 완료율, 오류율(5xx/4xx 비중)
 
-## 8. 릴리스 우선순위
-- P1: Auth + Survey + Persona 합성 + 기본 Chat
-- P2: 카드 공유 고도화 + Social/Compatibility
-- P3: Gamification/리텐션 고도화
+## 8. 구현 대상(필수)
+- Auth: Google/Kakao/Apple OAuth + JWT(Access/Refresh)
+- Survey: 생성/공개 조회/익명 제출/상태 조회
+- Persona: 합성/목록/상세
+- Chat: 세션 조회/생성, 히스토리, 메시지 전송, WebSocket 이벤트
+- Persona Card: 카드 생성 API와 공유 URL 반환
+- Social: 호환성 조회, Room 방문
+- Gamification: 퀘스트 조회, 보상 수령, 재화 잔액
+
+## 9. API 계약 맵
+
+### Auth
+- `GET /auth/google`
+- `GET /auth/google/callback`
+- `GET /auth/kakao`
+- `GET /auth/kakao/callback`
+- `GET /auth/apple`
+- `POST /auth/apple/callback`
+- `POST /auth/refresh`
+- `POST /auth/logout`
+
+### Survey
+- `POST /surveys`
+- `GET /surveys/my`
+- `GET /surveys/:linkOrId/public`
+- `POST /surveys/:id/responses`
+- `GET /surveys/:id/status`
+
+### Persona
+- `POST /personas/synthesize`
+- `GET /personas`
+- `GET /personas/:id`
+- `POST /personas/:id/card`
+
+### Chat
+- `GET /chats/sessions`
+- `POST /chats/sessions`
+- `GET /chats/:sessionId/history`
+- `POST /chats/:sessionId/messages`
+- WebSocket namespace: `/chat`
+	- `chat:auth`
+	- `chat:join`
+	- `chat:message`
+	- server event: `chat:response`
+
+### Social
+- `GET /social/compatibility?targetPersonaId={id}`
+- `GET /social/rooms/:userId`
+
+### Gamification
+- `GET /quests`
+- `POST /quests/:questId/claim`
+- `GET /currency/balance`
+
+## 10. 상세 구현 규칙
+
+### 공통
+- 모든 보호 라우트는 `Authorization: Bearer <accessToken>` 필요
+- 401 발생 시 프론트는 `POST /auth/refresh` 1회 재시도 후 로그인 페이지 이동
+- 에러 응답은 NestJS 표준(`statusCode`, `message`, `error`)을 따른다
+
+### Survey 규칙
+- 상태 전이: `COLLECTING -> READY -> COMPLETED -> ARCHIVED`
+- `READY` 조건: `responsesCount >= minResponses`
+- 익명 응답 중복은 `fingerprintHash` 기준으로 차단
+- 공개 설문 조회는 `COLLECTING` 상태만 허용
+
+### Persona 규칙
+- 합성 요청은 owner만 가능
+- 합성 성공 시 Survey 상태를 `COMPLETED`로 변경
+- `mode`는 `FATED | ALCHEMIC` 허용
+- 결과에는 `name`, `archetype`, `rarity`, `stats`, `greeting`, `systemPrompt` 포함
+
+### Chat 규칙
+- 메시지 전송 시 moderation 검사 수행
+- 메시지 왕복 1회마다 해당 Persona의 `bondLevel` 증가
+- REST는 항상 백업 경로로 사용 가능해야 함
+
+### Persona Card 규칙
+- 카드 생성 응답은 `imageUrl`, `publicProfileUrl`, `expiresAt` 포함
+- 카드 접근 URL은 공유 가능한 공개 URL이어야 함
+
+### Social 규칙
+- 호환성은 `score(0-100)`, `label`, `description` 반환
+- Room 방문 응답은 최소 1개 Persona 목록을 포함
+- `label` 허용값: `HARMONIC`, `BALANCED`, `CHALLENGING`, `MIRROR`
+
+### Gamification 규칙
+- 퀘스트 상태는 `ACTIVE | COMPLETED | CLAIMED`
+- `claim`은 완료된 퀘스트만 가능
+- 보상 수령 시 지갑 잔액이 즉시 반영되어야 함
+- Daily quest 리셋: 매일 KST 00:00
+- Weekly quest 리셋: 매주 월요일 KST 00:00
+
+## 11. 완료 기준 (Definition of Done)
+- API 명세와 실제 DTO/Controller 경로가 1:1 일치
+- 프론트 `src/lib/api/*.ts` 타입과 응답 필드가 명세와 일치
+- 핵심 사용자 여정 E2E 통과
+	- OAuth 로그인
+	- Ritual 생성/공유/익명 제출
+	- Persona 합성
+	- Chat 송수신
+	- Persona Card 생성/공유
+	- Compatibility 조회
+	- Quest 조회/보상 수령

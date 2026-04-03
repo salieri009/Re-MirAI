@@ -1,54 +1,27 @@
 'use client';
 
-import { CSSProperties } from 'react';
 import { useRouter } from 'next/navigation';
 import { Button } from '@/components/atoms/Button';
-
-// Styles
-const pageStyles = {
-  container: {
-    minHeight: '100vh',
-    display: 'flex',
-    alignItems: 'center',
-    justifyContent: 'center',
-    padding: 'var(--space-xl)',
-    backgroundColor: 'var(--color-bg-secondary)',
-  } as CSSProperties,
-  content: {
-    textAlign: 'center',
-    maxWidth: '500px',
-  } as CSSProperties,
-  h1: {
-    fontSize: 'var(--font-size-4xl)',
-    fontWeight: 'var(--font-weight-bold)',
-    color: 'var(--color-text)',
-    marginBottom: 'var(--space-lg)',
-  } as CSSProperties,
-  p: {
-    fontSize: 'var(--font-size-lg)',
-    color: 'var(--color-text-secondary)',
-    marginBottom: 'var(--space-md)',
-  } as CSSProperties,
-  subtext: {
-    fontSize: 'var(--font-size-base)',
-    color: 'var(--color-text-tertiary)',
-    marginBottom: 'var(--space-xl)',
-  } as CSSProperties,
-};
+import { PublicAtmosphere } from '@/components/layouts/PublicAtmosphere';
 
 export default function ThankYouPage() {
   const router = useRouter();
 
   return (
-    <div style={pageStyles.container}>
-      <div style={pageStyles.content}>
-        <h1 style={pageStyles.h1}>Thank You! 🙏</h1>
-        <p style={pageStyles.p}>Your response has been submitted successfully.</p>
-        <p style={pageStyles.subtext}>Your feedback helps create a unique AI persona.</p>
-        <Button variant="primary" onClick={() => router.push('/')}>
-          Create Your Own Persona
-        </Button>
-      </div>
-    </div>
+    <PublicAtmosphere>
+      <main className="mx-auto flex min-h-screen w-full max-w-[960px] items-center justify-center px-6 py-10" role="main" aria-label="Survey completion page">
+        <section className="atmospheric-surface w-full max-w-[560px] rounded-2xl px-7 py-10 text-center sm:px-10">
+          <p className="text-xs uppercase tracking-[0.35em] text-slate-500">Ritual Complete</p>
+          <h1 className="mt-2 font-display text-5xl leading-[0.9] text-slate-800 sm:text-6xl">Thank You</h1>
+          <p className="mt-4 text-base text-slate-600">Your response has been submitted successfully.</p>
+          <p className="mt-2 text-sm text-slate-500">Your feedback helps shape a unique digital mirror persona.</p>
+          <div className="mt-7">
+            <Button variant="primary" onClick={() => router.push('/')}>
+              Create Your Own Persona
+            </Button>
+          </div>
+        </section>
+      </main>
+    </PublicAtmosphere>
   );
 }

@@ -1,6 +1,6 @@
 'use client';
 
-import { colors, spacing, radius, typography, mergeStyles, CSSProperties } from '@/lib/styles';
+import { useEffect, useRef } from 'react';
 
 type ProgressBarProps = {
   value: number;
@@ -8,41 +8,7 @@ type ProgressBarProps = {
   showValue?: boolean;
   accent?: boolean;
   ariaLabel?: string;
-  style?: CSSProperties;
-};
-
-const wrapperStyle: CSSProperties = {
-  display: 'flex',
-  flexDirection: 'column',
-  gap: spacing.xs,
-  width: '100%',
-};
-
-const headerStyle: CSSProperties = {
-  display: 'flex',
-  justifyContent: 'space-between',
-  alignItems: 'center',
-  fontSize: typography.size.sm,
-  color: colors.textSecondary,
-};
-
-const trackStyle: CSSProperties = {
-  width: '100%',
-  height: 8,
-  background: colors.surface,
-  borderRadius: radius.pill,
-  overflow: 'hidden',
-};
-
-const fillBaseStyle: CSSProperties = {
-  height: '100%',
-  borderRadius: radius.pill,
-  transition: 'width 0.3s ease',
-  background: `linear-gradient(90deg, ${colors.primary}, ${colors.highlight})`,
-};
-
-const fillAccentStyle: CSSProperties = {
-  background: `linear-gradient(90deg, ${colors.accent}, ${colors.accentLight})`,
+  className?: string;
 };
 
 export function ProgressBar({
@@ -51,34 +17,34 @@ export function ProgressBar({
   showValue = true,
   accent = false,
   ariaLabel,
-  style,
+  className,
 }: ProgressBarProps) {
+  const fillRef = useRef<HTMLDivElement>(null);
   const clamped = Math.max(0, Math.min(100, value));
 
-  const fillStyle = mergeStyles(
-    fillBaseStyle,
-    accent && fillAccentStyle,
-    { width: `${clamped}%` }
-  );
+  useEffect(() => {
+    if (!fillRef.current) return;
+    fillRef.current.style.width = `${clamped}%`;
+  }, [clamped]);
 
   return (
-    <div style={mergeStyles(wrapperStyle, style)}>
+    <div className={`flex w-full flex-col gap-1 ${className ?? ''}`.trim()}>
       {label ? (
-        <div style={headerStyle}>
+        <div className="flex items-center justify-between text-sm text-text-secondary">
           <span>{label}</span>
           {showValue ? <span>{clamped}%</span> : null}
         </div>
       ) : null}
 
       <div
-        style={trackStyle}
+        className="h-2 w-full overflow-hidden rounded-pill bg-surface"
         role="progressbar"
-        aria-valuemin={0}
-        aria-valuemax={100}
-        aria-valuenow={clamped}
         aria-label={ariaLabel ?? label}
       >
-        <div style={fillStyle} />
+        <div
+          ref={fillRef}
+          className={`h-full w-0 rounded-pill transition-[width] duration-300 ${accent ? 'bg-gradient-to-r from-accent to-accent-light' : 'bg-gradient-to-r from-primary to-highlight'}`}
+        />
       </div>
     </div>
   );

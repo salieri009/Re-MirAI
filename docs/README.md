@@ -11,23 +11,21 @@
 - [DATABASE_MODEL.md](DATABASE_MODEL.md)
 - [DESIGN_SYSTEM.md](DESIGN_SYSTEM.md)
 
+## Supplemental Documents
+
+- [DESIGN_PATTERN_REFACTOR_PLAYBOOK.md](DESIGN_PATTERN_REFACTOR_PLAYBOOK.md)
+
 ## API Documents
 
 - [api/API_COMMON.md](api/API_COMMON.md)
-- [api/API_CONTRACTS.md](api/API_CONTRACTS.md)
-- [api/API_CUSTOMERS.md](api/API_CUSTOMERS.md)
-- [api/API_DASHBOARD.md](api/API_DASHBOARD.md)
-- [api/API_EQUIPMENTS.md](api/API_EQUIPMENTS.md)
-- [api/API_INSPECTIONS.md](api/API_INSPECTIONS.md)
-- [api/API_INVENTORY_LEDGER.md](api/API_INVENTORY_LEDGER.md)
-- [api/API_INVOICES.md](api/API_INVOICES.md)
-- [api/API_MAINTENANCES.md](api/API_MAINTENANCES.md)
-- [api/API_NOTIFICATIONS.md](api/API_NOTIFICATIONS.md)
-- [api/API_PAYMENTS.md](api/API_PAYMENTS.md)
-- [api/API_REPORTS.md](api/API_REPORTS.md)
-- [api/API_SETTINGS.md](api/API_SETTINGS.md)
+- [api/API_AUTH.md](api/API_AUTH.md)
+- [api/API_SURVEY.md](api/API_SURVEY.md)
+- [api/API_PERSONA.md](api/API_PERSONA.md)
+- [api/API_CHAT.md](api/API_CHAT.md)
+- [api/API_SOCIAL.md](api/API_SOCIAL.md)
+- [api/API_GAMIFICATION.md](api/API_GAMIFICATION.md)
 
 ## Notes
 
-- 문서 본문 재작성 없이 구조만 정리했습니다.
+- 인덱스와 API 문서는 현재 구현 기준으로 정리했습니다.
 - 프로젝트 루트 안내는 [../README.md](../README.md)를 참고하세요.

@@ -7,7 +7,7 @@ import { ChatMessage as ChatMessageType } from '@/lib/api/chat';
 import { Persona } from '@/lib/api/persona';
 import { ReactionButton } from '@/components/molecules/ReactionButton';
 import { ShareableSnippet } from '@/components/molecules/ShareableSnippet';
-import { colors, spacing, radius, typography, mergeStyles, CSSProperties } from '@/lib/styles';
+import clsx from 'clsx';
 
 interface ChatMessageProps {
     message: ChatMessageType;
@@ -18,72 +18,17 @@ interface ChatMessageProps {
     reactions?: Record<string, number>;
 }
 
-const messageRowBase: CSSProperties = {
-    display: 'flex',
-    marginBottom: spacing.md,
-};
+function getDepthClass(bondLevel: number): string {
+    const depth = Math.min(Math.max(bondLevel, 0), 5);
 
-const messageRowUser: CSSProperties = {
-    justifyContent: 'flex-end',
-};
+    if (depth <= 0) return '';
+    if (depth === 1) return 'border-l-2 border-primary';
+    if (depth === 2) return 'border-l-[3px] border-accent';
+    if (depth === 3) return 'border-l-[3px] border-highlight';
+    if (depth === 4) return 'border-l-4 border-accent shadow-[0_0_10px_rgba(0,201,167,0.18)]';
 
-const messageRowAi: CSSProperties = {
-    justifyContent: 'flex-start',
-};
-
-const bubbleBase: CSSProperties = {
-    maxWidth: '70%',
-    padding: `${spacing.md}px ${spacing.lg}px`,
-    borderRadius: radius.xl,
-};
-
-const bubbleUser: CSSProperties = {
-    background: colors.primary,
-    color: colors.text,
-    borderBottomRightRadius: radius.xs,
-};
-
-const bubbleAi: CSSProperties = {
-    background: colors.surface,
-    color: colors.text,
-    border: `1px solid ${colors.border}`,
-    borderBottomLeftRadius: radius.xs,
-};
-
-// Bond level depth styles
-const depthStyles: CSSProperties[] = [
-    {}, // depth 0
-    { borderLeftColor: colors.primary, borderLeftWidth: 2, borderLeftStyle: 'solid' },
-    { borderLeftColor: colors.accent, borderLeftWidth: 3, borderLeftStyle: 'solid' },
-    { borderLeftColor: colors.highlight, borderLeftWidth: 3, borderLeftStyle: 'solid' },
-    { borderLeftColor: colors.accent, borderLeftWidth: 4, borderLeftStyle: 'solid', boxShadow: `0 0 10px ${colors.accent}30` },
-    { borderLeftColor: colors.highlight, borderLeftWidth: 4, borderLeftStyle: 'solid', boxShadow: `0 0 15px ${colors.highlight}40` },
-];
-
-const contentStyle: CSSProperties = {
-    fontSize: typography.size.base,
-    lineHeight: 1.6,
-    whiteSpace: 'pre-wrap',
-};
-
-const footerStyleMsg: CSSProperties = {
-    display: 'flex',
-    alignItems: 'center',
-    justifyContent: 'space-between',
-    marginTop: spacing.sm,
-    gap: spacing.md,
-};
-
-const timestampStyle: CSSProperties = {
-    fontSize: typography.size.xs,
-    color: colors.textMuted,
-};
-
-const actionsStyle: CSSProperties = {
-    display: 'flex',
-    alignItems: 'center',
-    gap: spacing.xs,
-};
+    return 'border-l-4 border-highlight shadow-[0_0_15px_rgba(193,151,255,0.28)]';
+}
 
 export function ChatMessage({
     message,
@@ -96,34 +41,35 @@ export function ChatMessage({
     const messageRef = useRef<HTMLDivElement>(null);
     const reducedMotion = useReducedMotion();
     const isUser = message.sender === 'USER';
+    const depthClass = getDepthClass(bondLevel);
 
     useEffect(() => {
         if (reducedMotion || !messageRef.current) return;
         connectionInteractions.messageEnter(messageRef.current, isUser ? 'user' : 'ai');
     }, [reducedMotion, isUser]);
 
-    const rowStyle = mergeStyles(
-        messageRowBase,
-        isUser ? messageRowUser : messageRowAi
-    );
-
-    const bubbleStyle = mergeStyles(
-        bubbleBase,
-        isUser ? bubbleUser : bubbleAi,
-        !isUser && depthStyles[Math.min(bondLevel, 5)]
-    );
-
     return (
-        <div ref={messageRef} style={rowStyle}>
-            <div style={bubbleStyle}>
-                <div style={contentStyle}>{message.content}</div>
+        <div
+            ref={messageRef}
+            className={clsx('mb-4 flex', isUser ? 'justify-end' : 'justify-start')}
+        >
+            <div
+                className={clsx(
+                    'max-w-[70%] rounded-xl px-6 py-4',
+                    isUser
+                        ? 'rounded-br-xs bg-primary text-text-primary'
+                        : 'rounded-bl-xs border border-slate-600/35 bg-surface text-text-primary',
+                    !isUser && depthClass
+                )}
+            >
+                <div className="whitespace-pre-wrap text-base leading-relaxed">{message.content}</div>
 
-                <div style={footerStyleMsg}>
-                    <span style={timestampStyle}>
+                <div className="mt-2 flex items-center justify-between gap-4">
+                    <span className="text-xs text-text-muted">
                         {new Date(message.createdAt).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
                     </span>
 
-                    <div style={actionsStyle}>
+                    <div className="flex items-center gap-2">
                         {onReact && (
                             <ReactionButton
                                 messageId={message.id}
