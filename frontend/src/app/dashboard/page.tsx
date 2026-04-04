@@ -7,7 +7,7 @@ import { DashboardSidebar } from '@/components/organisms/DashboardSidebar';
 import { DashboardChatArea } from '@/components/organisms/DashboardChatArea';
 import { DashboardRightPanel } from '@/components/organisms/DashboardRightPanel';
 import { SkipToContent } from '@/hooks/useAccessibility';
-import { useProtectedRoute } from '@/hooks/useProtectedRoute';
+import { useProtectedRoute } from '@/features/auth/hooks/useProtectedRoute';
 
 // Lazy load heavy canvas component
 const MirrorCanvas = dynamic(

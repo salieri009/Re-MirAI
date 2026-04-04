@@ -2,8 +2,8 @@ import type { Metadata } from 'next'
 import { Manrope, Sora } from 'next/font/google'
 import '../styles/tokens.css'
 import '../global.css'
-import { QueryProvider } from '@/lib/providers/QueryProvider'
-import ClientProviders from '@/lib/providers/ClientProviders'
+import { QueryProvider } from '@/components/providers/QueryProvider'
+import ClientProviders from '@/components/providers/ClientProviders';
 
 const sora = Sora({
   subsets: ['latin'],

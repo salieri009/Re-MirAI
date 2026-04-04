@@ -13,7 +13,7 @@ import { DashboardScaffold } from '@/components/layouts/DashboardScaffold';
 import { AppState } from '@/components/molecules/AppState';
 import { queryKeys } from '@/lib/queryKeys';
 import { Card } from '@/components/primitives';
-import { useProtectedRoute } from '@/hooks/useProtectedRoute';
+import { useProtectedRoute } from '@/features/auth/hooks/useProtectedRoute';
 
 export default function CompatibilityPage() {
   const router = useRouter();

@@ -6,7 +6,7 @@ import { useAuthStore } from '@/stores/authStore';
 import { Button } from '@/components/atoms/Button';
 import { DashboardScaffold } from '@/components/layouts/DashboardScaffold';
 import { AppState } from '@/components/molecules/AppState';
-import { useProtectedRoute } from '@/hooks/useProtectedRoute';
+import { useProtectedRoute } from '@/features/auth/hooks/useProtectedRoute';
 
 export default function ProfileSettingsPage() {
   const router = useRouter();
