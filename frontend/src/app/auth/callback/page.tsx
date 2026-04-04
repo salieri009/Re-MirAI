@@ -5,65 +5,13 @@ import { useRouter, useSearchParams } from 'next/navigation';
 import { useAuthStore } from '@/stores/authStore';
 import { toast } from '@/lib/toast';
 import { PublicAtmosphere } from '@/components/layouts/PublicAtmosphere';
-
-function StatusCard({
-  status,
-  errorMessage,
-  onRetry,
-}: {
-  status: 'processing' | 'success' | 'error' | 'loading';
-  errorMessage?: string | null;
-  onRetry: () => void;
-}) {
-  const statusConfig = {
-    loading: {
-      icon: <div className="h-12 w-12 animate-spin rounded-full border-2 border-slate-300 border-t-fuchsia-500" />,
-      title: 'Loading...',
-      description: 'Please wait...',
-    },
-    processing: {
-      icon: <div className="h-12 w-12 animate-spin rounded-full border-2 border-slate-300 border-t-fuchsia-500" />,
-      title: 'Completing sign in...',
-      description: 'Please wait while we verify your account.',
-    },
-    success: {
-      icon: <div className="flex h-12 w-12 items-center justify-center rounded-full bg-emerald-500 text-2xl text-white">✓</div>,
-      title: 'Welcome!',
-      description: 'Redirecting to your dashboard...',
-    },
-    error: {
-      icon: <div className="flex h-12 w-12 items-center justify-center rounded-full bg-rose-500 text-2xl text-white">✕</div>,
-      title: 'Sign in failed',
-      description: errorMessage || 'An error occurred during authentication.',
-    },
-  } as const;
-
-  const config = statusConfig[status];
-
-  return (
-    <section className="atmospheric-surface w-full max-w-[440px] rounded-2xl px-7 py-9 text-center sm:px-10">
-      <div className="flex justify-center">{config.icon}</div>
-      <h1 className="mt-3 font-display text-4xl text-slate-800">{config.title}</h1>
-      <p className="mt-2 text-sm text-slate-600">{config.description}</p>
-
-      {status === 'error' ? (
-        <button
-          type="button"
-          onClick={onRetry}
-          className="mt-6 rounded-lg bg-fuchsia-600 px-4 py-2 text-sm font-semibold text-white transition hover:bg-fuchsia-500"
-        >
-          Try Again
-        </button>
-      ) : null}
-    </section>
-  );
-}
+import { AppState } from '@/components/molecules/AppState';
 
 function AuthCallbackContent() {
   const router = useRouter();
   const searchParams = useSearchParams();
   const { login } = useAuthStore();
-  const [status, setStatus] = useState<'processing' | 'success' | 'error'>('processing');
+  const [status, setStatus] = useState<'loading' | 'processing' | 'success' | 'error'>('loading');
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
 
   useEffect(() => {
@@ -121,11 +69,33 @@ function AuthCallbackContent() {
     handleCallback();
   }, [searchParams, login, router]);
 
-  return <StatusCard status={status} errorMessage={errorMessage} onRetry={() => router.push('/login')} />;
+  if (status === 'loading' || status === 'processing') {
+    return (
+      <AppState
+        type="loading"
+        title="Completing sign in"
+        description="Please wait while we verify your account."
+      />
+    );
+  }
+
+  if (status === 'success') {
+    return <AppState type="success" title="Welcome!" description="Redirecting to your dashboard..." />;
+  }
+
+  return (
+    <AppState
+      type="error"
+      title="Sign in failed"
+      description={errorMessage || 'An error occurred during authentication.'}
+      actionLabel="Try Again"
+      onAction={() => router.push('/login')}
+    />
+  );
 }
 
 function LoadingFallback() {
-  return <StatusCard status="loading" onRetry={() => undefined} />;
+  return <AppState type="loading" title="Loading callback" description="Please wait..." />;
 }
 
 export default function AuthCallbackPage() {

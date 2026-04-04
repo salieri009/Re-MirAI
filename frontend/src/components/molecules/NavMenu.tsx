@@ -17,7 +17,7 @@ export const NavMenu: React.FC<NavMenuProps> = ({ links, className = '' }) => {
                 <a
                     key={link.label}
                     href={link.href}
-                    className="text-white text-sm font-medium leading-normal hover:text-[#c197ff] transition-colors"
+                    className="text-white text-sm font-medium leading-normal hover:text-accent transition-colors"
                 >
                     {link.label}
                 </a>

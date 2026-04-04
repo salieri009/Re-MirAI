@@ -1,13 +1,13 @@
 'use client';
 
-import { useEffect } from 'react';
 import dynamic from 'next/dynamic';
-import { useRouter } from 'next/navigation';
 import { useAuthStore } from '@/stores/authStore';
+import { AppState } from '@/components/molecules/AppState';
 import { DashboardSidebar } from '@/components/organisms/DashboardSidebar';
 import { DashboardChatArea } from '@/components/organisms/DashboardChatArea';
 import { DashboardRightPanel } from '@/components/organisms/DashboardRightPanel';
 import { SkipToContent } from '@/hooks/useAccessibility';
+import { useProtectedRoute } from '@/hooks/useProtectedRoute';
 
 // Lazy load heavy canvas component
 const MirrorCanvas = dynamic(
@@ -20,16 +20,18 @@ const MirrorCanvas = dynamic(
 
 export default function DashboardPage() {
   const { isAuthenticated } = useAuthStore();
-  const router = useRouter();
+  const isRedirecting = useProtectedRoute(isAuthenticated);
 
-  useEffect(() => {
-    if (!isAuthenticated) {
-      router.push('/login');
-    }
-  }, [isAuthenticated, router]);
-
-  if (!isAuthenticated) {
-    return null;
+  if (isRedirecting) {
+    return (
+      <div className="min-h-screen bg-background-dark text-text-primary">
+        <AppState
+          type="loading"
+          title="Redirecting to login"
+          description="Your dashboard requires an authenticated session."
+        />
+      </div>
+    );
   }
 
   return (

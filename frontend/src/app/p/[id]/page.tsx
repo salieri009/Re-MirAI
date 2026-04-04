@@ -5,18 +5,19 @@ import { useQuery } from '@tanstack/react-query';
 import { useRouter } from 'next/navigation';
 import gsap from 'gsap';
 import { personaApi } from '@/lib/api/persona';
-import { questApi } from '@/lib/api/quest';
+import { questApi, type Quest } from '@/lib/api/quest';
 import { PersonaCard } from '@/components/molecules/PersonaCard';
 import { ShareModal } from '@/components/organisms/ShareModal';
 import { Button } from '@/components/atoms/Button';
+import { AppState } from '@/components/molecules/AppState';
 import { PersonaRadarChart } from '@/components/molecules/PersonaRadarChart';
 import { QuestCard } from '@/components/molecules/QuestCard';
-import { ActivityFeed, ActivityItem } from '@/components/molecules/ActivityFeed';
+import { ActivityFeed, type ActivityItem } from '@/components/molecules/ActivityFeed';
 import { ProgressBar } from '@/components/molecules/ProgressBar';
 import { DashboardScaffold } from '@/components/layouts/DashboardScaffold';
 import { useReducedMotion } from '@/hooks/useAccessibility';
 import { fadeIn, staggerIn } from '@/lib/animations';
-import { Quest } from '@/lib/api/quest';
+import { queryKeys } from '@/lib/queryKeys';
 
 export default function PersonaPage({ params }: { params: Promise<{ id: string }> }) {
   const { id } = use(params);
@@ -27,23 +28,33 @@ export default function PersonaPage({ params }: { params: Promise<{ id: string }
   const [showShareModal, setShowShareModal] = useState(false);
   const [shareCount, setShareCount] = useState(0);
 
-  const { data: persona, isLoading } = useQuery({
-    queryKey: ['persona', id],
+  const {
+    data: persona,
+    isLoading: personaLoading,
+    isError: personaError,
+    refetch: refetchPersona,
+  } = useQuery({
+    queryKey: queryKeys.personas.detail(id),
     queryFn: () => personaApi.get(id),
   });
 
-  const { data: quests } = useQuery({
-    queryKey: ['persona-quests', id],
+  const {
+    data: quests,
+    isLoading: questsLoading,
+    isError: questsError,
+    refetch: refetchQuests,
+  } = useQuery({
+    queryKey: queryKeys.quests.active,
     queryFn: () => questApi.getActive(),
   });
 
   const handleShare = (platform: string, image?: Blob) => {
     if (image && persona) {
       const url = URL.createObjectURL(image);
-      const a = document.createElement('a');
-      a.href = url;
-      a.download = `remirai-${persona.name}-${platform}.png`;
-      a.click();
+      const anchor = document.createElement('a');
+      anchor.href = url;
+      anchor.download = `remirai-${persona.name}-${platform}.png`;
+      anchor.click();
       URL.revokeObjectURL(url);
       setShareCount((prev) => prev + 1);
     }
@@ -103,6 +114,7 @@ export default function PersonaPage({ params }: { params: Promise<{ id: string }
 
   const activityItems: ActivityItem[] = useMemo(() => {
     if (!persona) return [];
+
     const items: ActivityItem[] = [
       {
         id: 'created',
@@ -135,10 +147,28 @@ export default function PersonaPage({ params }: { params: Promise<{ id: string }
     return items;
   }, [persona, quests, shareCount]);
 
-  if (isLoading) {
+  if (personaLoading) {
     return (
       <DashboardScaffold title="Persona Room" subtitle="Loading persona profile...">
-        <div className="atmospheric-surface p-6 text-sm text-slate-600">Loading persona...</div>
+        <AppState
+          type="loading"
+          title="Loading persona profile"
+          description="Fetching persona details and bond state."
+        />
+      </DashboardScaffold>
+    );
+  }
+
+  if (personaError) {
+    return (
+      <DashboardScaffold title="Persona Room" subtitle="Persona data failed to load.">
+        <AppState
+          type="error"
+          title="Persona load failed"
+          description="Try again or return to the dashboard."
+          actionLabel="Retry"
+          onAction={() => refetchPersona()}
+        />
       </DashboardScaffold>
     );
   }
@@ -146,7 +176,13 @@ export default function PersonaPage({ params }: { params: Promise<{ id: string }
   if (!persona) {
     return (
       <DashboardScaffold title="Persona Room" subtitle="No active persona found.">
-        <div className="atmospheric-surface p-6 text-sm text-slate-600">Persona not found.</div>
+        <AppState
+          type="empty"
+          title="Persona not found"
+          description="The persona may have been deleted, hidden, or the link is invalid."
+          actionLabel="Back to Dashboard"
+          onAction={() => router.push('/dashboard')}
+        />
       </DashboardScaffold>
     );
   }
@@ -199,7 +235,7 @@ export default function PersonaPage({ params }: { params: Promise<{ id: string }
             <h2 className="mt-1 font-display text-4xl text-slate-800">Bond Meter & Memory Gallery</h2>
           </div>
           <Button size="sm" variant="secondary" onClick={() => router.push('/dashboard/ritual')}>
-            View Survey Threads
+            View Ritual Threads
           </Button>
         </div>
 
@@ -223,7 +259,21 @@ export default function PersonaPage({ params }: { params: Promise<{ id: string }
         </div>
       </section>
 
-      {quests && (
+      {questsLoading ? (
+        <section className="atmospheric-surface mt-6 p-6 sm:p-7">
+          <AppState type="loading" title="Loading quest board" description="Fetching active quests and rewards." />
+        </section>
+      ) : questsError ? (
+        <section className="atmospheric-surface mt-6 p-6 sm:p-7">
+          <AppState
+            type="error"
+            title="Quest data failed to load"
+            description="Try again to fetch active quests."
+            actionLabel="Retry"
+            onAction={() => refetchQuests()}
+          />
+        </section>
+      ) : quests ? (
         <section className="atmospheric-surface mt-6 p-6 sm:p-7">
           <p className="text-xs uppercase tracking-[0.16em] text-slate-500">Daily Progression</p>
           <h2 className="mt-1 font-display text-4xl text-slate-800">Active Quests</h2>
@@ -237,7 +287,7 @@ export default function PersonaPage({ params }: { params: Promise<{ id: string }
             ))}
           </div>
         </section>
-      )}
+      ) : null}
 
       <section className="atmospheric-surface mt-6 p-6 sm:p-7">
         <p className="text-xs uppercase tracking-[0.16em] text-slate-500">Timeline</p>

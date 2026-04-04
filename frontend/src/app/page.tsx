@@ -1,10 +1,11 @@
 import Link from 'next/link';
 import { PublicAtmosphere } from '@/components/layouts/PublicAtmosphere';
+import { Card, Grid, Section } from '@/components/primitives';
 
 const ritualStages = [
   {
     title: 'Ritual',
-    desc: 'Create a guided mirror survey and share it safely.',
+    desc: 'Create a guided mirror ritual and share it safely.',
   },
   {
     title: 'Summoning',
@@ -35,7 +36,7 @@ export default function LandingPage() {
         </header>
 
         <main className="grid flex-1 grid-cols-1 gap-8 lg:grid-cols-[1.1fr_0.9fr] lg:gap-10">
-          <section className="atmospheric-surface relative overflow-hidden p-7 sm:p-10">
+          <Section as="section" width="full" surface="card" spacing="lg" className="relative overflow-hidden">
             <div className="absolute -left-20 top-[-80px] h-52 w-52 rounded-full border border-fuchsia-400/30" />
             <div className="absolute bottom-[-88px] right-[-90px] h-64 w-64 rounded-full border border-slate-500/25" />
 
@@ -64,14 +65,11 @@ export default function LandingPage() {
                 Try Public Ritual
               </Link>
             </div>
-          </section>
+          </Section>
 
-          <section className="flex flex-col gap-4">
+          <Grid cols="1" gap="md">
             {ritualStages.map((stage, index) => (
-              <article
-                key={stage.title}
-                className="atmospheric-surface relative overflow-hidden p-6 transition hover:-translate-y-0.5"
-              >
+              <Card key={stage.title} variant="glass" padding="lg" className="relative overflow-hidden transition hover:-translate-y-0.5">
                 <div className="mb-4 flex items-center justify-between">
                   <span className="ornament-ring bg-white/70 px-3 py-1 text-xs font-semibold tracking-[0.18em] text-slate-600">
                     {`0${index + 1}`}
@@ -80,16 +78,16 @@ export default function LandingPage() {
                 </div>
                 <h2 className="font-display text-3xl text-slate-800">{stage.title}</h2>
                 <p className="mt-2 text-sm leading-relaxed text-slate-600">{stage.desc}</p>
-              </article>
+              </Card>
             ))}
 
-            <div className="atmospheric-surface p-6">
+            <Card variant="default" padding="lg">
               <p className="text-xs uppercase tracking-[0.18em] text-slate-500">Promise</p>
               <p className="mt-3 text-lg leading-relaxed text-slate-700">
                 Anonymous responses, API-safe architecture, and a focused UX that turns reflection into action.
               </p>
-            </div>
-          </section>
+            </Card>
+          </Grid>
         </main>
       </div>
     </PublicAtmosphere>

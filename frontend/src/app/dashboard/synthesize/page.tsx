@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useMemo, useState } from 'react';
+import { useMemo, useState } from 'react';
 import { useRouter, useSearchParams } from 'next/navigation';
 import { useAuthStore } from '@/stores/authStore';
 import type { Persona } from '@/lib/api/persona';
@@ -13,6 +13,7 @@ import { SummoningAnimation } from '@/components/organisms/SummoningAnimation';
 import { DashboardScaffold } from '@/components/layouts/DashboardScaffold';
 import { useRitualStatus } from '@/features/ritual';
 import { useSummonPersona } from '@/features/summon';
+import { useProtectedRoute } from '@/hooks/useProtectedRoute';
 
 export default function SynthesizePage() {
   const { isAuthenticated } = useAuthStore();
@@ -25,6 +26,7 @@ export default function SynthesizePage() {
   const [mode, setMode] = useState<'FATED' | 'ALCHEMIC'>('FATED');
   const ritualStatusQuery = useRitualStatus(surveyId);
   const summonMutation = useSummonPersona();
+  const isRedirecting = useProtectedRoute(isAuthenticated);
 
   const modeDetails = useMemo(
     () => ({
@@ -47,12 +49,6 @@ export default function SynthesizePage() {
     }),
     []
   );
-
-  useEffect(() => {
-    if (!isAuthenticated) {
-      router.push('/login');
-    }
-  }, [isAuthenticated, router]);
 
   const handleSynthesize = async () => {
     if (!surveyId) {
@@ -94,8 +90,16 @@ export default function SynthesizePage() {
     );
   }
 
-  if (!isAuthenticated) {
-    return null;
+  if (isRedirecting) {
+    return (
+      <DashboardScaffold title="Awaken The Echo" subtitle="Checking your session before summoning.">
+        <AppState
+          type="loading"
+          title="Redirecting to login"
+          description="You need an active session before summoning a persona."
+        />
+      </DashboardScaffold>
+    );
   }
 
   return (

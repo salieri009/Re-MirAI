@@ -8,17 +8,17 @@ module.exports = {
         extend: {
             colors: {
                 // Core Palette (Mapped to HSL variables) - ver2 aligned
-                // Primary: Amethyst Purple #845EC2
+                // Primary: Fuchsia #d946ef
                 "primary": "var(--color-primary)",
                 "primary-dark": "var(--color-primary-dark)",
                 "primary-light": "var(--color-primary-light)",
 
-                // Accent: Mint Green #00C9A7
+                // Accent: Mist #e6ebf8
                 "accent": "var(--color-accent)",
                 "accent-dark": "var(--color-accent-dark)",
                 "accent-light": "var(--color-accent-light)",
 
-                // Highlight: Light Lavender #C197FF
+                // Highlight: Anchor #334155
                 "highlight": "var(--color-highlight)",
 
                 // Legacy/Extra (for backward compatibility)
@@ -35,8 +35,8 @@ module.exports = {
                 "text-muted": "var(--color-text-muted)",
             },
             fontFamily: {
-                "display": ["var(--font-display)", "Plus Jakarta Sans", "sans-serif"],
-                "sans": ["var(--font-sans)", "Plus Jakarta Sans", "sans-serif"],
+                "display": ["var(--font-display)", "sans-serif"],
+                "sans": ["var(--font-sans)", "sans-serif"],
             },
             borderRadius: {
                 "xs": "0.25rem",

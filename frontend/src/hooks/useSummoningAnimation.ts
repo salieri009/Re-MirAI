@@ -3,6 +3,7 @@
 import { useEffect, useRef, useState, useCallback } from 'react';
 import gsap from 'gsap';
 import { useReducedMotion } from '@/hooks/useAccessibility';
+import { tokens } from '@/design-tokens';
 
 export type SummoningStage = 'PRE_SYNTHESIS' | 'ALCHEMIC_MODE' | 'REVEAL';
 
@@ -29,7 +30,7 @@ export function useSummoningAnimation({
     stage: 'PRE_SYNTHESIS',
     progress: 0,
     particleCount: 50,
-    particleColor: '#845EC2', // Primary Purple
+    particleColor: tokens.palette.primary,
   });
   const animationRef = useRef<(() => void) | null>(null);
   const progressIntervalRef = useRef<NodeJS.Timeout | null>(null);
@@ -45,7 +46,7 @@ export function useSummoningAnimation({
     setState((prev) => ({
       ...prev,
       particleCount: 50,
-      particleColor: '#845EC2', // Primary Purple
+      particleColor: tokens.palette.primary,
     }));
 
     // Auto-transition to ALCHEMIC_MODE after 4 seconds if autoStart
@@ -69,7 +70,7 @@ export function useSummoningAnimation({
     setState((prev) => ({
       ...prev,
       particleCount: 80,
-      particleColor: '#845EC2', // Can be customized per archetype
+      particleColor: tokens.palette.primary,
     }));
 
     // Start progress animation
@@ -108,7 +109,7 @@ export function useSummoningAnimation({
     setState((prev) => ({
       ...prev,
       particleCount: 100,
-      particleColor: '#C197FF', // Highlight Lavender for celebration
+      particleColor: tokens.palette.accent,
     }));
 
     // Trigger reveal animation (2.5 second climactic sequence)

@@ -14,7 +14,7 @@ export const CTASection: React.FC = () => {
                     <h2 className="text-white tracking-light text-[32px] font-bold leading-tight @[480px]:text-4xl @[480px]:font-black @[480px]:leading-tight @[480px]:tracking-[-0.033em]">
                         Ready to Meet Your Reflection?
                     </h2>
-                    <p className="text-[#c197ff] text-base font-normal leading-normal">
+                    <p className="text-accent text-base font-normal leading-normal">
                         Begin your journey of self-discovery today and see the persona you cast in the eyes of others.
                     </p>
                 </div>
@@ -22,7 +22,7 @@ export const CTASection: React.FC = () => {
                     <div className="flex justify-center w-full">
                         <Button
                             onClick={handleJoin}
-                            className="flex min-w-[84px] max-w-[480px] cursor-pointer items-center justify-center overflow-hidden rounded-lg h-10 px-4 @[480px]:h-12 @[480px]:px-5 !bg-[#00c9a7] text-[#0A0112] text-sm font-bold leading-normal tracking-[0.015em] @[480px]:text-base @[480px]:font-bold @[480px]:leading-normal @[480px]:tracking-[0.015em] grow hover:bg-opacity-90 transition-all focus:outline-none focus:ring-2 focus:ring-[#00c9a7] focus:ring-offset-2 focus:ring-offset-[#0A0112] border-none"
+                            className="h-10 grow px-4 @[480px]:h-12 @[480px]:px-5 text-sm @[480px]:text-base"
                         >
                             <span className="truncate">Summon Your Persona</span>
                         </Button>

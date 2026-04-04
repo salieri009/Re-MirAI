@@ -42,9 +42,9 @@ export const tokens = {
 
     typography: {
         family: {
-            display: '\'Space Grotesk\', sans-serif',
-            body: '\'Plus Jakarta Sans\', sans-serif',
-            mono: '\'Space Mono\', monospace',
+            display: '\'Sora\', sans-serif',
+            body: '\'Manrope\', sans-serif',
+            mono: '\'IBM Plex Mono\', monospace',
         },
         weight: {
             regular: 400,
@@ -82,7 +82,7 @@ export const tokens = {
             accent: '#334155',
         },
 
-        // Trust & Clarity (Login, Survey)
+        // Trust & Clarity (Login, Ritual)
         trust: {
             primary: '#334155',
             secondary: '#475569',

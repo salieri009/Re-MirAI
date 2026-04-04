@@ -10,20 +10,35 @@ import { toast } from '@/lib/toast';
 import { Button } from '@/components/atoms/Button';
 import { PersonaCard } from '@/components/molecules/PersonaCard';
 import { DashboardScaffold } from '@/components/layouts/DashboardScaffold';
+import { AppState } from '@/components/molecules/AppState';
+import { queryKeys } from '@/lib/queryKeys';
+import { Card } from '@/components/primitives';
+import { useProtectedRoute } from '@/hooks/useProtectedRoute';
 
 export default function CompatibilityPage() {
   const router = useRouter();
   const { isAuthenticated } = useAuthStore();
+  const isRedirecting = useProtectedRoute(isAuthenticated);
   const [selectedPersonaId, setSelectedPersonaId] = useState<string | null>(null);
 
-  const { data: myPersonas } = useQuery({
-    queryKey: ['my-personas'],
+  const {
+    data: myPersonas,
+    isLoading: personasLoading,
+    isError: personasError,
+    refetch: refetchPersonas,
+  } = useQuery({
+    queryKey: queryKeys.personas.list,
     queryFn: () => personaApi.list(),
     enabled: isAuthenticated,
   });
 
-  const { data: compatibility, isLoading: isCheckingCompatibility } = useQuery({
-    queryKey: ['compatibility', selectedPersonaId],
+  const {
+    data: compatibility,
+    isLoading: isCheckingCompatibility,
+    isError: compatibilityError,
+    refetch: refetchCompatibility,
+  } = useQuery({
+    queryKey: queryKeys.social.compatibility(selectedPersonaId),
     queryFn: () => socialApi.getCompatibility(selectedPersonaId!),
     enabled: !!selectedPersonaId,
   });
@@ -37,9 +52,34 @@ export default function CompatibilityPage() {
     []
   );
 
-  if (!isAuthenticated) {
-    router.push('/login');
-    return null;
+  const selectedFriend = friendPersonas.find((friend) => friend.id === selectedPersonaId) ?? null;
+
+  if (personasLoading) {
+    return (
+      <DashboardScaffold
+        title="Social Chemistry Check"
+        subtitle="Compare your active persona with friends and reveal relationship dynamics in one pulse."
+      >
+        <AppState type="loading" title="Loading personas" description="Preparing your persona list for compatibility checks." />
+      </DashboardScaffold>
+    );
+  }
+
+  if (personasError) {
+    return (
+      <DashboardScaffold
+        title="Social Chemistry Check"
+        subtitle="Compare your active persona with friends and reveal relationship dynamics in one pulse."
+      >
+        <AppState
+          type="error"
+          title="Persona list failed to load"
+          description="Retry to fetch your personas."
+          actionLabel="Retry"
+          onAction={() => refetchPersonas()}
+        />
+      </DashboardScaffold>
+    );
   }
 
   const myPersona = myPersonas?.[0];
@@ -49,27 +89,44 @@ export default function CompatibilityPage() {
       title="Social Chemistry Check"
       subtitle="Compare your active persona with friends and reveal relationship dynamics in one pulse."
     >
+      {isRedirecting ? (
+        <AppState
+          type="loading"
+          title="Redirecting to login"
+          description="You need to sign in before running a compatibility check."
+        />
+      ) : null}
+
       <div className="grid grid-cols-1 gap-6 xl:grid-cols-[1fr_0.75fr_1fr]">
-        <section className="atmospheric-surface p-5 sm:p-6">
+        <Card variant="glass" padding="lg" className="p-5 sm:p-6">
           <p className="mb-3 text-xs uppercase tracking-[0.16em] text-slate-500">Your Persona</p>
           {myPersona ? (
             <PersonaCard persona={myPersona} readOnly />
           ) : (
-            <div className="rounded-xl border border-dashed border-slate-400/40 bg-white/55 p-5 text-center">
-              <p className="text-sm text-slate-600">No persona found yet.</p>
-              <div className="mt-3">
-                <Button onClick={() => router.push('/dashboard/ritual')}>Create Persona</Button>
-              </div>
-            </div>
+            <AppState
+              type="empty"
+              title="No persona found yet"
+              description="Create a persona from a ritual before checking compatibility."
+              actionLabel="Create Persona"
+              onAction={() => router.push('/dashboard/ritual')}
+            />
           )}
-        </section>
+        </Card>
 
-        <section className="atmospheric-surface flex min-h-[360px] flex-col items-center justify-center p-5 text-center sm:p-6">
+        <Card variant="glass" padding="lg" className="flex min-h-[360px] flex-col items-center justify-center p-5 text-center sm:p-6">
           {isCheckingCompatibility ? (
             <div className="flex flex-col items-center gap-3">
               <div className="h-12 w-12 animate-spin rounded-full border-2 border-slate-300 border-t-fuchsia-500" />
               <p className="text-sm text-slate-600">Calculating chemistry...</p>
             </div>
+          ) : compatibilityError ? (
+            <AppState
+              type="error"
+              title="Compatibility check failed"
+              description="Try again with the selected persona."
+              actionLabel="Retry"
+              onAction={() => refetchCompatibility()}
+            />
           ) : compatibility ? (
             <>
               <div className="flex h-28 w-28 items-center justify-center rounded-full border-2 border-fuchsia-500/70 bg-fuchsia-100/55">
@@ -83,7 +140,7 @@ export default function CompatibilityPage() {
                   variant="secondary"
                   onClick={() => {
                     navigator.clipboard.writeText(
-                      `My persona and ${selectedPersonaId} have ${compatibility.score}% compatibility on Re:MirAI.`
+                      `My persona and ${selectedFriend?.name ?? 'this friend'} have ${compatibility.score}% compatibility on Re:MirAI.`
                     );
                     toast.success('Copied to clipboard!');
                   }}
@@ -93,14 +150,15 @@ export default function CompatibilityPage() {
               </div>
             </>
           ) : (
-            <div className="text-center">
-              <p className="text-sm text-slate-600">Select a friend persona to run compatibility.</p>
-              <p className="mt-2 text-2xl text-slate-400">→</p>
-            </div>
+            <AppState
+              type="empty"
+              title="Select a friend persona"
+              description="Pick one profile on the right to run a compatibility check."
+            />
           )}
-        </section>
+        </Card>
 
-        <section className="atmospheric-surface p-5 sm:p-6">
+        <Card variant="glass" padding="lg" className="p-5 sm:p-6">
           <p className="mb-3 text-xs uppercase tracking-[0.16em] text-slate-500">Friend Personas</p>
           <div className="space-y-3">
             {friendPersonas.map((friend) => {
@@ -129,7 +187,7 @@ export default function CompatibilityPage() {
               );
             })}
           </div>
-        </section>
+        </Card>
       </div>
 
       <div className="mt-6 flex justify-center">

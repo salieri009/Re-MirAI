@@ -1,26 +1,23 @@
 'use client';
 
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { useAuthStore } from '@/stores/authStore';
 import { Button } from '@/components/atoms/Button';
 import { DashboardScaffold } from '@/components/layouts/DashboardScaffold';
+import { AppState } from '@/components/molecules/AppState';
+import { useProtectedRoute } from '@/hooks/useProtectedRoute';
 
 export default function ProfileSettingsPage() {
   const router = useRouter();
   const { isAuthenticated, user } = useAuthStore();
+  const isRedirecting = useProtectedRoute(isAuthenticated);
 
   const [isPublic, setIsPublic] = useState(false);
   const [showCompatibility, setShowCompatibility] = useState(true);
   const [allowRoomVisits, setAllowRoomVisits] = useState(false);
   const [isSaving, setIsSaving] = useState(false);
   const [saved, setSaved] = useState(false);
-
-  useEffect(() => {
-    if (!isAuthenticated) {
-      router.push('/login');
-    }
-  }, [isAuthenticated, router]);
 
   const handleSave = async () => {
     setIsSaving(true);
@@ -30,8 +27,16 @@ export default function ProfileSettingsPage() {
     setTimeout(() => setSaved(false), 2500);
   };
 
-  if (!isAuthenticated) {
-    return null;
+  if (isRedirecting) {
+    return (
+      <DashboardScaffold title="Privacy & Visibility" subtitle="Loading your settings...">
+        <AppState
+          type="loading"
+          title="Checking access"
+          description="Redirecting to login if your session is not available."
+        />
+      </DashboardScaffold>
+    );
   }
 
   const settingItems = [
@@ -125,6 +130,12 @@ export default function ProfileSettingsPage() {
               {isSaving ? 'Saving...' : saved ? 'Saved' : 'Save Changes'}
             </Button>
           </div>
+
+          {saved ? (
+            <div className="mt-4">
+              <AppState type="success" title="Settings saved" description="Your privacy controls are updated." />
+            </div>
+          ) : null}
         </section>
       </div>
     </DashboardScaffold>

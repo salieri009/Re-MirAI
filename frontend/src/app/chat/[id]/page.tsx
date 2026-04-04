@@ -3,7 +3,7 @@
 import { use, useEffect, useMemo, useRef, useState } from 'react';
 import { useQuery } from '@tanstack/react-query';
 import { useRouter } from 'next/navigation';
-import { chatApi } from '@/lib/api/chat';
+import { chatApi, type ChatMessage as ChatMessageType } from '@/lib/api/chat';
 import { personaApi } from '@/lib/api/persona';
 import { toast } from '@/lib/toast';
 import { Button } from '@/components/atoms/Button';
@@ -13,10 +13,11 @@ import { ChatMessage } from '@/components/organisms/ChatMessage';
 import { ShareOptions } from '@/components/molecules/ShareOptions';
 import { TopicSuggestion } from '@/components/molecules/TopicSuggestion';
 import { NavigationSidebar } from '@/components/organisms/NavigationSidebar';
+import { AppState } from '@/components/molecules/AppState';
 import { useReducedMotion } from '@/hooks/useAccessibility';
 import { slideIn } from '@/lib/animations';
 import { moderateContent } from '@/lib/moderation';
-import { ChatMessage as ChatMessageType } from '@/lib/api/chat';
+import { queryKeys } from '@/lib/queryKeys';
 
 export default function ChatPage({ params }: { params: Promise<{ id: string }> }) {
   const { id } = use(params);
@@ -34,26 +35,44 @@ export default function ChatPage({ params }: { params: Promise<{ id: string }> }
   const messagesRef = useRef<HTMLDivElement>(null);
   const reducedMotion = useReducedMotion();
 
-  const { data: history } = useQuery({
-    queryKey: ['chat-history', id],
+  const {
+    data: history,
+    isLoading: historyLoading,
+    isError: historyError,
+    refetch: refetchHistory,
+  } = useQuery({
+    queryKey: queryKeys.chat.history(id),
     queryFn: () => chatApi.getHistory(id),
+    enabled: Boolean(id),
   });
 
-  const { data: persona } = useQuery({
-    queryKey: ['persona', id],
+  const {
+    data: persona,
+    isLoading: personaLoading,
+    isError: personaError,
+    refetch: refetchPersona,
+  } = useQuery({
+    queryKey: queryKeys.personas.detail(id),
     queryFn: () => personaApi.get(id),
-    enabled: !!id,
+    enabled: Boolean(id),
   });
 
-  const { data: bondData } = useQuery({
-    queryKey: ['bond-level', id],
+  const {
+    data: bondData,
+    isLoading: bondLoading,
+    isError: bondError,
+    refetch: refetchBond,
+  } = useQuery({
+    queryKey: queryKeys.chat.bond(id),
     queryFn: () => chatApi.getBondLevel(id),
-    enabled: !!id,
+    enabled: Boolean(id),
     refetchInterval: 30000,
   });
 
   const bondLevel = bondData?.level ?? 1;
   const bondProgress = bondData?.progress ?? 0;
+  const isPageLoading = historyLoading || personaLoading || bondLoading;
+  const hasError = historyError || personaError || bondError;
 
   useEffect(() => {
     if (history?.messages) {
@@ -80,7 +99,7 @@ export default function ChatPage({ params }: { params: Promise<{ id: string }> }
 
   const topicSuggestions = useMemo(() => {
     const base = [
-      'Share a perception from my survey responses.',
+      'Share a perception from my ritual responses.',
       'Give me a daily mantra.',
       'Help me understand my strongest trait.',
       'Tell me how others describe me.',
@@ -202,6 +221,61 @@ export default function ChatPage({ params }: { params: Promise<{ id: string }> }
 
   const connectionStatus = isSending ? 'typing...' : 'online';
 
+  if (isPageLoading) {
+    return (
+      <div className="min-h-screen bg-background-dark text-text-primary">
+        <NavigationSidebar currentPath="/dashboard" />
+        <div className="md:pl-64 xl:pr-[320px]">
+          <main className="mx-auto flex h-screen w-full max-w-[1024px] flex-col px-4 py-6 sm:px-6">
+            <AppState type="loading" title="Loading chat room" description="Fetching persona, history, and bond state." />
+          </main>
+        </div>
+      </div>
+    );
+  }
+
+  if (hasError) {
+    return (
+      <div className="min-h-screen bg-background-dark text-text-primary">
+        <NavigationSidebar currentPath="/dashboard" />
+        <div className="md:pl-64 xl:pr-[320px]">
+          <main className="mx-auto flex h-screen w-full max-w-[1024px] flex-col px-4 py-6 sm:px-6">
+            <AppState
+              type="error"
+              title="Chat room failed to load"
+              description="Retry to load the persona room and message history again."
+              actionLabel="Retry"
+              onAction={() => {
+                refetchHistory();
+                refetchPersona();
+                refetchBond();
+              }}
+            />
+          </main>
+        </div>
+      </div>
+    );
+  }
+
+  if (!persona) {
+    return (
+      <div className="min-h-screen bg-background-dark text-text-primary">
+        <NavigationSidebar currentPath="/dashboard" />
+        <div className="md:pl-64 xl:pr-[320px]">
+          <main className="mx-auto flex h-screen w-full max-w-[1024px] flex-col px-4 py-6 sm:px-6">
+            <AppState
+              type="empty"
+              title="Persona not found"
+              description="This chat room may have been deleted or hidden."
+              actionLabel="Back to Dashboard"
+              onAction={() => router.push('/dashboard')}
+            />
+          </main>
+        </div>
+      </div>
+    );
+  }
+
   return (
     <div className="min-h-screen bg-background-dark text-text-primary">
       <NavigationSidebar currentPath="/dashboard" />
@@ -211,7 +285,7 @@ export default function ChatPage({ params }: { params: Promise<{ id: string }> }
           <header className="atmospheric-surface sticky top-0 z-20 mx-3 mt-3 flex items-center justify-between gap-4 rounded-xl px-4 py-3 sm:mx-5">
             <div className="flex items-center gap-4">
               <div>
-                <p className="font-display text-lg font-semibold text-slate-800">{persona?.name ?? 'Your Persona'}</p>
+                <p className="font-display text-lg font-semibold text-slate-800">{persona.name}</p>
                 <div className="mt-1 flex items-center gap-2">
                   <span
                     className={`h-2 w-2 rounded-full ${isSending ? 'animate-pulse bg-fuchsia-500' : 'bg-emerald-500'}`}
@@ -227,11 +301,8 @@ export default function ChatPage({ params }: { params: Promise<{ id: string }> }
               variant="ghost"
               size="sm"
               onClick={() => {
-                if (persona) {
-                  router.push(`/p/${persona.id}`);
-                }
+                router.push(`/p/${persona.id}`);
               }}
-              disabled={!persona}
             >
               View Persona Room
             </Button>
@@ -252,7 +323,7 @@ export default function ChatPage({ params }: { params: Promise<{ id: string }> }
 
             {isSending && (
               <div className="mb-3 ml-2">
-                <TypingIndicator personaName={persona?.name || 'AI'} estimatedTime={3} />
+                <TypingIndicator personaName={persona.name} estimatedTime={3} />
               </div>
             )}
           </section>
@@ -340,7 +411,7 @@ export default function ChatPage({ params }: { params: Promise<{ id: string }> }
               Visit Persona Room
             </Button>
             <Button variant="ghost" size="sm" onClick={() => router.push('/dashboard/ritual')}>
-              View Survey Hub
+              View Ritual Hub
             </Button>
           </div>
         </aside>

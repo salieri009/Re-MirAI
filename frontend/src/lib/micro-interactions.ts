@@ -415,7 +415,7 @@ export const delightInteractions = {
 
         const {
             count = 50,
-            color = '#8b5cf6', // Default to purple (violet-500)
+            color = tokens.palette.primary,
             speed = 1,
             connectDistance = 100,
             showConnections = true,

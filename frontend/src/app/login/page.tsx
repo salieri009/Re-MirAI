@@ -7,7 +7,9 @@ import { trackEvent } from '@/lib/analytics';
 import { useAuthStore } from '@/stores/authStore';
 import { useAnnouncement, useReducedMotion } from '@/hooks/useAccessibility';
 import { MirrorCanvas } from '@/components/organisms/MirrorCanvas/MirrorCanvas';
-import { AuthRitualShell } from '@/components/layouts/AuthRitualShell';
+import { AuthShell } from '@/components/layouts/AuthShell';
+import { Card } from '@/components/primitives';
+import { Button } from '@/components/atoms/Button';
 
 const TRUST_BADGES = [
   {
@@ -16,7 +18,7 @@ const TRUST_BADGES = [
   },
   {
     label: 'Privacy First',
-    description: 'Anonymous survey responses are kept separated by design.',
+    description: 'Anonymous ritual responses are kept separated by design.',
   },
   {
     label: 'Fast Onboarding',
@@ -78,7 +80,7 @@ export default function LoginPage() {
   }
 
   return (
-    <AuthRitualShell
+    <AuthShell
       visual={
         <>
           <div className="ornament-ring mb-auto w-fit bg-white/75 px-5 py-2 text-xs font-semibold tracking-[0.2em] text-slate-700">
@@ -103,44 +105,33 @@ export default function LoginPage() {
         </>
       }
       form={
-        <div ref={panelRef} className="atmospheric-surface mx-auto w-full max-w-[540px] p-6 sm:p-9">
-          <p className="text-xs uppercase tracking-[0.24em] text-slate-500">Welcome Back</p>
-          <h2 className="mt-2 font-display text-5xl leading-[0.9] text-slate-800 sm:text-6xl">Enter</h2>
-          <p className="mt-4 text-base leading-relaxed text-slate-600">
-            Authenticate once and we will return you directly to your dashboard ritual flow.
-          </p>
+        <div ref={panelRef} className="mx-auto w-full max-w-[540px]">
+          <Card variant="glass" padding="lg">
+            <p className="text-xs uppercase tracking-[0.24em] text-slate-500">Welcome Back</p>
+            <h2 className="mt-2 font-display text-5xl leading-[0.9] text-slate-800 sm:text-6xl">Enter</h2>
+            <p className="mt-4 text-base leading-relaxed text-slate-600">
+              Authenticate once and we will return you directly to your dashboard ritual flow.
+            </p>
 
-          <div className="mt-7 space-y-3">
-            <button
-              type="button"
-              onClick={handleGoogleLogin}
-              disabled={isLoading}
-              className="flex w-full items-center justify-center gap-3 rounded-xl border border-slate-300/80 bg-white px-4 py-3 text-sm font-semibold text-slate-700 transition hover:border-fuchsia-300 hover:bg-fuchsia-50 disabled:cursor-not-allowed disabled:opacity-60"
-            >
-              {isLoading ? 'Authenticating...' : 'Continue with Google'}
-            </button>
+            <div className="mt-7 space-y-3">
+              <Button variant="primary" size="lg" onClick={handleGoogleLogin} disabled={isLoading} className="w-full">
+                {isLoading ? 'Authenticating...' : 'Continue with Google'}
+              </Button>
 
-            <button
-              type="button"
-              onClick={handleDemoLogin}
-              disabled={isLoading}
-              className="flex w-full items-center justify-center rounded-xl border border-fuchsia-300/55 bg-fuchsia-100/40 px-4 py-3 text-sm font-semibold text-slate-700 transition hover:bg-fuchsia-100/70 disabled:cursor-not-allowed disabled:opacity-60"
-            >
-              Continue with Demo Access
-            </button>
-          </div>
+              <Button variant="secondary" size="lg" onClick={handleDemoLogin} disabled={isLoading} className="w-full">
+                Continue with Demo Access
+              </Button>
+            </div>
 
-          <div className="mt-7 grid gap-3">
-            {TRUST_BADGES.map((badge) => (
-              <div
-                key={badge.label}
-                className="rounded-xl border border-slate-500/20 bg-white/55 px-4 py-3"
-              >
-                <h3 className="text-sm font-semibold text-slate-700">{badge.label}</h3>
-                <p className="mt-1 text-xs leading-relaxed text-slate-600">{badge.description}</p>
-              </div>
-            ))}
-          </div>
+            <div className="mt-7 grid gap-3">
+              {TRUST_BADGES.map((badge) => (
+                <Card key={badge.label} variant="default" padding="sm">
+                  <h3 className="text-sm font-semibold text-slate-700">{badge.label}</h3>
+                  <p className="mt-1 text-xs leading-relaxed text-slate-600">{badge.description}</p>
+                </Card>
+              ))}
+            </div>
+          </Card>
         </div>
       }
     />

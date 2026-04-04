@@ -1,6 +1,7 @@
 // Base API Client - Connected to Backend
 import axios, { AxiosInstance, AxiosError } from 'axios';
 import { toast } from '@/lib/toast';
+import { useAuthStore } from '@/stores/authStore';
 
 const API_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3001';
 
@@ -16,8 +17,11 @@ const apiClient: AxiosInstance = axios.create({
 
 // Request interceptor: Add auth token from localStorage
 apiClient.interceptors.request.use((config) => {
-  // Get token from localStorage (set by auth module)
-  const token = typeof window !== 'undefined' ? localStorage.getItem('auth_token') : null;
+  // Prefer Zustand state, fall back to localStorage for hard refresh recovery.
+  const token =
+    typeof window !== 'undefined'
+      ? useAuthStore.getState().token ?? localStorage.getItem('auth_token')
+      : null;
   if (token) {
     config.headers.Authorization = `Bearer ${token}`;
   }
@@ -66,6 +70,7 @@ apiClient.interceptors.response.use(
               
               // Update stored token
               localStorage.setItem('auth_token', accessToken);
+              useAuthStore.getState().setToken(accessToken);
               
               // Retry original request with new token
               originalRequest.headers.Authorization = `Bearer ${accessToken}`;
@@ -75,9 +80,7 @@ apiClient.interceptors.response.use(
             notifyError('Session expired. Please log in again.');
             // Refresh failed, redirect to login
             if (typeof window !== 'undefined') {
-              localStorage.removeItem('auth_token');
-              localStorage.removeItem('auth_refresh_token');
-              localStorage.removeItem('auth_user');
+              useAuthStore.getState().logout();
               window.location.href = '/login';
             }
             return Promise.reject(refreshError);
@@ -86,9 +89,7 @@ apiClient.interceptors.response.use(
         
         // Refresh already attempted, redirect to login
         if (typeof window !== 'undefined') {
-          localStorage.removeItem('auth_token');
-          localStorage.removeItem('auth_refresh_token');
-          localStorage.removeItem('auth_user');
+          useAuthStore.getState().logout();
           window.location.href = '/login';
         }
         break;

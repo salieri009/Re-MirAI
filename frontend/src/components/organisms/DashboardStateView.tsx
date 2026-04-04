@@ -6,7 +6,7 @@ import clsx from 'clsx';
 import { Button } from '@/components/atoms/Button';
 import { PersonaCard } from '@/components/molecules/PersonaCard';
 import { QuestCard } from '@/components/molecules/QuestCard';
-import { SurveyLinkCard } from '@/components/molecules/SurveyLinkCard';
+import { RitualLinkCard } from '@/components/molecules/RitualLinkCard';
 import { guidanceInteractions } from '@/lib/micro-interactions';
 import { useAnnouncement, useReducedMotion } from '@/hooks/useAccessibility';
 import type { SurveyStatus } from '@/lib/api/survey';
@@ -126,7 +126,7 @@ export function DashboardStateView({
         <p className="mb-1 text-xs font-medium text-accent">Tip</p>
         <p>People respond 2× faster when you add a personal note to the link.</p>
       </div>
-      <Button variant="primary" size="lg" onClick={onCreateSurvey}>🌟 Create First Survey</Button>
+      <Button variant="primary" size="lg" onClick={onCreateSurvey}>🌟 Create First Ritual</Button>
     </div>
   );
 
@@ -146,12 +146,12 @@ export function DashboardStateView({
         </div>
         <p className="mb-6 text-sm text-text-muted">Every echo is anonymous. Keep sharing your ritual link to reach the summoning threshold.</p>
         {surveyUrl ? (
-          <Button ref={state === 'collecting' ? primaryActionRef : undefined} variant="primary" size="lg" onClick={() => { onCopySurveyLink?.(); announce('Survey link copied to clipboard', 'polite'); }}>📤 Share Survey Link</Button>
+          <Button ref={state === 'collecting' ? primaryActionRef : undefined} variant="primary" size="lg" onClick={() => { onCopySurveyLink?.(); announce('Ritual link copied to clipboard', 'polite'); }}>📤 Share Ritual Link</Button>
         ) : (
-          <Button variant="secondary" onClick={onCreateSurvey}>Create Survey Link</Button>
+          <Button variant="secondary" onClick={onCreateSurvey}>Create Ritual Link</Button>
         )}
       </div>
-      {surveyUrl && <SurveyLinkCard link={surveyUrl} shareCount={shareCount} lastShared={lastShared} onCopy={() => { onCopySurveyLink?.(); announce('Survey link copied to clipboard', 'polite'); }} />}
+      {surveyUrl && <RitualLinkCard link={surveyUrl} shareCount={shareCount} lastShared={lastShared} onCopy={() => { onCopySurveyLink?.(); announce('Ritual link copied to clipboard', 'polite'); }} />}
       {quests && quests.length > 0 && (
         <div className="mt-6">
           <h3>Active Quests</h3>

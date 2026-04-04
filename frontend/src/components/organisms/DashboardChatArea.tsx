@@ -9,11 +9,13 @@ import { chatApi } from '@/lib/api/chat';
 import { personaApi } from '@/lib/api/persona';
 import { toast } from '@/lib/toast';
 import { Button } from '@/components/atoms/Button';
+import { AppState } from '@/components/molecules/AppState';
 import { ProgressBar } from '@/components/molecules/ProgressBar';
-import { StageBadge, type SurveyStage } from '@/components/molecules/StageBadge';
+import { StageBadge, type RitualStage } from '@/components/molecules/StageBadge';
 import { TypingIndicator } from '@/components/molecules/TypingIndicator';
 import { useReducedMotion } from '@/hooks/useAccessibility';
 import { slideIn } from '@/lib/animations';
+import { queryKeys } from '@/lib/queryKeys';
 
 interface Message {
     id: string;
@@ -24,14 +26,14 @@ interface Message {
 
 const QUICK_ACTIONS = [
     { href: '/dashboard/synthesize', label: 'Resume Summoning', description: 'Continue the ver2 three-stage ritual.', icon: '✨' },
-    { href: '/dashboard/create-survey', label: 'Launch Survey Hub', description: 'Collect the 12 echoes required for synthesis.', icon: '📋' },
+    { href: '/dashboard/ritual', label: 'Launch Ritual Hub', description: 'Collect the 12 echoes required for synthesis.', icon: '📋' },
     { href: '/p/demo', label: 'Visit Persona Room', description: 'Review quests & bonding meter.', icon: '🪞' },
 ];
 
 const PROMPTS = [
     'What archetype should I try next?',
     'Summarize today\'s ritual insights.',
-    'How many surveys remain?',
+    'How many rituals remain?',
 ];
 
 export function DashboardChatArea() {
@@ -48,28 +50,48 @@ export function DashboardChatArea() {
     ]);
     const [inputValue, setInputValue] = useState('');
     const [isSending, setIsSending] = useState(false);
-    const [surveyStage, setSurveyStage] = useState<SurveyStage>('COLLECTING');
+    const [ritualStage, setRitualStage] = useState<RitualStage>('COLLECTING');
     const [activeSessionId, setActiveSessionId] = useState<string | null>(null);
     const [activePersonaName, setActivePersonaName] = useState<string>('Digital Mirror');
 
-    const { data: sessions = [] } = useQuery({
-        queryKey: ['chat-sessions-dashboard'],
+    const {
+        data: sessions = [],
+        isLoading: sessionsLoading,
+        isError: sessionsError,
+        refetch: refetchSessions,
+    } = useQuery({
+        queryKey: queryKeys.chat.sessions,
         queryFn: () => chatApi.getSessions(),
     });
 
-    const { data: personas = [] } = useQuery({
-        queryKey: ['personas-dashboard-chat'],
+    const {
+        data: personas = [],
+        isLoading: personasLoading,
+        isError: personasError,
+        refetch: refetchPersonas,
+    } = useQuery({
+        queryKey: queryKeys.personas.list,
         queryFn: () => personaApi.list(),
     });
 
-    const { data: history, isLoading: isHistoryLoading } = useQuery({
-        queryKey: ['chat-history-dashboard', activeSessionId],
+    const {
+        data: history,
+        isLoading: isHistoryLoading,
+        isError: historyError,
+        refetch: refetchHistory,
+    } = useQuery({
+        queryKey: queryKeys.chat.history(activeSessionId),
         queryFn: () => chatApi.getHistory(activeSessionId as string),
         enabled: !!activeSessionId,
     });
 
-    const { data: bondLevel } = useQuery({
-        queryKey: ['bond-level-dashboard', sessions[0]?.personaId],
+    const {
+        data: bondLevel,
+        isLoading: bondLoading,
+        isError: bondError,
+        refetch: refetchBond,
+    } = useQuery({
+        queryKey: queryKeys.chat.bond(sessions[0]?.personaId ?? null),
         queryFn: () => chatApi.getBondLevel(sessions[0].personaId),
         enabled: sessions.length > 0,
     });
@@ -78,12 +100,12 @@ export function DashboardChatArea() {
         if (sessions.length > 0 && !activeSessionId) {
             setActiveSessionId(sessions[0].id);
             setActivePersonaName(sessions[0].personaName);
-            setSurveyStage('READY');
+            setRitualStage('READY');
             return;
         }
 
         if (sessions.length === 0) {
-            setSurveyStage('COLLECTING');
+            setRitualStage('COLLECTING');
         }
     }, [sessions, activeSessionId]);
 
@@ -119,6 +141,37 @@ export function DashboardChatArea() {
         }
     }, [messages, reducedMotion]);
 
+    if (sessionsLoading || personasLoading || bondLoading) {
+        return (
+            <section className="flex flex-1 flex-col gap-6 p-6">
+                <AppState
+                    type="loading"
+                    title="Loading dashboard chat"
+                    description="Fetching sessions, personas, and bond state."
+                />
+            </section>
+        );
+    }
+
+    if (sessionsError || personasError || bondError) {
+        return (
+            <section className="flex flex-1 flex-col gap-6 p-6">
+                <AppState
+                    type="error"
+                    title="Dashboard chat failed to load"
+                    description="Retry to fetch your ritual conversation state."
+                    actionLabel="Retry"
+                    onAction={() => {
+                        refetchSessions();
+                        refetchPersonas();
+                        refetchHistory();
+                        refetchBond();
+                    }}
+                />
+            </section>
+        );
+    }
+
     const handleSend = async () => {
         const content = inputValue.trim();
         if (!content || isSending || isHistoryLoading) return;
@@ -148,7 +201,7 @@ export function DashboardChatArea() {
                 sessionId = newSession.id;
                 setActiveSessionId(newSession.id);
                 setActivePersonaName(newSession.personaName);
-                setSurveyStage('READY');
+                setRitualStage('READY');
             }
 
             const response = await chatApi.sendMessage(sessionId, content);
@@ -178,7 +231,7 @@ export function DashboardChatArea() {
         }
     };
 
-    const surveyProgress = Math.min(100, Math.max(24, sessions.length * 20));
+    const ritualProgress = Math.min(100, Math.max(24, sessions.length * 20));
 
     return (
         <section className="flex flex-1 flex-col gap-6 p-6">
@@ -187,17 +240,17 @@ export function DashboardChatArea() {
                     <p className="mb-1 text-xs uppercase tracking-[0.1em] text-text-muted">dashboard ritual state</p>
                     <div className="flex items-center gap-4">
                         <h2 className="m-0 text-xl font-semibold text-text-primary">Summoning pipeline overview</h2>
-                        <StageBadge stage={surveyStage} />
+                        <StageBadge stage={ritualStage} />
                     </div>
                 </div>
                 <div className="flex items-center gap-4">
-                    <ProgressBar value={surveyProgress} label="Survey completion" accent />
+                    <ProgressBar value={ritualProgress} label="Ritual completion" accent />
                     <Button
                         size="sm"
                         variant="secondary"
-                        onClick={() => (activeSessionId ? router.push(`/chat/${activeSessionId}`) : router.push('/summon'))}
+                        onClick={() => (activeSessionId ? router.push(`/chat/${activeSessionId}`) : router.push('/dashboard/synthesize'))}
                     >
-                        {activeSessionId ? 'Open Full Chat' : surveyStage === 'READY' ? 'Begin Synthesis' : 'Enter Summoning Page'}
+                        {activeSessionId ? 'Open Full Chat' : ritualStage === 'READY' ? 'Begin Synthesis' : 'Enter Summoning Page'}
                     </Button>
                 </div>
             </header>
@@ -249,7 +302,7 @@ export function DashboardChatArea() {
                     <div className="rounded-lg border border-slate-700/25 bg-surface p-4">
                         <p>Ritual Timeline</p>
                         <ul>
-                            <li>Survey Constellation · Completed</li>
+                            <li>Ritual Constellation · Completed</li>
                             <li>Alchemic Mode · In progress</li>
                             <li>Reveal · Pending</li>
                         </ul>

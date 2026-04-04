@@ -2,6 +2,8 @@
 
 import React, { useState } from 'react';
 import { useRouter } from 'next/navigation';
+import { Card } from '@/components/primitives';
+import { AppState } from '@/components/molecules/AppState';
 import { QuestionCard } from '@/components/molecules/QuestionCard';
 import { ProgressBar } from '@/components/molecules/ProgressBar';
 import { Button } from '@/components/atoms/Button';
@@ -9,20 +11,30 @@ import { surveyApi } from '@/lib/api/survey';
 import { SurveyQuestion } from '@/lib/api/survey';
 import { toast } from '@/lib/toast';
 
-interface SurveyWizardProps {
+interface RitualWizardProps {
   surveyId: string;
   questions: SurveyQuestion[];
-  /** Optional callback when survey is completed (used for Practice Mode) */
   onComplete?: () => void;
-  /** If true, this is Practice Mode (self-survey) */
   isPracticeMode?: boolean;
 }
 
-export function SurveyWizard({ surveyId, questions, onComplete, isPracticeMode }: SurveyWizardProps) {
+export function RitualWizard({ surveyId, questions, onComplete, isPracticeMode }: RitualWizardProps) {
   const router = useRouter();
   const [currentIndex, setCurrentIndex] = useState(0);
   const [answers, setAnswers] = useState<Record<string, number>>({});
   const [isSubmitting, setIsSubmitting] = useState(false);
+
+  if (questions.length === 0) {
+    return (
+      <Card variant="glass" padding="lg" className="mx-auto w-full max-w-[600px]">
+        <AppState
+          type="empty"
+          title="No ritual questions yet"
+          description="This ritual does not have any questions configured."
+        />
+      </Card>
+    );
+  }
 
   const currentQuestion = questions[currentIndex];
   const progress = ((currentIndex + 1) / questions.length) * 100;
@@ -30,7 +42,7 @@ export function SurveyWizard({ surveyId, questions, onComplete, isPracticeMode }
   const handleAnswer = (value: number) => {
     setAnswers((prev) => ({
       ...prev,
-      [`q${currentQuestion.id}`]: value
+      [`q${currentQuestion.id}`]: value,
     }));
   };
 
@@ -51,12 +63,10 @@ export function SurveyWizard({ surveyId, questions, onComplete, isPracticeMode }
     try {
       await surveyApi.submitResponse(surveyId, answers);
 
-      // Practice Mode: call onComplete callback to handle persona generation
       if (isPracticeMode && onComplete) {
         onComplete();
       } else {
-        toast.success('Survey submitted successfully. Thank you!');
-        // Normal mode: redirect to thank-you page
+        toast.success('Ritual submitted successfully. Thank you!');
         router.push(`/s/${surveyId}/thank-you`);
       }
     } catch {
@@ -70,47 +80,30 @@ export function SurveyWizard({ surveyId, questions, onComplete, isPracticeMode }
   const hasAnswer = answers[`q${currentQuestion.id}`] !== undefined;
 
   return (
-    <div className="mx-auto flex w-full max-w-[600px] flex-col gap-6 p-6">
-      <ProgressBar
-        value={progress}
-        label={`Question ${currentIndex + 1} of ${questions.length}`}
-      />
+    <Card variant="glass" padding="lg" className="mx-auto w-full max-w-[600px]">
+      <div className="flex flex-col gap-6">
+        <ProgressBar value={progress} label={`Question ${currentIndex + 1} of ${questions.length}`} />
 
-      <div className="min-h-[200px]">
-        <QuestionCard
-          question={currentQuestion}
-          value={answers[`q${currentQuestion.id}`]}
-          onChange={handleAnswer}
-        />
-      </div>
+        <div className="min-h-[200px]">
+          <QuestionCard question={currentQuestion} value={answers[`q${currentQuestion.id}`]} onChange={handleAnswer} />
+        </div>
 
-      <div className="flex items-center justify-between gap-4">
-        <Button
-          variant="ghost"
-          onClick={handlePrev}
-          disabled={currentIndex === 0}
-        >
-          Previous
-        </Button>
-
-        {isLastQuestion ? (
-          <Button
-            variant="primary"
-            onClick={handleSubmit}
-            disabled={!hasAnswer || isSubmitting}
-          >
-            {isSubmitting ? 'Submitting...' : 'Submit'}
+        <div className="flex items-center justify-between gap-4">
+          <Button variant="ghost" onClick={handlePrev} disabled={currentIndex === 0}>
+            Previous
           </Button>
-        ) : (
-          <Button
-            variant="primary"
-            onClick={handleNext}
-            disabled={!hasAnswer}
-          >
-            Next
-          </Button>
-        )}
+
+          {isLastQuestion ? (
+            <Button variant="primary" onClick={handleSubmit} disabled={!hasAnswer || isSubmitting}>
+              {isSubmitting ? 'Submitting...' : 'Submit'}
+            </Button>
+          ) : (
+            <Button variant="primary" onClick={handleNext} disabled={!hasAnswer}>
+              Next
+            </Button>
+          )}
+        </div>
       </div>
-    </div>
+    </Card>
   );
 }

@@ -3,25 +3,27 @@
 import { use, useEffect, useRef, useState } from 'react';
 import { useQuery } from '@tanstack/react-query';
 import { surveyApi } from '@/lib/api/survey';
-import { SurveyWizard } from '@/components/organisms/SurveyWizard';
+import { RitualWizard } from '@/components/organisms/RitualWizard';
 import { PrivacyNotice } from '@/components/molecules/PrivacyNotice';
 import { ProgressBar } from '@/components/molecules/ProgressBar';
 import { SynthesisSpinner } from '@/components/molecules/SynthesisSpinner';
 import { Button } from '@/components/atoms/Button';
+import { AppState } from '@/components/molecules/AppState';
 import { useReducedMotion } from '@/hooks/useAccessibility';
 import { fadeIn } from '@/lib/animations';
 import { PublicAtmosphere } from '@/components/layouts/PublicAtmosphere';
+import { queryKeys } from '@/lib/queryKeys';
 
 const STAGES = ['Warm-up', 'Deep Dive', 'Reflection'];
 
-export default function SurveyPage({ params }: { params: Promise<{ id: string }> }) {
+export default function RitualPage({ params }: { params: Promise<{ id: string }> }) {
   const { id } = use(params);
   const reducedMotion = useReducedMotion();
   const previewRef = useRef<HTMLDivElement>(null);
   const [urlPreview, setUrlPreview] = useState<string>(`/s/${id}`);
 
-  const { data: survey, isLoading } = useQuery({
-    queryKey: ['survey', id],
+  const { data: survey, isLoading, isError, refetch } = useQuery({
+    queryKey: queryKeys.surveys.detail(id),
     queryFn: () => surveyApi.get(id),
   });
 
@@ -40,7 +42,23 @@ export default function SurveyPage({ params }: { params: Promise<{ id: string }>
     return (
       <PublicAtmosphere>
         <div className="mx-auto flex min-h-screen w-full max-w-[1160px] items-center justify-center px-6 py-10">
-          <div className="atmospheric-surface rounded-2xl px-6 py-5 text-sm text-slate-600">Loading survey...</div>
+          <AppState type="loading" title="Loading ritual" description="Fetching questions and ritual state." />
+        </div>
+      </PublicAtmosphere>
+    );
+  }
+
+  if (isError) {
+    return (
+      <PublicAtmosphere>
+        <div className="mx-auto flex min-h-screen w-full max-w-[1160px] items-center justify-center px-6 py-10">
+          <AppState
+            type="error"
+            title="Ritual failed to load"
+            description="Try reloading the ritual link."
+            actionLabel="Retry"
+            onAction={() => refetch()}
+          />
         </div>
       </PublicAtmosphere>
     );
@@ -50,7 +68,11 @@ export default function SurveyPage({ params }: { params: Promise<{ id: string }>
     return (
       <PublicAtmosphere>
         <div className="mx-auto flex min-h-screen w-full max-w-[1160px] items-center justify-center px-6 py-10">
-          <div className="atmospheric-surface rounded-2xl px-6 py-5 text-sm text-slate-600">Survey not found.</div>
+          <AppState
+            type="empty"
+            title="Ritual not found"
+            description="The link may be invalid or the ritual has been closed."
+          />
         </div>
       </PublicAtmosphere>
     );
@@ -60,14 +82,14 @@ export default function SurveyPage({ params }: { params: Promise<{ id: string }>
 
   return (
     <PublicAtmosphere>
-      <main className="mx-auto min-h-screen w-full max-w-[1240px] px-5 py-8 sm:px-8" role="main" aria-label="Survey ritual page">
+      <main className="mx-auto min-h-screen w-full max-w-[1240px] px-5 py-8 sm:px-8" role="main" aria-label="Ritual page">
         <div className="flex flex-col gap-6">
           <PrivacyNotice />
 
           <section className="atmospheric-surface rounded-2xl px-6 py-6 sm:px-8">
             <div className="flex flex-wrap items-start justify-between gap-5">
               <div>
-                <p className="text-xs uppercase tracking-[0.35em] text-slate-500">Survey Ritual · ver2</p>
+                <p className="text-xs uppercase tracking-[0.35em] text-slate-500">Ritual · ver2</p>
                 <h1 className="mt-2 font-display text-5xl leading-[0.9] text-slate-800 sm:text-6xl">Help A Friend Discover Themselves</h1>
                 <p className="mt-3 max-w-[64ch] text-sm leading-relaxed text-slate-600 sm:text-base">
                   Your responses fuel summoning. Answer with specificity and emotional honesty.
@@ -92,7 +114,7 @@ export default function SurveyPage({ params }: { params: Promise<{ id: string }>
 
           <div className="grid grid-cols-1 gap-6 xl:grid-cols-[2.4fr_1fr]">
             <section className="atmospheric-surface rounded-2xl px-6 py-6 sm:px-8">
-              <SurveyWizard surveyId={id} questions={survey.questions} />
+              <RitualWizard surveyId={id} questions={survey.questions} />
             </section>
 
             <aside ref={previewRef} className="atmospheric-surface rounded-2xl px-5 py-6 text-center sm:px-6">
@@ -119,7 +141,7 @@ export default function SurveyPage({ params }: { params: Promise<{ id: string }>
               </div>
 
               <p className="mt-4 text-sm leading-relaxed text-slate-600">
-                Every answer charges the ritual. Once complete, your friend can continue to summoning reveal.
+                Every answer charges the ritual. Once complete, your friend can continue to the summoning reveal.
               </p>
             </aside>
           </div>

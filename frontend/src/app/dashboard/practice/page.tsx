@@ -1,22 +1,25 @@
 'use client';
 
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { useQuery } from '@tanstack/react-query';
 import { useAuthStore } from '@/stores/authStore';
 import { surveyApi } from '@/lib/api/survey';
 import { toast } from '@/lib/toast';
-import { SurveyWizard } from '@/components/organisms/SurveyWizard';
+import { RitualWizard } from '@/components/organisms/RitualWizard';
 import { ProgressBar } from '@/components/molecules/ProgressBar';
 import { FlowStepper } from '@/components/molecules/FlowStepper';
+import { AppState } from '@/components/molecules/AppState';
 import { Button } from '@/components/atoms/Button';
 import { SynthesisSpinner } from '@/components/molecules/SynthesisSpinner';
 import { DashboardScaffold } from '@/components/layouts/DashboardScaffold';
 import { useSummonPersona } from '@/features/summon';
+import { useProtectedRoute } from '@/hooks/useProtectedRoute';
 
 export default function PracticeModePage() {
   const router = useRouter();
   const { isAuthenticated } = useAuthStore();
+  const isRedirecting = useProtectedRoute(isAuthenticated);
   const [isGenerating, setIsGenerating] = useState(false);
   const [isComplete, setIsComplete] = useState(false);
   const summonMutation = useSummonPersona();
@@ -28,12 +31,6 @@ export default function PracticeModePage() {
     queryFn: () => surveyApi.get('practice'),
     enabled: isAuthenticated,
   });
-
-  useEffect(() => {
-    if (!isAuthenticated) {
-      router.push('/login');
-    }
-  }, [isAuthenticated, router]);
 
   const handleSubmitComplete = async () => {
     setIsComplete(true);
@@ -53,8 +50,16 @@ export default function PracticeModePage() {
     }
   };
 
-  if (!isAuthenticated) {
-    return null;
+  if (isRedirecting) {
+    return (
+      <DashboardScaffold title="Practice Mode" subtitle="Checking your session before loading practice ritual.">
+        <AppState
+          type="loading"
+          title="Redirecting to login"
+          description="Practice mode is available after sign-in."
+        />
+      </DashboardScaffold>
+    );
   }
 
   if (isLoading) {
@@ -126,14 +131,14 @@ export default function PracticeModePage() {
 
         <section className="atmospheric-surface p-6 sm:p-7">
           {survey ? (
-            <SurveyWizard
+            <RitualWizard
               surveyId="practice-mode"
               questions={survey.questions}
               onComplete={handleSubmitComplete}
               isPracticeMode
             />
           ) : (
-            <p className="text-sm text-slate-600">No practice survey available right now.</p>
+            <p className="text-sm text-slate-600">No practice ritual available right now.</p>
           )}
         </section>
       </div>

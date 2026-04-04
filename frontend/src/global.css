@@ -19,7 +19,7 @@ html {
 }
 
 body {
-    font-family: var(--font-sans, 'Plus Jakarta Sans', sans-serif);
+    font-family: var(--font-sans, sans-serif);
     font-weight: var(--font-weight-regular);
     line-height: var(--line-height-loose, 1.6);
     color: var(--color-text-primary);

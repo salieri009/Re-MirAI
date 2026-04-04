@@ -1,18 +1,18 @@
 import type { Metadata } from 'next'
-import { Cormorant_Garamond, Source_Sans_3 } from 'next/font/google'
+import { Manrope, Sora } from 'next/font/google'
 import '../styles/tokens.css'
 import '../global.css'
 import { QueryProvider } from '@/lib/providers/QueryProvider'
 import ClientProviders from '@/lib/providers/ClientProviders'
 
-const cormorant = Cormorant_Garamond({
+const sora = Sora({
   subsets: ['latin'],
   variable: '--font-display',
   display: 'swap',
-  weight: ['500', '600', '700'],
+  weight: ['500', '600', '700', '800'],
 })
 
-const sourceSans = Source_Sans_3({
+const manrope = Manrope({
   subsets: ['latin'],
   variable: '--font-sans',
   display: 'swap',
@@ -30,7 +30,7 @@ export default function RootLayout({
   children: React.ReactNode
 }) {
   return (
-    <html lang="en" suppressHydrationWarning className={`${cormorant.variable} ${sourceSans.variable}`}>
+    <html lang="en" suppressHydrationWarning className={`${sora.variable} ${manrope.variable}`}>
       <head>
         <link
           href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200&display=swap"

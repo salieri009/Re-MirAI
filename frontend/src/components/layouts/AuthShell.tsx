@@ -1,11 +1,11 @@
 import React from 'react';
 
-interface AuthRitualShellProps {
+interface AuthShellProps {
   visual: React.ReactNode;
   form: React.ReactNode;
 }
 
-export function AuthRitualShell({ visual, form }: AuthRitualShellProps) {
+export function AuthShell({ visual, form }: AuthShellProps) {
   return (
     <main className="relative min-h-screen bg-background-dark text-text-primary">
       <div className="mx-auto grid min-h-screen w-full max-w-[1440px] grid-cols-1 lg:grid-cols-[1.15fr_0.85fr]">

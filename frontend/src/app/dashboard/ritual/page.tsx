@@ -7,14 +7,15 @@ import { toast } from '@/lib/toast';
 import { Button } from '@/components/atoms/Button';
 import { AppState } from '@/components/molecules/AppState';
 import { FlowStepper } from '@/components/molecules/FlowStepper';
-import { StageBadge, type SurveyStage } from '@/components/molecules/StageBadge';
-import { SurveyLinkCard } from '@/components/molecules/SurveyLinkCard';
+import { StageBadge, type RitualStage } from '@/components/molecules/StageBadge';
+import { RitualLinkCard } from '@/components/molecules/RitualLinkCard';
 import { ShareOptions } from '@/components/molecules/ShareOptions';
 import { ProgressBar } from '@/components/molecules/ProgressBar';
 import { DashboardScaffold } from '@/components/layouts/DashboardScaffold';
 import { useMyRituals, useRitualStatus } from '@/features/ritual';
+import { useProtectedRoute } from '@/hooks/useProtectedRoute';
 
-const SURVEY_TEMPLATES = [
+const RITUAL_TEMPLATES = [
   {
     id: 'foundations',
     title: 'Foundations',
@@ -38,6 +39,7 @@ const SURVEY_TEMPLATES = [
 export default function RitualHubPage() {
   const router = useRouter();
   const { isAuthenticated } = useAuthStore();
+  const isRedirecting = useProtectedRoute(isAuthenticated);
   const [surveyUrl, setSurveyUrl] = useState<string | null>(null);
   const [shareCount, setShareCount] = useState(0);
 
@@ -67,7 +69,7 @@ export default function RitualHubPage() {
     return Math.min(100, Math.round((surveyStatus.responsesCount / surveyStatus.threshold) * 100));
   }, [surveyStatus]);
 
-  const surveyStage: SurveyStage = useMemo(() => {
+  const ritualStage: RitualStage = useMemo(() => {
     if (surveyStatus?.canSummon) {
       return 'READY';
     }
@@ -99,9 +101,19 @@ export default function RitualHubPage() {
     }
   };
 
-  if (!isAuthenticated) {
-    router.push('/');
-    return null;
+  if (isRedirecting) {
+    return (
+      <DashboardScaffold
+        title="Gather Anonymous Echoes"
+        subtitle="Track ritual momentum, distribute your share link, and summon once resonance crosses threshold."
+      >
+        <AppState
+          type="loading"
+          title="Redirecting to login"
+          description="You need an authenticated session to access Ritual Hub."
+        />
+      </DashboardScaffold>
+    );
   }
 
   if (ritualsQuery.isLoading) {
@@ -169,7 +181,7 @@ export default function RitualHubPage() {
                     : 'Share your ritual link to gather more anonymous echoes.'}
                 </p>
               </div>
-              <StageBadge stage={surveyStage} />
+              <StageBadge stage={ritualStage} />
             </div>
 
             <ProgressBar value={progressPercentage} label="Resonance Progress" />
@@ -191,7 +203,7 @@ export default function RitualHubPage() {
 
             <div className="mt-5 space-y-4">
               {surveyUrl ? (
-                <SurveyLinkCard
+                <RitualLinkCard
                   link={surveyUrl}
                   shareCount={shareCount}
                   onCopy={() => setShareCount((prev) => prev + 1)}
@@ -259,7 +271,7 @@ export default function RitualHubPage() {
             <p className="text-xs uppercase tracking-[0.16em] text-slate-500">Explore</p>
             <h2 className="mt-1 font-display text-3xl text-slate-800">Ritual Templates</h2>
             <div className="mt-4 space-y-3">
-              {SURVEY_TEMPLATES.map((template) => (
+              {RITUAL_TEMPLATES.map((template) => (
                 <button
                   key={template.id}
                   type="button"

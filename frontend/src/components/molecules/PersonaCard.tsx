@@ -6,7 +6,8 @@ import { useReducedMotion } from '@/hooks/useAccessibility';
 import { Persona } from '@/lib/api/persona';
 import { Badge } from '@/components/atoms/Badge';
 import { QRCode } from '@/components/atoms/QRCode';
-import { colors, spacing, radius, typography, shadows, CSSProperties } from '@/lib/styles';
+import { Card } from '@/components/primitives';
+import styles from './PersonaCard.module.css';
 
 interface PersonaCardProps {
   persona: Persona;
@@ -14,105 +15,6 @@ interface PersonaCardProps {
   /** Show QR code for public profile link (FR-004.2) */
   showQRCode?: boolean;
 }
-
-const cardStyle: CSSProperties = {
-  display: 'flex',
-  flexDirection: 'column',
-  gap: spacing.md,
-  padding: spacing.lg,
-  background: 'radial-gradient(circle at 30% 20%, rgba(132, 94, 194, 0.3), rgba(10, 1, 18, 0.8))',
-  borderRadius: radius.xl,
-  border: `1px solid ${colors.border}`,
-  boxShadow: shadows.lg,
-  transformStyle: 'preserve-3d',
-  willChange: 'transform',
-};
-
-const headerStyle: CSSProperties = {
-  display: 'flex',
-  alignItems: 'center',
-  justifyContent: 'space-between',
-  gap: spacing.sm,
-};
-
-const nameStyle: CSSProperties = {
-  fontSize: typography.size['2xl'],
-  fontFamily: typography.fontDisplay,
-  fontWeight: typography.weight.bold,
-  color: colors.text,
-  margin: 0,
-};
-
-const archetypeStyle: CSSProperties = {
-  fontSize: typography.size.lg,
-  color: colors.highlight,
-  fontWeight: typography.weight.medium,
-};
-
-const statsStyle: CSSProperties = {
-  display: 'flex',
-  flexDirection: 'column',
-  gap: spacing.sm,
-};
-
-const statStyle: CSSProperties = {
-  display: 'flex',
-  alignItems: 'center',
-  gap: spacing.sm,
-};
-
-const statLabelStyle: CSSProperties = {
-  fontSize: typography.size.sm,
-  color: colors.textMuted,
-  width: 80,
-};
-
-const statBarStyle: CSSProperties = {
-  flex: 1,
-  height: 6,
-  background: colors.surface,
-  borderRadius: radius.pill,
-  overflow: 'hidden',
-};
-
-const statFillStyle: CSSProperties = {
-  height: '100%',
-  background: `linear-gradient(90deg, ${colors.primary}, ${colors.accent})`,
-  borderRadius: radius.pill,
-  transition: 'width 0.5s ease',
-};
-
-const statValueStyle: CSSProperties = {
-  fontSize: typography.size.sm,
-  fontWeight: typography.weight.medium,
-  color: colors.text,
-  width: 30,
-  textAlign: 'right',
-};
-
-const greetingStyle: CSSProperties = {
-  fontSize: typography.size.base,
-  fontStyle: 'italic',
-  color: colors.textSecondary,
-  padding: `${spacing.sm}px ${spacing.md}px`,
-  background: colors.surface,
-  borderRadius: radius.md,
-  borderLeft: `3px solid ${colors.highlight}`,
-};
-
-const qrSectionStyle: CSSProperties = {
-  display: 'flex',
-  flexDirection: 'column',
-  alignItems: 'center',
-  gap: spacing.xs,
-  paddingTop: spacing.md,
-  borderTop: `1px solid ${colors.border}`,
-};
-
-const qrLabelStyle: CSSProperties = {
-  fontSize: typography.size.xs,
-  color: colors.textMuted,
-};
 
 export function PersonaCard({ persona, readOnly = false, showQRCode = false }: PersonaCardProps) {
   const cardRef = useRef<HTMLDivElement>(null);
@@ -167,46 +69,46 @@ export function PersonaCard({ persona, readOnly = false, showQRCode = false }: P
     : `https://remirai.app/p/${persona.id}`;
 
   return (
-    <div ref={cardRef} style={cardStyle} data-rarity={persona.rarity}>
-      <div style={headerStyle}>
-        <h2 style={nameStyle}>{persona.name}</h2>
-        {persona.rarity && (
-          <Badge variant="primary" size="sm">
-            {persona.rarity}
-          </Badge>
+    <Card variant="elevated" padding="lg" className={styles.shell}>
+      <div ref={cardRef} className={styles.card} data-rarity={persona.rarity}>
+        <div className={styles.header}>
+          <h2 className={styles.name}>{persona.name}</h2>
+          {persona.rarity && (
+            <Badge variant="primary" size="sm">
+              {persona.rarity}
+            </Badge>
+          )}
+        </div>
+        <div className={styles.archetype}>{persona.archetype}</div>
+
+        <div className={styles.stats}>
+          {Object.entries(persona.stats).map(([key, value]) => (
+            <div key={key} className={styles.statRow}>
+              <span className={styles.statLabel}>
+                {key.charAt(0).toUpperCase() + key.slice(1)}
+              </span>
+              <progress className={styles.statBar} value={value} max={100} aria-label={`${key} ${value}%`} />
+              <span className={styles.statValue}>{value}</span>
+            </div>
+          ))}
+        </div>
+
+        {persona.greeting && (
+          <div className={styles.greeting}>"{persona.greeting}"</div>
+        )}
+
+        {/* FR-004.2: QR Code for shareable persona link */}
+        {showQRCode && (
+          <div className={styles.qrSection}>
+            <QRCode
+              value={publicProfileUrl}
+              size={80}
+              alt={`QR code for ${persona.name}'s profile`}
+            />
+            <span className={styles.qrLabel}>Scan to view profile</span>
+          </div>
         )}
       </div>
-      <div style={archetypeStyle}>{persona.archetype}</div>
-
-      <div style={statsStyle}>
-        {Object.entries(persona.stats).map(([key, value]) => (
-          <div key={key} style={statStyle}>
-            <span style={statLabelStyle}>
-              {key.charAt(0).toUpperCase() + key.slice(1)}
-            </span>
-            <div style={statBarStyle}>
-              <div style={{ ...statFillStyle, width: `${value}%` }} />
-            </div>
-            <span style={statValueStyle}>{value}</span>
-          </div>
-        ))}
-      </div>
-
-      {persona.greeting && (
-        <div style={greetingStyle}>"{persona.greeting}"</div>
-      )}
-
-      {/* FR-004.2: QR Code for shareable persona link */}
-      {showQRCode && (
-        <div style={qrSectionStyle}>
-          <QRCode
-            value={publicProfileUrl}
-            size={80}
-            alt={`QR code for ${persona.name}'s profile`}
-          />
-          <span style={qrLabelStyle}>Scan to view profile</span>
-        </div>
-      )}
-    </div>
+    </Card>
   );
 }

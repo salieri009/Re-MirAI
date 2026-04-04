@@ -2,14 +2,14 @@
 
 import React from 'react';
 
-export type SurveyStage = 'COLLECTING' | 'READY' | 'SYNTHESIZED';
+export type RitualStage = 'COLLECTING' | 'READY' | 'SYNTHESIZED';
 
 interface StageBadgeProps {
-    stage: SurveyStage;
+    stage: RitualStage;
     className?: string;
 }
 
-const STAGE_CONFIG: Record<SurveyStage, { label: string; tone: string; icon: string }> = {
+const STAGE_CONFIG: Record<RitualStage, { label: string; tone: string; icon: string }> = {
     COLLECTING: {
         label: 'Collecting',
         tone: 'accent',

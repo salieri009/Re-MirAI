@@ -3,6 +3,8 @@
  * Pure inline styles using design tokens - no CSS files needed
  */
 
+import { tokens } from '@/design-tokens';
+
 // ============================================
 // Type Definitions
 // ============================================
@@ -28,27 +30,27 @@ export const spacing = {
 // Color Palette
 // ============================================
 export const colors = {
-    primary: '#d946ef',
-    primaryDark: '#c026d3',
-    primaryLight: '#e879f9',
-    accent: '#e6ebf8',
-    accentDark: '#d7deef',
-    accentLight: '#f4f7ff',
-    highlight: '#334155',
-    bgDark: '#e6ebf8',
-    background: '#e6ebf8',
-    surface: 'rgba(255, 255, 255, 0.62)',
-    surfaceElevated: 'rgba(255, 255, 255, 0.82)',
-    border: 'rgba(51, 65, 85, 0.16)',
+    primary: tokens.palette.primary,
+    primaryDark: 'var(--color-primary-dark)',
+    primaryLight: 'var(--color-primary-light)',
+    accent: tokens.palette.accent,
+    accentDark: 'var(--color-accent-dark)',
+    accentLight: 'var(--color-accent-light)',
+    highlight: tokens.palette.highlight,
+    bgDark: tokens.palette.bgDark,
+    background: tokens.palette.bgDark,
+    surface: 'var(--color-surface)',
+    surfaceElevated: 'var(--color-surface-elevated)',
+    border: 'var(--color-border)',
     borderHover: 'rgba(51, 65, 85, 0.3)',
-    text: '#334155',
-    textSecondary: '#475569',
-    textMuted: 'rgba(51, 65, 85, 0.68)',
+    text: tokens.palette.highlight,
+    textSecondary: 'var(--color-text-secondary)',
+    textMuted: 'var(--color-text-muted)',
     white: '#ffffff',
     black: '#000000',
     transparent: 'transparent',
-    error: '#EF4444',
-    success: '#10B981',
+    error: '#ef4444',
+    success: tokens.emotions.progress.success,
 } as const;
 
 // ============================================
@@ -109,8 +111,8 @@ export const shadows = {
     md: '0 4px 6px -1px rgba(0, 0, 0, 0.15)',
     lg: '0 10px 15px -3px rgba(0, 0, 0, 0.2)',
     xl: '0 20px 25px -5px rgba(0, 0, 0, 0.25)',
-    glowPrimary: '0 0 32px rgba(217, 70, 239, 0.35)',
-    glowAccent: '0 0 28px rgba(51, 65, 85, 0.22)',
+    glowPrimary: 'var(--shadow-glow-primary)',
+    glowAccent: 'var(--shadow-glow-accent)',
     glowHighlight: '0 0 24px rgba(71, 85, 105, 0.25)',
 } as const;
 
