@@ -1,18 +1,18 @@
 'use client';
 
 import { useEffect, useMemo, useState } from 'react';
-import { useQuery } from '@tanstack/react-query';
 import { useRouter } from 'next/navigation';
 import { useAuthStore } from '@/stores/authStore';
-import { surveyApi } from '@/lib/api/survey';
 import { toast } from '@/lib/toast';
 import { Button } from '@/components/atoms/Button';
+import { AppState } from '@/components/molecules/AppState';
 import { FlowStepper } from '@/components/molecules/FlowStepper';
 import { StageBadge, type SurveyStage } from '@/components/molecules/StageBadge';
 import { SurveyLinkCard } from '@/components/molecules/SurveyLinkCard';
 import { ShareOptions } from '@/components/molecules/ShareOptions';
 import { ProgressBar } from '@/components/molecules/ProgressBar';
 import { DashboardScaffold } from '@/components/layouts/DashboardScaffold';
+import { useMyRituals, useRitualStatus } from '@/features/ritual';
 
 const SURVEY_TEMPLATES = [
   {
@@ -43,18 +43,22 @@ export default function RitualHubPage() {
 
   const flowSteps = ['Login', 'Create Ritual', 'Collect Responses', 'Summon Persona', 'Bond'];
 
-  const { data: surveyStatus } = useQuery({
-    queryKey: ['ritual-status'],
-    queryFn: () => surveyApi.getStatus('550e8400-e29b-41d4-a716-446655440000'),
-    enabled: isAuthenticated,
-    refetchInterval: 5000,
-  });
+  const ritualsQuery = useMyRituals();
+  const activeRitualId = ritualsQuery.data?.[0]?.id ?? null;
+  const surveyStatusQuery = useRitualStatus(activeRitualId);
+  const surveyStatus = surveyStatusQuery.data;
+  const activeRitual = ritualsQuery.data?.[0] ?? null;
 
   useEffect(() => {
-    if (surveyStatus?.id) {
-      setSurveyUrl(`https://remirai.app/s/${surveyStatus.id}`);
+    if (activeRitual?.shareableLink) {
+      setSurveyUrl(activeRitual.shareableLink);
+      return;
     }
-  }, [surveyStatus]);
+
+    if (surveyStatus?.id) {
+      setSurveyUrl(`/s/${surveyStatus.id}`);
+    }
+  }, [activeRitual?.shareableLink, surveyStatus?.id]);
 
   const progressPercentage = useMemo(() => {
     if (!surveyStatus?.threshold) {
@@ -64,7 +68,7 @@ export default function RitualHubPage() {
   }, [surveyStatus]);
 
   const surveyStage: SurveyStage = useMemo(() => {
-    if (surveyStatus?.canCreatePersona) {
+    if (surveyStatus?.canSummon) {
       return 'READY';
     }
     return 'COLLECTING';
@@ -83,8 +87,8 @@ export default function RitualHubPage() {
     },
     {
       label: 'Status',
-      value: surveyStatus?.canCreatePersona ? 'Ready' : 'Collecting',
-      hint: surveyStatus?.canCreatePersona ? 'You can synthesize now' : 'Keep sharing',
+      value: surveyStatus?.canSummon ? 'Ready' : 'Collecting',
+      hint: surveyStatus?.canSummon ? 'You can synthesize now' : 'Keep sharing',
     },
   ];
 
@@ -98,6 +102,49 @@ export default function RitualHubPage() {
   if (!isAuthenticated) {
     router.push('/');
     return null;
+  }
+
+  if (ritualsQuery.isLoading) {
+    return (
+      <DashboardScaffold
+        title="Gather Anonymous Echoes"
+        subtitle="Track ritual momentum, distribute your share link, and summon once resonance crosses threshold."
+      >
+        <AppState type="loading" title="Loading your rituals" description="Preparing your active ritual board." />
+      </DashboardScaffold>
+    );
+  }
+
+  if (ritualsQuery.isError) {
+    return (
+      <DashboardScaffold
+        title="Gather Anonymous Echoes"
+        subtitle="Track ritual momentum, distribute your share link, and summon once resonance crosses threshold."
+      >
+        <AppState
+          type="error"
+          title="Failed to load rituals"
+          description="Please retry, or refresh the page if this continues."
+          actionLabel="Retry"
+          onAction={() => ritualsQuery.refetch()}
+        />
+      </DashboardScaffold>
+    );
+  }
+
+  if (!activeRitual) {
+    return (
+      <DashboardScaffold
+        title="Gather Anonymous Echoes"
+        subtitle="Track ritual momentum, distribute your share link, and summon once resonance crosses threshold."
+      >
+        <AppState
+          type="empty"
+          title="No ritual found"
+          description="Create your first ritual before collecting responses and summoning a persona."
+        />
+      </DashboardScaffold>
+    );
   }
 
   return (
@@ -117,7 +164,7 @@ export default function RitualHubPage() {
               <div>
                 <h2 className="font-display text-3xl text-slate-800">Resonance Status</h2>
                 <p className="mt-2 text-sm text-slate-600">
-                  {surveyStatus?.canCreatePersona
+                  {surveyStatus?.canSummon
                     ? 'Threshold reached. You can synthesize your persona now.'
                     : 'Share your ritual link to gather more anonymous echoes.'}
                 </p>
@@ -180,17 +227,17 @@ export default function RitualHubPage() {
             <p className="text-xs uppercase tracking-[0.16em] text-slate-500">Synthesis</p>
             <h2 className="mt-1 font-display text-3xl text-slate-800">Summon Persona</h2>
             <p className="mt-3 text-sm leading-relaxed text-slate-600">
-              {surveyStatus?.canCreatePersona
+              {surveyStatus?.canSummon
                 ? 'Enough echoes collected. Your digital mirror is ready to be synthesized.'
                 : `Collect ${Math.max(0, (surveyStatus?.threshold ?? 3) - (surveyStatus?.responsesCount ?? 0))} more responses to unlock synthesis.`}
             </p>
             <div className="mt-5">
               <Button
                 variant="primary"
-                onClick={() => router.push('/dashboard/synthesize')}
-                disabled={!surveyStatus?.canCreatePersona}
+                onClick={() => router.push(`/dashboard/synthesize?surveyId=${activeRitual.id}`)}
+                disabled={!surveyStatus?.canSummon}
               >
-                {surveyStatus?.canCreatePersona ? 'Synthesize Now' : 'Gather More Echoes'}
+                {surveyStatus?.canSummon ? 'Synthesize Now' : 'Gather More Echoes'}
               </Button>
             </div>
           </section>

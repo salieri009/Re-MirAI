@@ -1,24 +1,30 @@
 'use client';
 
 import { useEffect, useMemo, useState } from 'react';
-import { useRouter } from 'next/navigation';
+import { useRouter, useSearchParams } from 'next/navigation';
 import { useAuthStore } from '@/stores/authStore';
-import { personaApi } from '@/lib/api/persona';
 import type { Persona } from '@/lib/api/persona';
 import { toast } from '@/lib/toast';
 import { Button } from '@/components/atoms/Button';
+import { AppState } from '@/components/molecules/AppState';
 import { FlowStepper } from '@/components/molecules/FlowStepper';
+import { Card, Grid, Section } from '@/components/primitives';
 import { SummoningAnimation } from '@/components/organisms/SummoningAnimation';
 import { DashboardScaffold } from '@/components/layouts/DashboardScaffold';
+import { useRitualStatus } from '@/features/ritual';
+import { useSummonPersona } from '@/features/summon';
 
 export default function SynthesizePage() {
   const { isAuthenticated } = useAuthStore();
   const router = useRouter();
+  const searchParams = useSearchParams();
+  const surveyId = searchParams.get('surveyId');
   const synthesizeFlow = ['Login', 'Ritual', 'Summon', 'Bond'];
-  const [isGenerating, setIsGenerating] = useState(false);
   const [showAnimation, setShowAnimation] = useState(false);
   const [createdPersona, setCreatedPersona] = useState<Persona | null>(null);
   const [mode, setMode] = useState<'FATED' | 'ALCHEMIC'>('FATED');
+  const ritualStatusQuery = useRitualStatus(surveyId);
+  const summonMutation = useSummonPersona();
 
   const modeDetails = useMemo(
     () => ({
@@ -49,17 +55,25 @@ export default function SynthesizePage() {
   }, [isAuthenticated, router]);
 
   const handleSynthesize = async () => {
-    setIsGenerating(true);
+    if (!surveyId) {
+      toast.error('Missing ritual context. Choose a ritual from the Ritual Hub first.');
+      return;
+    }
+
+    if (!ritualStatusQuery.data?.canSummon) {
+      toast.error('This ritual is not ready yet. Collect enough responses before summoning.');
+      return;
+    }
+
     try {
-      const persona = await personaApi.synthesize({
-        surveyId: '550e8400-e29b-41d4-a716-446655440000',
+      const execution = await summonMutation.mutateAsync({
+        surveyId,
         mode,
       });
-      setCreatedPersona(persona);
+      setCreatedPersona(execution.persona);
       setShowAnimation(true);
     } catch (_error) {
       toast.error('Failed to generate persona. Please try again.');
-      setIsGenerating(false);
     }
   };
 
@@ -89,13 +103,13 @@ export default function SynthesizePage() {
       title="Awaken The Echo"
       subtitle="Choose your synthesis mode, initiate summoning, and enter the persona bond room."
     >
-      <section className="atmospheric-surface mb-6 p-5 sm:p-6">
+      <Section width="full" spacing="md" surface="card" className="mb-6">
         <p className="mb-3 text-xs font-semibold uppercase tracking-[0.16em] text-slate-500">Current Flow Position</p>
         <FlowStepper steps={synthesizeFlow} activeIndex={2} ariaLabel="Summon user flow" variant="compact" />
-      </section>
+      </Section>
 
-      <div className="grid grid-cols-1 gap-6 xl:grid-cols-[1.15fr_0.85fr]">
-        <section className="atmospheric-surface p-6 sm:p-7">
+      <Grid cols="dashboard" gap="lg">
+        <Card variant="glass" padding="lg">
           <p className="text-xs uppercase tracking-[0.16em] text-slate-500">Ritual Mode</p>
           <h2 className="mt-1 font-display text-4xl text-slate-800">Select Summoning Pattern</h2>
           <p className="mt-3 text-sm leading-relaxed text-slate-600">
@@ -108,14 +122,21 @@ export default function SynthesizePage() {
               const selected = mode === option;
               const detail = modeDetails[option];
               return (
-                <button
+                <Card
                   key={option}
-                  type="button"
+                  role="button"
+                  tabIndex={0}
                   onClick={() => setMode(option)}
-                  className={`rounded-2xl border px-5 py-5 text-left transition ${
+                  onKeyDown={(event) => {
+                    if (event.key === 'Enter' || event.key === ' ') {
+                      event.preventDefault();
+                      setMode(option);
+                    }
+                  }}
+                  className={`cursor-pointer px-5 py-5 text-left ${
                     selected
-                      ? 'border-fuchsia-500/40 bg-fuchsia-100/50 shadow-[0_14px_28px_-16px_rgba(217,70,239,0.65)]'
-                      : 'border-slate-500/20 bg-white/60 hover:-translate-y-0.5 hover:bg-white'
+                      ? 'border-fuchsia-500/40 bg-fuchsia-100/50 shadow-[0_14px_28px_-16px_rgba(217,70,239,0.65)] ring-2 ring-fuchsia-300/35'
+                      : 'border-slate-500/20 bg-white/60 hover:bg-white'
                   }`}
                 >
                   <p className="text-2xl" aria-hidden="true">
@@ -133,13 +154,13 @@ export default function SynthesizePage() {
                   >
                     {detail.badge}
                   </span>
-                </button>
+                </Card>
               );
             })}
           </div>
-        </section>
+        </Card>
 
-        <section className="atmospheric-surface p-6 sm:p-7">
+        <Card variant="glass" padding="lg">
           <p className="text-xs uppercase tracking-[0.16em] text-slate-500">Invocation</p>
           <h2 className="mt-1 font-display text-4xl text-slate-800">Begin Summoning</h2>
           <p className="mt-3 text-sm leading-relaxed text-slate-600">
@@ -154,11 +175,47 @@ export default function SynthesizePage() {
             <p className="mt-2 text-sm text-slate-600">{modeDetails[mode].description}</p>
           </div>
 
+          <div className="mt-4">
+            {!surveyId ? (
+              <AppState
+                type="empty"
+                title="No ritual selected"
+                description="Open this page from Ritual Hub so surveyId is attached in the URL."
+                actionLabel="Go To Ritual Hub"
+                onAction={() => router.push('/dashboard/ritual')}
+              />
+            ) : ritualStatusQuery.isLoading ? (
+              <AppState type="loading" title="Checking ritual readiness" description="Loading ritual status before summon." />
+            ) : ritualStatusQuery.isError ? (
+              <AppState
+                type="error"
+                title="Failed to load ritual status"
+                description="Retry or go back to Ritual Hub and pick the ritual again."
+                actionLabel="Retry"
+                onAction={() => ritualStatusQuery.refetch()}
+              />
+            ) : ritualStatusQuery.data ? (
+              <Card variant="default" padding="sm" className="border-slate-500/20 bg-white/70">
+                <p className="text-[11px] font-semibold uppercase tracking-[0.12em] text-slate-500">Ritual Readiness</p>
+                <p className="mt-1 text-sm text-slate-700">
+                  Status: <span className="font-semibold">{ritualStatusQuery.data.status}</span>
+                </p>
+                <p className="mt-1 text-sm text-slate-600">
+                  Responses: {ritualStatusQuery.data.responsesCount}/{ritualStatusQuery.data.threshold}
+                </p>
+              </Card>
+            ) : null}
+          </div>
+
           <div className="mt-6 flex flex-wrap gap-3">
-            <Button variant="primary" onClick={handleSynthesize} disabled={isGenerating}>
-              {isGenerating ? 'Initiating Summon...' : 'Begin Summoning'}
+            <Button
+              variant="primary"
+              onClick={handleSynthesize}
+              disabled={summonMutation.isPending || !surveyId || !ritualStatusQuery.data?.canSummon}
+            >
+              {summonMutation.isPending ? 'Initiating Summon...' : 'Begin Summoning'}
             </Button>
-            <Button variant="ghost" onClick={() => router.push('/dashboard/ritual')} disabled={isGenerating}>
+            <Button variant="ghost" onClick={() => router.push('/dashboard/ritual')} disabled={summonMutation.isPending}>
               Back to Ritual Hub
             </Button>
           </div>
@@ -166,8 +223,8 @@ export default function SynthesizePage() {
           <p className="mt-4 text-xs text-slate-500">
             After synthesis, you will be redirected to your persona room for first contact.
           </p>
-        </section>
-      </div>
+        </Card>
+      </Grid>
     </DashboardScaffold>
   );
 }

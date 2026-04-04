@@ -5,7 +5,6 @@ import { useRouter } from 'next/navigation';
 import { useQuery } from '@tanstack/react-query';
 import { useAuthStore } from '@/stores/authStore';
 import { surveyApi } from '@/lib/api/survey';
-import { personaApi } from '@/lib/api/persona';
 import { toast } from '@/lib/toast';
 import { SurveyWizard } from '@/components/organisms/SurveyWizard';
 import { ProgressBar } from '@/components/molecules/ProgressBar';
@@ -13,12 +12,14 @@ import { FlowStepper } from '@/components/molecules/FlowStepper';
 import { Button } from '@/components/atoms/Button';
 import { SynthesisSpinner } from '@/components/molecules/SynthesisSpinner';
 import { DashboardScaffold } from '@/components/layouts/DashboardScaffold';
+import { useSummonPersona } from '@/features/summon';
 
 export default function PracticeModePage() {
   const router = useRouter();
   const { isAuthenticated } = useAuthStore();
   const [isGenerating, setIsGenerating] = useState(false);
   const [isComplete, setIsComplete] = useState(false);
+  const summonMutation = useSummonPersona();
 
   const practiceFlow = ['Login', 'Practice Answers', 'Proto-Persona', 'Compare & Bond'];
 
@@ -39,15 +40,12 @@ export default function PracticeModePage() {
     setIsGenerating(true);
 
     try {
-      const persona = await personaApi.synthesize({
+      const execution = await summonMutation.mutateAsync({
         surveyId: 'practice-self',
         mode: 'FATED',
-        modifiers: {
-          archetype: undefined,
-        },
       });
 
-      router.push(`/p/${persona.id}?practice=true`);
+      router.push(`/p/${execution.persona.id}?practice=true`);
     } catch (error) {
       toast.error('Failed to generate your Proto-Persona. Please try again.');
       setIsGenerating(false);

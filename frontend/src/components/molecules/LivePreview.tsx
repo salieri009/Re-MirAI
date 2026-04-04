@@ -4,6 +4,8 @@ import { useEffect, useRef } from 'react';
 import gsap from 'gsap';
 import { MirrorCanvas } from '@/components/organisms/MirrorCanvas/MirrorCanvas';
 import { TraitPill } from '@/components/atoms/TraitPill';
+import { AppState } from '@/components/molecules/AppState';
+import { useReducedMotion } from '@/hooks/useAccessibility';
 import { colors, spacing, radius, typography, shadows, CSSProperties } from '@/lib/styles';
 
 interface LivePreviewProps {
@@ -67,18 +69,13 @@ const traitWrapperStyle: CSSProperties = {
 };
 
 const emptyStateStyle: CSSProperties = {
-    display: 'flex',
-    alignItems: 'center',
-    justifyContent: 'center',
-    flex: 1,
-    fontSize: typography.size.sm,
-    color: colors.textMuted,
-    fontStyle: 'italic',
+    marginTop: 'auto',
 };
 
 export function LivePreview({ answersCount, lastAnswer, isAnalyzing }: LivePreviewProps) {
     const containerRef = useRef<HTMLDivElement>(null);
     const traitsRef = useRef<HTMLDivElement>(null);
+    const prefersReducedMotion = useReducedMotion();
 
     // Mock traits logic - in real app this would come from an analysis engine
     const getTraitForAnswer = (count: number) => {
@@ -90,6 +87,8 @@ export function LivePreview({ answersCount, lastAnswer, isAnalyzing }: LivePrevi
     };
 
     useEffect(() => {
+        if (prefersReducedMotion) return;
+
         if (answersCount > 0 && traitsRef.current) {
             // Animate new trait appearing
             const lastTrait = traitsRef.current.lastElementChild;
@@ -103,9 +102,9 @@ export function LivePreview({ answersCount, lastAnswer, isAnalyzing }: LivePrevi
             // Pulse the container
             if (containerRef.current) {
                 gsap.fromTo(containerRef.current,
-                    { boxShadow: '0 0 20px rgba(132, 94, 194, 0.2)' },
+                    { boxShadow: shadows.glowAccent },
                     {
-                        boxShadow: '0 0 40px rgba(132, 94, 194, 0.6)',
+                        boxShadow: shadows.glowPrimary,
                         duration: 0.3,
                         yoyo: true,
                         repeat: 1
@@ -113,7 +112,7 @@ export function LivePreview({ answersCount, lastAnswer, isAnalyzing }: LivePrevi
                 );
             }
         }
-    }, [answersCount]);
+    }, [answersCount, prefersReducedMotion]);
 
     return (
         <div ref={containerRef} style={containerStyle}>
@@ -146,7 +145,11 @@ export function LivePreview({ answersCount, lastAnswer, isAnalyzing }: LivePrevi
 
                 {answersCount === 0 && (
                     <div style={emptyStateStyle}>
-                        <p>Answer questions to reveal your reflection</p>
+                        <AppState
+                            type="empty"
+                            title="No reflection signal yet"
+                            description="Answer ritual questions to reveal your first mirror trait."
+                        />
                     </div>
                 )}
             </div>
